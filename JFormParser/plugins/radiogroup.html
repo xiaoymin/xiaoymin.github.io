@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>radioGroup</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link rel="stylesheet" type="text/css" href="http://cdnnew.drore.com/cdntest/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="http://cdnnew.drore.com/cdntest/less/drore.css" />
+<link rel="stylesheet" type="text/css" href="../prism/themes/prism-coy.css" />
+<script type="text/javascript" src="../prism/prism.js"></script>
+<link href="" rel="stylesheet">
+</head>
+<body>
+	<br><h2>radioGroup</h2><br>
+	<div style="font-size:16px;">
+		radioGroup下拉框组件，可以根据url远程加载数据，也可以是local 数据
+	</div>
+	<br>
+    <div>
+    	<img src="../images/radioGroup.jpg">
+    </div><br>
+    <h2>结构</h2><br>
+    <div>
+    	<pre>
+    		<code class="language-javascript">
+{
+            "element_type":"radioGroup",
+            "element_title":"景区级别",
+            "is_required":true,
+            "meta_column":"scenic_id",
+            "is_fk":true,
+			"width":"100%",
+            "fk_resource_name":"scenic_info",
+            "fk_meta_column":"id",
+            "fk_meta_column_show":"title",
+            "is_remote":false,
+            "rules":"is_email",
+            "message":"",
+            "remote_url":"/cms/template/get_remote_data.htm",
+			"data":[
+            {"text":"AAAAA","value":"5A"},
+            {"text":"AAAA","value":"4A"},
+            {"text":"AAA","value":"3A"},
+            {"text":"AA","value":"2A"}
+          ]
+}
+</code>
+    	</pre>
+
+    </div>
+	<br>
+    <h2>属性</h2><br>
+    <div>
+    	<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>字段</th>
+					<th>类型</th>
+					<th>说明</th>
+					<th>是否必填</th>
+					<th>默认值</th>
+					<th>其他</th>
+				</tr>
+			</thead>	
+			<tbody>
+				<tr>
+					<td>element_type</td>
+					<td>string</td>
+					<td>组件类型</td>
+					<td>是</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>element_title</td>
+					<td>string</td>
+					<td>组件title</td>
+					<td>是</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>meta_column</td>
+					<td>string</td>
+					<td>表单name字段，元数据字段</td>
+					<td>是</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>is_required</td>
+					<td>boolean</td>
+					<td>是否必输项</td>
+					<td>否</td>
+					<td>false</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>is_remote</td>
+					<td>boolean</td>
+					<td>是否远程ajax加载数据,如果为false，data本地数据源字段必填，否则无数据展示</td>
+					<td>是</td>
+					<td>false</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>remote_url</td>
+					<td>string</td>
+					<td>远程ajax加载数据url地址</td>
+					<td>是</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				 <tr>
+					<td>is_fk</td>
+					<td>boolean</td>
+					<td>是否关联表查询获取数据</td>
+					<td>否</td>
+					<td>false</td>
+					<td></td>
+				</tr>
+				 <tr>
+					<td>fk_resource_name</td>
+					<td>string</td>
+					<td>关联表名</td>
+					<td>否</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>fk_meta_column</td>
+					<td>string</td>
+					<td>关联列字段</td>
+					<td>否</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>fk_meta_column_show</td>
+					<td>string</td>
+					<td>关联显示列字段</td>
+					<td>否</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>data</td>
+					<td>Array</td>
+					<td>local数据源，text：文本、value：值<br>
+<pre>
+<code class="language-javascript">
+[
+            {"text":"AAAAA","value":"5A"},
+            {"text":"AAAA","value":"4A"},
+            {"text":"AAA","value":"3A"},
+            {"text":"AA","value":"2A"}
+          ]
+</code>
+</pre>
+					</td>
+					<td>否</td>
+					<td>true</td>
+					<td></td>
+				</tr>
+				 
+			</tbody>
+		</table>
+    </div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+
+</body>
+</html>

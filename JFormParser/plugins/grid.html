@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>panel</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link rel="stylesheet" type="text/css" href="http://cdnnew.drore.com/cdntest/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="http://cdnnew.drore.com/cdntest/less/drore.css" />
+<link rel="stylesheet" type="text/css" href="../prism/themes/prism-coy.css" />
+<script type="text/javascript" src="../prism/prism.js"></script>
+<link href="" rel="stylesheet">
+</head>
+<body>
+	<br><h2>Grid</h2><br>
+	<div style="font-size:14px;">
+    Grid组件是一个类似表格组件，包含几行几列等属性，不过这里不同于表格table，这里只是一个页面展示组件，用于页面布局，没有任何实际作用，同panel一样，是容器组件
+	</div>
+	<br>
+    <div>
+    	<img src="../images/grid.jpg">
+    </div><br>
+    <h2>结构</h2><br>
+    <div>
+    	<pre>
+    		<code class="language-javascript">
+{
+	"element_type":"grid",
+	"element_title":"表格组件",
+	"cols":3,
+    "rows":"4",
+	"container":true,
+	"childrens":[...]
+}
+</code>
+    	</pre>
+
+    </div><br>
+    <h2>属性</h2><br>
+    <div>
+    	<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>字段</th>
+					<th>类型</th>
+					<th>说明</th>
+					<th>是否必填</th>
+					<th>默认值</th>
+					<th>其他</th>
+				</tr>
+			</thead>	
+			<tbody>
+				<tr>
+					<td>element_type</td>
+					<td>string</td>
+					<td>组件类型</td>
+					<td>是</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>element_title</td>
+					<td>string</td>
+					<td>组件title</td>
+					<td>是</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>cols</td>
+					<td>number</td>
+					<td>表格列</td>
+					<td>是</td>
+					<td>1</td>
+					<td></td>
+				</tr>
+				 <tr>
+					<td>rows</td>
+					<td>number</td>
+					<td>表格行</td>
+					<td>是</td>
+					<td>1</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>container</td>
+					<td>boolean</td>
+					<td>是否容器组件</td>
+					<td>否</td>
+					<td>true</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>childrens</td>
+					<td>Array</td>
+					<td>容器子组件集合，可包含任何其他组件</td>
+					<td>否</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+    </div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+
+</body>
+</html>

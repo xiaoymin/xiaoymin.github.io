@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>editor</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link rel="stylesheet" type="text/css" href="http://cdnnew.drore.com/cdntest/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="http://cdnnew.drore.com/cdntest/less/drore.css" />
+<link rel="stylesheet" type="text/css" href="../prism/themes/prism-coy.css" />
+<script type="text/javascript" src="../prism/prism.js"></script>
+<link href="" rel="stylesheet">
+</head>
+<body>
+	<br><h2>Editor</h2><br>
+	<div style="font-size:16px;">
+		editor组件是一个富文本组件，这里使用的公司购买的ewebeditor插件，修改了ewebeditor部分源码，后台上传的资源全部上传到卓锐云数据中心
+	</div>
+	<br>
+    <div>
+    	<img src="../images/editor.jpg">
+    </div><br>
+    <h2>结构</h2><br>
+    <div>
+    	<pre>
+    		<code class="language-javascript">
+{
+          "element_type":"editor",
+          "element_title":"详情",
+          "meta_column":"detail_intro",
+          "width":"400px",
+          "is_required":true,
+          "height":"300px"
+}
+</code>
+    	</pre>
+
+    </div>
+	<br>
+    <h2>属性</h2><br>
+    <div>
+    	<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>字段</th>
+					<th>类型</th>
+					<th>说明</th>
+					<th>是否必填</th>
+					<th>默认值</th>
+					<th>其他</th>
+				</tr>
+			</thead>	
+			<tbody>
+				<tr>
+					<td>element_type</td>
+					<td>string</td>
+					<td>组件类型</td>
+					<td>是</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>element_title</td>
+					<td>string</td>
+					<td>组件title</td>
+					<td>是</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>meta_column</td>
+					<td>string</td>
+					<td>表单name字段，元数据字段</td>
+					<td>是</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>is_required</td>
+					<td>boolean</td>
+					<td>是否必输项</td>
+					<td>否</td>
+					<td>false</td>
+					<td></td>
+				</tr>
+				 
+				<tr>
+					<td>width</td>
+					<td>string</td>
+					<td>地图初始宽度,可以是百分比，可以是像素值，例如：100% 或者400px;</td>
+					<td>是</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>height</td>
+					<td>string</td>
+					<td>地图初始高度</td>
+					<td>是</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				 
+			</tbody>
+		</table>
+    </div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+
+</body>
+</html>

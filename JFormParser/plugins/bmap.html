@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>panel</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link rel="stylesheet" type="text/css" href="http://cdnnew.drore.com/cdntest/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="http://cdnnew.drore.com/cdntest/less/drore.css" />
+<link rel="stylesheet" type="text/css" href="../prism/themes/prism-coy.css" />
+<script type="text/javascript" src="../prism/prism.js"></script>
+<link href="" rel="stylesheet">
+</head>
+<body>
+	<br><h2>Bmap</h2><br>
+	<div style="font-size:16px;">
+		bmap组件是百度地图组件，地图组件必有两个子元素,都是文本域组件 经度、纬度两个字段
+	</div>
+	<br>
+    <div>
+    	<img src="../images/bmap.jpg">
+    </div><br>
+    <h2>结构</h2><br>
+    <div>
+    	<pre>
+    		<code class="language-javascript">
+{
+        "element_type":"bMap",
+        "id":"bmap",
+        "center":"包头",
+        "dragging":true,
+        "scrollwheelzoom":true,
+        "doubleclickzoom":true,
+        "width":"100%",
+        "height":"450px",
+        "element_title":"位置信息",
+        "container":true,
+        "childrens":[{
+          "element_type":"text",
+          "element_title":"经度",
+          "meta_column":"baidu_x",
+          "map_element":true,
+          "point":"lng",
+          "width":"40%",
+          "float":"left",
+          "marginRight":"10px",
+          "is_required":false
+        },{
+          "element_type":"text",
+          "element_title":"纬度",
+          "meta_column":"baidu_y",
+          "map_element":true,
+          "point":"lat",
+          "width":"40%",
+          "float":"left",
+          "is_required":false
+        }]
+}
+</code>
+    	</pre>
+
+    </div><br>
+    <h2>属性</h2><br>
+    <div>
+    	<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>字段</th>
+					<th>类型</th>
+					<th>说明</th>
+					<th>是否必填</th>
+					<th>默认值</th>
+					<th>其他</th>
+				</tr>
+			</thead>	
+			<tbody>
+				<tr>
+					<td>element_type</td>
+					<td>string</td>
+					<td>组件类型</td>
+					<td>是</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>element_title</td>
+					<td>string</td>
+					<td>组件title</td>
+					<td>是</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>id</td>
+					<td>string</td>
+					<td>地图组件唯一id编号</td>
+					<td>是</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>center</td>
+					<td>string</td>
+					<td>地图初始中央显示位置，eg:包头</td>
+					<td>是</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>dragging</td>
+					<td>boolean</td>
+					<td>地图是否允许拖动</td>
+					<td>否</td>
+					<td>false</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>scrollwheelzoom</td>
+					<td>boolean</td>
+					<td>地图是否允许缩放</td>
+					<td>否</td>
+					<td>false</td>
+					<td></td>
+				</tr>
+				
+				<tr>
+					<td>doubleclickzoom</td>
+					<td>boolean</td>
+					<td>地图是否允许鼠标双击缩放层级</td>
+					<td>否</td>
+					<td>true</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>width</td>
+					<td>string</td>
+					<td>地图初始宽度,可以是百分比，可以是像素值，例如：100% 或者400px;</td>
+					<td>是</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>height</td>
+					<td>string</td>
+					<td>地图初始高度</td>
+					<td>是</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>container</td>
+					<td>boolean</td>
+					<td>是否容器组件</td>
+					<td>否</td>
+					<td>true</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>childrens</td>
+					<td>Array</td>
+					<td>地图子组件，这里必包含2个经纬度文本域组件</td>
+					<td>是</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+    </div>
+  
+
+</body>
+</html>

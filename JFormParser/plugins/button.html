@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>button</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link rel="stylesheet" type="text/css" href="http://cdnnew.drore.com/cdntest/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="http://cdnnew.drore.com/cdntest/less/drore.css" />
+<link rel="stylesheet" type="text/css" href="../prism/themes/prism-coy.css" />
+<script type="text/javascript" src="../prism/prism.js"></script>
+<link href="" rel="stylesheet">
+</head>
+<body>
+	<br><h2>Button</h2><br>
+	<div style="font-size:16px;">
+		button按钮组件
+	</div>
+	<br>
+    <div>
+    	<img src="../images/button.jpg">
+    </div><br>
+    <h2>结构</h2><br>
+    <div>
+    	<pre>
+    		<code class="language-javascript">
+{
+	"element_type":"button",
+	"type":"submit",
+	"element_title":"提交",
+	"remote_url":"/cms/template/submit.htm",
+	"width":"80px",
+	"action_url":"/cms/template/template_list.htm",
+	"params":{"url":"/json/shengsi/scenic/scenic_list.json"}
+}
+</code>
+    	</pre>
+
+    </div>
+	<br>
+    <h2>属性</h2><br>
+    <div>
+    	<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>字段</th>
+					<th>类型</th>
+					<th>说明</th>
+					<th>是否必填</th>
+					<th>默认值</th>
+					<th>其他</th>
+				</tr>
+			</thead>	
+			<tbody>
+				<tr>
+					<td>element_type</td>
+					<td>string</td>
+					<td>组件类型</td>
+					<td>是</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>element_title</td>
+					<td>string</td>
+					<td>组件title</td>
+					<td>是</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>type</td>
+					<td>string</td>
+					<td>按钮类型，目前有[submit、link、query、edit、delete]五种类型，提交、连接跳转、查询、编辑、删除</td>
+					<td>是</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>remote_url</td>
+					<td>string</td>
+					<td>根据type类型，有不同的意义，例如是submit，这里则表示提交地址，如未link，这里则为跳转地址</td>
+					<td>否</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				 
+				<tr>
+					<td>params</td>
+					<td>object</td>
+					<td>event点击事件，remote_url后面参数</td>
+					<td>否</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>action_url</td>
+					<td>string</td>
+					<td>callback后执行地址</td>
+					<td>否</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>width</td>
+					<td>string</td>
+					<td>地图初始宽度,可以是百分比，可以是像素值，例如：100% 或者400px;</td>
+					<td>否</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+    </div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+
+</body>
+</html>

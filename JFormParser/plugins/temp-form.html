@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>form</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link rel="stylesheet" type="text/css" href="http://cdnnew.drore.com/cdntest/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="http://cdnnew.drore.com/cdntest/less/drore.css" />
+<link rel="stylesheet" type="text/css" href="../prism/themes/prism-coy.css" />
+<script type="text/javascript" src="../prism/prism.js"></script>
+<link href="" rel="stylesheet">
+</head>
+<body>
+	<br><h2>form</h2><br>
+	<div style="font-size:16px;">
+		form模板页面主要是构建表单页面
+	</div>
+	<br>
+    <div>
+    	<img src="../images/form.jpg">
+    </div><br>
+    <h2>结构</h2><br>
+    <div>
+    	<pre>
+    		<code class="language-javascript">
+{
+  "component_name":"trips_form",
+  "component_title":"行程form",
+  "template_type":"form",
+  "navs_title":"信息管理 > 行程管理 > 行程维护",
+  "navs":[{"title":"信息管理","icon":"","url":""},{"title":"行程管理","icon":""},{"title":"行程维护","icon":""}],
+  "resource_name":"trips_info",
+  "submit_url":"/cms/template/submit.htm",
+  "init_url":"/cms/template/get_form_data.htm",
+  "childrens":[
+    {
+      "element_type":"panel",
+      "element_title":"基础信息",
+      "container":true,
+      "childrens":[
+        {
+          "element_type":"grid",
+          "cols":3,
+          "rows":"3",
+          "childrens":[{
+            "element_type":"text",
+            "element_title":"行程名称",
+            "meta_column":"title",
+            "is_required":true
+          },{
+            "element_type":"select",
+            "element_title":"行程类型",
+            "is_required":true,
+            "meta_column":"type",
+            "is_fk":true,
+            "fk_resource_name":"scenic_spot_info",
+            "fk_meta_column":"id",
+            "fk_meta_column_show":"title",
+            "data":[
+              {"text":"交通","value":"jt"},
+              {"text":"会议","value":"hy"},
+              {"text":"入住","value":"rz"},
+              {"text":"用餐","value":"yc"},
+              {"text":"考察","value":"kc"}
+            ],
+            "is_remote":false,
+            "remote_url":""
+          },{
+            "element_type":"text",
+            "element_title":"开始时间",
+            "meta_column":"start_time",
+            "is_required":true
+          },{
+            "element_type":"checkboxGroup",
+            "element_title":"参与小组",
+            "is_required":true,
+            "meta_column":"team_infos",
+            "fk_resource_name":"team_info",
+            "fk_meta_column":"id",
+            "fk_meta_column_show":"name",
+            "is_remote":true,
+            "width":"100%",
+            "remote_url":"/cms/template/get_remote_data.htm"
+          }]
+        }
+      ]
+    },{
+      "element_type":"panel",
+      "element_title":"详情",
+      "container":true,
+      "childrens":[
+        {
+          "element_type":"editor",
+          "meta_column":"intro",
+          "width":"400px",
+          "height":"300px"
+        }
+      ]
+    },{
+      "element_type":"buttonGroup",
+      "element_title":"",
+      "align":"center",
+      "childrens":[
+        {"element_type":"button","type":"submit","element_title":"提交","remote_url":"/cms/template/submit.htm","width":"80px","action_url":"/cms/template/template_list.htm","params":{"url":"/json/shengsi/trips/trips_list.json"}},
+        {"element_type":"button","type":"link","element_title":"返回","remote_url":"/cms/template/template_list.htm","params":{"url":"/json/shengsi/trips/trips_list.json"},"width":"80px"}
+      ]
+    }
+  ]
+}
+</code>
+    	</pre>
+
+    </div>
+	<br>
+    <h2>属性</h2><br>
+    <div>
+    	<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>字段</th>
+					<th>类型</th>
+					<th>说明</th>
+					<th>是否必填</th>
+					<th>默认值</th>
+					<th>其他</th>
+				</tr>
+			</thead>	
+			<tbody>
+				<tr>
+					<td>component_name</td>
+					<td>string</td>
+					<td>temp页面组件名称</td>
+					<td>是</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>component_title</td>
+					<td>string</td>
+					<td>temp页面组件title</td>
+					<td>是</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>template_type</td>
+					<td>string</td>
+					<td>temp页面类型，目前2中，分别为：list、form</td>
+					<td>是</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>navs_title</td>
+					<td>string</td>
+					<td>导航栏</td>
+					<td>是</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>navs</td>
+					<td>Array</td>
+					<td>导航栏,属性见<a href="navs">导航栏</a></td>
+					<td>是</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>resource_name</td>
+					<td>string</td>
+					<td>展示元数据数据表名</td>
+					<td>是</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>submit_url</td>
+					<td>string</td>
+					<td>根据template_type类型不同有不同的意义，list为获取数据地址，form为提交表单地址</td>
+					<td>是</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>container</td>
+					<td>boolean</td>
+					<td>是否容器组件</td>
+					<td>否</td>
+					<td>true</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>childrens</td>
+					<td>Array</td>
+					<td>地图子组件，这里必包含2个经纬度文本域组件</td>
+					<td>是</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+    </div>
+	<br>
+    <h2 id="navs">导航栏属性</h2><br>
+    <div>
+    	<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>字段</th>
+					<th>类型</th>
+					<th>说明</th>
+					<th>是否必填</th>
+					<th>默认值</th>
+					<th>其他</th>
+				</tr>
+			</thead>	
+			<tbody>
+				<tr>
+					<td>title</td>
+					<td>string</td>
+					<td>导航栏名称</td>
+					<td>是</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>icon</td>
+					<td>string</td>
+					<td>图标</td>
+					<td>否</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>url</td>
+					<td>string</td>
+					<td>导航栏url</td>
+					<td>否</td>
+					<td>无</td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+    </div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+
+</body>
+</html>
