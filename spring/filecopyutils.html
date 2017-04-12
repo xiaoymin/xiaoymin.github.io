@@ -1,0 +1,667 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>FileCopyUtils · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.2">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="streamutils.html" />
+    
+    
+    <link rel="prev" href="filesystemutils.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    简介
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="springdescription.html">
+            
+                <a href="springdescription.html">
+            
+                    
+                    Spring介绍
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="kjtz.html">
+            
+                <a href="kjtz.html">
+            
+                    
+                    框架特征
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" data-path="springtd.html">
+            
+                <a href="springtd.html">
+            
+                    
+                    Spring特点
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3" data-path="springrq.html">
+            
+                <a href="springrq.html">
+            
+                    
+                    Spring容器
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="springyms.html">
+            
+                <a href="springyms.html">
+            
+                    
+                    Spring源码
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="chapter1.html">
+            
+                <a href="chapter1.html">
+            
+                    
+                    spring-core
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1.1" data-path="orgspringframework.html">
+            
+                <a href="orgspringframework.html">
+            
+                    
+                    org.springframework
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1.1.1" data-path="util.html">
+            
+                <a href="util.html">
+            
+                    
+                    util
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1.1.1.1" data-path="filesystemutils.html">
+            
+                <a href="filesystemutils.html">
+            
+                    
+                    FileSystemUtils
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.3.1.1.1.2" data-path="filecopyutils.html">
+            
+                <a href="filecopyutils.html">
+            
+                    
+                    FileCopyUtils
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.1.1.1.3" data-path="streamutils.html">
+            
+                <a href="streamutils.html">
+            
+                    
+                    StreamUtils
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >FileCopyUtils</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <p><code>FileCopyUtils</code>&#x662F;&#x6587;&#x4EF6;&#x7CFB;&#x7EDF;&#x64CD;&#x4F5C;&#x5DE5;&#x5177;&#x7C7B;,&#x63D0;&#x4F9B;&#x62F7;&#x8D1D;&#x6587;&#x4EF6;&#x7B49;&#x65B9;&#x6CD5;&#x8BE5;&#x7C7B;&#x4E3B;&#x8981;&#x516C;&#x5F00;&#x4EE5;&#x4E0B;&#x65B9;&#x6CD5; &#xFF1A;</p>
+<ul>
+<li><code>public static int copy(File in, File out)</code>:&#x5C06;&#x7ED9;&#x5B9A;&#x7684;&#x8F93;&#x5165;&#x6587;&#x4EF6;&#x7684;&#x5185;&#x5BB9;&#x590D;&#x5236;&#x5230;&#x7ED9;&#x5B9A;&#x7684;&#x8F93;&#x51FA;&#x6587;&#x4EF6;&#x4E2D;</li>
+<li><code>public static void copy(byte[] in, File out)</code>:&#x5C06;&#x7ED9;&#x5B9A;&#x7684;&#x5B57;&#x8282;&#x6570;&#x7EC4;&#x7684;&#x5185;&#x5BB9;&#x590D;&#x5236;&#x5230;&#x7ED9;&#x5B9A;&#x7684;&#x8F93;&#x51FA;&#x6587;&#x4EF6;</li>
+<li><code>public static byte[] copyToByteArray(File in)</code>:&#x5C06;&#x7ED9;&#x5B9A;&#x7684;&#x8F93;&#x5165;&#x6587;&#x4EF6;&#x7684;&#x5185;&#x5BB9;&#x590D;&#x5236;&#x5230;&#x65B0;&#x7684;&#x5B57;&#x8282;&#x6570;&#x7EC4;&#x4E2D;</li>
+<li><code>public static int copy(InputStream in, OutputStream out)</code>:&#x590D;&#x5236;&#x7ED9;&#x5B9A;&#x7684;InputStream&#x7684;&#x5185;&#x5BB9;&#x5230;&#x7ED9;&#x5B9A;&#x7684;&#x8F93;&#x51FA;&#x6D41;&#x3002;</li>
+<li><code>public static void copy(byte[] in, OutputStream out)</code>:&#x590D;&#x5236;&#x7684;&#x5B57;&#x8282;&#x6570;&#x7EC4;&#x7ED9;&#x5B9A;&#x7684;OutputStream&#x7684;&#x5185;&#x5BB9;&#x3002;</li>
+<li><code>public static byte[] copyToByteArray(InputStream in)</code>:&#x590D;&#x5236;&#x5230;&#x4E00;&#x4E2A;&#x65B0;&#x7684;&#x7ED9;&#x5B9A;&#x7684;InputStream&#x5B57;&#x8282;&#x6570;&#x7EC4;&#x7684;&#x5185;&#x5BB9;</li>
+<li><code>public static int copy(Reader in, Writer out)</code>:&#x4ECE;reader&#x5BF9;&#x8C61;&#x62F7;&#x8D1D;&#x5230;writer</li>
+<li><code>public static void copy(String in, Writer out)</code>:&#x5C06;&#x7ED9;&#x5B9A;&#x5B57;&#x7B26;&#x4E32;&#x7684;&#x5185;&#x5BB9;&#x590D;&#x5236;&#x5230;&#x7ED9;&#x5B9A;&#x7684;&#x8F93;&#x51FA;&#x5199;&#x5165;&#x5668;</li>
+<li><code>public static String copyToString(Reader in)</code>:&#x5C06;&#x7ED9;&#x5B9A;reader&#x7684;&#x5185;&#x5BB9;&#x590D;&#x5236;&#x5230;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x3002;</li>
+</ul>
+<p>&#x4EE5;&#x4E0B;&#x662F;&#x6E90;&#x7801;:</p>
+<pre><code class="lang-java"><span class="hljs-comment">/*
+ * Copyright 2002-2013 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */</span>
+
+<span class="hljs-keyword">package</span> org.springframework.util;
+
+<span class="hljs-keyword">import</span> java.io.BufferedInputStream;
+<span class="hljs-keyword">import</span> java.io.BufferedOutputStream;
+<span class="hljs-keyword">import</span> java.io.ByteArrayInputStream;
+<span class="hljs-keyword">import</span> java.io.ByteArrayOutputStream;
+<span class="hljs-keyword">import</span> java.io.File;
+<span class="hljs-keyword">import</span> java.io.FileInputStream;
+<span class="hljs-keyword">import</span> java.io.FileOutputStream;
+<span class="hljs-keyword">import</span> java.io.IOException;
+<span class="hljs-keyword">import</span> java.io.InputStream;
+<span class="hljs-keyword">import</span> java.io.OutputStream;
+<span class="hljs-keyword">import</span> java.io.Reader;
+<span class="hljs-keyword">import</span> java.io.StringWriter;
+<span class="hljs-keyword">import</span> java.io.Writer;
+
+<span class="hljs-comment">/**
+ * &#x6587;&#x4EF6;&#x548C;&#x6D41;&#x590D;&#x5236;&#x7684;&#x7B80;&#x5355;&#x65B9;&#x6CD5;,&#x6240;&#x6709;&#x7684;&#x62F7;&#x8D1D;&#x65B9;&#x6CD5;&#x4F7F;&#x7528;&#x7684;&#x5B57;&#x8282;&#x6570;&#x7EC4;&#x5927;&#x5C0F;&#x4E3A;4096&#x5B57;&#x8282;,&#x5E76;&#x4E14;&#x5F53;&#x6267;&#x884C;&#x5B8C;&#x6BD5;&#x540E;,&#x5173;&#x95ED;&#x6240;&#x6709;&#x7684;&#x6D41;,
+ * &#x6D41;&#x7684;&#x4E00;&#x4E9B;&#x64CD;&#x4F5C;&#x65B9;&#x6CD5;&#x53EF;&#x4EE5;&#x53C2;&#x8003;StreamUtils.java
+ *
+ * Simple utility methods for file and stream copying. All copy methods use a block size
+ * of 4096 bytes, and close all affected streams when done. A variation of the copy
+ * methods from this class that leave streams open can be found in {<span class="hljs-doctag">@link</span> StreamUtils}.
+ *
+ * &lt;p&gt;Mainly for use within the framework, but also useful for application code.
+ *
+ * <span class="hljs-doctag">@author</span> Juergen Hoeller
+ * <span class="hljs-doctag">@since</span> 06.10.2003
+ * <span class="hljs-doctag">@see</span> StreamUtils
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FileCopyUtils</span> </span>{
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> BUFFER_SIZE = StreamUtils.BUFFER_SIZE;
+
+
+    <span class="hljs-comment">//---------------------------------------------------------------------</span>
+    <span class="hljs-comment">// Copy methods for java.io.File</span>
+    <span class="hljs-comment">//---------------------------------------------------------------------</span>
+
+    <span class="hljs-comment">/**
+     * &#x5C06;&#x7ED9;&#x5B9A;&#x7684;&#x8F93;&#x5165;&#x6587;&#x4EF6;&#x7684;&#x5185;&#x5BB9;&#x590D;&#x5236;&#x5230;&#x7ED9;&#x5B9A;&#x7684;&#x8F93;&#x51FA;&#x6587;&#x4EF6;&#x4E2D;
+     * Copy the contents of the given input File to the given output File.
+     * <span class="hljs-doctag">@param</span> in the file to copy from
+     * <span class="hljs-doctag">@param</span> out the file to copy to
+     * <span class="hljs-doctag">@return</span> the number of bytes copied &#x8FD4;&#x56DE;copy&#x7684;&#x5B57;&#x8282;&#x5927;&#x5C0F;
+     * <span class="hljs-doctag">@throws</span> IOException in case of I/O errors
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">copy</span><span class="hljs-params">(File in, File out)</span> <span class="hljs-keyword">throws</span> IOException </span>{
+        Assert.notNull(in, <span class="hljs-string">&quot;No input File specified&quot;</span>);
+        Assert.notNull(out, <span class="hljs-string">&quot;No output File specified&quot;</span>);
+        <span class="hljs-keyword">return</span> copy(<span class="hljs-keyword">new</span> BufferedInputStream(<span class="hljs-keyword">new</span> FileInputStream(in)),
+            <span class="hljs-keyword">new</span> BufferedOutputStream(<span class="hljs-keyword">new</span> FileOutputStream(out)));
+    }
+
+    <span class="hljs-comment">/**
+     * &#x5C06;&#x7ED9;&#x5B9A;&#x7684;&#x5B57;&#x8282;&#x6570;&#x7EC4;&#x7684;&#x5185;&#x5BB9;&#x590D;&#x5236;&#x5230;&#x7ED9;&#x5B9A;&#x7684;&#x8F93;&#x51FA;&#x6587;&#x4EF6;
+     * Copy the contents of the given byte array to the given output File.
+     * <span class="hljs-doctag">@param</span> in the byte array to copy from
+     * <span class="hljs-doctag">@param</span> out the file to copy to
+     * <span class="hljs-doctag">@throws</span> IOException in case of I/O errors
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">copy</span><span class="hljs-params">(<span class="hljs-keyword">byte</span>[] in, File out)</span> <span class="hljs-keyword">throws</span> IOException </span>{
+        Assert.notNull(in, <span class="hljs-string">&quot;No input byte array specified&quot;</span>);
+        Assert.notNull(out, <span class="hljs-string">&quot;No output File specified&quot;</span>);
+        <span class="hljs-comment">//&#x521B;&#x5EFA;&#x8F93;&#x5165;&#x5B57;&#x8282;&#x6D41;</span>
+        ByteArrayInputStream inStream = <span class="hljs-keyword">new</span> ByteArrayInputStream(in);
+        <span class="hljs-comment">//&#x521B;&#x5EFA;&#x6587;&#x4EF6;&#x8F93;&#x51FA;&#x6D41;</span>
+        OutputStream outStream = <span class="hljs-keyword">new</span> BufferedOutputStream(<span class="hljs-keyword">new</span> FileOutputStream(out));
+        copy(inStream, outStream);
+    }
+
+    <span class="hljs-comment">/**
+     * &#x5C06;&#x7ED9;&#x5B9A;&#x7684;&#x8F93;&#x5165;&#x6587;&#x4EF6;&#x7684;&#x5185;&#x5BB9;&#x590D;&#x5236;&#x5230;&#x65B0;&#x7684;&#x5B57;&#x8282;&#x6570;&#x7EC4;&#x4E2D;
+     * Copy the contents of the given input File into a new byte array.
+     * <span class="hljs-doctag">@param</span> in the file to copy from
+     * <span class="hljs-doctag">@return</span> the new byte array that has been copied to
+     * <span class="hljs-doctag">@throws</span> IOException in case of I/O errors
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">byte</span>[] copyToByteArray(File in) <span class="hljs-keyword">throws</span> IOException {
+        Assert.notNull(in, <span class="hljs-string">&quot;No input File specified&quot;</span>);
+        <span class="hljs-keyword">return</span> copyToByteArray(<span class="hljs-keyword">new</span> BufferedInputStream(<span class="hljs-keyword">new</span> FileInputStream(in)));
+    }
+
+
+    <span class="hljs-comment">//---------------------------------------------------------------------</span>
+    <span class="hljs-comment">// Copy methods for java.io.InputStream / java.io.OutputStream</span>
+    <span class="hljs-comment">//---------------------------------------------------------------------</span>
+
+    <span class="hljs-comment">/**
+     * &#x590D;&#x5236;&#x7ED9;&#x5B9A;&#x7684;InputStream&#x7684;&#x5185;&#x5BB9;&#x5230;&#x7ED9;&#x5B9A;&#x7684;&#x8F93;&#x51FA;&#x6D41;&#x3002;
+     * &#x5B8C;&#x6210;&#x65F6;&#x5173;&#x95ED;&#x4E24;&#x4E2A;&#x6D41;&#x3002;
+     * Copy the contents of the given InputStream to the given OutputStream.
+     * Closes both streams when done.
+     * <span class="hljs-doctag">@param</span> in the stream to copy from
+     * <span class="hljs-doctag">@param</span> out the stream to copy to
+     * <span class="hljs-doctag">@return</span> the number of bytes copied
+     * <span class="hljs-doctag">@throws</span> IOException in case of I/O errors
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">copy</span><span class="hljs-params">(InputStream in, OutputStream out)</span> <span class="hljs-keyword">throws</span> IOException </span>{
+        Assert.notNull(in, <span class="hljs-string">&quot;No InputStream specified&quot;</span>);
+        Assert.notNull(out, <span class="hljs-string">&quot;No OutputStream specified&quot;</span>);
+        <span class="hljs-keyword">try</span> {
+            <span class="hljs-keyword">return</span> StreamUtils.copy(in, out);
+        }
+        <span class="hljs-keyword">finally</span> {
+            <span class="hljs-keyword">try</span> {
+                in.close();
+            }
+            <span class="hljs-keyword">catch</span> (IOException ex) {
+            }
+            <span class="hljs-keyword">try</span> {
+                out.close();
+            }
+            <span class="hljs-keyword">catch</span> (IOException ex) {
+            }
+        }
+    }
+
+    <span class="hljs-comment">/**
+     * &#x590D;&#x5236;&#x7684;&#x5B57;&#x8282;&#x6570;&#x7EC4;&#x7ED9;&#x5B9A;&#x7684;OutputStream&#x7684;&#x5185;&#x5BB9;&#x3002;
+     * Copy the contents of the given byte array to the given OutputStream.
+     * Closes the stream when done.
+     * <span class="hljs-doctag">@param</span> in the byte array to copy from
+     * <span class="hljs-doctag">@param</span> out the OutputStream to copy to
+     * <span class="hljs-doctag">@throws</span> IOException in case of I/O errors
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">copy</span><span class="hljs-params">(<span class="hljs-keyword">byte</span>[] in, OutputStream out)</span> <span class="hljs-keyword">throws</span> IOException </span>{
+        Assert.notNull(in, <span class="hljs-string">&quot;No input byte array specified&quot;</span>);
+        Assert.notNull(out, <span class="hljs-string">&quot;No OutputStream specified&quot;</span>);
+        <span class="hljs-keyword">try</span> {
+            out.write(in);
+        }
+        <span class="hljs-keyword">finally</span> {
+            <span class="hljs-keyword">try</span> {
+                out.close();
+            }
+            <span class="hljs-keyword">catch</span> (IOException ex) {
+            }
+        }
+    }
+
+    <span class="hljs-comment">/**
+     * &#x590D;&#x5236;&#x5230;&#x4E00;&#x4E2A;&#x65B0;&#x7684;&#x7ED9;&#x5B9A;&#x7684;InputStream&#x5B57;&#x8282;&#x6570;&#x7EC4;&#x7684;&#x5185;&#x5BB9;
+     * Copy the contents of the given InputStream into a new byte array.
+     * Closes the stream when done.
+     * <span class="hljs-doctag">@param</span> in the stream to copy from
+     * <span class="hljs-doctag">@return</span> the new byte array that has been copied to
+     * <span class="hljs-doctag">@throws</span> IOException in case of I/O errors
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">byte</span>[] copyToByteArray(InputStream in) <span class="hljs-keyword">throws</span> IOException {
+        ByteArrayOutputStream out = <span class="hljs-keyword">new</span> ByteArrayOutputStream(BUFFER_SIZE);
+        copy(in, out);
+        <span class="hljs-keyword">return</span> out.toByteArray();
+    }
+
+
+    <span class="hljs-comment">//---------------------------------------------------------------------</span>
+    <span class="hljs-comment">// Copy methods for java.io.Reader / java.io.Writer</span>
+    <span class="hljs-comment">//---------------------------------------------------------------------</span>
+
+    <span class="hljs-comment">/**
+     * &#x4ECE;reader&#x5BF9;&#x8C61;&#x62F7;&#x8D1D;&#x5230;writer
+     * Copy the contents of the given Reader to the given Writer.
+     * Closes both when done.
+     * <span class="hljs-doctag">@param</span> in the Reader to copy from
+     * <span class="hljs-doctag">@param</span> out the Writer to copy to
+     * <span class="hljs-doctag">@return</span> the number of characters copied
+     * <span class="hljs-doctag">@throws</span> IOException in case of I/O errors
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">copy</span><span class="hljs-params">(Reader in, Writer out)</span> <span class="hljs-keyword">throws</span> IOException </span>{
+        Assert.notNull(in, <span class="hljs-string">&quot;No Reader specified&quot;</span>);
+        Assert.notNull(out, <span class="hljs-string">&quot;No Writer specified&quot;</span>);
+        <span class="hljs-keyword">try</span> {
+            <span class="hljs-keyword">int</span> byteCount = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">char</span>[] buffer = <span class="hljs-keyword">new</span> <span class="hljs-keyword">char</span>[BUFFER_SIZE];
+            <span class="hljs-keyword">int</span> bytesRead = -<span class="hljs-number">1</span>;
+            <span class="hljs-keyword">while</span> ((bytesRead = in.read(buffer)) != -<span class="hljs-number">1</span>) {
+                out.write(buffer, <span class="hljs-number">0</span>, bytesRead);
+                byteCount += bytesRead;
+            }
+            out.flush();
+            <span class="hljs-keyword">return</span> byteCount;
+        }
+        <span class="hljs-keyword">finally</span> {
+            <span class="hljs-keyword">try</span> {
+                in.close();
+            }
+            <span class="hljs-keyword">catch</span> (IOException ex) {
+            }
+            <span class="hljs-keyword">try</span> {
+                out.close();
+            }
+            <span class="hljs-keyword">catch</span> (IOException ex) {
+            }
+        }
+    }
+
+    <span class="hljs-comment">/**
+     * &#x5C06;&#x7ED9;&#x5B9A;&#x5B57;&#x7B26;&#x4E32;&#x7684;&#x5185;&#x5BB9;&#x590D;&#x5236;&#x5230;&#x7ED9;&#x5B9A;&#x7684;&#x8F93;&#x51FA;&#x5199;&#x5165;&#x5668;&#x3002;
+     * Copy the contents of the given String to the given output Writer.
+     * Closes the writer when done.
+     * <span class="hljs-doctag">@param</span> in the String to copy from
+     * <span class="hljs-doctag">@param</span> out the Writer to copy to
+     * <span class="hljs-doctag">@throws</span> IOException in case of I/O errors
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">copy</span><span class="hljs-params">(String in, Writer out)</span> <span class="hljs-keyword">throws</span> IOException </span>{
+        Assert.notNull(in, <span class="hljs-string">&quot;No input String specified&quot;</span>);
+        Assert.notNull(out, <span class="hljs-string">&quot;No Writer specified&quot;</span>);
+        <span class="hljs-keyword">try</span> {
+            out.write(in);
+        }
+        <span class="hljs-keyword">finally</span> {
+            <span class="hljs-keyword">try</span> {
+                out.close();
+            }
+            <span class="hljs-keyword">catch</span> (IOException ex) {
+            }
+        }
+    }
+
+    <span class="hljs-comment">/**
+     * &#x5C06;&#x7ED9;&#x5B9A;reader&#x7684;&#x5185;&#x5BB9;&#x590D;&#x5236;&#x5230;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x3002;
+     * Copy the contents of the given Reader into a String.
+     * Closes the reader when done.
+     * <span class="hljs-doctag">@param</span> in the reader to copy from
+     * <span class="hljs-doctag">@return</span> the String that has been copied to
+     * <span class="hljs-doctag">@throws</span> IOException in case of I/O errors
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> String <span class="hljs-title">copyToString</span><span class="hljs-params">(Reader in)</span> <span class="hljs-keyword">throws</span> IOException </span>{
+        StringWriter out = <span class="hljs-keyword">new</span> StringWriter();
+        copy(in, out);
+        <span class="hljs-keyword">return</span> out.toString();
+    }
+
+}
+</code></pre>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="filesystemutils.html" class="navigation navigation-prev " aria-label="Previous page: FileSystemUtils">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="streamutils.html" class="navigation navigation-next " aria-label="Next page: StreamUtils">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"FileCopyUtils","level":"1.3.1.1.1.2","depth":5,"next":{"title":"StreamUtils","level":"1.3.1.1.1.3","depth":5,"path":"streamutils.md","ref":"streamutils.md","articles":[]},"previous":{"title":"FileSystemUtils","level":"1.3.1.1.1.1","depth":5,"path":"filesystemutils.md","ref":"filesystemutils.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"filecopyutils.md","mtime":"2017-04-12T07:53:38.220Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-12T09:03:08.697Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
