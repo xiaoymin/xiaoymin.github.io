@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>条件查询 · GitBook</title>
+        <title>关联条件查询 · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.2">
@@ -57,10 +57,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="recordmodify.html" />
+    <link rel="next" href="utils.html" />
     
     
-    <link rel="prev" href="relation.html" />
+    <link rel="prev" href="recordmodify.html" />
     
 
     </head>
@@ -226,7 +226,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.6.3" data-path="querycondition.html">
+        <li class="chapter " data-level="1.6.3" data-path="querycondition.html">
             
                 <a href="querycondition.html">
             
@@ -252,7 +252,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.5" data-path="gltjcx.html">
+        <li class="chapter active" data-level="1.6.5" data-path="gltjcx.html">
             
                 <a href="gltjcx.html">
             
@@ -371,7 +371,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >条件查询</a>
+        <a href="." >关联条件查询</a>
     </h1>
 </div>
 
@@ -386,98 +386,87 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="&#x6761;&#x4EF6;&#x67E5;&#x8BE2;">&#x6761;&#x4EF6;&#x67E5;&#x8BE2;</h1>
-<p>&#x76EE;&#x524D;&#x6761;&#x4EF6;&#x67E5;&#x8BE2;&#x652F;&#x6301;&#x56DB;&#x79CD;&#x5339;&#x914D;&#x6A21;&#x5F0F;&#xFF0C;fuzzy(&#x6A21;&#x7CCA;)&#x3001;term(&#x5339;&#x914D;)&#x3001;rang(&#x8303;&#x56F4;)&#x3001;prefix(&#x524D;&#x7F00;)</p>
-<p>&#x4E09;&#x79CD;&#x5927;&#x524D;&#x63D0;&#xFF1A;</p>
-<ul>
-<li>must&#xFF1A;&#x5FC5;&#x987B;&#x6EE1;&#x8DB3;</li>
-<li>must_not&#xFF1A;&#x5FC5;&#x987B;&#x4E0D;&#x6EE1;&#x8DB3;</li>
-<li>should:&#x5E94;&#x8BE5;&#x6EE1;&#x8DB3;</li>
-</ul>
+                                <h2 id="&#x5173;&#x8054;&#x67E5;&#x8BE2;">&#x5173;&#x8054;&#x67E5;&#x8BE2;</h2>
+<p>&#x63A5;&#x53E3;url&#xFF1A;/api/record/v1/${resourceName}/query</p>
 <p>&#x67E5;&#x8BE2;&#x7ED3;&#x6784;&#x4F53;&#x5982;&#x4E0B;&#xFF1A;</p>
 <pre><code class="lang-json">{
-    <span class="hljs-string">&quot;page_size&quot;</span>: <span class="hljs-number">10</span>,
-    <span class="hljs-string">&quot;current_page&quot;</span>: <span class="hljs-number">1</span>,
-    <span class="hljs-string">&quot;token&quot;</span>: <span class="hljs-string">&quot;JDUkV1ZuRnBUV1AkYVk0Z2R3RVJyem1udktWS1FTQjd1amdSMUlRUXN3V2JrVkl3M3BWTzdQLw&quot;</span>,
     <span class="hljs-string">&quot;display_fields&quot;</span>: <span class="hljs-string">&quot;&quot;</span>,
+    <span class="hljs-string">&quot;page_size&quot;</span>: <span class="hljs-string">&quot;20&quot;</span>,
+    <span class="hljs-string">&quot;current_page&quot;</span>: <span class="hljs-string">&quot;1&quot;</span>,
+    <span class="hljs-string">&quot;alias&quot;</span>: <span class="hljs-string">&quot;province&quot;</span>,
     <span class="hljs-string">&quot;query&quot;</span>: {
-        <span class="hljs-string">&quot;must_not&quot;</span>: [],
-        <span class="hljs-string">&quot;should&quot;</span>: [],
         <span class="hljs-string">&quot;must&quot;</span>: [
             {
-                <span class="hljs-string">&quot;prefix&quot;</span>: {},
                 <span class="hljs-string">&quot;term&quot;</span>: {
-                    <span class="hljs-string">&quot;member_id&quot;</span>: <span class="hljs-string">&quot;f09db39e40ef44a18d4b61f14fbecc37&quot;</span>
-                },
-                <span class="hljs-string">&quot;fuzzy&quot;</span>: {},
-                <span class="hljs-string">&quot;range&quot;</span>: {}
+                    <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;&#x6D59;&#x6C5F;&quot;</span>
+                }
             }
         ]
     },
-    <span class="hljs-string">&quot;sort&quot;</span>: {},
-    <span class="hljs-string">&quot;rel&quot;</span>: []
+    <span class="hljs-string">&quot;rel&quot;</span>: [
+        {
+            <span class="hljs-string">&quot;rel_type&quot;</span>: <span class="hljs-string">&quot;o2o&quot;</span>,
+            <span class="hljs-string">&quot;rel_res_name&quot;</span>: <span class="hljs-string">&quot;city&quot;</span>,
+            <span class="hljs-string">&quot;rel_res_alias&quot;</span>: <span class="hljs-string">&quot;city&quot;</span>,
+            <span class="hljs-string">&quot;rel_res_field&quot;</span>: <span class="hljs-string">&quot;belong_province&quot;</span>,
+            <span class="hljs-string">&quot;rel_symbol&quot;</span>: <span class="hljs-string">&quot;=&quot;</span>,
+            <span class="hljs-string">&quot;on_field&quot;</span>: <span class="hljs-string">&quot;province.id&quot;</span>,
+            <span class="hljs-string">&quot;where&quot;</span>: {
+                <span class="hljs-string">&quot;should&quot;</span>: [
+                    {
+                        <span class="hljs-string">&quot;term&quot;</span>: {
+                            <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;&#x5B81;&#x6CE2;&quot;</span>
+                        }
+                    },
+                    {
+                        <span class="hljs-string">&quot;term&quot;</span>: {
+                            <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;&#x676D;&#x5DDE;&quot;</span>
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            <span class="hljs-string">&quot;rel_type&quot;</span>: <span class="hljs-string">&quot;o2o&quot;</span>,
+            <span class="hljs-string">&quot;rel_res_name&quot;</span>: <span class="hljs-string">&quot;customer&quot;</span>,
+            <span class="hljs-string">&quot;rel_res_field&quot;</span>: <span class="hljs-string">&quot;city&quot;</span>,
+            <span class="hljs-string">&quot;rel_res_alias&quot;</span>: <span class="hljs-string">&quot;customer&quot;</span>,
+            <span class="hljs-string">&quot;rel_symbol&quot;</span>: <span class="hljs-string">&quot;=&quot;</span>,
+            <span class="hljs-string">&quot;on_field&quot;</span>: <span class="hljs-string">&quot;city.id&quot;</span>,
+            <span class="hljs-string">&quot;where&quot;</span>: {}
+        },
+        {
+            <span class="hljs-string">&quot;rel_type&quot;</span>: <span class="hljs-string">&quot;o2o&quot;</span>,
+            <span class="hljs-string">&quot;rel_res_name&quot;</span>: <span class="hljs-string">&quot;ticket&quot;</span>,
+            <span class="hljs-string">&quot;rel_res_field&quot;</span>: <span class="hljs-string">&quot;belong_customer&quot;</span>,
+            <span class="hljs-string">&quot;rel_res_alias&quot;</span>: <span class="hljs-string">&quot;ticket&quot;</span>,
+            <span class="hljs-string">&quot;rel_symbol&quot;</span>: <span class="hljs-string">&quot;=&quot;</span>,
+            <span class="hljs-string">&quot;on_field&quot;</span>: <span class="hljs-string">&quot;customer.id&quot;</span>,
+            <span class="hljs-string">&quot;where&quot;</span>: {}
+        }
+    ],
+    <span class="hljs-string">&quot;token&quot;</span>: <span class="hljs-string">&quot;JDUkazB5bzBFQXAkQXJWTVBLQzF4cXY3QWJEQ3FvYW1tU1dYQ0U3bXZ1amNFT0ppdzc0VHZ4MA&quot;</span>
 }
 </code></pre>
-<h3 id="&#x4EE3;&#x7801;&#x793A;&#x4F8B;&#xFF1A;">&#x4EE3;&#x7801;&#x793A;&#x4F8B;&#xFF1A;</h3>
-<pre><code class="lang-java">CloudBasicConnection cloudBasicConnection=<span class="hljs-keyword">new</span> CloudBasicConnection(); 
-cloudBasicConnection.setUrl(<span class="hljs-string">&quot;y.drore.com&quot;</span>); 
-cloudBasicConnection.setPort(<span class="hljs-number">80</span>); 
-<span class="hljs-comment">//appid &amp; appsecret</span>
-cloudBasicConnection.setUserName(<span class="hljs-string">&quot;xx&quot;</span>); 
-cloudBasicConnection.setPassword(<span class="hljs-string">&quot;test&quot;</span>); 
-<span class="hljs-comment">//&#x521B;&#x5EFA;&#x8FDE;&#x63A5;&#x6C60;&#x7BA1;&#x7406;&#x7C7B; </span>
-LogbackLogger.info(<span class="hljs-string">&quot;create cloudPoolingConnectionManager...&quot;</span>); 
-CloudPoolingConnectionManager cloudPoolingConnectionManager=<span class="hljs-keyword">new</span> CloudPoolingConnectionManager();
-cloudPoolingConnectionManager.setConnection(cloudBasicConnection); 
-<span class="hljs-comment">//&#x521B;&#x5EFA;&#x6570;&#x636E;&#x6E90; </span>
-LogbackLogger.info(<span class="hljs-string">&quot;create cloudBasicDataSource...&quot;</span>); 
-CloudBasicDataSource cloudBasicDataSource=<span class="hljs-keyword">new</span> CloudBasicDataSource(); 
-cloudBasicDataSource.setCloudPoolingConnectionManager(cloudPoolingConnectionManager); 
-<span class="hljs-comment">//&#x521B;&#x5EFA;&#x67E5;&#x8BE2;runner </span>
-LogbackLogger.info(<span class="hljs-string">&quot;create cloudQueryRunner...&quot;</span>); 
-CloudQueryRunner runner=<span class="hljs-keyword">new</span> CloudQueryRunner(); 
-runner.setDataSource(cloudBasicDataSource);
-</code></pre>
-<p>&#x4EE5;&#x4E0A;&#x662F;<code>CloudQueryRunner</code>&#x521B;&#x5EFA;&#x4EE3;&#x7801;,&#x4E00;&#x4E2A;&#x9879;&#x76EE;&#x4E2D;&#x53EA;&#x9700;&#x8981;&#x521B;&#x5EFA;&#x4E00;&#x6B21;,&#x4F7F;&#x7528;spring&#x4F9D;&#x8D56;&#x6CE8;&#x5165;&#x5373;&#x53EF;</p>
-<p>&#x4EE5;&#x4E0B;&#x4EE3;&#x7801;&#x662F;&#x6761;&#x4EF6;&#x67E5;&#x8BE2;&#x793A;&#x4F8B;&#xFF1A;</p>
-<pre><code class="lang-java"><span class="hljs-comment">//&#x521B;&#x5EFA;&#x67E5;&#x8BE2;&#x6761;&#x4EF6;</span>
-JsonObject jsonObject=<span class="hljs-keyword">new</span> JsonObject();
-RequestExample requestExample=<span class="hljs-keyword">new</span> RequestExample(<span class="hljs-number">10</span>,<span class="hljs-number">1</span>); 
-<span class="hljs-comment">//&#x521B;&#x5EFA;Criteria </span>
-RequestExample.Criteria rc = requestExample.create();
-RequestExample.Param pa = requestExample.createParam();
-<span class="hljs-keyword">if</span>(jsonObject.has(<span class="hljs-string">&quot;memberId&quot;</span>)){
-     pa.addTerm(<span class="hljs-string">&quot;member_id&quot;</span>,jsonObject.get(<span class="hljs-string">&quot;memberId&quot;</span>).getAsString());
-}
-<span class="hljs-keyword">if</span>(jsonObject.has(<span class="hljs-string">&quot;orderNo&quot;</span>)){
-     pa.addTerm(<span class="hljs-string">&quot;order_no&quot;</span>,jsonObject.get(<span class="hljs-string">&quot;orderNo&quot;</span>).getAsString());
-}
-rc.getMust().add(pa);
-<span class="hljs-comment">//requestExample.setDisplayFields(&quot;&quot;); </span>
-GsonBuilder gsonBuilder=<span class="hljs-keyword">new</span> GsonBuilder(); 
-gsonBuilder.setPrettyPrinting(); 
-System.out.println(gsonBuilder.create().toJson(runner.queryListByExample(<span class="hljs-string">&quot;scenic_info&quot;</span>,requestExample)));
-</code></pre>
-<p>&#x5173;&#x4E8E;&#x533A;&#x95F4;Range&#x4F20;&#x53C2;
-<img src="assets/20170224100348.png" alt=""></p>
-<pre><code class="lang-java"><span class="hljs-keyword">if</span> (StringUtils.isNotBlank(judge_start_time)){
- Map m=<span class="hljs-keyword">new</span> HashMap();
-m.put(<span class="hljs-string">&quot;gt&quot;</span>,judge_start_time);
- param.addRange(<span class="hljs-string">&quot;judge_time&quot;</span>, m);
- criteria.getMust().add(param);
-}
-<span class="hljs-keyword">if</span> (StringUtils.isNotBlank(juede_end_time)){
-Map m=<span class="hljs-keyword">new</span> HashMap();
-m.put(<span class="hljs-string">&quot;lt&quot;</span>,juede_end_time);
- param.addRange(<span class="hljs-string">&quot;judge_time&quot;</span>,m);
- criteria.getMust().add(param);
-}
-</code></pre>
-<p>&#x6570;&#x636E;&#x5B57;&#x6BB5;&#x6392;&#x5E8F;</p>
-<pre><code class="lang-java"><span class="hljs-comment">//0.4.9&#x7248;&#x672C;&#x65B0;&#x589E;&#x65B9;&#x6CD5;addSort</span>
-requestExample.addSort(<span class="hljs-string">&quot;create_time&quot;</span>,<span class="hljs-string">&quot;desc&quot;</span>);
-requestExample.addSort(<span class="hljs-string">&quot;name&quot;</span>,<span class="hljs-string">&quot;desc&quot;</span>);
-<span class="hljs-comment">//........</span>
+<p>sdk&#x4EE3;&#x7801;&#x4F7F;&#x7528;&#x793A;&#x4F8B;&#xFF1A;</p>
+<pre><code class="lang-java"><span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Pagination&lt;Map&gt; <span class="hljs-title">myCouponList</span><span class="hljs-params">(Integer current_page, Integer page_size)</span> </span>{
+        MemberInfo memberInfo=(MemberInfo) ThreadLocalHolder.getSession().getAttribute(LocalConstant.SESSION_CURRENT_USER);
+        RequestExample requestExample=<span class="hljs-keyword">new</span> RequestExample(page_size,current_page);
+        RequestExample.Criteria criteria=requestExample.create();
+        <span class="hljs-comment">//&#x4E3B;&#x8868;&#x67E5;&#x8BE2;</span>
+        criteria.getMust().add(requestExample.createParam().addTerm(<span class="hljs-string">&quot;user_id&quot;</span>,memberInfo.getId()));
+        <span class="hljs-comment">//&#x521B;&#x5EFA;&#x5173;&#x8054;&#x8868;</span>
+        Relation couponRelation=<span class="hljs-keyword">new</span> Relation(<span class="hljs-string">&quot;coupon_info&quot;</span>,<span class="hljs-string">&quot;coupon_info&quot;</span>,<span class="hljs-string">&quot;id&quot;</span>,<span class="hljs-string">&quot;coupon_id&quot;</span>);
+        <span class="hljs-comment">//&#x5173;&#x8054;&#x8868;&#x7B5B;&#x9009;&#x6761;&#x4EF6;</span>
+        couponRelation.getWhere().getMust().add(requestExample.createParam().addTerm(<span class="hljs-string">&quot;test&quot;</span>,<span class="hljs-string">&quot;1&quot;</span>));
+        <span class="hljs-comment">//addRelation</span>
+        requestExample.addRelations(couponRelation);
+        <span class="hljs-comment">//&#x6392;&#x5E8F;</span>
+        requestExample.addSort(<span class="hljs-string">&quot;create_time&quot;</span>,<span class="hljs-string">&quot;desc&quot;</span>);
+        Pagination&lt;Map&gt; mapPagination=run.queryListByExample(<span class="hljs-string">&quot;coupon_member_info&quot;</span>,requestExample);
+        <span class="hljs-keyword">return</span> mapPagination;
+    }
 </code></pre>
 
                                 
@@ -506,12 +495,12 @@ requestExample.addSort(<span class="hljs-string">&quot;name&quot;</span>,<span c
 
             
                 
-                <a href="relation.html" class="navigation navigation-prev " aria-label="Previous page: 关联查询">
+                <a href="recordmodify.html" class="navigation navigation-prev " aria-label="Previous page: 数据操作(增加、删除、修改)">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="recordmodify.html" class="navigation navigation-next " aria-label="Next page: 数据操作(增加、删除、修改)">
+                <a href="utils.html" class="navigation navigation-next " aria-label="Next page: 工具类">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -522,7 +511,7 @@ requestExample.addSort(<span class="hljs-string">&quot;name&quot;</span>,<span c
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"条件查询","level":"1.6.3","depth":2,"next":{"title":"数据操作(增加、删除、修改)","level":"1.6.4","depth":2,"path":"recordmodify.md","ref":"recordmodify.md","articles":[]},"previous":{"title":"关联查询","level":"1.6.2","depth":2,"path":"relation.md","ref":"relation.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"querycondition.md","mtime":"2017-04-13T10:04:00.729Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-19T05:24:16.625Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"关联条件查询","level":"1.6.5","depth":2,"next":{"title":"工具类","level":"1.7","depth":1,"path":"utils.md","ref":"utils.md","articles":[{"title":"日志工具类","level":"1.7.1","depth":2,"path":"logback.md","ref":"logback.md","articles":[]}]},"previous":{"title":"数据操作(增加、删除、修改)","level":"1.6.4","depth":2,"path":"recordmodify.md","ref":"recordmodify.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"gltjcx.md","mtime":"2017-04-13T10:23:19.438Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-19T05:24:16.625Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
