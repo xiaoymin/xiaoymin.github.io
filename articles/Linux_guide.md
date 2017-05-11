@@ -17,6 +17,7 @@
 - man:该命令是学习参数命令,任何linux终端命令都可以通过该命令查看参数学习，具体操作明细，命令如下：
 
 [![d](https://xiaoymin.github.io/images/2017/man.png "d")](https://xiaoymin.github.io/images/2017/man.png "d")
+
 回车后会详细显示vim命令的具体参数及用法
 
 [![d](https://xiaoymin.github.io/images/2017/man1.png "d")](https://xiaoymin.github.io/images/2017/man1.png "d")
