@@ -374,6 +374,8 @@ gpg: Good signature from "xiaoym <xiaoymin@foxmail.com>" [ultimate]
 
 
 - [Working with PGP Signatures](http://central.sonatype.org/pages/working-with-pgp-signatures.html)
-- [[No public key: Key with id: (XXXXX) was not able to be located (oss.sonatype.org)](https://stackoverflow.com/questions/19462617/no-public-key-key-with-id-xxxxx-was-not-able-to-be-located-oss-sonatype-org)]
-- [[Android Studio使用Gradle上传AAR至Maven](http://2dxgujun.com/post/2015/02/11/Publish-AAR-to-Maven-Central-with-Gradle.html)]
+- [No public key: Key with id: (XXXXX) was not able to be located (oss.sonatype.org)](https://stackoverflow.com/questions/19462617/no-public-key-key-with-id-xxxxx-was-not-able-to-be-located-oss-sonatype-org)
+- [Android Studio使用Gradle上传AAR至Maven](http://2dxgujun.com/post/2015/02/11/Publish-AAR-to-Maven-Central-with-Gradle.html)
 - [Maven Sonatype Nexus return 401](http://www.trinea.cn/dev-tools/maven-sonatype-nexus-return-401-which-settings-xml-maven-is-using/)
+
+
