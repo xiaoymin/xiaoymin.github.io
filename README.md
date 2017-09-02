@@ -8,4 +8,3 @@
 * [Spring开发实践](https://xiaoymin.github.io/spring/)
 * [swagger-bootstrap-ui发布到Maven中央仓库](https://github.com/xiaoymin/xiaoymin.github.io/blob/master/2017/swagger-bootstrap-ui/swagger-bootstrap-ui.md)
 
-
