@@ -1,0 +1,23 @@
+.header {
+    height: 59px;
+    border-bottom: 1px solid #404553;
+    background-color: #393D49;
+}
+.panner{
+    width: 100%;background-color: #009688;height: 220px;text-align: center;color: white;
+    cursor: pointer;
+}
+.panner h1{
+    padding-top: 60px;
+    line-height: 32px;
+    font-size: 30px;
+    font-weight: 300;
+}
+.panner p {
+    padding-top: 20px;
+    color: #e2e2e2;
+    color: rgba(255,255,255,.8);
+}
+.layui-carousel>[carousel-item]>* {
+    background-color: #009688;
+}
