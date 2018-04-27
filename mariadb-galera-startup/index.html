@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" lang="zh-CN">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.40.1" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>MariaDB Galera集群启动 &middot; 八一菜刀</title>
+
+  
+  <link type="text/css" rel="stylesheet" href="https://xiaoymin.github.io/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="https://xiaoymin.github.io/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="https://xiaoymin.github.io/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="https://xiaoymin.github.io/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://xiaoymin.github.io/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="https://xiaoymin.github.io/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="八一菜刀" />
+
+  
+</head>
+
+  <body class=" ">
+  <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://xiaoymin.github.io/"><h1>八一菜刀</h1></a>
+      <p class="lead">
+       顺着生命的河流一起流淌,体会身边的每份感动和感悟. 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="https://xiaoymin.github.io/">主页</a> </li>
+      <li><a href="https://xiaoymin.github.io/about/"> 关于作者 </a></li>
+    </ul>
+
+    <p>&copy; 2018. All rights reserved. </p>
+  </div>
+</div>
+
+    <div class="content container">
+    <div class="post">
+  <h1>MariaDB Galera集群启动</h1>
+  <span class="post-date">Wed, Oct 12, 2016</span>
+  <p>系统：CentOS7_x86_64</p>
+
+<p>1.安装</p>
+
+<p>安装可以遵循官网的方法，在/etc/yum.repos.d写一个MariaDB.repo.</p>
+
+<p>repo的内容如下：</p>
+
+<pre><code class="language-text"># MariaDB 10.1 CentOSrepository list - created 2016-05-06 05:30 UTC 
+
+#http://mariadb.org/mariadb/repositories/ 
+
+[mariadb] 
+
+name = MariaDB 
+
+baseurl =http://yum.mariadb.org/10.1/centos7-amd64 
+
+gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+
+gpgcheck=1 
+</code></pre>
+
+<p>具体可以到这里获得：<a href="https://downloads.mariadb.org/mariadb/repositories/#mirror=neusoft">https://downloads.mariadb.org/mariadb/repositories/#mirror=neusoft</a></p>
+
+<p>然后执行：</p>
+
+<pre><code class="language-shell">sudo yum install MariaDB-server MariaDB-client
+</code></pre>
+
+<p>这里说明一点，因为我使用的是10.1的版本，从这个版本开始，mariadb已经默认自带galera了，所以无需另外安装。</p>
+
+<p>2.系统和网络配置</p>
+
+<p>配置主要分为：</p>
+
+<p>selinux设置：修改/etc/selinux/config，改成disabled;</p>
+
+<p>iptables设置：如果嫌麻烦就直接关闭防火墙，不然那要开放 3306，4567，4568，4444四个端口。</p>
+
+</div>
+
+
+    </div>
+
+    
+  </body>
+</html>

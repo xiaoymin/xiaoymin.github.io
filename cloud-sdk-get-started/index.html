@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" lang="zh-CN">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.40.1" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>云数据中心sdk快速入门 &middot; 八一菜刀</title>
+
+  
+  <link type="text/css" rel="stylesheet" href="https://xiaoymin.github.io/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="https://xiaoymin.github.io/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="https://xiaoymin.github.io/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="https://xiaoymin.github.io/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://xiaoymin.github.io/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="https://xiaoymin.github.io/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="八一菜刀" />
+
+  
+</head>
+
+  <body class=" ">
+  <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://xiaoymin.github.io/"><h1>八一菜刀</h1></a>
+      <p class="lead">
+       顺着生命的河流一起流淌,体会身边的每份感动和感悟. 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="https://xiaoymin.github.io/">主页</a> </li>
+      <li><a href="https://xiaoymin.github.io/about/"> 关于作者 </a></li>
+    </ul>
+
+    <p>&copy; 2018. All rights reserved. </p>
+  </div>
+</div>
+
+    <div class="content container">
+    <div class="post">
+  <h1>云数据中心sdk快速入门</h1>
+  <span class="post-date">Sun, Dec 17, 2017</span>
+  
+
+<p>公司目前开发基础技术架构是：<code>Spring</code>、<code>Spring Boot</code>、<code>lishicloud-sdk</code></p>
+
+<p>其中<code>Spring</code>、<code>Spring Boot</code>都是目前网上流行的开源框架</p>
+
+<p><code>lishicloud-sdk</code>是公司针对云数据中心(cdc)开发工具包,封装了云数据中心所有的接口api操作</p>
+
+<h2 id="架构说明">架构说明</h2>
+
+<p>spring、Spring Boot都是网上开源框架,自行搜索学习,这里不再叙述</p>
+
+<p>lishicloud-sdk是云数据中心(cdc)提供数据CRUD操作,详细请参考<code>《lishicloud-sdk开发指南v0.4.9.pdf》</code></p>
+
+<h2 id="快速开始">快速开始</h2>
+
+<p>首先,我们基础架构是Spring,我们通常说的松耦合操作,需要使用到Spring的容器</p>
+
+<p>因为sdk是开发工具包,所以sdk提供给我们的工具类,我们需要通过Spring 的容器bean注入达到目的</p>
+
+<p>sdk提供的核心工具类<code>com.lishiots.cloud.sdk.client.CloudQueryRunner</code></p>
+
+<p>在Spring Xml时代,需要通过在spring 的Xml配置文件中注入,例如：</p>
+
+<pre><code class="language-xml">&lt;!--云数据中心基本信息--&gt;
+ &lt;bean id=&quot;cloudConnection&quot; class=&quot;com.lishiots.cloud.sdk.basic.CloudBasicConnection&quot;&gt;
+     &lt;property name=&quot;url&quot; value=&quot;y.lishiots.com&quot; /&gt;
+     &lt;property name=&quot;port&quot; value=&quot;80&quot; /&gt;
+     &lt;property name=&quot;userName&quot; value=&quot;xx&quot; /&gt;
+     &lt;property name=&quot;password&quot; value=&quot;appsecret&quot; /&gt;
+ &lt;/bean&gt;
+ &lt;!--注入连接池管理类--&gt;
+ &lt;bean id=&quot;cloudPoolingConnectionManager&quot; class=&quot;com.lishiots.cloud.sdk.basic.CloudPoolingConnectionManager&quot;&gt;
+     &lt;property name=&quot;connection&quot; ref=&quot;cloudConnection&quot;&gt;&lt;/property&gt;
+ &lt;/bean&gt;
+ &lt;bean id=&quot;cloudDataSource&quot; class=&quot;com.lishiots.cloud.sdk.basic.CloudBasicDataSource&quot;&gt;
+     &lt;property name=&quot;cloudPoolingConnectionManager&quot; ref=&quot;cloudPoolingConnectionManager&quot;&gt;&lt;/property&gt;
+ &lt;/bean&gt;
+ &lt;!--注入CloudQueryRunner实例--&gt;
+ &lt;bean id=&quot;run&quot; class=&quot;com.lishiots.cloud.sdk.client.CloudQueryRunner&quot;&gt;
+     &lt;property name=&quot;dataSource&quot; ref=&quot;cloudDataSource&quot; /&gt;
+ &lt;/bean&gt;
+</code></pre>
+
+<p>在Spring Boot中会有所差别,<code>@Configuration</code>标注这是一个配置类,通过<code>@Bean</code>注解来达到注入bean的目的,如下:</p>
+
+<pre><code class="language-java">@Configuration
+public class CdcConfiguration {
+
+    @Value(value = &quot;${cdc.host}&quot;)
+    private String host;
+    @Value(value = &quot;${cdc.port}&quot;)
+    private Integer port;
+    @Value(value = &quot;${cdc.appid}&quot;)
+    private String appid;
+    @Value(value = &quot;${cdc.appsecret}&quot;)
+    private String appsecret;
+
+
+    @Bean(value = &quot;cloudQueryRunner&quot;)
+    public CloudQueryRunner cloudQueryRunner(){
+        CloudBasicConnection cloudBasicConnection=new CloudBasicConnection();
+        LogbackLogger.info(&quot;host:&quot;+host+&quot;,port:&quot;+port+&quot;,appid:&quot;+appid+&quot;,appsecret:&quot;+appsecret);
+        cloudBasicConnection.setUrl(host);
+        cloudBasicConnection.setPort(port);
+        //appid &amp; appsecret
+        cloudBasicConnection.setUserName(appid);
+        cloudBasicConnection.setPassword(appsecret);
+        //创建连接池管理类
+        LogbackLogger.info(&quot;create cloudPoolingConnectionManager...&quot;);
+        CloudPoolingConnectionManager cloudPoolingConnectionManager=new CloudPoolingConnectionManager();
+        cloudPoolingConnectionManager.setConnection(cloudBasicConnection);
+        //创建数据源
+        LogbackLogger.info(&quot;create cloudBasicDataSource...&quot;);
+        CloudBasicDataSource cloudBasicDataSource=new CloudBasicDataSource();
+        cloudBasicDataSource.setCloudPoolingConnectionManager(cloudPoolingConnectionManager);
+        //创建查询runner
+        LogbackLogger.info(&quot;create cloudQueryRunner...&quot;);
+        CloudQueryRunner runner=new CloudQueryRunner();
+        runner.setDataSource(cloudBasicDataSource);
+        return runner;
+    }
+}
+</code></pre>
+
+<p>通过以上操作,我们可以通过<code>@Autowired</code>自动注入实例,如下：</p>
+
+<pre><code class="language-java">@Service
+public class CommonServiceImpl implements CommonService {
+
+    @Autowired
+    private CloudQueryRunner cloudQueryRunner;
+
+    @Override
+    public &lt;T&gt; List&lt;T&gt; queryAllData(Class&lt;T&gt; clzss,String resourceName, RequestExample requestExample) {
+        boolean flag=true;
+        int current_page=1;
+        int page_size=requestExample.getPageSize();
+        List&lt;T&gt; commonStats= Lists.newArrayList();
+        do {
+            Pagination&lt;T&gt; flowPagination=cloudQueryRunner.queryListByExample(clzss,resourceName,requestExample);
+            if (flowPagination!=null&amp;&amp;flowPagination.getCount()&gt;0){
+                //计算总页数
+                //部位
+                System.out.println(&quot;common。&quot;);
+                int totalPage=(flowPagination.getCount()+page_size-1)/page_size;
+                if (current_page&lt;totalPage){
+                    current_page++;
+                }else{
+                    flag=false;
+                }
+                requestExample.setCurrentPage(current_page);
+                commonStats.addAll(flowPagination.getData());
+            }else{
+                flag=false;
+            }
+        }while (flag);
+        return commonStats;
+    }
+}  
+</code></pre>
+
+<h3 id="增加">增加</h3>
+
+<p>数据新增操作,提供对象即可,对象包含的字段必须是数据库表字段存在的字段，不能多、可以少(除必填字段)</p>
+
+<pre><code class="language-java">JSONObject jsonObject = new JSONObject();
+jsonObject.put(&quot;modu_rq_url&quot;, rqUrl);
+jsonObject.put(&quot;modu_img_url&quot;, imgUrl);
+jsonObject.put(&quot;modu_url&quot;, moduUrl);
+jsonObject.put(&quot;modu_name&quot;, moduName);
+jsonObject.put(&quot;modu_plate_id&quot;, pid);
+//这里可以是jsonobject、也可以是对象实例
+RestMessage message = cloudQueryRunner.insert(&quot;modu&quot;, jsonObject);
+//数据新增，返回新增记录主键id
+//通过对象.getId()获取
+System.out.println(message.getId())
+</code></pre>
+
+<h3 id="批量新增">批量新增</h3>
+
+<p>类似新增操作，只是把对象放入集合中</p>
+
+<pre><code class="language-java">List list=new ArrayList();
+JSONObject jsonObject = new JSONObject();
+jsonObject.put(&quot;modu_rq_url&quot;, rqUrl);
+jsonObject.put(&quot;modu_img_url&quot;, imgUrl);
+jsonObject.put(&quot;modu_url&quot;, moduUrl);
+jsonObject.put(&quot;modu_name&quot;, moduName);
+jsonObject.put(&quot;modu_plate_id&quot;, pid);
+//加入结合数组
+list.add(jsonObject);
+//这里可以是jsonobject、也可以是对象实例,调用insertBatch方法
+RestMessage message = cloudQueryRunner.insertBatch(&quot;modu&quot;, list);
+//数据批量新增，返回批量新增记录主键id，逗号分隔 ，多条记录,如：id1,id2,id3...
+//通过对象.getId()获取
+System.out.println(message.getId())
+</code></pre>
+
+<p>###编辑</p>
+
+<p>数据编辑操作,除更新字段,需要添加pkid主键字段,非id,这是云数据中心规定字段</p>
+
+<pre><code class="language-java">JSONObject jsonObject = new JSONObject();
+jsonObject.put(&quot;modu_rq_url&quot;, rqUrl);
+jsonObject.put(&quot;modu_img_url&quot;, imgUrl);
+jsonObject.put(&quot;modu_url&quot;, moduUrl);
+jsonObject.put(&quot;modu_name&quot;, moduName);
+jsonObject.put(&quot;modu_plate_id&quot;, pid);
+//更新id
+jsonObject.put(&quot;pkid&quot;, pkid);
+//这里可以是jsonobject、也可以是对象实例
+RestMessage message = cloudQueryRunner.update(&quot;modu&quot;, jsonObject);
+//数据编辑，返回编辑记录主键id
+//通过对象.getId()获取
+System.out.println(message.getId())
+</code></pre>
+
+<h3 id="批量编辑">批量编辑</h3>
+
+<p>和编辑类似</p>
+
+<pre><code class="language-java">List list=new ArrayList();
+JSONObject jsonObject = new JSONObject();
+jsonObject.put(&quot;modu_rq_url&quot;, rqUrl);
+jsonObject.put(&quot;modu_img_url&quot;, imgUrl);
+jsonObject.put(&quot;modu_url&quot;, moduUrl);
+jsonObject.put(&quot;modu_name&quot;, moduName);
+jsonObject.put(&quot;modu_plate_id&quot;, pid);
+//更新id
+jsonObject.put(&quot;pkid&quot;, pkid);
+list.add(jsonObject);
+//这里可以是jsonobject、也可以是对象实例,调用updateBatch方法
+RestMessage message = cloudQueryRunner.updateBatch(&quot;modu&quot;, list);
+//数据批量编辑，返回批量编辑记录主键id，逗号分隔 ，多条记录,如：id1,id2,id3...
+//通过对象.getId()获取
+System.out.println(message.getId())
+</code></pre>
+
+<h3 id="删除">删除</h3>
+
+<pre><code class="language-java">RestMessage message = cloudQueryRunner.delete(&quot;modu&quot;, pkid);
+//数据删除，返回删除记录主键id
+//通过对象.getId()获取
+System.out.println(message.getId())
+</code></pre>
+
+<h3 id="批量删除">批量删除</h3>
+
+<pre><code class="language-java">//传入多个id数组
+RestMessage message = cloudQueryRunner.delete(&quot;modu&quot;, pkid,pkid1,pkid3...);
+//数据删除，返回删除记录主键id
+//通过对象.getId()获取
+System.out.println(message.getId())
+</code></pre>
+
+<h3 id="查询">查询</h3>
+
+<p>除了云数据中心支持的nativeSQL查询数据，云数据中心还提供了多功能语法查询,同时也推荐开发者使用该方式查询数据，因为nativeSQL涉及到安全性等方面，云数据中心针对nativeSQL的接口以后可能会做调整，封闭也有可能.</p>
+
+<pre><code class="language-java">//requestExample对象
+RequestExample requestExample=new RequestExample(10,1);
+requestExample.addRelations(new Relation(&quot;scenic_info&quot;,&quot;scenic_info&quot;,&quot;id&quot;,&quot;scenic_id&quot;));
+requestExample.addSort(&quot;create_time&quot;,&quot;desc&quot;);
+RequestExample.Criteria criteria=requestExample.create();
+criteria.getMust().add(requestExample.createParam().addFuzzy(&quot;title&quot;,&quot;test&quot;));
+System.out.println(new Gson().toJson(requestExample));
+//使用queryBuilder查询表user_info数据
+Pagination&lt;Map&lt;String, Object&gt;&gt; pagination=cloudQueryRunner.queryListByExample(&quot;member_info&quot;,requestExample);
+//遍历user_info数据
+for (Map&lt;String, Object&gt; map:pagination.getData()){
+    //do something
+}
+
+</code></pre>
+
+<p>Sdk主要针对云数据中心给出的多功能查询结构体，封装了RequestExample对象，所有多功能查询，包括表关联查询，单表查询都可以使用该对象</p>
+
+<p>云数据中心查询结构体如下：</p>
+
+<pre><code class="language-json">{
+    &quot;page_size&quot;: 10,
+    &quot;current_page&quot;: 1,
+    &quot;display_fields&quot;: &quot;id&quot;,
+    &quot;query&quot;: {
+        &quot;must_not&quot;: [],
+        &quot;should&quot;: [],
+        &quot;must&quot;: [
+            {
+                &quot;prefix&quot;: {},
+                &quot;term&quot;: {},
+                &quot;fuzzy&quot;: {
+                    &quot;title&quot;: &quot;test&quot;
+                },
+                &quot;range&quot;: {}
+            }
+        ]
+    },
+    &quot;sort&quot;: {
+        &quot;create_time&quot;: &quot;desc&quot;
+    },
+    &quot;rel&quot;: [
+        {
+            &quot;rel_type&quot;: &quot;o2o&quot;,
+            &quot;rel_res_name&quot;: &quot;scenic_info&quot;,
+            &quot;rel_res_alias&quot;: &quot;scenic_info&quot;,
+            &quot;rel_res_field&quot;: &quot;id&quot;,
+            &quot;rel_symbol&quot;: &quot;=&quot;,
+            &quot;on_field&quot;: &quot;scenic_id&quot;,
+            &quot;where&quot;: {
+                &quot;must&quot;: [],
+                &quot;mustNot&quot;: [],
+                &quot;should&quot;: []
+            }
+        }
+    ]
+}
+
+</code></pre>
+
+<p>主要包含以下属性：</p>
+
+<ul>
+<li>query:该属性是条件查询属性，包含必须有、必须没有、应该三大子属性，同时每个子属性又包含模糊、匹配、前缀匹配、区间这四种匹配模式供开发者调用</li>
+<li>sort:该属性是排序字段，是一个map对象，添加字段的排序属性，云数据中心会按排序好的字段顺序给出数据</li>
+<li>rel：该属性是关联查询属性，详细介绍请参考<a href="#_关联查询">关联查询</a>章节</li>
+
+<li><p>current_page:当前页面</p></li>
+
+<li><p>page_size:页码大小</p></li>
+
+<li><p>display_fields: 可选择的返回资源属性,不填则返回所有属性</p></li>
+</ul>
+
+<p>如上面的JSON体中，&rdquo;[fuzzy]()&rdquo;:{&ldquo;title&rdquo;:&ldquo;test&rdquo;}就是一个判断式，它代表的是title的模糊匹配test值。</p>
+
+<p>除了fuzzy外，还有另外三个条件判断式的匹配方式(MATCH)，下面我们简单介绍一下。</p>
+
+<ul>
+<li>term : 完全匹配;</li>
+<li>prefix : 前缀匹配;</li>
+<li>fuzzy : 模糊匹配;</li>
+<li>range : 范围匹配。</li>
+</ul>
+
+<p>must/must_not/should为三个查询判断模式,</p>
+
+<ul>
+<li>must: 必须满足的判断模式。must里面的条件判断式越多，结果越精确。</li>
+<li>must_not：必须不包含(排除)的判断模式。只要满足must_not下的条件判断式的结果都不会被返回。</li>
+<li>should：该模式的主要用途是查询满足多个条件的其中一个或多个的情况。所以，should下的条件判断式必须大于等于两个。</li>
+</ul>
+
+<p>如何需要输入多个相同键，不同值的参数？</p>
+
+<p>因为JSON主要是用键值对来绑定数据的，所以相同的键在同一个{body}里面是不能同时存在的，这和Java中的Map、C#中的Dictionary类似一样。</p>
+
+<p>所以需要在一个查询里面有多个相同键的情况，可以将相同键分装在两个不同的{body}中。</p>
+
+<p>例如： 我们要查询 所有不包含北京和上海的酒店，那可以使用</p>
+
+<pre><code class="language-json">{
+    &quot;must_not&quot;: [
+        {
+            &quot;prefix&quot;: {
+                &quot;hotel_cn_name&quot;: &quot;北京&quot;
+            }
+        },
+        {
+            &quot;prefix&quot;: {
+                &quot;hotel_cn_name&quot;: &quot;上海&quot;
+            }
+        }
+    ]
+}
+</code></pre>
+
+<p>should的注意点</p>
+
+<p>should表示的是满足多个条件里面的一个或多个即可，所以should的条件判断式至少要有两个。 但是这里需要特别主要的是，如果判断式的键是一样的，则必须这样写</p>
+
+<pre><code class="language-json">{
+    &quot;should&quot;: [
+        {
+            &quot;prefix&quot;: {
+                &quot;hotel_cn_name&quot;: &quot;北京&quot;
+            }
+        },
+        {
+            &quot;prefix&quot;: {
+                &quot;hotel_cn_name&quot;: &quot;上海&quot;
+            }
+        }
+    ]
+}
+
+</code></pre>
+
+<p>但是如果判断式键不一样，那么如下这样也算是两个判断式:</p>
+
+<pre><code class="language-json">{
+    &quot;should&quot;: [
+        {
+            &quot;prefix&quot;: {
+                &quot;hotel_cn_name&quot;: &quot;北京&quot;,
+                &quot;hotel_name&quot;: &quot;h&quot;
+            }
+        }
+    ]
+}
+
+</code></pre>
+
+<p><strong>RequestExample</strong></p>
+
+<p>在前面多功能查询三个章节中，都详细的阐述了云数据中心对于多功能查询的结构，那么我们要如何使用它呢？</p>
+
+<p>在我们sdk中，sdk提供了RequestExample对象，开发者可以轻松使用该对象构建查询结构体，查询我们想要的结果.</p>
+
+<pre><code class="language-java">//创建requestExample对象,传入页码,当前页
+RequestExample requestExample=new RequestExample(10,1);
+//如果有排序需求,desc,asc
+requestExample.addSort(&quot;create_time&quot;,&quot;desc&quot;);
+//条件判断
+RequestExample.Criteria criteria=requestExample.create();
+//必须满足
+//完全匹配
+criteria.getMust().add(requestExample.createParam().addTerm(&quot;key&quot;,&quot;value&quot;));
+//模糊匹配
+criteria.getMust().add(requestExample.createParam().addFuzzy(&quot;key&quot;,&quot;value&quot;));
+//前缀匹配
+criteria.getMust().add(requestExample.createParam().addPrefix(&quot;key&quot;,&quot;value&quot;));
+//范围
+//gt:大于
+//lt：小于
+//gte:大于等于
+//lte:小于等于
+//ne:不等于
+//eq:等于
+//例如查询create_time大于2017-01-01 00:00:00
+Map gt=new HashMap();
+gt.put(&quot;gt&quot;,&quot;2017-01-01 00:00:00&quot;);
+criteria.getMust().add(requestExample.createParam().addRange(&quot;create_time&quot;,gt));
+
+//类似不满足、应该满足
+//criteria.getMustNot().add()
+//criteria.getShould().add()
+
+
+//如果有表关联查询,以下语句创建关联语句
+//创建表关联
+//例如查询门票信息表中,所属景点关联信息
+//门票表中存在景点id字段scenic_id
+Relation relation=new Relation(&quot;scenic_info&quot;,&quot;scenic_info&quot;,&quot;id&quot;,&quot;scenic_id&quot;);
+requestExample.addRelations(relation);
+//......
+</code></pre>
+
+</div>
+
+
+    </div>
+
+    
+  </body>
+</html>

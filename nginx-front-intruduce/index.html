@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" lang="zh-CN">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.40.1" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>前端本地nginx反向代理说明 &middot; 八一菜刀</title>
+
+  
+  <link type="text/css" rel="stylesheet" href="https://xiaoymin.github.io/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="https://xiaoymin.github.io/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="https://xiaoymin.github.io/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="https://xiaoymin.github.io/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://xiaoymin.github.io/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="https://xiaoymin.github.io/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="八一菜刀" />
+
+  
+</head>
+
+  <body class=" ">
+  <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://xiaoymin.github.io/"><h1>八一菜刀</h1></a>
+      <p class="lead">
+       顺着生命的河流一起流淌,体会身边的每份感动和感悟. 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="https://xiaoymin.github.io/">主页</a> </li>
+      <li><a href="https://xiaoymin.github.io/about/"> 关于作者 </a></li>
+    </ul>
+
+    <p>&copy; 2018. All rights reserved. </p>
+  </div>
+</div>
+
+    <div class="content container">
+    <div class="post">
+  <h1>前端本地nginx反向代理说明</h1>
+  <span class="post-date">Tue, Nov 15, 2016</span>
+  
+
+<h2 id="背景">背景</h2>
+
+<p>目前前端在和后端对接接口的时候，有2种方式，都是根据接口类型来分，第一种是后端是jsonp接口，前端在本地调试时直接能访问到,这种是方便前端开发的，但是对后端接口类型有要求,第二种是非jsonp接口，针对这种接口，对于前端来说就非常痛苦，前端需要在本地修改好代码后,上传到测试服务器，然后通过访问测试服务器地址来确定代码正确性，反复重复修改、上传、测试动作，开发效率不高，另外一个弊端就是前端需要些config文件，来配置我们后端的接口请求地址，如果前端工程师规范意识强一点，会通用到一个配置文件里，但是如果没有这方面的意识的话，就会出现代码里硬编码的情况，不利于服务器迁移，代码更新，接口变动等操作</p>
+
+<h2 id="目的">目的</h2>
+
+<p>提高团队开发效率,并且防止硬编码的情况出现，方便以后服务器迁移，真正达到前后端分离，动静分开</p>
+
+<h2 id="组件">组件</h2>
+
+<p>nginx-1.10.2</p>
+
+<h2 id="配置步骤">配置步骤</h2>
+
+<h3 id="安装nginx">安装nginx</h3>
+
+<p>1、 nginx官网(<a href="http://nginx.org/en/download.html">http://nginx.org/en/download.html</a>)下载nginx的windows安装包，这里下载的是zip压缩包，解压即可，解压目录父目录不要放在中文目录下，防止出现不必要的麻烦，不需要安装,解压之后，如下目录：</p>
+
+<p><img src="clip_image002.jpg" alt="img" /></p>
+
+<p>2、 修改nginx.conf配置文件，使用include命令引入项目配置conf文件，在conf文件夹下</p>
+
+<p>引入vhost中的配置文件</p>
+
+<p><img src="clip_image003.png" alt="img" /></p>
+
+<p><img src="clip_image005.jpg" alt="img" /></p>
+
+<p>在vhost中添加每个项目的配置文件，以.conf文件名结尾</p>
+
+<p><img src="clip_image007.jpg" alt="img" /></p>
+
+<p>3、 配置自己项目环境，代理端口、前端静态文件路径</p>
+
+<p><img src="clip_image009.jpg" alt="img" /></p>
+
+<p>4、 启动nginx</p>
+
+<p>双击nginx.exe文件，这里主要注意点是添加配置，或者修改端口后，nginx重新运行也不起作用，这时候先停掉nginx程序，然后在启动，步骤：</p>
+
+<p>1、 启动cmd窗口程序，停止</p>
+
+<p>a)     <img src="clip_image010.png" alt="img" /></p>
+
+<p>2、 启动nginx，直接运行或命令终端指向exe都可以的</p>
+
+<p><img src="clip_image011.png" alt="img" /></p>
+
+<p>5、 访问项目</p>
+
+<p><img src="clip_image013.jpg" alt="img" /></p>
+
+<h2 id="前端代码">前端代码</h2>
+
+<p>不需要使用jsonp模式，根据服务端接口给出的类型get or post 酌情使用</p>
+
+<p><img src="clip_image015.jpg" alt="img" /></p>
+
+<h2 id="配置demo">配置demo</h2>
+
+<pre><code class="language-shell">server{
+
+       listen       8089;
+
+       server_name  127.0.0.1 localhost;
+
+       access_log logs/baotou_website.log;
+
+       charset utf-8;
+
+       
+
+       location / {
+
+                proxy_passhttp://192.168.11.111:58080/;
+
+                            proxy_redirectdefault;
+
+        }
+
+ 
+
+       location ~* ^.+.(ico|gif|jpg|jpeg|png|html)$ {
+
+           root        D:/java/git/xinghc_wx/front/;
+
+       }
+
+ 
+
+       location ~* ^.+.(css|js|txt|xml|swf|wav)$ {
+
+           root       D:/java/git/xinghc_wx/front/;
+
+       }
+
+}
+</code></pre>
+
+</div>
+
+
+    </div>
+
+    
+  </body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" lang="zh-CN">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.40.1" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>工作流引擎技术选型 &middot; 八一菜刀</title>
+
+  
+  <link type="text/css" rel="stylesheet" href="https://xiaoymin.github.io/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="https://xiaoymin.github.io/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="https://xiaoymin.github.io/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="https://xiaoymin.github.io/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://xiaoymin.github.io/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="https://xiaoymin.github.io/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="八一菜刀" />
+
+  
+</head>
+
+  <body class=" ">
+  <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://xiaoymin.github.io/"><h1>八一菜刀</h1></a>
+      <p class="lead">
+       顺着生命的河流一起流淌,体会身边的每份感动和感悟. 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="https://xiaoymin.github.io/">主页</a> </li>
+      <li><a href="https://xiaoymin.github.io/about/"> 关于作者 </a></li>
+    </ul>
+
+    <p>&copy; 2018. All rights reserved. </p>
+  </div>
+</div>
+
+    <div class="content container">
+    <div class="post">
+  <h1>工作流引擎技术选型</h1>
+  <span class="post-date">Thu, Jan 11, 2018</span>
+  
+
+<h2 id="snaker">Snaker</h2>
+
+<p>Snaker是一个基于Java的开源工作流引擎，适用于企业应用中常见的业务流程。本着轻量、简单、灵巧理念设计，定位于简单集成，多环境支持</p>
+
+<p><strong>轻量:</strong></p>
+
+<p>核心代码行数大约7000行，强大的扩展性，支持Spring、Jfinal、Nutz平台级框架；支持Jdbc、SpringJdbc、Hibernate3or4、Mybatis等orm框架</p>
+
+<p><strong>简单:</strong></p>
+
+<p>表设计简单，流程组件简单[start/end/task/custom/subprocess/decision/fork/join]</p>
+
+<p><strong>灵巧:</strong></p>
+
+<p>暴露大量可扩展接口，支持流程设计器、流程引擎的组件模型自定义[节点自定义、属性自定义、表单自定义]</p>
+
+<p><strong>Wiki:</strong><a href="http://snakerflow.com/">http://snakerflow.com/</a></p>
+
+<p><strong>演示应用:</strong> <a href="http://git.oschina.net/yuqs/snaker-web">http://git.oschina.net/yuqs/snaker-web</a></p>
+
+<p>GITHUB:<a href="https://github.com/snakerflow/snakerflow">https://github.com/snakerflow/snakerflow</a></p>
+
+<p><img src="snakerflow-github.jpg" alt="" /></p>
+
+<h2 id="openwebflow">openwebflow</h2>
+
+<p><img src="openwebflow.png" alt="" /></p>
+
+<p>OpenWebFlow是基于Activiti（官方网站<a href="http://activiti.org/">http://activiti.org/</a>）扩展的工作流引擎（国人开发），它扩展的功能包括：</p>
+
+<ul>
+<li>完全接管了Activiti对活动（activity）权限的管理。Activiti允许在设计model的时候指定每个活动的执行权限，但是，业务系统可能需要根据实际情况动态设置这些任务的执行权限（如：动态的Group）。OpenWebFlow完全实现了与流程定义时期的解耦，即用户对活动的访问控制信息单独管理（而不是在流程定义中预先写死），这样有利于动态调整权限，详见<a href="https://github.com/bluejoe2008/openwebflow/wiki/Activity-Permission-Management">自定义活动权限管理</a>；</li>
+<li>完全接管了Activiti对用户表（IDENTITY_XXX表）的管理。在标准的工作流定义中，每个节点可以指定其候选人和候选用户组，但是比较惨的是，Activiti绑架了用户信息表的设计！这个是真正致命的，因为几乎每个业务系统都会属于自己的用户信息结构（包括User/Group/Membership），但不一定它存储在Activiti喜欢的那个库中，表的结构也不一定一样，有的时候，某些信息（如：动态的Group）压根儿就不采用表来存储。OpenWebFlow剥离了用户信息表的统一管理，客户程序可以忘掉Activiti的用户表、群组表、成员关系表，详见<a href="https://github.com/bluejoe2008/openwebflow/wiki/Custom-User-Group-Membership-Manager">自定义用户成员关系管理</a>；</li>
+<li>允许运行时定义activity！彻底满足“中国特色”，并提供了安全的（同时也是优雅的）催办、代办、加签（包括前加签/后加签）、自由跳转（包括前进/后）、分裂节点等功能；</li>
+</ul>
+
+<p>支持与致谢</p>
+
+<ul>
+<li>开发者使用帮助：<a href="https://github.com/bluejoe2008/openwebflow/wiki">https://github.com/bluejoe2008/openwebflow/wiki</a></li>
+<li><a href="https://github.com/bluejoe2008/openwebflow/blob/master/doc/OpenWebFlow%E5%B7%A5%E4%BD%9C%E6%B5%81%E5%BC%95%E6%93%8E%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C%E4%B8%8E%E8%AE%BE%E8%AE%A1%E8%AF%B4%E6%98%8E.pdf?raw=true">使用手册与设计说明书（PDF格式）</a></li>
+</ul>
+
+<p>详细说明：<a href="https://my.oschina.net/bluejoe/blog/1552284#comment-list">https://my.oschina.net/bluejoe/blog/1552284#comment-list</a></p>
+
+<p>GITHUB地址：<a href="https://github.com/bluejoe2008/openwebflow">https://github.com/bluejoe2008/openwebflow</a></p>
+
+<p><img src="openwebflow-github.jpg" alt="" /></p>
+
+<h2 id="jbpm">JBPM</h2>
+
+<p>jBpm是一个灵活可扩展的工作流管理系统。作为 jBpm运行时server输入的业务流程使用简单强大的语言表达并打包在流程档案中。jBpm将工作流应用开发的便利性和杰出的企业应用集成（EAI）能力结合了起来。jBpm包括一个Web应用程序和一个日程安排程序。jBpm是一组J2SE组件，可以作为J2EE应用集群部署。</p>
+
+<p><img src="jbpm.png" alt="jbpm.png" /></p>
+
+<p>JBoss容器下的产品,可能存在兼容性问题，放弃</p>
+
+<p>Activiti的作者即是JBPM原作者</p>
+
+<p>官网：<a href="http://www.jbpm.org/">http://www.jbpm.org/</a></p>
+
+<h2 id="activiti">Activiti</h2>
+
+<p>Activiti是一个业务流程管理(BPM)和工作流系统，适用于开发人员和系统管理员。其核心是超快速，稳定的BPMN2流程引擎。它易于与 Spring集成使用。</p>
+
+<p>用户指南：<a href="http://www.activiti.org/userguide/index.html">http://www.activiti.org/userguide/index.html</a></p>
+
+<p>GITHUB地址：<a href="https://github.com/Activiti/Activiti">https://github.com/Activiti/Activiti</a></p>
+
+<p>Github上更新频率最快：</p>
+
+<p><img src="activiti-github.jpg" alt="" /></p>
+
+<h2 id="flowable">flowable</h2>
+
+<p>flowable工作流是Activiti团队一个分支，从JBPM到Activiti到flowable</p>
+
+<p>flowable是一个用Java实现的轻量级业务工作流引擎，</p>
+
+<p>兼容activiti</p>
+
+<p>支持Spring 、Spring Boot</p>
+
+<p>可以部署到任意Java环境，如java SE、servlet容器、如Tomcat或jetty、Java EE 服务器 如JBoss容器等</p>
+
+<p>GITHUB地址：<a href="https://github.com/flowable/flowable-engine">https://github.com/flowable/flowable-engine</a></p>
+
+<p>GITHUB更新频率</p>
+
+<p>官网：<a href="http://www.flowable.org/">http://www.flowable.org/</a></p>
+
+<p><img src="flowable-github.jpg" alt="" /></p>
+
+<p>支持的数据：</p>
+
+<table>
+<thead>
+<tr>
+<th>Flowable 数据库类型</th>
+<th>示例jdbc url</th>
+<th>说明</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>h2</td>
+<td>jdbc:h2:tcp://localhost/flowable</td>
+<td>默认配置数据库</td>
+</tr>
+
+<tr>
+<td>mysql</td>
+<td>jdbc:mysql://localhost:3306/flowable?autoReconnect=true</td>
+<td>测试使用mysql-connector-java数据库驱动</td>
+</tr>
+
+<tr>
+<td>oracle</td>
+<td>jdbc:oracle:thin:@localhost:1521:xe</td>
+<td></td>
+</tr>
+
+<tr>
+<td>postgres</td>
+<td>jdbc:postgresql://localhost:5432/flowable</td>
+<td></td>
+</tr>
+
+<tr>
+<td>db2</td>
+<td>jdbc:db2://localhost:50000/flowable</td>
+<td></td>
+</tr>
+
+<tr>
+<td>mssql</td>
+<td>jdbc:sqlserver://localhost:1433;databaseName=flowable (jdbc.driver=com.microsoft.sqlserver.jdbc.SQLServerDriver) <em>OR</em> jdbc:jtds:sqlserver://localhost:1433/flowable (jdbc.driver=net.sourceforge.jtds.jdbc.Driver)</td>
+<td>测试使用Microsoft JDBC Driver 4.0 (sqljdbc4.jar) 驱动</td>
+</tr>
+</tbody>
+</table>
+
+<p>flowable的数据库名称都以act_开始。第二部分是对表格用例的两个字符的识别。这个用例也大致匹配服务API。</p>
+
+<p>act<em>re</em> *：代表基础仓库。带有此前缀的表包含静态信息，如流程定义和流程资源（图像、规则等）。</p>
+
+<p>act<em>ru</em> *：运行库。这些是运行时表，其中包含进程实例、用户任务、变量、作业等的运行时数据。流动只存储过程实例的执行过程中的运行时数据和删除记录时，一个流程实例结束。这样可以使运行时表小而快速。</p>
+
+<p>act<em>hi</em> *：历史库，代表历史。这些表包含历史数据，如过去的流程实例、变量、任务等。</p>
+
+<p>act<em>ge</em> *：常规库，这是用于各种使用案例。</p>
+
+</div>
+
+
+    </div>
+
+    
+  </body>
+</html>
