@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Opensource on 八一菜刀</title>
+    <link>https://xiaoymin.github.io/categories/opensource/</link>
+    <description>Recent content in Opensource on 八一菜刀</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sat, 22 Apr 2017 17:46:03 +0800</lastBuildDate>
+    
+	<atom:link href="https://xiaoymin.github.io/categories/opensource/feed.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>开源个人作品:swagger-bootstrap-ui</title>
+      <link>https://xiaoymin.github.io/swagger-bootstrap-ui-open/</link>
+      <pubDate>Sat, 22 Apr 2017 17:46:03 +0800</pubDate>
+      
+      <guid>https://xiaoymin.github.io/swagger-bootstrap-ui-open/</guid>
+      <description>简介 swagger-bootstrap-ui是Swagger的前端UI实现,目的是替换Swagger默认的UI实现Swagger-UI,使文</description>
+    </item>
+    
+    <item>
+      <title>开源个人作品:JFormParser</title>
+      <link>https://xiaoymin.github.io/jformparser-open/</link>
+      <pubDate>Fri, 20 Jan 2017 17:51:11 +0800</pubDate>
+      
+      <guid>https://xiaoymin.github.io/jformparser-open/</guid>
+      <description>JFormParser插件:根据json结构,生成页面,达到解放后端开发人员的目的,降低后端对前端开发要求,后端专心开发后台接口等服务程序,</description>
+    </item>
+    
+  </channel>
+</rss>

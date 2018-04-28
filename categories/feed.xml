@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on 八一菜刀</title>
+    <link>https://xiaoymin.github.io/categories/</link>
+    <description>Recent content in Categories on 八一菜刀</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sun, 22 Apr 2018 16:55:34 +0800</lastBuildDate>
+    
+	<atom:link href="https://xiaoymin.github.io/categories/feed.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Blogs</title>
+      <link>https://xiaoymin.github.io/categories/blogs/</link>
+      <pubDate>Sun, 22 Apr 2018 16:55:34 +0800</pubDate>
+      
+      <guid>https://xiaoymin.github.io/categories/blogs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Opensource</title>
+      <link>https://xiaoymin.github.io/categories/opensource/</link>
+      <pubDate>Sat, 22 Apr 2017 17:46:03 +0800</pubDate>
+      
+      <guid>https://xiaoymin.github.io/categories/opensource/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Softnews</title>
+      <link>https://xiaoymin.github.io/categories/softnews/</link>
+      <pubDate>Sat, 28 Apr 2018 15:12:32 +0800</pubDate>
+      
+      <guid>https://xiaoymin.github.io/categories/softnews/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

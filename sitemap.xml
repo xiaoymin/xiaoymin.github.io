@@ -188,17 +188,67 @@
   </url>
   
   <url>
-    <loc>https://xiaoymin.github.io/categories1/</loc>
+    <loc>https://xiaoymin.github.io/blogs/</loc>
+  </url>
+  
+  <url>
+    <loc>https://xiaoymin.github.io/opensource/</loc>
+  </url>
+  
+  <url>
+    <loc>https://xiaoymin.github.io/softnews/</loc>
+  </url>
+  
+  <url>
+    <loc>https://xiaoymin.github.io/categories/blogs/</loc>
+    <lastmod>2018-04-22T16:55:34+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://xiaoymin.github.io/doc/</loc>
+    <loc>https://xiaoymin.github.io/tags/blogs/</loc>
+    <lastmod>2018-04-22T16:55:34+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xiaoymin.github.io/categories/</loc>
+    <lastmod>2018-04-22T16:55:34+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xiaoymin.github.io/categories/opensource/</loc>
+    <lastmod>2017-04-22T17:46:03+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xiaoymin.github.io/tags/opensource/</loc>
+    <lastmod>2017-04-22T17:46:03+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xiaoymin.github.io/series/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xiaoymin.github.io/categories/softnews/</loc>
+    <lastmod>2018-04-28T15:12:32+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xiaoymin.github.io/tags/softnews/</loc>
+    <lastmod>2018-04-28T15:12:32+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://xiaoymin.github.io/tags/</loc>
+    <lastmod>2018-04-22T16:55:34+08:00</lastmod>
     <priority>0</priority>
   </url>
   
