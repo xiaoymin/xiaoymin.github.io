@@ -6,10 +6,19 @@
     <description>Recent content in Opensource on 八一菜刀</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sat, 22 Apr 2017 17:46:03 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 29 Apr 2018 11:06:54 +0800</lastBuildDate>
     
 	<atom:link href="https://xiaoymin.github.io/categories/opensource/feed.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>个人开源作品:依赖hugo&#43;markdown搭建github博客</title>
+      <link>https://xiaoymin.github.io/hugo-blog/</link>
+      <pubDate>Sun, 29 Apr 2018 11:06:54 +0800</pubDate>
+      
+      <guid>https://xiaoymin.github.io/hugo-blog/</guid>
+      <description>hugo-blog是作者整理最近两年的技术积累,以博客的方式整理、归类发布出来，希望能帮助到一些开发者 Hugo是由Go语言实现的静态网站生成</description>
+    </item>
     
     <item>
       <title>开源个人作品:swagger-bootstrap-ui</title>
