@@ -133,6 +133,11 @@
   </url>
   
   <url>
+    <loc>https://xiaoymin.github.io/swagger-bootstrap-ui-demo-open/</loc>
+    <lastmod>2017-04-22T21:04:11+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://xiaoymin.github.io/swagger-bootstrap-ui-open/</loc>
     <lastmod>2017-04-22T17:46:03+08:00</lastmod>
   </url>
@@ -178,6 +183,11 @@
   </url>
   
   <url>
+    <loc>https://xiaoymin.github.io/spring-mvc-jsonp-open/</loc>
+    <lastmod>2015-09-13T15:11:47+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://xiaoymin.github.io/weather-webservice-java/</loc>
     <lastmod>2015-05-27T23:03:50+08:00</lastmod>
   </url>
@@ -205,13 +215,13 @@
   </url>
   
   <url>
-    <loc>https://xiaoymin.github.io/categories/blogs/</loc>
+    <loc>https://xiaoymin.github.io/tags/blogs/</loc>
     <lastmod>2018-04-22T16:55:34+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://xiaoymin.github.io/tags/blogs/</loc>
+    <loc>https://xiaoymin.github.io/categories/blogs/</loc>
     <lastmod>2018-04-22T16:55:34+08:00</lastmod>
     <priority>0</priority>
   </url>
@@ -223,13 +233,13 @@
   </url>
   
   <url>
-    <loc>https://xiaoymin.github.io/categories/opensource/</loc>
+    <loc>https://xiaoymin.github.io/tags/opensource/</loc>
     <lastmod>2018-04-29T11:06:54+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://xiaoymin.github.io/tags/opensource/</loc>
+    <loc>https://xiaoymin.github.io/categories/opensource/</loc>
     <lastmod>2018-04-29T11:06:54+08:00</lastmod>
     <priority>0</priority>
   </url>
@@ -240,13 +250,13 @@
   </url>
   
   <url>
-    <loc>https://xiaoymin.github.io/categories/softnews/</loc>
+    <loc>https://xiaoymin.github.io/tags/softnews/</loc>
     <lastmod>2018-04-28T15:12:32+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://xiaoymin.github.io/tags/softnews/</loc>
+    <loc>https://xiaoymin.github.io/categories/softnews/</loc>
     <lastmod>2018-04-28T15:12:32+08:00</lastmod>
     <priority>0</priority>
   </url>

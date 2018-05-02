@@ -246,6 +246,15 @@
     </item>
     
     <item>
+      <title>个人开源作品：swagger-bootstrap-ui-demo</title>
+      <link>https://xiaoymin.github.io/swagger-bootstrap-ui-demo-open/</link>
+      <pubDate>Sat, 22 Apr 2017 21:04:11 +0800</pubDate>
+      
+      <guid>https://xiaoymin.github.io/swagger-bootstrap-ui-demo-open/</guid>
+      <description>该项目是swagger-bootstrap-ui的演示项目,使用Spring boot 1、该项目是Spring boot项目,直接main方法运行Sw</description>
+    </item>
+    
+    <item>
       <title>开源个人作品:swagger-bootstrap-ui</title>
       <link>https://xiaoymin.github.io/swagger-bootstrap-ui-open/</link>
       <pubDate>Sat, 22 Apr 2017 17:46:03 +0800</pubDate>
@@ -324,6 +333,15 @@
       
       <guid>https://xiaoymin.github.io/mariadb-galera-startup/</guid>
       <description>系统：CentOS7_x86_64 1.安装 安装可以遵循官网的方法，在/etc/yum.repos.d写一个MariaDB.repo. repo</description>
+    </item>
+    
+    <item>
+      <title>个人开源作品：Spring MVC 关于jsonp跨域处理</title>
+      <link>https://xiaoymin.github.io/spring-mvc-jsonp-open/</link>
+      <pubDate>Sun, 13 Sep 2015 15:11:47 +0800</pubDate>
+      
+      <guid>https://xiaoymin.github.io/spring-mvc-jsonp-open/</guid>
+      <description>1、新建JsonpAdvice控制器增强继承org.springframework.web.servlet.mvc.method.annot</description>
     </item>
     
     <item>
