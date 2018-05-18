@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://xiaoymin.github.io/mariadb-create-index/</loc>
+    <lastmod>2018-05-18T15:58:18+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://xiaoymin.github.io/hugo-blog/</loc>
     <lastmod>2018-04-29T11:06:54+08:00</lastmod>
   </url>
@@ -216,19 +221,19 @@
   
   <url>
     <loc>https://xiaoymin.github.io/categories/blogs/</loc>
-    <lastmod>2018-04-22T16:55:34+08:00</lastmod>
+    <lastmod>2018-05-18T15:58:18+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://xiaoymin.github.io/tags/blogs/</loc>
-    <lastmod>2018-04-22T16:55:34+08:00</lastmod>
+    <lastmod>2018-05-18T15:58:18+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://xiaoymin.github.io/categories/</loc>
-    <lastmod>2018-04-22T16:55:34+08:00</lastmod>
+    <lastmod>2018-05-18T15:58:18+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -263,13 +268,13 @@
   
   <url>
     <loc>https://xiaoymin.github.io/tags/</loc>
-    <lastmod>2018-04-22T16:55:34+08:00</lastmod>
+    <lastmod>2018-05-18T15:58:18+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://xiaoymin.github.io/</loc>
-    <lastmod>2018-04-29T11:06:54+08:00</lastmod>
+    <lastmod>2018-05-18T15:58:18+08:00</lastmod>
     <priority>0</priority>
   </url>
   
