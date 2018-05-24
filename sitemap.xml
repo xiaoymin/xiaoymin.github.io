@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://xiaoymin.github.io/lucene_document_source/</loc>
+    <lastmod>2018-05-24T17:01:46+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://xiaoymin.github.io/mariadb-create-index/</loc>
     <lastmod>2018-05-18T15:58:18+08:00</lastmod>
   </url>
@@ -220,26 +225,20 @@
   </url>
   
   <url>
-    <loc>https://xiaoymin.github.io/categories/blogs/</loc>
-    <lastmod>2018-05-18T15:58:18+08:00</lastmod>
+    <loc>https://xiaoymin.github.io/tags/blogs/</loc>
+    <lastmod>2018-05-24T17:01:46+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://xiaoymin.github.io/tags/blogs/</loc>
-    <lastmod>2018-05-18T15:58:18+08:00</lastmod>
+    <loc>https://xiaoymin.github.io/categories/blogs/</loc>
+    <lastmod>2018-05-24T17:01:46+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://xiaoymin.github.io/categories/</loc>
-    <lastmod>2018-05-18T15:58:18+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://xiaoymin.github.io/categories/opensource/</loc>
-    <lastmod>2018-04-29T11:06:54+08:00</lastmod>
+    <lastmod>2018-05-24T17:01:46+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -250,13 +249,13 @@
   </url>
   
   <url>
-    <loc>https://xiaoymin.github.io/series/</loc>
+    <loc>https://xiaoymin.github.io/categories/opensource/</loc>
+    <lastmod>2018-04-29T11:06:54+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://xiaoymin.github.io/categories/softnews/</loc>
-    <lastmod>2018-04-28T15:12:32+08:00</lastmod>
+    <loc>https://xiaoymin.github.io/series/</loc>
     <priority>0</priority>
   </url>
   
@@ -267,14 +266,20 @@
   </url>
   
   <url>
+    <loc>https://xiaoymin.github.io/categories/softnews/</loc>
+    <lastmod>2018-04-28T15:12:32+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://xiaoymin.github.io/tags/</loc>
-    <lastmod>2018-05-18T15:58:18+08:00</lastmod>
+    <lastmod>2018-05-24T17:01:46+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://xiaoymin.github.io/</loc>
-    <lastmod>2018-05-18T15:58:18+08:00</lastmod>
+    <lastmod>2018-05-24T17:01:46+08:00</lastmod>
     <priority>0</priority>
   </url>
   
