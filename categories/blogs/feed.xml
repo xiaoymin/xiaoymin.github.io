@@ -6,10 +6,19 @@
     <description>Recent content in Blogs on 八一菜刀</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Thu, 24 May 2018 17:01:46 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 31 May 2018 14:11:47 +0800</lastBuildDate>
     
 	<atom:link href="https://xiaoymin.github.io/categories/blogs/feed.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>postgresql 安装|重置密码|备份数据|导入数据</title>
+      <link>https://xiaoymin.github.io/postgres-operation/</link>
+      <pubDate>Thu, 31 May 2018 14:11:47 +0800</pubDate>
+      
+      <guid>https://xiaoymin.github.io/postgres-operation/</guid>
+      <description>安装 本机在Centos 7环境下安装postgresql 使用如下图安装方式安装完成,安装指南 重置密码 完成安装后,并不知道postgresql的</description>
+    </item>
     
     <item>
       <title>Lucene(7.3.1)学习笔记-Document类源码解析</title>
