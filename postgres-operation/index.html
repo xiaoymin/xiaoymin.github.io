@@ -131,6 +131,11 @@ postgres=# ^C
 
 <p>最后,恢复pg_hba.conf设置为md5并重启服务</p>
 
+<h2 id="重启数据库">重启数据库</h2>
+
+<pre><code class="language-sql">./usr/pgsql-9.5/bin/pg_ctl restart -D /var/lib/pgsql/9.5/data
+</code></pre>
+
 <h2 id="创建数据库">创建数据库</h2>
 
 <p>创建用户数据库，如testdb：</p>
@@ -141,6 +146,13 @@ postgres=# ^C
 <p>将testdb数据库的所有权限都赋予dbuser：</p>
 
 <pre><code class="language-sql">postgres=# GRANT ALL PRIVILEGES ON DATABASE testdb TO dbuser;
+</code></pre>
+
+<h2 id="删除数据库">删除数据库</h2>
+
+<p>例如删除testdb：</p>
+
+<pre><code class="language-sql">postgres=# DROP DATABASE testdb;
 </code></pre>
 
 <h2 id="备份数据">备份数据</h2>
