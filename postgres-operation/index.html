@@ -167,6 +167,126 @@ postgres=# ^C
 
 <p>-f：导入数据库文件</p>
 
+<h2 id="相关操作">相关操作</h2>
+
+<h3 id="查看数据库">查看数据库</h3>
+
+<pre><code class="language-sql">postgres=# \l               //\加上字母l,相当于mysql的，mysql&gt; show databases;
+                                         资料库列表
+       名称        |  拥有者  | 字元编码 |  校对规则   |    Ctype    |       存取权限        
+-------------------+----------+----------+-------------+-------------+-----------------------
+ ots_am_bdp_conf   | postgres | UTF8     | zh_CN.UTF-8 | zh_CN.UTF-8 | 
+ ots_app_conf      | postgres | UTF8     | zh_CN.UTF-8 | zh_CN.UTF-8 | 
+ ots_business_test | postgres | UTF8     | zh_CN.UTF-8 | zh_CN.UTF-8 | 
+ postgres          | postgres | UTF8     | zh_CN.UTF-8 | zh_CN.UTF-8 | 
+ template0         | postgres | UTF8     | zh_CN.UTF-8 | zh_CN.UTF-8 | =c/postgres          +
+                   |          |          |             |             | postgres=CTc/postgres
+ template1         | postgres | UTF8     | zh_CN.UTF-8 | zh_CN.UTF-8 | =c/postgres          +
+                   |          |          |             |             | postgres=CTc/postgres
+(6 行记录)
+
+postgres=# 
+postgres=# select pg_database_size('ots_business_test');   //查看ots_business_test数据库的大小  
+ pg_database_size 
+------------------
+        399552276
+(1 行记录)
+
+postgres=# select pg_database.datname, pg_database_size(pg_database.datname) AS size from pg_database;  //查看所有数据库的大小  
+      datname      |   size    
+-------------------+-----------
+ template1         |   6865412
+ template0         |   6857220
+ postgres          |   7089940
+ ots_business_test | 399552276
+ ots_am_bdp_conf   |  12939028
+ ots_app_conf      |   8359700
+(6 行记录)
+
+postgres=# select pg_size_pretty(pg_database_size('ots_app_conf'));   //以KB，MB，GB的方式来查看数据库大小  
+ pg_size_pretty 
+----------------
+ 8164 kB
+(1 行记录)
+
+</code></pre>
+
+<h3 id="查看多表">查看多表</h3>
+
+<pre><code class="language-mssql">postgres=# select * from pg_tables;  //查询所有的表,相当于mysql的show tables;
+     schemaname     |        tablename        | tableowner | tablespace | hasindexes | hasrules | hastriggers 
+--------------------+-------------------------+------------+------------+------------+----------+-------------
+ pg_catalog         | pg_statistic            | postgres   |            | t          | f        | f
+ pg_catalog         | pg_cast                 | postgres   |            | t          | f        | f
+ pg_catalog         | pg_authid               | postgres   | pg_global  | t          | f        | f
+ //more...
+
+postgres=# \d pg_cast;   //相当于mysql的，mysql&gt; desc pg_cast;  
+  资料表 &quot;pg_catalog.pg_cast&quot;
+    栏位     |  型别  | 修饰词 
+-------------+--------+--------
+ castsource  | oid    | 非空
+ casttarget  | oid    | 非空
+ castfunc    | oid    | 非空
+ castcontext | &quot;char&quot; | 非空
+ castmethod  | &quot;char&quot; | 非空
+索引：
+    &quot;pg_cast_oid_index&quot; UNIQUE, btree (oid)
+    &quot;pg_cast_source_target_index&quot; UNIQUE, btree (castsource, casttarget)
+
+postgres=# select pg_relation_size('pg_cast');    //查看表大小  
+ pg_relation_size 
+------------------
+            16384
+(1 行记录)
+postgres=# select pg_size_pretty(pg_relation_size('pg_cast'));   //以KB，MB，GB的方式来查看表大小  
+ pg_size_pretty 
+----------------
+ 16 kB
+(1 行记录)
+
+postgres=# select pg_size_pretty(pg_total_relation_size('pg_cast'));  //查看表的总大小，包括索引大小 
+ pg_size_pretty 
+----------------
+ 80 kB
+(1 行记录)
+
+
+
+</code></pre>
+
+<h3 id="查看索引">查看索引</h3>
+
+<pre><code class="language-sql">postgres=&gt; \di                      //相当于mysql的，mysql&gt; show index from test;  
+                List of relations  
+ Schema |     Name      | Type  |  Owner  | Table  
+--------+---------------+-------+---------+-------  
+ public | playboy_id_pk | index | playboy | test  
+(1 row)  
+  
+postgres=&gt; select pg_size_pretty(pg_relation_size('playboy_id_pk'));    //查看索大小  
+ pg_size_pretty  
+----------------  
+ 8192 bytes  
+(1 row)  
+</code></pre>
+
+<h3 id="查看表空间-以及大小">查看表空间，以及大小</h3>
+
+<pre><code class="language-sql">postgres=&gt; select spcname from pg_tablespace;         //查看所有表空间  
+  spcname  
+------------  
+ pg_default  
+ pg_global  
+(2 rows)  
+  
+postgres=&gt; select pg_size_pretty(pg_tablespace_size('pg_default'));   //查看表空间大小  
+ pg_size_pretty  
+----------------  
+ 14 MB  
+(1 row)  
+</code></pre>
+
 </div>
 
 
