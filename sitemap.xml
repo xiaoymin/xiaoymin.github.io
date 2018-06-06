@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://xiaoymin.github.io/coordinate_system_stu/</loc>
+    <lastmod>2018-06-06T10:56:57+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://xiaoymin.github.io/postgres-operation/</loc>
     <lastmod>2018-05-31T14:11:47+08:00</lastmod>
   </url>
@@ -231,19 +236,19 @@
   
   <url>
     <loc>https://xiaoymin.github.io/tags/blogs/</loc>
-    <lastmod>2018-05-31T14:11:47+08:00</lastmod>
+    <lastmod>2018-06-06T10:56:57+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://xiaoymin.github.io/categories/blogs/</loc>
-    <lastmod>2018-05-31T14:11:47+08:00</lastmod>
+    <lastmod>2018-06-06T10:56:57+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://xiaoymin.github.io/categories/</loc>
-    <lastmod>2018-05-31T14:11:47+08:00</lastmod>
+    <lastmod>2018-06-06T10:56:57+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -278,13 +283,13 @@
   
   <url>
     <loc>https://xiaoymin.github.io/tags/</loc>
-    <lastmod>2018-05-31T14:11:47+08:00</lastmod>
+    <lastmod>2018-06-06T10:56:57+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://xiaoymin.github.io/</loc>
-    <lastmod>2018-05-31T14:11:47+08:00</lastmod>
+    <lastmod>2018-06-06T10:56:57+08:00</lastmod>
     <priority>0</priority>
   </url>
   
