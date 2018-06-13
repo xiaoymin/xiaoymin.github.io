@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" lang="zh-CN">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.40.1" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>个人开源：oss-server 简单对象存储系统 &middot; 八一菜刀</title>
+
+  
+  <link type="text/css" rel="stylesheet" href="https://xiaoymin.github.io/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="https://xiaoymin.github.io/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="https://xiaoymin.github.io/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="https://xiaoymin.github.io/css/hyde.css">
+  
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://xiaoymin.github.io/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="https://xiaoymin.github.io/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="八一菜刀" />
+
+  
+</head>
+
+  <body class=" ">
+  <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://xiaoymin.github.io/"><h1>八一菜刀</h1></a>
+      <p class="lead">
+       顺着生命的河流一起流淌,体会身边的每份感动和感悟. 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="https://xiaoymin.github.io/">主页</a> </li>
+      <li><a href="https://xiaoymin.github.io/blogs/"> 博客列表 </a></li><li><a href="https://xiaoymin.github.io/opensource/"> 开源软件 </a></li><li><a href="https://xiaoymin.github.io/softnews/"> 软件资讯 </a></li><li><a href="https://xiaoymin.github.io/about/"> 关于作者 </a></li>
+    </ul>
+
+    <p>&copy; 2018. All rights reserved. </p>
+  </div>
+</div>
+
+    <div class="content container">
+    <div class="post">
+  <h1>个人开源：oss-server 简单对象存储系统</h1>
+  <span class="post-date">2018-06-13</span>
+  
+
+<h1 id="oss-server">oss-server</h1>
+
+<h2 id="项目介绍">项目介绍</h2>
+
+<p>oss-server是针对项目开发时提供的小型对象存储系统,开发者在针对文件上传时业务剥离,同时方便文件迁移，为满足单个项目，多个系统的情况下，提供统一的oss服务</p>
+
+<p>oss-server主要提供功能：</p>
+
+<blockquote>
+<p>1、上传功能</p>
+
+<p>2、文件在线管理功能(包括文件的预览、内部上传、删除、更名)</p>
+
+<p>3、权限管理(上传api权限用户维护、oss-server登录系统维护)</p>
+</blockquote>
+
+<p>oss-server使用tomcat+nginx的方式，tomcat提供上传对象存储的能力，nginx提供在线访问的能力</p>
+
+<p>oss不提供文件相关日志存储功能，是纯技术中间件</p>
+
+<p>server端主要配置(<code>application.properties</code>)如下：</p>
+
+<pre><code class="language-properties">#素材存储路径 -- 以/结尾
+material.root=/home/material/
+#素材下载路径根目录,该目录是nginx读取目录,可以使用域名
+material.invokingRoot=http://192.168.0.7/
+</code></pre>
+
+<p>使用以上配置，服务端nginx配置如下：</p>
+
+<pre><code class="language-nginx">server{
+        listen          80;
+        server_name 192.168.0.7;
+        charset utf-8;
+        location / {
+           root /home/material/;
+        }
+    }
+</code></pre>
+
+<p>该配置只是简单配置nginx访问路径,server_name可以是域名.</p>
+
+<h3 id="管理员预览">管理员预览</h3>
+
+<p>输入访问路径：<a href="http://ip:port/">http://ip:port/</a></p>
+
+<p>输入<code>application.properties</code>配置文件中的用户名密码:</p>
+
+<pre><code class="language-text">#验证用户名 密码
+oss.security.userName=admin
+oss.security.password=adminA123
+</code></pre>
+
+<p><img src="oss4.png" alt="" /></p>
+
+<p><img src="oss5.png" alt="" /></p>
+
+<p>oss-server提供以下两种提交方式</p>
+
+<h3 id="base64字符串格式提交">base64字符串格式提交</h3>
+
+<p>该方式是后端需要将文件转换成base64字符串,提交给oss-server，该方式oss-server提供了java版的sdk，具体可参看<code>oss-server-sdk-java</code>程序</p>
+
+<p>请求接口：<code>/oss/material/uploadByBinary</code></p>
+
+<p>接口类型：<code>post</code></p>
+
+<p>请求类型：<code>application/json;</code></p>
+
+<p>请求参数：</p>
+
+<pre><code class="language-json">{
+    &quot;project&quot;: &quot;&quot;,
+    &quot;files&quot;: [
+        {
+            &quot;original_name&quot;: &quot;test.png&quot;,
+            &quot;file&quot;: &quot;文件流base64字符串&quot;,
+            &quot;media_type&quot;: &quot;png&quot;
+        }
+    ]
+}
+</code></pre>
+
+<p><strong>字段说明</strong>：</p>
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>project</td>
+<td>项目名称，oss-server会根据该名称创建项目目录,方便后续程序迁移</td>
+</tr>
+
+<tr>
+<td>files</td>
+<td>上传文件数组</td>
+</tr>
+
+<tr>
+<td>original_name</td>
+<td>文件原始名称</td>
+</tr>
+
+<tr>
+<td>file</td>
+<td>文件流base64字符串</td>
+</tr>
+
+<tr>
+<td>media_type</td>
+<td>文件格式类型</td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>响应json</strong></p>
+
+<pre><code class="language-json">{
+    &quot;code&quot;: &quot;8200&quot;,
+    &quot;message&quot;: &quot;Success&quot;,
+    &quot;data&quot;: [{
+        &quot;id&quot;: &quot;1a4c705d260647cc9be951ead3a449e6&quot;,
+        &quot;url&quot;: &quot;http://192.168.0.7/province_IIII/201805/30/1a4c705d260647cc9be951ead3a449e6.jpg&quot;,
+        &quot;store&quot;: &quot;/province_IIII/201805/30/1a4c705d260647cc9be951ead3a449e6.jpg&quot;
+    }]
+}
+</code></pre>
+
+<p><strong>响应参数说明</strong></p>
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>code</td>
+<td>错误码,8200为成功</td>
+</tr>
+
+<tr>
+<td>message</td>
+<td>错误信息</td>
+</tr>
+
+<tr>
+<td>data</td>
+<td>上传成功后文件返回信息</td>
+</tr>
+
+<tr>
+<td>id</td>
+<td>文件唯一标识</td>
+</tr>
+
+<tr>
+<td>url</td>
+<td>文件在线访问url</td>
+</tr>
+
+<tr>
+<td>store</td>
+<td>文件静态存储路径</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="form表单直接提交">form表单直接提交</h3>
+
+<p>该方式前端可直接通过form提交上传,后端不需要提供中转</p>
+
+<p>请求接口：<code>/oss/material/{project}/uploadMaterial</code></p>
+
+<p>接口类型：<code>post</code></p>
+
+<p>请求参数：</p>
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>project</td>
+<td>项目名称，oss-server会根据该名称创建项目目录,方便后续程序迁移</td>
+</tr>
+
+<tr>
+<td>module</td>
+<td>模块名称，可为空,很多情况下,我们希望分模块来存储我们的上传资源，这个时候，可以使用该module字段，例如：<code>/product/wechat</code>,此时,oss生成的全路径是：<code>{project}/product/wechat/...</code></td>
+</tr>
+
+<tr>
+<td>file</td>
+<td>上传文件名称，可以是数组多个文件</td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>响应json</strong></p>
+
+<pre><code class="language-json">{
+    &quot;code&quot;: &quot;8200&quot;,
+    &quot;message&quot;: &quot;Success&quot;,
+    &quot;data&quot;: [{
+        &quot;id&quot;: &quot;1a4c705d260647cc9be951ead3a449e6&quot;,
+        &quot;url&quot;: &quot;http://192.168.0.7/province_IIII/201805/30/1a4c705d260647cc9be951ead3a449e6.jpg&quot;,
+        &quot;store&quot;: &quot;/province_IIII/201805/30/1a4c705d260647cc9be951ead3a449e6.jpg&quot;
+    }]
+}
+</code></pre>
+
+<p><strong>form表单代码示例如下</strong></p>
+
+<pre><code class="language-html">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0 Transitional//EN&quot;&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;/&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge,chrome=1&quot;/&gt;
+    &lt;title&gt;Title&lt;/title&gt;
+    &lt;script src=&quot;https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;form action=&quot;http://192.168.0.7:18000/oss/material/province_III/uploadMaterial&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot; target=&quot;uploadIFrame&quot;&gt;
+    &lt;input type=&quot;file&quot; name=&quot;file&quot; value=&quot;选择文件&quot;/&gt;
+    &lt;input type=&quot;submit&quot; value=&quot;提交&quot;/&gt;
+&lt;/form&gt;
+
+&lt;iframe name=&quot;uploadIFrame&quot; style=&quot;width: 500px;height: 500px;border: 1px solid gray;&quot;&gt;&lt;/iframe&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<h2 id="软件架构">软件架构</h2>
+
+<p>后端框架：SpringBoot 2.0.2.RELEASE</p>
+
+<p>后端模块：freemarker</p>
+
+<p>前端框架：layer+Bootstrap</p>
+
+<h2 id="安装教程">安装教程</h2>
+
+<p>1、下载源码：<code>git clone https://gitee.com/xiaoym/oss-server.git</code></p>
+
+<p>2、修改application.properties配置文件,主要修改以下oss对外域名路径已经上传存储路径</p>
+
+<pre><code class="language-java">#素材存储路径 -- 以/结尾
+material.root=/home/material/
+#素材下载路径根目录
+material.invokingRoot=http://192.168.0.7/
+</code></pre>
+
+<p>3、打包：<code>mvn package</code></p>
+
+<p>4、运行jar包：<code>java -jar oss-server-0.0.1-SNAPSHOT.jar</code></p>
+
+<h2 id="参与贡献">参与贡献</h2>
+
+<ol>
+<li>Fork 本项目</li>
+<li>新建 Feat_xxx 分支</li>
+<li>提交代码</li>
+<li>新建 Pull Request</li>
+</ol>
+
+<h2 id="项目地址">项目地址</h2>
+
+<p>如果项目对您有帮助,请前往项目地址给个Star ！！！！</p>
+
+<p>码云：<a href="https://gitee.com/xiaoym/oss-server">https://gitee.com/xiaoym/oss-server</a></p>
+
+<p>GitHub:<a href="https://github.com/xiaoymin/oss-server">https://github.com/xiaoymin/oss-server</a></p>
+
+</div>
+
+
+    </div>
+
+    
+  </body>
+</html>
