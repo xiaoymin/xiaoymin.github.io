@@ -6,10 +6,19 @@
     <description>Recent content in Softnews on 八一菜刀</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sat, 28 Apr 2018 15:12:32 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 19 Jun 2018 10:01:33 +0800</lastBuildDate>
     
 	<atom:link href="https://xiaoymin.github.io/categories/softnews/feed.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>oss-server 1.0 版本发布 小型对象存储系统</title>
+      <link>https://xiaoymin.github.io/oss-server-1.0-issue/</link>
+      <pubDate>Tue, 19 Jun 2018 10:01:33 +0800</pubDate>
+      
+      <guid>https://xiaoymin.github.io/oss-server-1.0-issue/</guid>
+      <description>oss-server 1.0正式发布了,oss-server是针对项目开发时提供的小型对象存储系统,开发者在针对文件上传时业务剥离,同时方便文件迁移，为满足单个</description>
+    </item>
     
     <item>
       <title>swagger-bootstrap-ui 1.7.3 发布，前端 UI 实现</title>
