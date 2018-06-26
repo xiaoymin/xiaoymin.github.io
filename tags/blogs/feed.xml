@@ -6,10 +6,19 @@
     <description>Recent content in Blogs on 八一菜刀</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Wed, 06 Jun 2018 10:56:57 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 26 Jun 2018 14:55:23 +0800</lastBuildDate>
     
 	<atom:link href="https://xiaoymin.github.io/tags/blogs/feed.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>记录解决微信amr文件转mp3格式的过程</title>
+      <link>https://xiaoymin.github.io/wechat-amr-mp3-convert/</link>
+      <pubDate>Tue, 26 Jun 2018 14:55:23 +0800</pubDate>
+      
+      <guid>https://xiaoymin.github.io/wechat-amr-mp3-convert/</guid>
+      <description>我们在做微信语音上传功能开发时,因为微信的原因，音频文件在微信服务端只能存储3天,所以,我们需要根据微信的serverId，使用微信公众平台</description>
+    </item>
     
     <item>
       <title>地球坐标系,了解一下?</title>
