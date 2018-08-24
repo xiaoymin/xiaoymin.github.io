@@ -1,0 +1,34 @@
+- reponame: swagger-bootstrap-ui
+  stars: 654
+  forks: 181
+  url: https://gitee.com/xiaoym/swagger-bootstrap-ui
+  lastupt: 2018-08-14
+  description: Swagger-Bootstrap-UI是Swagger的前端UI实现,采用jQuery+bootstrap实现,目的是替换Swagger默认的UI实现Swagger-UI,使文档更友好一点儿...
+
+- reponame: oss-server
+  stars: 255
+  forks: 74
+  url: https://gitee.com/xiaoym/oss-server
+  lastupt: 2018-07-30
+  description: oss-server是针对项目开发时提供的小型对象存储系统,开发者在针对文件上传时业务剥离,同时方便文件迁移，为满足单个项目，多个系统的情况下，提供统一的oss服务
+
+- reponame: swagger-bootstrap-ui-demo
+  stars: 55
+  forks: 24
+  url: https://gitee.com/xiaoym/swagger-bootstrap-ui-demo
+  lastupt: 2018-08-14
+  description: swagger-bootstrap-ui演示项目
+
+- reponame: jsonp
+  stars: 26
+  forks: 5
+  url: https://gitee.com/xiaoym/jsonp
+  lastupt: 2015-09-13
+  description: spring mvc框架 关于jsonp的处理
+
+- reponame: JFormParser
+  stars: 5
+  forks: 3
+  url: https://gitee.com/xiaoym/JFormParser
+  lastupt: 2017-01-20
+  description: 根据json结构体,生成页面,达到解放后端开发人员的目的,降低后端对前端开发要求,后端专心开发后台接口等服务程序,前期以表单元素为主,后期会增加更多页面元素的支持，适用于后台CMS之类管理界面
