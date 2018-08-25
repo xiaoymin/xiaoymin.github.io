@@ -30,5 +30,16 @@ jQuery(function() {
     });
   }
 
+
+  function BaiduAnlysis() {
+      var _hmt = _hmt || [];
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d2806629aece6461d771c32d59320dd1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+
+  }
+  BaiduAnlysis();
+
   toTop();
 });
