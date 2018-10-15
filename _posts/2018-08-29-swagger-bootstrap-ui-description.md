@@ -72,6 +72,60 @@ swagger-bootstrap-ui在原有的文档说明、在线调试的基础上,扩展�
 
 Authorize 功能是后端配置类似JWT等权限配置而设置的,可以全局配置token等参数
 
+##### UI功能增强
+
+`swagger-bootstrap-ui`自1.8.5版本以后,增加了后端Java代码的支持功能,主要目的是辅助Java开发者在使用springfox-swagger的同时,扩展一些增强功能，帮助开发者拥有更好的文档体验.
+
+目前主要增强功能：
+- tags分组标签排序
+- api接口排序
+
+使用`swagger-bootstrap-ui`提供的增强功能,需要在源Spring的config配置文件中开启,在原EnableSwagger2注解上增加@EnableSwaggerBootstrapUi注解，示例代码如下：
+
+```java
+@Configuration
+@EnableSwagger2
+@EnableSwaggerBootstrapUI
+public class SwaggerConfiguration {
+ 	//more...   
+}
+```
+
+针对tags分组排序，UI的排序规则是顺序排序，最小值1，最大值也是默认值Integer.Max_VALUE;
+
+如果不使用SwaggerBootstrapUi的增强功能,则无需开启@EnableSwaggerBootstrapUi注解
+
+tags的排序规则分两种：
+
+a、一种是判断Swagger的@Api注解的position属性是否不等于0（默认值为0），如果该值不为空,则获取此值,根据该值排序
+
+b、如果postion=0（不写的情况下）,判断是否存在注解@ApiSort的值，如果有值，则获取此值,根据该值排序
+
+c、所以排序的取值规则是：position>@ApiSort
+
+接口api的排序规则：
+
+a、判断@ApiOperation注解上的postion属性是否不等于0（默认值为0），如果该值不为空,则获取此值,根据该值排序
+```java
+//postion属性赋值
+@ApiOperation(httpMethod = "POST",position = 2,value = "Test2Model测试数组参数，多个",response=Test2Model.class)
+@ApiResponses({
+    @ApiResponse(code = 200, message = "非HTTP状态码，返回值JSON code字段值，描述：成功")
+})
+@ApiImplicitParams({
+    @ApiImplicitParam(name = "ids",paramType ="form",value = "参数",allowMultiple = true, required = true)
+})
+```
+b、如果postion=0（不写的情况下）,判断是否存在注解@ApiOperationSort的值，如果有值，则获取此值,根据该值排序
+
+c、所以排序的取值规则是：position>@ApiOperationSort
+
+注意：
+
+注解@EnableSwaggerBootstrapUi、@ApiSort、@ApiOperationSort是本UI工具包提供的Java注解,排序功能的使用需要在启用原EnableSwagger2注解上增加@EnableSwaggerBootstrapUi注解方可生效
+
+
+
 ![](/images/wiki/swagger-bootstrap-ui/auth.png)
 
 ## 代码说明
