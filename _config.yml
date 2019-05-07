@@ -2,7 +2,7 @@
 #   Main Configs   #
 # ---------------- #
 baseurl:
-url: http://www.xiaominfo.com
+url: https://www.xiaominfo.com
 date_format: "ordinal"
 title: 八一菜刀
 subtitle: "有志者,事竟成!苦心人,天不负!加油吧~！！！"
