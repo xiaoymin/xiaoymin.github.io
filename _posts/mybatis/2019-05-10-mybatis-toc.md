@@ -31,4 +31,4 @@ Github:[https://github.com/mybatis/mybatis-3](https://github.com/mybatis/mybatis
 - [mybatis 源码系列(五) 数据源DataSource](/2019/05/16/mybatis-5/)
 - [mybatis 源码系列(六) 设计模式](/2019/05/17/mybatis-6/)
 - [mybatis 源码系列(七) Java基础之数据库事务隔离级别](/2019/05/18/mybatis-7/)
-- [mybatis 源码系列(八) Java基础之wait()、notify()、notifyAll()方法]()
+- [mybatis 源码系列(八) Java基础之wait()、notify()、notifyAll()方法](/2019/05/19/mybatis-8/)
