@@ -5,7 +5,6 @@ categories: 开源资讯
 description: swagger-bootstrap-ui 1.9.1 发布，优化大数据响应接口
 keywords: swagger-bootstrap-ui,swagger-bootstrap-ui 1.9.1,优化大数据响应接口
 ---
-# swagger-bootstrap-ui 1.9.1 发布，提供Swagger资源保护
 
 swagger-bootstrap-ui 1.9.1 发布了。swagger-bootstrap-ui是 Swagger 的增强UI 实现，使文档更友好一点儿
 

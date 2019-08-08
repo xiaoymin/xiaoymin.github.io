@@ -5,7 +5,6 @@ categories: 开源资讯
 description: swagger-bootstrap-ui 1.9.2 发布，提供前后端分离解决方案
 keywords: swagger-bootstrap-ui,swagger-bootstrap-ui 1.9.2,swagger 前后端分离解决方案
 ---
-# swagger-bootstrap-ui 1.9.2 发布，提供前后端分离解决方案
 
 swagger-bootstrap-ui 1.9.2 发布了。swagger-bootstrap-ui是 Swagger 的增强UI 实现，使文档更友好一点儿
 

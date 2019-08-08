@@ -5,7 +5,6 @@ categories: 开源资讯
 description: swagger-bootstrap-ui 1.9.3 发布，i18n及自定义文档支持
 keywords: swagger-bootstrap-ui,swagger-bootstrap-ui 1.9.3,swagger i18n及自定义文档支持
 ---
-# swagger-bootstrap-ui 1.9.3 发布，i18n及自定义文档支持
 
 swagger-bootstrap-ui 1.9.3 发布了。swagger-bootstrap-ui是 Swagger 的增强UI 实现，使文档更友好一点儿
 

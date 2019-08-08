@@ -5,7 +5,6 @@ categories: 开源资讯
 description: swagger-bootstrap-ui 1.8.8 发布，Swagger增强UI 实现
 keywords: swagger-bootstrap-ui,swagger-bootstrap-ui 1.8.8
 ---
-# swagger-bootstrap-ui 1.8.8 发布，Swagger增强UI 实现
 
 Swagger-Bootstrap-Ui 1.8.8 发布了。Swagger-Bootstrap-Ui是 Swagger 的增强UI 实现，目的是替换 Swagger 默认的 UI 实现 Swagger-UI，使文档更友好一点儿
 

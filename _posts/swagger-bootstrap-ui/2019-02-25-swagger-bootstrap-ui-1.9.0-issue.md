@@ -5,7 +5,6 @@ categories: 开源资讯
 description: swagger-bootstrap-ui 1.9.0 发布，提供Swagger资源保护
 keywords: swagger-bootstrap-ui,swagger-bootstrap-ui 1.9.0,Swagger资源保护
 ---
-# swagger-bootstrap-ui 1.9.0 发布，提供Swagger资源保护
 
 SwaggerBootstrapUi 1.9.0 发布了。SwaggerBootstrapUi是 Swagger 的增强UI 实现，使文档更友好一点儿
 
