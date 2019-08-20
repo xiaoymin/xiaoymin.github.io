@@ -40,3 +40,8 @@ keywords: Kettle实战,Kettle in Action,Kettle
 - [Kettle实战100篇 第18篇 JavaScript脚本组件使用示例](/2019/08/15/kettle-18/)
 - [Kettle实战100篇 第19篇 转换核心对象Microsoft Excel输出组件](/2019/08/15/kettle-19/)
 - [Kettle实战100篇 第20篇 MySQL数据库导出到ElasticSearch](/2019/08/15/kettle-20/)
+- [Kettle实战100篇 第21篇 JavaScript内置函数说明](/2019/08/16/kettle-21/)
+- [Kettle实战100篇 第22篇 资源库的使用](/2019/08/17/kettle-22/)
+- [Kettle实战100篇 第23篇 命令行介绍使用](/2019/08/18/kettle-23/)
+- [Kettle实战100篇 第24篇 日志报表输出](/2019/08/19/kettle-24/)
+- [Kettle实战100篇 第25篇 作业核心对象设置变量组件](/2019/08/20/kettle-25/)
