@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwiki=self.webpackChunkwiki||[]).push([[2292],{67268:e=>{e.exports=JSON.parse('{"label":"2023\u5e74","permalink":"/opensource/tags/2023-\u5e74","allTagsPath":"/opensource/tags","count":1,"items":[{"id":"home","title":"\u5f00\u6e90","description":"javascript","permalink":"/opensource/"}]}')}}]);

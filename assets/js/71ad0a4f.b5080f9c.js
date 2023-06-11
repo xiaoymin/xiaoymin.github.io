@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwiki=self.webpackChunkwiki||[]).push([[7094],{98306:a=>{a.exports=JSON.parse('[{"label":"JavaScript","permalink":"/blog/tags/java-script","count":1},{"label":"2015\u5e74","permalink":"/blog/tags/2015-\u5e74","count":1}]')}}]);
