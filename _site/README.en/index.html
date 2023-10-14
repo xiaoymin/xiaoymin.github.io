@@ -192,11 +192,100 @@ SimpleJekyllSearch({
     <a href="https://doc.xiaominfo.com/" target="_blank" class="xiaoym-tag">Knife4j</a>
     <a href="http://knife4j.net/" target="_blank" class="xiaoym-tag">Knife4jInsight</a>
 </div>
+<div style="text-align: center;">
+    <h2>标签</h2>
+</div>
+<div class="xiaoym-cloud-xiaoym-cloud-tag-cloud">
+    
+    
 
+    <a href="/categories/#Blog" class="xiaoym-cloud-tag">Blog(13)</a>
+
+    
+
+    <a href="/categories/#Java" class="xiaoym-cloud-tag">Java(4)</a>
+
+    
+
+    <a href="/categories/#JavaScript" class="xiaoym-cloud-tag">JavaScript(1)</a>
+
+    
+
+    <a href="/categories/#Kettle实战" class="xiaoym-cloud-tag">Kettle实战(29)</a>
+
+    
+
+    <a href="/categories/#Linux" class="xiaoym-cloud-tag">Linux(3)</a>
+
+    
+
+    <a href="/categories/#NodeJs" class="xiaoym-cloud-tag">NodeJs(1)</a>
+
+    
+
+    <a href="/categories/#Redis" class="xiaoym-cloud-tag">Redis(1)</a>
+
+    
+
+    <a href="/categories/#Spring" class="xiaoym-cloud-tag">Spring(2)</a>
+
+    
+
+    <a href="/categories/#SpringBoot" class="xiaoym-cloud-tag">SpringBoot(6)</a>
+
+    
+
+    <a href="/categories/#mybatis" class="xiaoym-cloud-tag">mybatis(9)</a>
+
+    
+
+    <a href="/categories/#springfox" class="xiaoym-cloud-tag">springfox(23)</a>
+
+    
+
+    <a href="/categories/#大模型" class="xiaoym-cloud-tag">大模型(1)</a>
+
+    
+
+    <a href="/categories/#工作流" class="xiaoym-cloud-tag">工作流(1)</a>
+
+    
+
+    <a href="/categories/#开源" class="xiaoym-cloud-tag">开源(7)</a>
+
+    
+
+    <a href="/categories/#开源资讯" class="xiaoym-cloud-tag">开源资讯(43)</a>
+
+    
+
+    <a href="/categories/#数据库" class="xiaoym-cloud-tag">数据库(6)</a>
+
+    
+
+</div>
 <div style="text-align: center;">
     <h2>微信公众号</h2>
 </div>
 <div style="text-align: center;"><img src="/images/website/mp/qrcode.jpg" /> </div>
+
+<script>
+    // 实现词云效果
+    document.addEventListener('DOMContentLoaded', function () {
+        var tags = document.querySelectorAll('.xiaoym-cloud-tag');
+        tags.forEach(function (tag) {
+            var sizes = ['xiaoym-cloud-tag-small', 'xiaoym-cloud-tag-medium', 'xiaoym-cloud-tag-large', 'xiaoym-cloud-tag-xlarge', 'xiaoym-cloud-tag-xxlarge', 'xiaoym-cloud-tag-xxxlarge'];
+            var randomSize = sizes[Math.floor(Math.random() * sizes.length)];
+            tag.classList.add(randomSize);
+
+            var colors = ['bg-color1', 'bg-color2', 'bg-color3', 'bg-color4', 'bg-color5', 'bg-color6'];
+            var randomColor = colors[Math.floor(Math.random() * colors.length)];
+            tag.classList.add(randomColor);
+        });
+
+
+    });
+</script>
         </div>
     </div>
 </section>

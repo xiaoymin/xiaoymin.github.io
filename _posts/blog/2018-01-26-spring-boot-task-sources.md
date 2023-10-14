@@ -3,7 +3,7 @@ layout: post
 title: Spring Boot 任务task源码分析
 categories: Spring
 description: Spring Boot 任务task源码分析
-keywords: Spring Boot
+keywords: SpringBoot
 ---
 
 ## EnableScheduling注解

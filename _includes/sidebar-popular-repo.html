@@ -6,8 +6,37 @@
     <a href="https://doc.xiaominfo.com/" target="_blank" class="xiaoym-tag">Knife4j</a>
     <a href="http://knife4j.net/" target="_blank" class="xiaoym-tag">Knife4jInsight</a>
 </div>
+<div style="text-align: center;">
+    <h2>标签</h2>
+</div>
+<div class="xiaoym-cloud-xiaoym-cloud-tag-cloud">
+    {% assign sorted_categories = site.categories | sort %}
+    {% for category in sorted_categories %}
 
+    <a href="/categories/#{{ category[0] }}" class="xiaoym-cloud-tag">{{ category | first }}({{ category[1].size }})</a>
+
+    {% endfor %}
+
+</div>
 <div style="text-align: center;">
     <h2>微信公众号</h2>
 </div>
 <div style="text-align: center;"><img src="/images/website/mp/qrcode.jpg" /> </div>
+
+<script>
+    // 实现词云效果
+    document.addEventListener('DOMContentLoaded', function () {
+        var tags = document.querySelectorAll('.xiaoym-cloud-tag');
+        tags.forEach(function (tag) {
+            var sizes = ['xiaoym-cloud-tag-small', 'xiaoym-cloud-tag-medium', 'xiaoym-cloud-tag-large', 'xiaoym-cloud-tag-xlarge', 'xiaoym-cloud-tag-xxlarge', 'xiaoym-cloud-tag-xxxlarge'];
+            var randomSize = sizes[Math.floor(Math.random() * sizes.length)];
+            tag.classList.add(randomSize);
+
+            var colors = ['bg-color1', 'bg-color2', 'bg-color3', 'bg-color4', 'bg-color5', 'bg-color6'];
+            var randomColor = colors[Math.floor(Math.random() * colors.length)];
+            tag.classList.add(randomColor);
+        });
+
+
+    });
+</script>

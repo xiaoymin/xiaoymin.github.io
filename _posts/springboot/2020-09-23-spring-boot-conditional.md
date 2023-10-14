@@ -1,9 +1,9 @@
 ---
 layout: post
 title: Spring Boot框架中如何优雅的注入实体Bean
-categories: Spring Boot
+categories: SpringBoot
 description: Spring Boot框架中如何优雅的注入实体Bean
-keywords: Spring Boot,Conditional
+keywords: SpringBoot,Conditional
 ---
 
 在`Spring Boot`框架中,注入实体`Bean`是几乎每一个Java程序员都能遇到的事情,因为`Spring Boot`采用约定优于配置的策略,去除了原来在`Spring MVC`中通过Xml进行注入的方式,全部通过Java Configuration的编码方式进行实体`Bean`的注入,

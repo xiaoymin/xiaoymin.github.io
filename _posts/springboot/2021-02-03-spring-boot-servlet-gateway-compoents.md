@@ -1,9 +1,9 @@
 ---
 layout: post
 title: 基于Servlet体系的HTTP请求代理转发Spring Boot组件
-categories: Spring Boot
+categories: SpringBoot
 description: 基于Servlet体系的HTTP请求代理转发Spring Boot组件
-keywords: Spring Boot,Servlet转发,HTTP请求代理
+keywords: SpringBoot,Servlet转发,HTTP请求代理
 ---
 
 ## 背景概述

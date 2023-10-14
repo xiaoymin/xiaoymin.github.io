@@ -1,9 +1,9 @@
 ---
 layout: post
 title: Spring Boot自定义starter必知必会条件
-categories: Spring Boot
+categories: SpringBoot
 description: 自定义Spring Boot框架starter组件
-keywords: Spring Boot,starter,自定义starter
+keywords: SpringBoot,starter,自定义starter
 ---
 
 ## 前言

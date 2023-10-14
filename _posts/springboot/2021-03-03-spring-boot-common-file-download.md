@@ -1,9 +1,9 @@
 ---
 layout: post
 title: Spring Boot框架中针对数据文件模板的下载总结
-categories: Spring Boot
+categories: SpringBoot
 description: Spring Boot框架中针对数据文件模板的下载总结
-keywords: Spring Boot,文件下载
+keywords: SpringBoot,文件下载
 ---
 
 ## 1.前言

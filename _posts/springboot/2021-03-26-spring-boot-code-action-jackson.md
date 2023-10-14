@@ -1,9 +1,9 @@
 ---
 layout: post
 title: Spring Boot框架中使用Jackson的处理总结
-categories: Spring Boot
+categories: SpringBoot
 description: Spring Boot框架中使用Jackson的处理总结
-keywords: Spring Boot,Jackson
+keywords: SpringBoot,Jackson
 ---
 
 ## 1.前言

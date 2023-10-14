@@ -3,7 +3,7 @@ layout: post
 title: 技术架构整理
 categories: Java
 description: 技术架构整理
-keywords: Spring Boot
+keywords: SpringBoot
 ---
 
 ## 简介

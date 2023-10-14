@@ -822,3 +822,78 @@ pre {
 .xiaoym-tag:hover {
     background-color: #096dd9;
 }
+
+
+.xiaoym-cloud-tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.xiaoym-cloud-tag {
+    padding: 5px 10px;
+    /* background-color: #f0f5ff; */
+    color: red;
+    /* border: 1px solid #91d5ff; */
+    border-radius: 4px;
+    margin: 5px;
+    text-decoration: none;
+    transition: transform 0.3s;
+    display: inline-block;
+    font-size: 12px;
+}
+
+.xiaoym-cloud-tag:hover {
+    transform: scale(1.1);
+}
+
+.xiaoym-cloud-tag-small {
+    font-size: 10px;
+}
+
+.xiaoym-cloud-tag-medium {
+    font-size: 14px;
+}
+
+.xiaoym-cloud-tag-large {
+    font-size: 18px;
+}
+
+.xiaoym-cloud-tag-xlarge {
+    font-size: 24px;
+}
+
+.xiaoym-cloud-tag-xxlarge {
+    font-size: 30px;
+}
+
+.xiaoym-cloud-tag-xxxlarge {
+    font-size: 36px;
+}
+
+.bg-color1 {
+    color: #FFD700;
+
+}
+
+.bg-color2 {
+    color: #FF69B4;
+}
+
+.bg-color3 {
+    color: #87CEFA;
+}
+
+.bg-color4 {
+    color: #32CD32;
+}
+
+.bg-color5 {
+    color: #FF4500;
+}
+
+.bg-color6 {
+    color: #9400D3;
+}

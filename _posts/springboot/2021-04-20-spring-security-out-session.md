@@ -1,9 +1,9 @@
 ---
 layout: post
 title: Spring Security框架中踢人下线技术探索
-categories: Spring Boot
+categories: SpringBoot
 description: Spring Security框架中踢人下线技术探索
-keywords: Spring Boot,Security,踢人下线,Spring Security
+keywords: SpringBoot,Security,踢人下线,Spring Security
 ---
 
 ## 1.背景

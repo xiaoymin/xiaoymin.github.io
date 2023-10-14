@@ -5,7 +5,7 @@ baseurl:
 url: https://www.xiaominfo.com
 date_format: "ordinal"
 title: 八一菜刀
-subtitle: "一直写下去。"
+subtitle: "一直坚持写下去才是最重要的"
 description: "八一菜刀的个人博客"
 keywords: Knife4j,RAG实战,LLM大模型,swagger中文社区,swagger中文,swaggerCenter,八一菜刀, 萧明, xiaoymin,swagger,swagger-bootstrap-ui,oss-server,swagger-bootstrap-ui 1.7.5
 timezone: Asia/Shanghai
