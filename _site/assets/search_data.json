@@ -115,6 +115,8 @@
   
   
   
+  
+  
 
   
     {
@@ -1161,6 +1163,13 @@
     } ,
   
     {
+      "title"    : "Final.激活Knife4j官网的文档搜索功能",
+      "category" : "Knife4j",
+      
+      "url"      : "http://localhost:4000/2023/05/31/knife4j-document-active-search/"
+    } ,
+  
+    {
       "title"    : "2023年6月最新注册ChatGPT账号流程",
       "category" : "大模型",
       
@@ -1228,6 +1237,20 @@
       "category" : "Knife4jInsight",
       
       "url"      : "http://localhost:4000/2023/09/18/knife4j-insight-mvp/"
+    } ,
+  
+    {
+      "title"    : "全面进击AI大模型、RAG领域",
+      "category" : "大模型",
+      
+      "url"      : "http://localhost:4000/2023/10/10/llm-start/"
+    } ,
+  
+    {
+      "title"    : "实战0-1,Java开发者也能看懂的大模型应用RAG开发实践",
+      "category" : "大模型",
+      
+      "url"      : "http://localhost:4000/2023/10/12/rag-inaction-java/"
     } ,
   
     {

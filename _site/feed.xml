@@ -1,4 +1,611 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-10-14T19:29:39+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">八一菜刀</title><subtitle>八一菜刀的个人博客</subtitle><author><name>肖玉民</name></author><entry><title type="html">Knife4jInsight平台版-MVP版本v1.0.0发布</title><link href="http://localhost:4000/2023/09/18/knife4j-insight-mvp/" rel="alternate" type="text/html" title="Knife4jInsight平台版-MVP版本v1.0.0发布" /><published>2023-09-18T00:00:00+08:00</published><updated>2023-09-18T00:00:00+08:00</updated><id>http://localhost:4000/2023/09/18/knife4j-insight-mvp</id><content type="html" xml:base="http://localhost:4000/2023/09/18/knife4j-insight-mvp/">&lt;p&gt;在之前发布的《Knife4j新产品的想法》一文中，我提到想给Knife4j的生态做一些扩展，区别于目前市面上不一样的功能或者工具产品。&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-10-14T19:58:44+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">八一菜刀</title><subtitle>八一菜刀的个人博客</subtitle><author><name>肖玉民</name></author><entry><title type="html">实战0-1,Java开发者也能看懂的大模型应用RAG开发实践</title><link href="http://localhost:4000/2023/10/12/rag-inaction-java/" rel="alternate" type="text/html" title="实战0-1,Java开发者也能看懂的大模型应用RAG开发实践" /><published>2023-10-12T00:00:00+08:00</published><updated>2023-10-12T00:00:00+08:00</updated><id>http://localhost:4000/2023/10/12/rag-inaction-java</id><content type="html" xml:base="http://localhost:4000/2023/10/12/rag-inaction-java/">&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;在前几天的文章中，我分享说在RAG领域，很多都是工程上的实践，做AI大模型应用的开发其实Java也能写，那么本文就一个Java开发者的立场，构建实现一个最基础的大模型应用系统。&lt;/p&gt;
+
+&lt;p&gt;而大模型应用系统其实在目前阶段，可能应用最广的还是RAG领域，因此，本文也是通过在RAG领域的基础架构下，来实现应用的开发，主要需求点：&lt;strong&gt;让大模型理解文本(知识库)内容，基于知识库范围内的内容进行回答对话&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;而基于知识库的回答会帮助我们解决哪些问题呢？&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;✅ &lt;strong&gt;节省大模型训练成本：&lt;/strong&gt;我们知道ChatGPT的知识内容停留在2021年，最新的知识它并不知道，而检索增强生成则可以解决大模型无法快速学习的问题，训练大模型代价是非常昂贵的，不仅仅只是金钱，还包括时间，随着模型的参数大小成本成正相关。&lt;/li&gt;
+  &lt;li&gt;✅ &lt;strong&gt;让大模型更聪明：&lt;/strong&gt;很多企业内部的私有数据大模型并没有学习，而通过RAG的方式可以让大模型在知识库范围的领域进行回答，避免胡说八道，基于底层大模型的基座，可以让我们的应用系统看上去更加的聪明。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;在本文中，你将学习到：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;✅ RAG工程的基本处理框架流程(基于Java)&lt;/li&gt;
+  &lt;li&gt;✅ 向量数据库的基础使用及了解&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;技术栈&quot;&gt;技术栈&lt;/h2&gt;
+
+&lt;p&gt;考虑到作者也是Java开发者，因此本文所选择的技术栈以及中间件也是Java人员都耳熟能详的，主要技术栈如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;1、开发框架：&lt;/strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Spring Boot&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Spring Shell&lt;/code&gt;(命令行对话)&lt;/p&gt;
+
+&lt;p&gt;Java开发者对于&lt;strong&gt;Spring Boot&lt;/strong&gt;的生态应该是非常熟悉的，而选择&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Spring Shell&lt;/code&gt;工具包主要是为了演示命令行的交互问答效果，和本次的技术无太大关系，算是一个最小雏形的产品交互体验。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;2、HTTP组件：&lt;/strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;OkHTTP&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;OkHTTP-SSE&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;此次我们选择的大模型是以智谱AI开放的ChatGLM系列为主，因此我们需要HTTP组件和商业大模型的API进行接口的对接，当然开发者如果有足够的条件，也是可以在本地部署开源大模型并且开放API接口进行调试的，这个并不冲突，本文只是为了方便演示效果，所以使用了智谱的大模型API接口，而智谱AI注册后，默认提供了一个18元的免费Token消费额度，因此接口的API-Key只需要注册一个即可快速获取。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;3、工具包：&lt;/strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Hutool&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;非常好用的一个基础工具包组件，封装了很多工具类方法，包含字符、文件、时间、集合等等&lt;/p&gt;
+
+&lt;p&gt;本文会使用到&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Hutool&lt;/code&gt;包的文本读取和切割方法。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;4、向量数据库：&lt;/strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ElasticSearch&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;向量数据库是RAG应用程序的基础中间件，所有的文本Embedding向量都需要存储在向量数据库中间件中进行召回计算，当然在Java领域并没有类似Python中&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;numpy&lt;/code&gt;这类本地化工具组件包，即可快速实现矩阵计算等需求(&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PS:最近Java21的发布中，不仅仅只是虚拟线程等新特性，提供的向量API相信在未来AI领域，Java也会有一席之地的&lt;/code&gt;)，所以选择了独立部署的中间件。&lt;/p&gt;
+
+&lt;p&gt;本文选择&lt;strong&gt;ElasticSearch&lt;/strong&gt;可能对于Java开发人员也是比较熟悉的一个组件，毕竟ES在Java领域用途还是非常广的，只是可能很多开发者并不知道ElasticSearch居然还有存储向量数据的功能？&lt;/p&gt;
+
+&lt;p&gt;对于向量数据库中间件的选择，目前市面上有非常多的向量数据库，包括：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Milvus&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Qdrant&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Postgres(pgvector)&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Chroma&lt;/code&gt; 等等，Java开发者可以在熟悉当前流程后，根据自己的实际需求，选择符合企业生产环境的向量数据库。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;5、LLM大模型&lt;/strong&gt;：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ChatGLM-Std&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;为了演示方便，本文直接使用开放API接口的商业大模型，智谱AI提供的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ChatGLM-Std&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;rag工程的基本处理流程&quot;&gt;RAG工程的基本处理流程&lt;/h2&gt;
+
+&lt;p&gt;在RAG检索增强生成领域中，最简单的核心处理流程架构图如下：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;该架构图图是一个非常简单的流程图，在RAG领域中其实有非常多的处理细节，当我们深入了解后就会知道&lt;/p&gt;
+
+  &lt;p&gt;我们后续根据该图来进行Java编码实现。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/llm/rag-java-action/001.png&quot; alt=&quot;图1-RAG通用框架流程架构示意图&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在RAG应用工程领域，其实整个程序的处理包含两部分：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;问答：&lt;/strong&gt;对用户提问的问题通过向量&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Embedding&lt;/code&gt;模型处理，然后通过查询向量数据库(&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ElasticSearch&lt;/code&gt;)进行相似度计算获取和用户问题最相似的知识库段落内容，获取成功后，构建&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Prompt&lt;/code&gt;，最终发送给大模型获取最终的答案。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;数据处理：&lt;/strong&gt;数据的处理是将用户私有的数据进行提取，包括各种结构化及非结构化数据(例如&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PDF&lt;/code&gt;/&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Word&lt;/code&gt;/&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Text&lt;/code&gt;等等)，提取文本数据后进行分割处理，最终通过向量&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Embedding&lt;/code&gt;模型将这些分割后的段落进行向量化，最终向量数据存储在基础设施向量数据库组件中，以供后续的问答流程使用。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;从图中我们可以知道，在我们所需要的大模型处于什么位置，以及它的作用，主要是&lt;strong&gt;两个模型&lt;/strong&gt;的应用：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;向量Embedding模型：&lt;/strong&gt;对我们本地知识的向量表征处理，将文本内容转化为便于计算机理解的向量表示&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;LLM问答大模型：&lt;/strong&gt;大模型负责将我们通过语义召回的段落+用户的问题结合，构建的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Prompt&lt;/code&gt;送给大模型以获取最终的答案，问答大模型在这里充当的角色是理解我们送给他的内容，然后进行精准回答&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;java编码实践&quot;&gt;Java编码实践&lt;/h2&gt;
+
+&lt;p&gt;我们理解了基础的架构流程，接下来就是编码实现了&lt;/p&gt;
+
+&lt;h3 id=&quot;环境准备&quot;&gt;环境准备&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Java：&lt;/strong&gt;JDK 1.8&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;ElasticSearch：&lt;/strong&gt;7.16.1&lt;/p&gt;
+
+&lt;p&gt;对于&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ElasticSearch&lt;/code&gt;的安装，可以通过&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker-compose&lt;/code&gt;在本地快速部署一个&lt;/p&gt;
+
+&lt;p&gt;编写&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker-compose.yml&lt;/code&gt;配置文件，当前部署目录建&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;data&lt;/code&gt;文件夹挂载数据目录&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;3&quot;&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;elasticsearch&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;elasticsearch:7.16.1&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;9200:9200&quot;&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;9300:9300&quot;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;s&quot;&gt;node.name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;es&lt;/span&gt;
+      &lt;span class=&quot;s&quot;&gt;cluster.name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;elasticsearch&lt;/span&gt;
+      &lt;span class=&quot;s&quot;&gt;discovery.type&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;single-node&lt;/span&gt;  
+      &lt;span class=&quot;na&quot;&gt;ES_JAVA_OPTS&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;-Xms4096m -Xmx4096m&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./data:/usr/share/elasticsearch/data&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;deploy&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;resources&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;limits&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;cpus&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;4&quot;&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;memory&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;5G&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;reservations&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;cpus&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;1&quot;&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;memory&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;2G&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;restart&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;always&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;启动Es：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker-compose up -d&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;应用初体验&quot;&gt;应用初体验&lt;/h2&gt;
+
+&lt;p&gt;先来看整个程序的应用效果，通过Spring Shell环境下，程序启动后，如下图所示：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/llm/rag-java-action/image-20231011223529653.png&quot; alt=&quot;图3-程序启动效果&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;程序启动后，在命令行终端，我们可以看到一个可交互的命令行，此时，我们可以通过&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;add&lt;/code&gt;和&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;chat&lt;/code&gt;两个命令完成图1中的整个流程&lt;/p&gt;
+
+&lt;p&gt;先使用&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;add&lt;/code&gt;命令加载文档，在&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;data&lt;/code&gt;目录下分别存储了&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;001.txt&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;002.txt&lt;/code&gt;两个文件，通过命令加载向量处理，如下图：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/llm/rag-java-action/image-20231011223800438.png&quot; alt=&quot;图4-ADD命令加载文件&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;当日志显示保存向量成功后，此时，我们即可以通过&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;chat&lt;/code&gt;命令进行对话了，我们先来看看&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;002.txt&lt;/code&gt;的文本主要说了什么内容？&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;data目录下的文本，开发者在调试时可以自己随意添加,网上随便找的文章都可以&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/image-20231011223914297.png&quot; alt=&quot;图5-知识文本内容&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;文章内容是一篇非常具有代表性的时政人物介绍新闻，那么我们就根据该文章的内容进行问答！&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;问题1:苏州2022年全市的GDP是多少?&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/llm/rag-java-action/image-20231011224157706.png&quot; alt=&quot;图6-问答调试&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;问题2:吉林省宣传部部长现在是谁？&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/llm/rag-java-action/image-20231011224356744.png&quot; alt=&quot;图7-问答调试1&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;通过第一个问题，你是否可以发现问题呢？，如果你问ChatGPT一样的问题，它能准确回答吗？&lt;/p&gt;
+
+&lt;p&gt;以下是&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ChatGPT&lt;/code&gt;的回答&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/llm/rag-java-action/image-20231012074115652.png&quot; alt=&quot;图8-ChatGPT回答内容&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;通过对比&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ChatGPT&lt;/code&gt;，开发者应该能看到一个基础的对比效果，主要体现：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;我们都知道ChatGPT大模型的内容日期截止到2021年，之后世界发生了什么，它并不知道，同类的GPT大模型也会出现一样的问题，因为训练大模型的代价是非常昂贵的，不可能按周、月，甚至是年的频率去更新大模型。&lt;/li&gt;
+  &lt;li&gt;基于现有的知识回答内容(RAG)，能够有效的&lt;strong&gt;避免大模型胡说八道&lt;/strong&gt;,而且&lt;strong&gt;回答的更精准&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;技术实现&quot;&gt;技术实现&lt;/h2&gt;
+
+&lt;p&gt;进行问答体验后，我们来看具体的Java代码实现。&lt;/p&gt;
+
+&lt;p&gt;新建&lt;strong&gt;Spring Boot&lt;/strong&gt;项目，工程目录如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;GitHub&lt;/strong&gt;：&lt;a href=&quot;https://github.com/xiaoymin/LlmInAction/tree/master/llm_chat_java_hello&quot;&gt;https://github.com/xiaoymin/LlmInAction/tree/master/llm_chat_java_hello&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/llm/rag-java-action/image-20231011222852231.png&quot; alt=&quot;图2-Java代码目录结构&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;从上文的RAG流程图中，我们知道了主要分两个步骤来实现，分别是&lt;strong&gt;数据的向量处理&lt;/strong&gt;和&lt;strong&gt;问答&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;由于是通过&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Spring Shell&lt;/code&gt;进行实现，因此这里我也分开，主要实现了两个&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Command&lt;/code&gt;命令：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;add&lt;/strong&gt;：在data目录下，为了演示需要，存放了两个txt内容，可以通过&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;add file名称&lt;/code&gt;来实现文档的向量化流程加载处理，数据的处理开发者在实际的生产过程中可以通过定时任务、MQ消息等方式进行异步处理。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;chat：&lt;/strong&gt;通过命令&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;chat 问题&lt;/code&gt;即可在Spring Shell的命令行终端进行对话，可以问&lt;strong&gt;data&lt;/strong&gt;目录下相关的问题&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;为了方便后续的处理，程序启动时即会自动构建向量数据库的索引集合，代码如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cm&quot;&gt;/**
+     * 初始化向量数据库index
+     * @param collectionName 名称
+     * @param dim 维度
+     */&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;initCollection&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;collectionName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dim&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;){&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;collection:{}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;collectionName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// 查看向量索引是否存在，此方法为固定默认索引字段&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;IndexOperations&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;indexOperations&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;elasticsearchRestTemplate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;indexOps&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;IndexCoordinates&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collectionName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;indexOperations&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;exists&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// 索引不存在，直接创建&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;index not exists,create&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;//创建es的结构，简化处理&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;Document&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;document&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Document&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;elasticMapping&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dim&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// 创建&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;indexOperations&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HashMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Es中的Index的Mapping结构如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/llm/rag-java-action/image-20231011230453855.png&quot; alt=&quot;图9-ES向量Index-Mapping结构&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;开发者需要注意vector字段，字段类型时&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dense_vector&lt;/code&gt;,并且指定向量维度为1024&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;向量维度的长度指定是和最终向量Embedding模型息息相关的，不同的模型有不同的维度，比如ChatGPT的向量模型维度是1536，百度文心一言也有368的，因此根据实际情况进行选择。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;而这里因为我们选择的是智谱AI的向量模型，该模型返回的维度为1024，那么我们在向量数据库的维度就设置为1024&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;首先是&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;add&lt;/code&gt;命令实现文档的向量化过程处理，代码如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Slf4j&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@AllArgsConstructor&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@ShellComponent&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AddTxtCommand&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;TxtChunk&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;txtChunk&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;VectorStorage&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vectorStorage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ZhipuAI&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;zhipuAI&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@ShellMethod&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;add local txt data&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;doc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;){&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;start add doc.&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// 加载&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ChunkResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;chunkResults&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;txtChunk&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;chunk&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;doc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// embedding&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;EmbeddingResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;embeddingResults&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;zhipuAI&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;embedding&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;chunkResults&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// store vector&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;collection&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vectorStorage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getCollectionName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;vectorStorage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;store&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collection&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;embeddingResults&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;finished&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;finished docId:{}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;doc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;我们完全按照图1RAG的流程架构图进行代码的变现，主要的步骤：&lt;/p&gt;
+
+&lt;p&gt;1、加载指定的文档，并且将文档内容进行分割处理(按固定size大小进行分割处理)，得到分割集合&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;chunkResults&lt;/code&gt;，代码如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Slf4j&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@Component&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@AllArgsConstructor&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;TxtChunk&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ChunkResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;chunk&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;docId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;){&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;data/&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;docId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;.txt&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;start chunk---&amp;gt; docId:{},path:{}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;docId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// 读取data目录下的文件流&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;ClassPathResource&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;classPathResource&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ClassPathResource&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// 读取为文本&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;txt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;IoUtil&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;classPathResource&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getInputStream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;StandardCharsets&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;UTF_8&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;//按固定字数分割,256&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lines&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;StrUtil&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;txt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;256&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;chunk size:{}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ArrayUtil&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lines&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ChunkResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;results&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ArrayList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;//此处给每个文档一个固定的chunkId&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;AtomicInteger&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;atomicInteger&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AtomicInteger&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;line:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lines&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;){&lt;/span&gt;
+                &lt;span class=&quot;nc&quot;&gt;ChunkResult&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;chunkResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ChunkResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;chunkResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setDocId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;docId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;chunkResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setContent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;chunkResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setChunkId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;atomicInteger&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;incrementAndGet&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;results&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;chunkResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;results&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;IOException&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getMessage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ArrayList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;2、将分块的集合通过智谱AI提供的向量&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Embedding&lt;/code&gt;模型进行向量化处理，代码实现如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cm&quot;&gt;/**
+     * 批量
+     * @param chunkResults 批量文本
+     * @return 向量
+     */&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;EmbeddingResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;embedding&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ChunkResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;chunkResults&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;){&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;start embedding,size:{}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;CollectionUtil&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;chunkResults&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;CollectionUtil&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;isEmpty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;chunkResults&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)){&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ArrayList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;EmbeddingResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;embeddingResults&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ArrayList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ChunkResult&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;chunkResult:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;chunkResults&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;){&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;//分别处理&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;embeddingResults&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;embedding&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;chunkResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;embeddingResults&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;EmbeddingResult&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;embedding&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ChunkResult&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;chunkResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;){&lt;/span&gt;
+       &lt;span class=&quot;c1&quot;&gt;//获取智谱AI的开发Key&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;apiKey&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getApiKey&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// 初始化http客户端&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;OkHttpClient&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Builder&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;builder&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;OkHttpClient&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Builder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;connectTimeout&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20000&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;TimeUnit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;MILLISECONDS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;readTimeout&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20000&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;TimeUnit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;MILLISECONDS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;writeTimeout&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20000&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;TimeUnit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;MILLISECONDS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;addInterceptor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ZhipuHeaderInterceptor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;apiKey&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;OkHttpClient&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;okHttpClient&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;builder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;EmbeddingResult&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;embedRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;EmbeddingResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;embedRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setPrompt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;chunkResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getContent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;embedRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setRequestId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Objects&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;chunkResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getChunkId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()));&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// 智谱embedding模型接口&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;Request&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;request&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Builder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;https://open.bigmodel.cn/api/paas/v3/model-api/text_embedding/invoke&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;RequestBody&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;MediaType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;parse&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ContentType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;JSON&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getValue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()),&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;GSON&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;toJson&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;embedRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)))&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;Response&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;okHttpClient&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;newCall&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;execute&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;ZhipuResult&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;zhipuResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;GSON&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;fromJson&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ZhipuResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;EmbeddingResult&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ret&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;zhipuResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;ret&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setPrompt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;embedRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getPrompt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;ret&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setRequestId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;embedRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getRequestId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;ret&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;IOException&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;RuntimeException&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;3、向量处理成功后，我们即可将向量数据存储在向量数据库中间件(&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ElasticSearch&lt;/code&gt;)中,调用&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;vectorStorage.store&lt;/code&gt;处理，代码如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s&quot;&gt;public void store(String collectionName,List&amp;lt;EmbeddingResult&amp;gt; embeddingResults){&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;//保存向量&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;log.info(&quot;save vector,collection:{},size:{}&quot;,collectionName, CollectionUtil.size(embeddingResults));&lt;/span&gt;
+
+        &lt;span class=&quot;s&quot;&gt;List&amp;lt;IndexQuery&amp;gt; results = new ArrayList&amp;lt;&amp;gt;();&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;for (EmbeddingResult embeddingResult&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;embeddingResults) {&lt;/span&gt;
+            &lt;span class=&quot;s&quot;&gt;ElasticVectorData ele = new ElasticVectorData();&lt;/span&gt;
+            &lt;span class=&quot;s&quot;&gt;ele.setVector(embeddingResult.getEmbedding());&lt;/span&gt;
+            &lt;span class=&quot;s&quot;&gt;ele.setChunkId(embeddingResult.getRequestId());&lt;/span&gt;
+            &lt;span class=&quot;s&quot;&gt;ele.setContent(embeddingResult.getPrompt());&lt;/span&gt;
+            &lt;span class=&quot;s&quot;&gt;results.add(new IndexQueryBuilder().withObject(ele).build());&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;// 构建数据包&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;List&amp;lt;IndexedObjectInformation&amp;gt; bulkedResult = elasticsearchRestTemplate.bulkIndex(results, IndexCoordinates.of(collectionName));&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;int size = CollectionUtil.size(bulkedResult);&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;log.info(&quot;保存向量成功-size:{}&quot;, size);&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;至此，整个文本数据的Embedding处理就完成了。&lt;/p&gt;
+
+&lt;p&gt;数据处理完成后，接下来我们需要实现问答&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;chat&lt;/code&gt;命令,来看代码实现：&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@AllArgsConstructor&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@Slf4j&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@ShellComponent&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ChatCommand&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;VectorStorage&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vectorStorage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ZhipuAI&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;zhipuAI&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@ShellMethod&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;chat with files&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;chat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;question&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;){&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;StrUtil&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;isBlank&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;question&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)){&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;You must send a question&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;//句子转向量&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;zhipuAI&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;sentence&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;question&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// 向量召回&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;collection&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vectorStorage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getCollectionName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vectorData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vectorStorage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;retrieval&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collection&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;StrUtil&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;isBlank&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vectorData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)){&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;No Answer!&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// 构建Prompt&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;prompt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;LLMUtils&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;buildPrompt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;question&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vectorData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;zhipuAI&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;chat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;prompt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// 大模型对话&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;//return &quot;you question:{}&quot;+question+&quot;finished.&quot;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;StrUtil&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;EMPTY&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Chat&lt;/code&gt;命令主要包含的步骤如下：&lt;/p&gt;
+
+&lt;p&gt;1、将用户的问句首先通过向量Embedding模型转化得到一个多维的浮点型向量数组，代码如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cm&quot;&gt;/**
+     * 获取句子的向量
+     * @param sentence 句子
+     * @return 向量
+     */&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;sentence&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sentence&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;){&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;ChunkResult&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;chunkResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ChunkResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;chunkResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setContent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sentence&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;chunkResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setChunkId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;RandomUtil&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;randomInt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;EmbeddingResult&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;embeddingResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;embedding&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;chunkResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;embeddingResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getEmbedding&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;2、根据向量数据查询向量数据库召回相似的段落内容，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;vectorStorage.retrieval&lt;/code&gt;方法代码如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;retrieval&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;collectionName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;){&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// Build the script,查询向量&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;Map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Object&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;params&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HashMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;query_vector&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// 计算cos值+1，避免出现负数的情况，得到结果后，实际score值在减1再计算&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;Script&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;script&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Script&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ScriptType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;INLINE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Script&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;DEFAULT_SCRIPT_LANG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;cosineSimilarity(params.query_vector, 'vector')+1&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;ScriptScoreQueryBuilder&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scriptScoreQueryBuilder&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ScriptScoreQueryBuilder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;QueryBuilders&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;boolQuery&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// 构建请求&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;NativeSearchQuery&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nativeSearchQuery&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;NativeSearchQueryBuilder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;withQuery&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;scriptScoreQueryBuilder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;withPageable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Pageable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;ofSize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;SearchHits&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ElasticVectorData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dataSearchHits&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;elasticsearchRestTemplate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;search&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nativeSearchQuery&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ElasticVectorData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;IndexCoordinates&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collectionName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;//log.info(&quot;检索成功，size:{}&quot;, dataSearchHits.getTotalHits());&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;SearchHit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ElasticVectorData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dataSearchHits&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getSearchHits&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;results&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;LinkedList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;SearchHit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ElasticVectorData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ele&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;results&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ele&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getContent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getContent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CollectionUtil&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;results&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;这里主要利用了&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ElasticSearch&lt;/code&gt;提供的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cosineSimilarity&lt;/code&gt;余弦相似性函数，计算向量得到相似度的分值，&lt;strong&gt;分值会在区间[0,1]之间，如果无限趋近于1那么代表用户输入的句子和之前我们存储在向量中的句子是非常相似的，越相似代表我们找到了语义相近的文档内容，可以作为最终构建大模型Prompt的基础内容。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;向量矩阵的计算除了余弦相似性，还有IP点积、欧几里得距离等等，根据实际情况选择不同的算法实现。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;3、向量召回Top3得到相似的语义文本内容后，我们就可以构建&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Prompt&lt;/code&gt;了，并且发送给大模型，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Prompt&lt;/code&gt;如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;buildPrompt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;question&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;){&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;请利用如下上下文的信息回答问题：&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;\n&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;question&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;\n&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;
+                &lt;span class=&quot;s&quot;&gt;&quot;上下文信息如下：&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;\n&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;\n&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;
+                &lt;span class=&quot;s&quot;&gt;&quot;如果上下文信息中没有帮助,则不允许胡乱回答！&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;而在构建&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Prompt&lt;/code&gt;时，我们可以遵循一个最简单的框架范式,&lt;strong&gt;RTF框架(Role-Task-Format)&lt;/strong&gt;：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;R-Role&lt;/strong&gt;：指定GPT大模型担任特定的角色&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;T-Task&lt;/strong&gt;：任务,需要大模型做的事情&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;F-Format&lt;/strong&gt;：大模型返回的内容格式(常规情况下可以忽略)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;4、最后是调用大模型，实现sse流式调用输出，代码如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;chat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;prompt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;){&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;OkHttpClient&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Builder&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;builder&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;OkHttpClient&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Builder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+                    &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;connectTimeout&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20000&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;TimeUnit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;MILLISECONDS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                    &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;readTimeout&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20000&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;TimeUnit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;MILLISECONDS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                    &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;writeTimeout&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20000&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;TimeUnit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;MILLISECONDS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                    &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;addInterceptor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ZhipuHeaderInterceptor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getApiKey&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()));&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;OkHttpClient&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;okHttpClient&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;builder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+
+            &lt;span class=&quot;nc&quot;&gt;ZhipuChatCompletion&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;zhipuChatCompletion&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ZhipuChatCompletion&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;zhipuChatCompletion&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;addPrompt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;prompt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// 采样温度，控制输出的随机性，必须为正数&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// 值越大，会使输出更随机，更具创造性；值越小，输出会更加稳定或确定&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;zhipuChatCompletion&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setTemperature&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.7f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;zhipuChatCompletion&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setTop_p&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.7f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+            &lt;span class=&quot;nc&quot;&gt;EventSource&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Factory&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;factory&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;EventSources&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;createFactory&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;okHttpClient&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;ObjectMapper&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mapper&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ObjectMapper&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;requestBody&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mapper&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;writeValueAsString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;zhipuChatCompletion&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;Request&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;request&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Builder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+                    &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;https://open.bigmodel.cn/api/paas/v3/model-api/chatglm_std/sse-invoke&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                    &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;RequestBody&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;MediaType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;parse&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ContentType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;JSON&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getValue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;requestBody&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+                    &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;CountDownLatch&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;countDownLatch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CountDownLatch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// 创建事件,控制台输出&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;EventSource&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;eventSource&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;factory&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;newEventSource&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ConsoleEventSourceListener&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;countDownLatch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;countDownLatch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;await&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Exception&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;llm-chat异常：{}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getMessage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;SSE流式的调用我们使用了&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;okhttp-sse&lt;/code&gt;组件提供的功能快速实现。&lt;/p&gt;
+
+&lt;p&gt;好了，整个工程层面的Java代码实现就已经全部完成了。&lt;/p&gt;
+
+&lt;h2 id=&quot;最后&quot;&gt;最后&lt;/h2&gt;
+
+&lt;p&gt;以上就是本片分享的全部内容了，通过Java开发语言，实现一个最小可用级别的RAG大模型应用！相信你看完本文后，也能够对AI大模型应用的开发有一个基本的了解。&lt;/p&gt;
+
+&lt;p&gt;如果你也在关注大模型、RAG检索增强生成技术，欢迎关注我，一起探索学习、成长～！&lt;/p&gt;
+
+&lt;h2 id=&quot;附录&quot;&gt;附录&lt;/h2&gt;
+
+&lt;p&gt;本文代码Github：&lt;a href=&quot;https://github.com/xiaoymin/LlmInAction&quot;&gt;https://github.com/xiaoymin/LlmInAction&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;智谱AI：&lt;a href=&quot;https://open.bigmodel.cn/&quot;&gt;https://open.bigmodel.cn/&lt;/a&gt;&lt;/p&gt;</content><author><name>八一菜刀</name></author><category term="大模型" /><category term="Java" /><summary type="html">前言</summary></entry><entry><title type="html">全面进击AI大模型、RAG领域</title><link href="http://localhost:4000/2023/10/10/llm-start/" rel="alternate" type="text/html" title="全面进击AI大模型、RAG领域" /><published>2023-10-10T00:00:00+08:00</published><updated>2023-10-10T00:00:00+08:00</updated><id>http://localhost:4000/2023/10/10/llm-start</id><content type="html" xml:base="http://localhost:4000/2023/10/10/llm-start/">&lt;h2 id=&quot;写在前面&quot;&gt;写在前面&lt;/h2&gt;
+
+&lt;p&gt;首先，&lt;strong&gt;非常感谢关注Knife4j项目的朋友&lt;/strong&gt;，该公众号应该是今年开始，对于开源项目Knife4j的更新都在此公众号进行了第一时间的发布更新，包括该项目的迭代、想法、实践等等内容，包括最近Knife4j的付费产品Knife4jInsight的推出，虽然更新的不是很频繁，但对于还是要给自己一直坚持的事情做输出点赞的(感动了自己😹)。对于写公众号而言，对于文章的发表，如果有人持续关注的话，会是一种正向的鼓励～！&lt;/p&gt;
+
+&lt;p&gt;而现在，考虑到我实际工作中的内容，目前工作核心是在做&lt;strong&gt;大模型RAG(检索增强生成)方面&lt;/strong&gt;的开发工作，主要还是以Java技术栈进行产品的功能迭代开发，Python语言则更多的偏向底层大模型方面，包括大模型(LLM)的训练、微调、数据标注、向量Embedding等领域，工程上，业务产品测的逻辑实现、编排，接口开发等等功能还是以Java语言实现为主，并非使用当下最火的LangChain、LlaMaIndex等Python框架，我在昨天看一本书&lt;strong&gt;《Java开发之道》&lt;/strong&gt;里面提到，开发者在实际开发过程中，&lt;strong&gt;在产品或项目开发周期结束后，需要善于总结自己的工作内容&lt;/strong&gt;，我觉得以Blog或者视频的形式进行输出最好，这样才能更快速的成长。&lt;/p&gt;
+
+&lt;p&gt;我回想起这么多年的工作，对于一个领域，&lt;strong&gt;不管是技术层面，或者是业务层面，似乎一直是缺少总结性的输出的，或者说做的都不是太深入&lt;/strong&gt;。在早些时候，我和我的老大哥员外说，这么多年做的东西不管是产品、还是项目，都不太能拿的出手，而&lt;strong&gt;随着时间越久，这种深深的挫败感&lt;/strong&gt;就从内心油然而生，每每想起，都自感恼火😫。主要原因还是我们做的东西都太表面了，在技术层面，我们很多技术都是浮于表面，并&lt;strong&gt;没有做持续深度的精进&lt;/strong&gt;，产品层面，一个像样的&lt;strong&gt;产品是经过千锤百炼的打磨&lt;/strong&gt;的，细扣每一个细节，把同类竞品比下去，也许产品上面一个看似不起眼的优点，都能把同类的竞品给比下去，而要做到产品上的优势体现，技术人员的投入是成正相关的。项目就更不用说了，&lt;strong&gt;交钥匙工程(内部代号，意指项目做完就验收了，至于使用如何，功能好不好用从来没care过，业主也不care)&lt;/strong&gt;的项目做的已经数都数不过来了。&lt;/p&gt;
+
+&lt;p&gt;而最近我和我的老伙计员外已经一头扎进了AI大模型、RAG(Retrieval Augmented Generation-检索增强生成)这个赛道，每天讨论的都是大模型、RAG等相关内容，然后产品的技术栈开发又是Java为主，Python为辅，在Java语言这个领域开发AI应用，好像目前在RAG这个领域并没有相关的技术文档、博客输出，基本80%都是Python，我在看了&lt;strong&gt;LangChain&lt;/strong&gt;、&lt;strong&gt;LlaMaIndex&lt;/strong&gt;等Python框架处理开发大模型应用(主要是RAG)时，除了在本地加载大模型外，很多其实都是工程方面的知识，并非一定要使用Python语言来进行开发，而我最近实际工作中又在做这个，因此，希望能够通过以Java+Python两种语言的形式，通过学习大模型、RAG等新型领域的知识,甚至是学习Python语言，将自己学到的内容以及一些工作中的实践通过文章的方式进行输出分享，更多的还是会将内容应用的实际的产品中，也希望在这个领域做一个深耕，不管是技术上还是业务领域，大模型这一波，我觉得每一个开发者都应该持续保持关注。&lt;/p&gt;
+
+&lt;p&gt;在AI大模型、RAG这个赛道，我们要做的事情：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;技术：&lt;/strong&gt;深挖AI大模型、RAG领域的技术细节(应用工程领域)，从思想、代码、架构等领域都需要&lt;strong&gt;花120%的投入&lt;/strong&gt;，知其所以然！&lt;/p&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;☑️ 考虑到我并非搞算法的人员，底层的大模型算法等内容，我觉得对于我自己的要求而言，做到知道、了解即可，甚至有必要的话，搞一张4090(太贵了，还没舍得买)的卡跑跑预训练的模型也是有必要的！&lt;/p&gt;
+
+      &lt;p&gt;☑️ RAG领域在工程层面的知识所涉及的面也是足够广的，对于做应用开发者而言，也并非一朝一夕就能全盘了解其中的细节，需要做的就是两字：&lt;strong&gt;“深耕”&lt;/strong&gt;&lt;/p&gt;
+
+      &lt;p&gt;☑️ 技术层面有时候是需要较真一下的，解决关键的核心技术问题是对竞对产品的致命打击&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;产品&lt;/strong&gt;：&lt;strong&gt;坚持价值输出导向,倾听客户的意见,坚决反对交钥匙工程&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;☑️ 技术上输出最终都会落地到实际应用产品的开发上，而产品需要坚持的事情则是要尊重用户，技术测则需要尊重产品&lt;/p&gt;
+
+      &lt;p&gt;☑️ 价值输出导向是永恒的真理，客户付费买单，最终看中的也是这个产品所带来的价值，或者说能够给客户带来收益(赚钱才是硬道理)&lt;/p&gt;
+
+      &lt;p&gt;☑️ 做顺势而为的事情，而大模型这一波技术浪潮，我觉得做这方面相关的内容或者产品技术探索，就是顺势了&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;-新名称&quot;&gt;🆕 新名称&lt;/h2&gt;
+
+&lt;p&gt;这个公众号之前都是以Swagger/OpenAPI/Knife4j等领域相关的名称，因为一直在维护开源项目Knife4j，主要还是和接口相关的，就一直用了这些名称！思来想去，公众号的性质也是个人性质，以后更多的还是以个人的一些想法、工作实践等内容为主进行输出，就干脆换回之前一直用的网络昵称名称吧：&lt;strong&gt;八一菜刀&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;🆕 名称含义(该公众号之前注册时也是用的这个名称，相当于恢复出厂设置了)&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;八一&lt;/strong&gt;：字面意思一致&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;菜刀&lt;/strong&gt;：作者故乡来自湖南省桑植县，贺龙元帅故乡，贺老总两把菜刀闹革命是旗帜，以此纪念，同时也有时刻思念故乡之意！&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;️-要写一些什么呢&quot;&gt;✍️ 要写一些什么呢？&lt;/h2&gt;
+
+&lt;p&gt;目前看来，主要两个方面：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;开源&lt;/strong&gt;：开源项目&lt;strong&gt;Knife4j并没有停更&lt;/strong&gt;，所以和这个项目相关的内容、资讯等，也会同步发布在这个公众号里面，这个项目作者有精力的情况下还是会持续更新下去的。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;RAG&lt;/strong&gt;：以学习者的心态，学习大模型领域相关的技术，特别是RAG领域，这块领域我觉得哪怕你不是一个算法人员，而仅仅只是一个普通的开发者(Java/Python/.Net等)，是可以触控可及的，而我的工作中目前正在做这类产品的开发迭代，不管是学习或者工作中，必然会碰到很多棘手的问题，那么就会将自己的思考以及实践总结分享出来。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;结合我最近的工作内容，我总结了一部分的大纲内容(后面随着学习的深入可能会扩展更多)，如下图：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/llm/llm-start/image-20231010104036526.png&quot; alt=&quot;image-20231010104036526&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在技术层面，我愿称这方面的技术合集为”&lt;strong&gt;大模型应用工程技术&lt;/strong&gt;“。&lt;/p&gt;
+
+&lt;p&gt;为什么这么说呢？主要几个方面：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;主要还是基于应用层面的技术围绕展开，而底层的&lt;strong&gt;大模型训练&lt;/strong&gt;、&lt;strong&gt;数据标注&lt;/strong&gt;、&lt;strong&gt;基于预训练模型的微调(Fine-turn)&lt;/strong&gt;等领域，我觉得那是专业算法人员干的事情，比如基于企业的私有数据调整开源预训练大模型的权重，通过SFT手段进行微调，或者从0到1基于数据语料构建一个全新的垂直领域的Embedding模型，这已经属于更便底层的领域了，相信很多和我一样的Java开发人员其实像接触到这方面的知识，哪怕是学习都是很吃力的，就做到了解和知道吧，看个人兴趣。&lt;/li&gt;
+  &lt;li&gt;而RAG领域的知识点，更多的是偏工程应用技术，包括&lt;strong&gt;数据的处理&lt;/strong&gt;、&lt;strong&gt;存储&lt;/strong&gt;、&lt;strong&gt;逻辑编排&lt;/strong&gt;等等对于非算法领域的人员，对于业务开发人员来说我们是擅长的，虽然也是和AI大模型挂钩，但LLM作为底层的基础设施，我们更多的是使用大模型的能力，在大模型基础之上，构建上层的应用烟囱，所以作为开发人员，是可以尝试去学习、了解的，我认为是触手可及的。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;而在”&lt;strong&gt;大模型应用工程技术&lt;/strong&gt;“，我初步列了一个大纲(后面随着学习的深入可能会扩展更多)&lt;/p&gt;
+
+&lt;p&gt;目前包含的几个方面：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;向量Embedding&lt;/strong&gt;：在RAG领域中，将多模态数据(文本、图像、视频、音频等数据)进行向量Embedding的嵌入转化，通过向量计算召回Top k，可以解决很多实际生产中的问题，比如：文本相似度计算、以图搜图、以文搜图等等，这方面都会涉及到向量的知识。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;LLM语言模型&lt;/strong&gt;：LLM大模型(Large Language Model)作为基础设施，是上层应用的基石，但是在应用领域中，对大模型的了解也是很有必要的，包括Prompt的构建优化、模型参数的差异以及不同效果体现、模型的部署和训练微调、开源模型以及商业模型等等&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;多模态数据&lt;/strong&gt;：RAG相关的AI应用，离不开数据的处理，在很多LLM大模型中，也标注为多模态大模型，包括文生图、图生图等等，但在应用领域，文本(pdf/word/html/text等)、图片、视频、音频等等格式的数据处理是无可避免的，还包括市面上很多非结构化的数据处理等内容，工程层面的技术可以说是如星辰大海般辽阔，技术人员学习之路无穷无尽。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;基础知识：&lt;/strong&gt;在做应用层面的开发上，当然离不开基础知识点的学习，常用的包括HTTP SSE协议、向量等等知识点。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;基础工具包&lt;/strong&gt;:工欲善其事，必先利其器，在当下的开源大环境下，有非常多的优秀的工具辅助开发者开发生产级别的应用，以Python、Java这两大语言生态为标杆，生态及其丰富，而我们在做应用成技术的开发离不开这些优秀的组件，掌握组件的用法也是必须的。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;基础算法：&lt;/strong&gt;虽然是做应用层面的开发，基础的常用算法，该学习的还是需要去了解的，像贝叶斯、KNN、决策树等等，了解算法的原理实践，对于生产环境的代码编写时非常有指导思想的，否则你都不知道这段代码为何这么写，而每个算法解决的都是非常实际的问题。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;应用场景：&lt;/strong&gt;技术人员在开发产品时，也应该关注应用场景及市场，开发出来的产品解决了什么问题，有什么价值作为技术人员也应该学会思考。在大模型领域，以RAG赛道来看，触及的场景其实也是非常多的，比如：智能客服、以图搜图/视频等等，要关注实际的产品需求，然后转化为技术输出，这样我们作为开发人员所写的代码才是有价值的。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;RAG：&lt;/strong&gt;RAG全称&lt;strong&gt;Retrieval Augmented Generation(检索增强生成)&lt;/strong&gt;，是属于AI生成式技术领域范围，解决大模型的幻觉(胡说八道)、数据不及时(数据未更新)等领域的问题，通过将企业自己的数据通过传统的工程技术结合向量Embeding进行处理，然后通过检索的方式将企业内部数据构建送给大模型进行内容的回答生成，这种方式有效的避免了大模型胡说八道和数据不准确的问题，在企业不同的领域中有非常宽广的应用领域，当然这里面所涵盖的面以及问题也是非常的广，比如：
+    &lt;ul&gt;
+      &lt;li&gt;大模型出现幻觉(送给LLM的Context不准，导致大模型胡说八道)如何解决？&lt;/li&gt;
+      &lt;li&gt;按固定size进行分割，出现上下文语义丢失，核心信息检索问答生成失败，回答不准确&lt;/li&gt;
+      &lt;li&gt;千万级数据量文档检索效率问题&lt;/li&gt;
+      &lt;li&gt;大模型Token限制问题导致在一个文档中出现多段落讲解同一个事情的情况下会回答不完整如何处理&lt;/li&gt;
+      &lt;li&gt;……&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;这些都只是AI大模型、RAG等领域的冰山一角，千里之行，始于足下，作为技术人员，那么就从现在开始，一步步学起来吧～&lt;/p&gt;
+
+&lt;h2 id=&quot;最后&quot;&gt;最后&lt;/h2&gt;
+
+&lt;p&gt;如果你最近也在做RAG领域相关的技术研究或者产品开发，欢迎关注、沟通交流合作！！！&lt;/p&gt;</content><author><name>八一菜刀</name></author><category term="大模型" /><summary type="html">写在前面</summary></entry><entry><title type="html">Knife4jInsight平台版-MVP版本v1.0.0发布</title><link href="http://localhost:4000/2023/09/18/knife4j-insight-mvp/" rel="alternate" type="text/html" title="Knife4jInsight平台版-MVP版本v1.0.0发布" /><published>2023-09-18T00:00:00+08:00</published><updated>2023-09-18T00:00:00+08:00</updated><id>http://localhost:4000/2023/09/18/knife4j-insight-mvp</id><content type="html" xml:base="http://localhost:4000/2023/09/18/knife4j-insight-mvp/">&lt;p&gt;在之前发布的《Knife4j新产品的想法》一文中，我提到想给Knife4j的生态做一些扩展，区别于目前市面上不一样的功能或者工具产品。&lt;/p&gt;
 
 &lt;p&gt;主要还是聚焦在Knife4j这个开源项目上，然后将自己的一些想法进行输出,并将一些在单体工具组件中无法解决落地的需求场景，共同灌注在这个新的产品中。&lt;/p&gt;
 
@@ -199,9 +806,9 @@
   &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;p&gt;产品首页：http://knife4j.net&lt;/p&gt;
+&lt;p&gt;产品首页：&lt;a href=&quot;http://knife4j.net&quot;&gt;http://knife4j.net&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;产品试用：https://console.knife4j.net&lt;/p&gt;
+&lt;p&gt;产品试用：&lt;a href=&quot;https://console.knife4j.net&quot;&gt;https://console.knife4j.net&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;期待Knife4j和Knife4jInsight齐头并进,创造更好的产品服务！！！&lt;/p&gt;</content><author><name>八一菜刀</name></author><category term="Knife4jInsight" /><summary type="html">在之前发布的《Knife4j新产品的想法》一文中，我提到想给Knife4j的生态做一些扩展，区别于目前市面上不一样的功能或者工具产品。</summary></entry><entry><title type="html">Knife4jInsight的产品开发历程</title><link href="http://localhost:4000/2023/09/17/knife4j-insight-dev/" rel="alternate" type="text/html" title="Knife4jInsight的产品开发历程" /><published>2023-09-17T00:00:00+08:00</published><updated>2023-09-17T00:00:00+08:00</updated><id>http://localhost:4000/2023/09/17/knife4j-insight-dev</id><content type="html" xml:base="http://localhost:4000/2023/09/17/knife4j-insight-dev/">&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
 
@@ -1633,117 +2240,4 @@ public boolean supports(DocumentationType documentationType) {
 
 &lt;h2 id=&quot;-总结&quot;&gt;📖 总结&lt;/h2&gt;
 
-&lt;p&gt;本文主要介绍了基于springfox或者springdoc框架，添加自定义API接口的示例，开发者可以根据其中的思想自行扩展，达到自己的业务需求。&lt;/p&gt;</content><author><name>八一菜刀</name></author><category term="Knife4j" /><summary type="html">本文主要介绍在 Spring Boot 应用中,如何使用 springfox 和 springdoc 框架自定义添加外部 API 接口,并在 Knife4j 的 UI 界面中展示。</summary></entry><entry><title type="html">Knife4j框架相关的blog</title><link href="http://localhost:4000/2023/07/10/knife4j-action-index/" rel="alternate" type="text/html" title="Knife4j框架相关的blog" /><published>2023-07-10T00:00:00+08:00</published><updated>2023-07-10T00:00:00+08:00</updated><id>http://localhost:4000/2023/07/10/knife4j-action-index</id><content type="html" xml:base="http://localhost:4000/2023/07/10/knife4j-action-index/">&lt;blockquote&gt;
-  &lt;p&gt;温馨提醒
-&lt;strong&gt;Knife4jInsight(简单、方便的OpenAPI接口文档私有化聚合平台),地址&lt;/strong&gt;：&lt;a href=&quot;http://knife4j.net&quot;&gt;http://knife4j.net&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;最近想来,Knife4j的&lt;a href=&quot;https://gitee.com/xiaoym/knife4j&quot;&gt;Gitee&lt;/a&gt;和&lt;a href=&quot;https://github.com/xiaoymin/knife4j&quot;&gt;Github&lt;/a&gt;的仓库已经有接近2000+的issues了,issues中有包含的内容大部分都是提问为主，因此有一个想法，针对Knife4j仓库中的issues中的典型问题，整理成文章，分享给大家&lt;/p&gt;
-
-&lt;p&gt;大家也可以作为教程进行参考。&lt;/p&gt;
-
-&lt;blockquote&gt;
-
-  &lt;p&gt;😄 Welcome Join Us
-也欢迎大家投稿、提交PR一起参与进来&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;我想一篇内容主题输出的主要的形式包括：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;📝 &lt;strong&gt;一篇文章&lt;/strong&gt; : 文章会在官网的&lt;a href=&quot;https://doc.xiaominfo.com/docs/blog&quot;&gt;Blog专栏&lt;/a&gt;和微信公众号同步发表&lt;/li&gt;
-  &lt;li&gt;🌱 &lt;strong&gt;一份Git仓库代码&lt;/strong&gt; ：每篇文章的代码仓库会同步更新到Github，仓库地址: &lt;a href=&quot;https://github.com/xiaoymin/knife4j-demo&quot;&gt;knife4j-demo&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;✅ &lt;strong&gt;关联N个issues&lt;/strong&gt; : 主要以仓库issues或者交流群的问题为文章的来源,透过问题希望能讲清楚&lt;/li&gt;
-  &lt;li&gt;🎥 &lt;strong&gt;一个视频&lt;/strong&gt; : 看是否有足够的时间，录制一个简单的视频继续加以说明&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;主要目的：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;💪 磨练自己的性格，做事的性格和毅力&lt;/li&gt;
-  &lt;li&gt;🔥 为&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Knife4j&lt;/code&gt; 、 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Swagger&lt;/code&gt; 、 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;OpenAPI&lt;/code&gt;生态添砖加瓦&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Blog列表：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;📝 &lt;a href=&quot;blog/customer-add-api&quot;&gt;2023/07/13: 如何自定义添加API接口在Knife4j界面中显示&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;📝 &lt;a href=&quot;blog/use-claude-fixed-issues&quot;&gt;2023/07/15: 使用Claude修改Knife4j中的issues&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;📝 &lt;a href=&quot;blog/production-forbidden-ui&quot;&gt;2023/07/19: 生产环境如何屏蔽Knife4j、Swagger等Ui资源和接口&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;📝 &lt;a href=&quot;blog/handler-enum&quot;&gt;2023/08/07: 枚举烦恼终结!在Knife4j文档中如何优雅的处理枚举类型的展示及调试问题&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;📝 &lt;a href=&quot;blog/gateway/knife4j-gateway-introduce&quot;&gt;2023/08/13: Spring Cloud Gateway网关下的文档聚合?就用它了&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;📝 &lt;a href=&quot;blog/product/knife4j-new-product-idea&quot;&gt;2023/09/07: Knife4j新产品的想法&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;📝 &lt;a href=&quot;blog/product/knife4j-insight-mvp&quot;&gt;2023/09/19: Knife4jInsight平台版-MVP版本v1.0.0发布&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;📝 &lt;a href=&quot;blog/product/knife4j-insight-dev&quot;&gt;2023/09/20: Knife4jInsight的产品开发历程&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>八一菜刀</name></author><category term="Knife4j" /><summary type="html">温馨提醒 Knife4jInsight(简单、方便的OpenAPI接口文档私有化聚合平台),地址：http://knife4j.net</summary></entry><entry><title type="html">2023年6月最新注册ChatGPT账号流程</title><link href="http://localhost:4000/2023/06/10/chatgpt-register/" rel="alternate" type="text/html" title="2023年6月最新注册ChatGPT账号流程" /><published>2023-06-10T00:00:00+08:00</published><updated>2023-06-10T00:00:00+08:00</updated><id>http://localhost:4000/2023/06/10/chatgpt-register</id><content type="html" xml:base="http://localhost:4000/2023/06/10/chatgpt-register/">&lt;h2 id=&quot;chatgpt是什么&quot;&gt;ChatGPT是什么？&lt;/h2&gt;
-
-&lt;p&gt;ChatGPT（全名：Chat Generative Pre-trained Transformer），是&lt;a href=&quot;https://baike.baidu.com/item/OpenAI/19758408?fromModule=lemma_inlink&quot;&gt;OpenAI&lt;/a&gt; 研发的&lt;a href=&quot;https://baike.baidu.com/item/聊天机器人/1052902?fromModule=lemma_inlink&quot;&gt;聊天机器人&lt;/a&gt;程序,于2022年11月30日发布 。&lt;/p&gt;
-
-&lt;p&gt;ChatGPT是&lt;a href=&quot;https://baike.baidu.com/item/人工智能/9180?fromModule=lemma_inlink&quot;&gt;人工智能&lt;/a&gt;技术驱动的&lt;a href=&quot;https://baike.baidu.com/item/自然语言处理/365730?fromModule=lemma_inlink&quot;&gt;自然语言处理&lt;/a&gt;工具，它能够通过理解和学习人类的语言来进行对话，还能根据聊天的&lt;a href=&quot;https://baike.baidu.com/item/上下文/2884376?fromModule=lemma_inlink&quot;&gt;上下文&lt;/a&gt;进行互动，真正像人类一样来聊天交流，甚至能完成撰写&lt;a href=&quot;https://baike.baidu.com/item/邮件/3110293?fromModule=lemma_inlink&quot;&gt;邮件&lt;/a&gt;、视频&lt;a href=&quot;https://baike.baidu.com/item/脚本/399?fromModule=lemma_inlink&quot;&gt;脚本&lt;/a&gt;、&lt;a href=&quot;https://baike.baidu.com/item/文案/92610?fromModule=lemma_inlink&quot;&gt;文案&lt;/a&gt;、&lt;a href=&quot;https://baike.baidu.com/item/翻译/32864?fromModule=lemma_inlink&quot;&gt;翻译&lt;/a&gt;、&lt;a href=&quot;https://baike.baidu.com/item/代码/86048?fromModule=lemma_inlink&quot;&gt;代码&lt;/a&gt;，写&lt;a href=&quot;https://baike.baidu.com/item/论文/149478?fromModule=lemma_inlink&quot;&gt;论文&lt;/a&gt; 等任务。&lt;/p&gt;
-
-&lt;h2 id=&quot;账号注册流程准备工作&quot;&gt;账号注册流程(准备工作)&lt;/h2&gt;
-
-&lt;p&gt;由于ChatGPT在中国服务不可用，而注册ChatGPT最终需要通过手机号短信验证才能最终完成注册。这对于没有国外手机号的小伙伴而言就很苦恼了。而解决短信验证问题，我们可以通过虚拟手机号短信平台来平替，最终帮助我们完成注册。&lt;/p&gt;
-
-&lt;p&gt;所以，在注册ChatGPT之前。你需要准备：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;可以稳定科学上网的工具&lt;/li&gt;
-  &lt;li&gt;一个常用的邮箱账号，建议使用Google的GMail邮箱&lt;/li&gt;
-  &lt;li&gt;充值购买虚拟短信平台的SMS账号(1美元，支持支付宝)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;ChatGPT官网地址：&lt;a href=&quot;https://chat.openai.com/&quot;&gt;https://chat.openai.com&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;虚拟短信sms平台&quot;&gt;虚拟短信SMS平台&lt;/h2&gt;
-
-&lt;p&gt;科学上网的工具大家自行查找获取吧，这里只分享给大家虚拟短信平台SMS的流程&lt;/p&gt;
-
-&lt;p&gt;可以访问网站：&lt;a href=&quot;https://smspva.com/&quot;&gt;https://smspva.com/&lt;/a&gt;进行充值，支持支付宝，充值1美元即可。&lt;/p&gt;
-
-&lt;p&gt;网站如下图：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/llm/chatgpt-register/image-20230610204526691.png&quot; alt=&quot;image-20230610204526691&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;首先进行充值，点击充值余额按钮，进入充值页面(选择支付宝):&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/llm/chatgpt-register/image-20230610204826721.png&quot; alt=&quot;image-20230610204826721&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;当你充值完成后，首先需要选择国家(建议选择&lt;strong&gt;美国&lt;/strong&gt;，成功率高一些)，选择国家后，即可以看到OpenAPI的供应商，点击即可&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/llm/chatgpt-register/image-20230610204633745.png&quot; alt=&quot;image-20230610204633745&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;选择OpenAI API选项后，在右边会出现一个手机号码，这个手机号码在你最终注册ChatGPT账号获取短信验证的时候，填入电话号码，然后等待网站显示ChatGPT发送的短信验证码即可：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/llm/chatgpt-register/20230609091824-6401445.jpg&quot; alt=&quot;image-1445&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;iphone手机下载chatgpt的app&quot;&gt;iPhone手机下载ChatGPT的APP&lt;/h2&gt;
-
-&lt;h3 id=&quot;准备工作&quot;&gt;准备工作&lt;/h3&gt;
-
-&lt;p&gt;在iPhone手机中，如果你要下载ChatGPT官方的APP，那么你需要以下准备工作：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;一个美区的AppleID，注册流程可以参考知乎文章&lt;a href=&quot;https://zhuanlan.zhihu.com/p/367821925&quot;&gt;五分钟注册美区AppleID&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;在iPhone上面能够科学上网的工具&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;下载官方app&quot;&gt;下载官方App&lt;/h3&gt;
-
-&lt;p&gt;我们在上面注册ChatGPT账号成功后，就可以在Web端成功使用ChatGPT了。&lt;/p&gt;
-
-&lt;p&gt;如果你的手机是iPhone,那么也可以通过下载官方(请认准官方，APP Store上面太多李鬼了)提供的APP进行使用&lt;/p&gt;
-
-&lt;p&gt;iOS地址：&lt;a href=&quot;https://apps.apple.com/app/openai-chatgpt/id6448311069&quot;&gt;https://apps.apple.com/app/openai-chatgpt/id6448311069&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/llm/chatgpt-register/image-20230610210149945.png&quot; alt=&quot;image-20230610210149945&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/llm/chatgpt-register/image-20230610210220577.png&quot; alt=&quot;image-20230610210220577&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;最后&quot;&gt;最后&lt;/h2&gt;
-
-&lt;p&gt;好了，上面就是分享的最新ChatGPT的账号注册以及IOS下载的流程。&lt;/p&gt;
-
-&lt;p&gt;如果你对本篇文中中的任何步骤存在疑问，可以关注下面公众号加入交流群获取帮助。&lt;/p&gt;
-
-&lt;p&gt;关注我，获取更多开源、AI等方面的最新资讯信息&lt;/p&gt;</content><author><name>八一菜刀</name></author><category term="大模型" /><summary type="html">ChatGPT是什么？</summary></entry></feed>
+&lt;p&gt;本文主要介绍了基于springfox或者springdoc框架，添加自定义API接口的示例，开发者可以根据其中的思想自行扩展，达到自己的业务需求。&lt;/p&gt;</content><author><name>八一菜刀</name></author><category term="Knife4j" /><summary type="html">本文主要介绍在 Spring Boot 应用中,如何使用 springfox 和 springdoc 框架自定义添加外部 API 接口,并在 Knife4j 的 UI 界面中展示。</summary></entry></feed>
