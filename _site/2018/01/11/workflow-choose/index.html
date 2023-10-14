@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>工作流引擎技术选型 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2018/01/11/workflow-choose/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="工作流引擎技术选型">
+      
+    <meta name="keywords" content="Snaker,Activiti,floable,openwebflow">
+    <meta name="og:keywords" content="Snaker,Activiti,floable,openwebflow">
+      
+    <meta name="description" content="Snaker">
+    <meta name="og:description" content="Snaker">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2018/01/11/workflow-choose/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2018-01-11">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="工作流引擎技术选型">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">工作流引擎技术选型</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2018/01/11
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#工作流" title="工作流">工作流</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <h2 id="snaker">Snaker</h2>
+
+<p>Snaker是一个基于Java的开源工作流引擎，适用于企业应用中常见的业务流程。本着轻量、简单、灵巧理念设计，定位于简单集成，多环境支持</p>
+
+<p><strong>轻量:</strong></p>
+
+<p>核心代码行数大约7000行，强大的扩展性，支持Spring、Jfinal、Nutz平台级框架；支持Jdbc、SpringJdbc、Hibernate3or4、Mybatis等orm框架</p>
+
+<p><strong>简单:</strong></p>
+
+<p>表设计简单，流程组件简单[start/end/task/custom/subprocess/decision/fork/join]</p>
+
+<p><strong>灵巧:</strong></p>
+
+<p>暴露大量可扩展接口，支持流程设计器、流程引擎的组件模型自定义[节点自定义、属性自定义、表单自定义]</p>
+
+<p><strong>Wiki:</strong><a href="http://snakerflow.com/">http://snakerflow.com/</a></p>
+
+<p><strong>演示应用:</strong> <a href="http://git.oschina.net/yuqs/snaker-web">http://git.oschina.net/yuqs/snaker-web</a></p>
+
+<p>GITHUB:https://github.com/snakerflow/snakerflow</p>
+
+<p><img src="/images/blog/workflow-choose/snakerflow-github.jpg" alt="" /></p>
+
+<h2 id="openwebflow">openwebflow</h2>
+
+<p><img src="/images/blog/workflow-choose/openwebflow.png" alt="" /></p>
+
+<p>OpenWebFlow是基于Activiti（官方网站<a href="http://activiti.org/">http://activiti.org/</a>）扩展的工作流引擎（国人开发），它扩展的功能包括：</p>
+
+<ul>
+  <li>完全接管了Activiti对活动（activity）权限的管理。Activiti允许在设计model的时候指定每个活动的执行权限，但是，业务系统可能需要根据实际情况动态设置这些任务的执行权限（如：动态的Group）。OpenWebFlow完全实现了与流程定义时期的解耦，即用户对活动的访问控制信息单独管理（而不是在流程定义中预先写死），这样有利于动态调整权限，详见<a href="https://github.com/bluejoe2008/openwebflow/wiki/Activity-Permission-Management">自定义活动权限管理</a>；</li>
+  <li>完全接管了Activiti对用户表（IDENTITY_XXX表）的管理。在标准的工作流定义中，每个节点可以指定其候选人和候选用户组，但是比较惨的是，Activiti绑架了用户信息表的设计！这个是真正致命的，因为几乎每个业务系统都会属于自己的用户信息结构（包括User/Group/Membership），但不一定它存储在Activiti喜欢的那个库中，表的结构也不一定一样，有的时候，某些信息（如：动态的Group）压根儿就不采用表来存储。OpenWebFlow剥离了用户信息表的统一管理，客户程序可以忘掉Activiti的用户表、群组表、成员关系表，详见<a href="https://github.com/bluejoe2008/openwebflow/wiki/Custom-User-Group-Membership-Manager">自定义用户成员关系管理</a>；</li>
+  <li>允许运行时定义activity！彻底满足“中国特色”，并提供了安全的（同时也是优雅的）催办、代办、加签（包括前加签/后加签）、自由跳转（包括前进/后）、分裂节点等功能；</li>
+</ul>
+
+<p>支持与致谢</p>
+
+<ul>
+  <li>开发者使用帮助：<a href="https://github.com/bluejoe2008/openwebflow/wiki">https://github.com/bluejoe2008/openwebflow/wiki</a></li>
+  <li><a href="https://github.com/bluejoe2008/openwebflow/blob/master/doc/OpenWebFlow%E5%B7%A5%E4%BD%9C%E6%B5%81%E5%BC%95%E6%93%8E%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C%E4%B8%8E%E8%AE%BE%E8%AE%A1%E8%AF%B4%E6%98%8E.pdf?raw=true">使用手册与设计说明书（PDF格式）</a></li>
+</ul>
+
+<p>详细说明：https://my.oschina.net/bluejoe/blog/1552284#comment-list</p>
+
+<p>GITHUB地址：https://github.com/bluejoe2008/openwebflow</p>
+
+<p><img src="/images/blog/workflow-choose/openwebflow-github.jpg" alt="" /></p>
+
+<h2 id="jbpm">JBPM</h2>
+
+<p>jBpm是一个灵活可扩展的工作流管理系统。作为 jBpm运行时server输入的业务流程使用简单强大的语言表达并打包在流程档案中。jBpm将工作流应用开发的便利性和杰出的企业应用集成（EAI）能力结合了起来。jBpm包括一个Web应用程序和一个日程安排程序。jBpm是一组J2SE组件，可以作为J2EE应用集群部署。</p>
+
+<p><img src="/images/blog/workflow-choose/jbpm.png" alt="jbpm.png" /></p>
+
+<p>JBoss容器下的产品,可能存在兼容性问题，放弃</p>
+
+<p>Activiti的作者即是JBPM原作者</p>
+
+<p>官网：http://www.jbpm.org/</p>
+
+<h2 id="activiti">Activiti</h2>
+
+<p>Activiti是一个业务流程管理(BPM)和工作流系统，适用于开发人员和系统管理员。其核心是超快速，稳定的BPMN2流程引擎。它易于与 Spring集成使用。</p>
+
+<p>用户指南：http://www.activiti.org/userguide/index.html</p>
+
+<p>GITHUB地址：https://github.com/Activiti/Activiti</p>
+
+<p>Github上更新频率最快：</p>
+
+<p><img src="/images/blog/workflow-choose/activiti-github.jpg" alt="" /></p>
+
+<h2 id="flowable">flowable</h2>
+
+<p>flowable工作流是Activiti团队一个分支，从JBPM到Activiti到flowable</p>
+
+<p>flowable是一个用Java实现的轻量级业务工作流引擎，</p>
+
+<p>兼容activiti</p>
+
+<p>支持Spring 、Spring Boot</p>
+
+<p>可以部署到任意Java环境，如java SE、servlet容器、如Tomcat或jetty、Java EE 服务器 如JBoss容器等</p>
+
+<p>GITHUB地址：https://github.com/flowable/flowable-engine</p>
+
+<p>GITHUB更新频率</p>
+
+<p>官网：http://www.flowable.org/</p>
+
+<p><img src="/images/blog/workflow-choose/flowable-github.jpg" alt="" /></p>
+
+<p>支持的数据：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Flowable 数据库类型</th>
+      <th>示例jdbc url</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>h2</td>
+      <td>jdbc:h2:tcp://localhost/flowable</td>
+      <td>默认配置数据库</td>
+    </tr>
+    <tr>
+      <td>mysql</td>
+      <td>jdbc:mysql://localhost:3306/flowable?autoReconnect=true</td>
+      <td>测试使用mysql-connector-java数据库驱动</td>
+    </tr>
+    <tr>
+      <td>oracle</td>
+      <td>jdbc:oracle:thin:@localhost:1521:xe</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>postgres</td>
+      <td>jdbc:postgresql://localhost:5432/flowable</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>db2</td>
+      <td>jdbc:db2://localhost:50000/flowable</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>mssql</td>
+      <td>jdbc:sqlserver://localhost:1433;databaseName=flowable (jdbc.driver=com.microsoft.sqlserver.jdbc.SQLServerDriver) <em>OR</em> jdbc:jtds:sqlserver://localhost:1433/flowable (jdbc.driver=net.sourceforge.jtds.jdbc.Driver)</td>
+      <td>测试使用Microsoft JDBC Driver 4.0 (sqljdbc4.jar) 驱动</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>flowable的数据库名称都以act_开始。第二部分是对表格用例的两个字符的识别。这个用例也大致匹配服务API。</p>
+
+<p>act_re_ *：代表基础仓库。带有此前缀的表包含静态信息，如流程定义和流程资源（图像、规则等）。</p>
+
+<p>act_ru_ *：运行库。这些是运行时表，其中包含进程实例、用户任务、变量、作业等的运行时数据。流动只存储过程实例的执行过程中的运行时数据和删除记录时，一个流程实例结束。这样可以使运行时表小而快速。</p>
+
+<p>act_hi_ *：历史库，代表历史。这些表包含历史数据，如过去的流程实例、变量、任务等。</p>
+
+<p>act_ge_ *：常规库，这是用于各种使用案例。</p>
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2018/01/11/workflow-choose/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div style="text-align: center;">
+  <h2>微信公众号</h2>
+</div>
+<div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

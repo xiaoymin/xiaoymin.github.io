@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>前端技术大发展的背景下，谈谈前后端分离的发展与实践，以及后端研发思想的转变 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2018/04/22/front-back-summary/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="前端技术大发展的背景下，谈谈前后端分离的发展与实践，以及后端研发思想的转变">
+      
+    <meta name="keywords" content="前后端分离,架构">
+    <meta name="og:keywords" content="前后端分离,架构">
+      
+    <meta name="description" content="说在前面的话">
+    <meta name="og:description" content="说在前面的话">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2018/04/22/front-back-summary/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2018-04-22">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="前端技术大发展的背景下，谈谈前">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">前端技术大发展的背景下，谈谈前后端分离的发展与实践，以及后端研发思想的转变</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2018/04/22
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#Blog" title="Blog">Blog</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <h2 id="说在前面的话">说在前面的话</h2>
+
+<p>随着前端NodeJs技术的火爆,现在的前端已经非以前传统意义上的前端了,各种前端框架(Vue、React、Angular……)井喷式发展,配合NodeJs服务端渲染引擎,目前前端能完成的工作不仅仅局限于CSS，JS等方面，很多系统的业务逻辑都可以放在前端来完成，例如我司的<strong>游管家</strong></p>
+
+<p>那可能有些人会说,前端这么火,NodeJs发展这么迅猛,后端是不是以后都没事情干了，其实不然,拿Java来说，经过这么多年发展,已经相当稳定,完善的生态圈也非最近今年发展起来的NodeJs可比，我们常常说<strong>闻道有先后，术业有专攻</strong>,用在这里最合适不过了，<strong>集群</strong>、<strong>分布式</strong>、<strong>高可用</strong>等等技术还是需要后端架构师来思考的事情</p>
+
+<p>目前前端同后端的合作方式是前后端分离，通过Nginx+Tomcat的组合部署(还可加nodejs中间件)方式能有效的进行解耦，并且前后端分离为项目以后的架构扩展、微服务化、组件化都打下重要基础,所以这在以后是一个发展的必然趋势,我们需要去适应,做出改变！！！</p>
+
+<h2 id="早期的开发方式">早期的开发方式</h2>
+
+<p>早期的开发方式如下图：</p>
+
+<p><img src="/images/blog/front-back-summary/s1.png" alt="s1" /></p>
+
+<p>这也是我前面工作1-3年的开发方式,我们没有前端帮我们写JS函数功能,所有的页面表单验证,数据渲染,数据接口编写都是我们后端全部实现,看上去更像是一个全栈工程师,从需求分析、搭建整个技术架构、数据库表设计、功能设计、编码开发，再到最终部署上线,我们无所不在,这可能也是目前很多小公司仍然在沿用的开发方式,很多后端同学担负起了项目的方方面面</p>
+
+<p>以我目前的经验来看,这样的开发方式对我个人的成长是有益无害的,因为你只有在了解了前端的JS/CSS/HTML的情况下,然后再谈目前的前后端分离,会让你的工作事半功倍,在写后端接口前,你脑子里浮现的是整个功能的交互页面,最终呈现的是前后端合作开发好后的的终端结果,这大大缩减了前后端的沟通交流</p>
+
+<h2 id="前后端分离的探索">前后端分离的探索</h2>
+
+<h3 id="jsonp">jsonp</h3>
+
+<p>可能由于我在前面三年积累了丰富的前端经验,在上家公司主要负责开发官网、微信、后台等相关系统的接口，前期我们的开发方式虽然也是前后端分离的方式,但大都使用jsonp跨域接口调用的方式来达到分离效果,后端所有的接口都是可跨域调用的jsonp形式,抛开需要登录的授权之外的接口，前端在开发的时候本地无需开启服务即可调用服务端接口，然后渲染数据，完成页面交互渲染效果</p>
+
+<p>jsonp的优点</p>
+
+<blockquote>
+  <p>不像XMLHttpRequest对象实现的Ajax请求那样受到同源策略的限制</p>
+
+  <p>兼容性更好,在更低版本的ie浏览器中都能兼容,这里区别于cors跨域类型</p>
+</blockquote>
+
+<p>jsonp的原理其实很简单，当然,这也涉及到前端的知识,简单点说就是js端的function函数执行</p>
+
+<p>正常的后端响应数据,例如：</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"code"</span><span class="p">:</span><span class="s2">"8200"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"id"</span><span class="p">:</span><span class="s2">"100"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"name"</span><span class="p">:</span><span class="s2">"Test"</span><span class="w">
+        </span><span class="err">//more......</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>jsonp需要的返回格式：</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">callback(</span><span class="p">{</span><span class="w">
+    </span><span class="nl">"code"</span><span class="p">:</span><span class="s2">"8200"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"id"</span><span class="p">:</span><span class="s2">"100"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"name"</span><span class="p">:</span><span class="s2">"Test"</span><span class="w">
+        </span><span class="err">//more......</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="err">);</span><span class="w">
+</span></code></pre></div></div>
+
+<p>前端在页面定义callback回调函数,callback函数接收后端响应回来的data-json数据,后端响应后执行callback函数达到调用前端业务逻辑的目的,渲染页面</p>
+
+<h3 id="nginxajax">nginx+ajax</h3>
+
+<p>这种配合开发方式也是适合前端还没有引入Node等一站式开发解决方案的情况下引入的,纯粹的HTML+CSS+JS同后端对接，绑定业务接口,渲染数据</p>
+
+<p>我们在使用JSONP开发的时候,前端都是需要在页面端写死HOST+IP接口地址,存在很重大一个弊端就是前端需要些config文件，来配置我们后端的接口请求地址，如果前端工程师规范意识强一点，会通用到一个配置文件里，但是如果没有这方面的意识的话，就会出现代码里硬编码的情况，不利于服务器迁移，代码更新，接口变动等操作</p>
+
+<p>为规避上面碰到的问题,使用nginx的反向代理功能,将后端服务器代理下来,前端在开发的时候本地开启nginx服务，即解决了jsonp跨域问题,同时也解决了无需写死后端的服务ip+端口地址，利于后端在部署时整合代码,减少不必要的错误</p>
+
+<h3 id="node">node</h3>
+
+<p>随着NodeJs的火热,前端已经可以本地开启服务写接口的情况下,就类似服务端开启tomcat一样,在这样的情况下，前端框架VUE、React等都在此基础上,提供了一套完整的技术解决方案，这和上面说到的开启nginx服务架构有点类似</p>
+
+<p>这样做的意义：真正的解放了前后端，专注各自擅长的领域</p>
+
+<p>技术架构如下：</p>
+
+<p><img src="/images/blog/front-back-summary/jg.png" alt="" /></p>
+
+<p>前端node服务直接访问后端Java Restful Api接口服务，Api接口最终访问数据库完成数据查询最终返回node层，node渲染响应数据到前端</p>
+
+<p>如果存在会话信息同步等问题，可以使用中间件,例如redis缓存数据库,解决前端node和后端Api信息同步问题，传参可以通过<strong>JWT</strong>等方式完成接口权限验证</p>
+
+<p>不管是jsonp还是ajax+nginx这两种方式,node作为中间件都可以轻松切换处理,而且node作为中间层,还可以将多个后端接口组合成一整个数据集,最终以同步的方式渲染前端,这也利于做SEO优化,也是前面两种方式无法做到的</p>
+
+<p>关于前后端分离,详细可阅读<a href="http://blog.jobbole.com/65513/?from=timeline&amp;isappinstalled=0">前后端分离的思考与实践</a>,该文章详细的列述了关于前后端分离的实际经验</p>
+
+<h2 id="谈谈接口">谈谈接口</h2>
+
+<p>随着前后端的分离,后端工程师不需要编写页面，不需要写JS,只需要提供接口即可,可是就是仅仅这一个接口，对于很多后端开发工程师而言，在实际开发，同前端对接的过程中,依然问题重重</p>
+
+<p>很多后端同学说我只负责写接口,其他我一概不管,这样造成的后果就是</p>
+
+<p><strong>1、接口结构无序、杂乱无章</strong></p>
+
+<p><strong>2、接口和实际业务场景不相匹配、不可用</strong></p>
+
+<p><strong>3、频繁的同前端沟通，简单的事情复杂化,前后端都很恼火</strong></p>
+
+<p><strong>4、事情没做好</strong></p>
+
+<p>后端在编写接口前,首先是对业务的理解,在对业务未理解透彻之前,编码都是无意义的,作为后端来说,需要锻炼自己对整个系统全局考虑的能力,接口之间并非是毫无关联的,我们在写第一个接口之间,其他接口之间的业务逻辑也许考虑到，这在后端团队合作开发不同功能的情况下显得尤为重要.</p>
+
+<p>后端在开发接口时,我觉得主要从以下几个方面需要注意：</p>
+
+<blockquote>
+  <p>接口url 定义</p>
+
+  <p>接口类型、参数</p>
+
+  <p>全局错误码定义</p>
+
+  <p>接口json格式</p>
+
+  <p>接口文档编写</p>
+</blockquote>
+
+<h3 id="接口url定义">接口url定义</h3>
+
+<p>对于后端开发人员来说,接口前端入参,最终组合查询数据库资源，经过一系列相关业务场景下的计算，响应给前端json数据，每一层url的path定义需要清晰明了，这和后端在使用AOP定义事务管理同理，后端service需要满足一定的命名规范，这样方便统一管理，而且有这层规范后,后续的前后端对接会轻松很多</p>
+
+<p>为了在许多API和长时间内提供一致的开发人员体验，API使用的所有名称应为：</p>
+
+<ul>
+  <li>简单</li>
+  <li>直觉</li>
+  <li>一致</li>
+</ul>
+
+<p>这包括接口，资源，集合，方法和消息的名称。</p>
+
+<p>由于许多开发人员不是英文母语人士，因此这些命名约定的目标之一是确保大多数开发人员能够轻松了解API。 它通过鼓励在命名方法和资源时使用简单，一致和小的词汇表来实现。</p>
+
+<ul>
+  <li>API中使用的名称应该是正确的美国英语。例如，许可证（而不是许可证），颜色（而不是颜色）。</li>
+  <li>可以简单地使用常用的简短形式或长字的缩写。例如，API优于应用程序编程接口。</li>
+  <li>尽可能使用直观，熟悉的术语。例如，当描述删除（和销毁）资源时，删除是优先于擦除。</li>
+  <li>对同一概念使用相同的名称或术语，包括跨API共享的概念。</li>
+  <li>避免名称重载。为不同的概念使用不同的名称。</li>
+  <li>仔细考虑使用可能与常用编程语言中的关键字冲突的名称。可以使用这些名称，但在API审查期间可能会触发额外的审查。谨慎和谨慎地使用它们。</li>
+</ul>
+
+<h3 id="接口类型参数">接口类型、参数</h3>
+
+<p>关于接口的请求类型，目前比较常用的：<code class="language-plaintext highlighter-rouge">GET</code>、<code class="language-plaintext highlighter-rouge">POST</code>、<code class="language-plaintext highlighter-rouge">PUT</code>、<code class="language-plaintext highlighter-rouge">DELETE</code>、<code class="language-plaintext highlighter-rouge">PATCH</code></p>
+
+<blockquote>
+  <p>GET（SELECT）：从服务器取出资源（一项或多项）。</p>
+
+  <p>POST（CREATE）：在服务器新建一个资源。</p>
+
+  <p>PUT（UPDATE）：在服务器更新资源（客户端提供改变后的完整资源）。</p>
+
+  <p>PATCH（UPDATE）：在服务器更新资源（客户端提供改变的属性）。</p>
+
+  <p>DELETE（DELETE）：从服务器删除资源。</p>
+</blockquote>
+
+<p>后端可根据不同的业务场景定义不同的接口类型</p>
+
+<p>在定义接口参数之时,目前我们常用的几种提交方式</p>
+
+<p><strong>表单提交，application/x-www-form-urlencoded</strong></p>
+
+<p><img src="/images/blog/front-back-summary/req.png" alt="" /></p>
+
+<p>表单提交主要针对<code class="language-plaintext highlighter-rouge">key-value</code>的提交形式</p>
+
+<p>如下Java片段：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@PostMapping</span><span class="o">(</span><span class="s">"/queryAll"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">RestfulMessage</span> <span class="nf">queryAll</span><span class="o">(</span><span class="nc">RuleCheckLogs</span> <span class="n">ruleCheckLogs</span><span class="o">,</span> <span class="nd">@RequestParam</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"current_page"</span><span class="o">,</span><span class="n">defaultValue</span> <span class="o">=</span> <span class="s">"1"</span><span class="o">)</span><span class="nc">Integer</span> <span class="n">current_page</span>
+            <span class="o">,</span> <span class="nd">@RequestParam</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"page_size"</span><span class="o">,</span><span class="n">defaultValue</span> <span class="o">=</span> <span class="s">"10"</span><span class="o">)</span><span class="nc">Integer</span> <span class="n">page_size</span>
+            <span class="o">,</span> <span class="nd">@RequestParam</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"tableName"</span><span class="o">,</span><span class="n">required</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span> <span class="nc">String</span> <span class="n">tableName</span><span class="o">){</span>
+        <span class="nc">RestfulMessage</span> <span class="n">restfulMessage</span><span class="o">=</span><span class="k">new</span> <span class="nc">RestfulMessage</span><span class="o">();</span>
+        <span class="k">try</span><span class="o">{</span>
+            <span class="n">assertArgumentNotEmpty</span><span class="o">(</span><span class="n">ruleCheckLogs</span><span class="o">.</span><span class="na">getProjectId</span><span class="o">(),</span><span class="s">"质检方案id不能为空"</span><span class="o">);</span> <span class="n">restfulMessage</span><span class="o">.</span><span class="na">setData</span><span class="o">(</span><span class="n">qcRuleCheckLogsService</span><span class="o">.</span><span class="na">queryRuleLogsByPage</span><span class="o">(</span><span class="n">ruleCheckLogs</span><span class="o">,</span><span class="n">tableName</span><span class="o">,</span><span class="n">current_page</span><span class="o">,</span><span class="n">page_size</span><span class="o">));</span>
+        <span class="o">}</span><span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">){</span>
+            <span class="n">restfulMessage</span><span class="o">=</span><span class="n">wrapperException</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">restfulMessage</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>文件流提交</strong></p>
+
+<p><strong>json提交,application/json</strong></p>
+
+<p><img src="/images/blog/front-back-summary/req1.png" alt="" /></p>
+
+<p>json提交方式在SpringMVC或Spring Boot中主要有两种,一种是以<code class="language-plaintext highlighter-rouge">@RequestBody</code>注解接收方式，另外一种是以<code class="language-plaintext highlighter-rouge">HttpEntity&lt;String&gt; requestEntity</code>字节接收</p>
+
+<p>Java代码示例：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@PostMapping</span><span class="o">(</span><span class="s">"/mergeModelEntitys"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">RestfulMessage</span> <span class="nf">mergeModelEntitys</span><span class="o">(</span><span class="nc">HttpEntity</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">requestEntity</span><span class="o">){</span>
+    <span class="nc">RestfulMessage</span> <span class="n">restfulMessage</span><span class="o">=</span><span class="k">new</span> <span class="nc">RestfulMessage</span><span class="o">();</span>
+    <span class="k">try</span><span class="o">{</span>
+        <span class="nc">JsonObject</span> <span class="n">paramsJson</span> <span class="o">=</span> <span class="n">paramJson</span><span class="o">(</span><span class="n">requestEntity</span><span class="o">);</span>
+        <span class="n">assertJsonNotEmpty</span><span class="o">(</span><span class="n">paramsJson</span><span class="o">,</span><span class="s">"请求参数不能为空"</span><span class="o">);</span>
+        <span class="c1">//more...</span>
+    <span class="o">}</span><span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">){</span>
+        <span class="n">restfulMessage</span><span class="o">=</span><span class="n">wrapperException</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">restfulMessage</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="全局错误码定义">全局错误码定义</h3>
+
+<p>错误码的定义同HTTP请求状态码一样,对接者能通过系统定义的错误码,快速了解接口返回错误信息，方便排查错误原因</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">{</span>
+    <span class="s">"code"</span><span class="o">:</span> <span class="s">"8200"</span><span class="o">,</span>
+    <span class="s">"message"</span><span class="o">:</span> <span class="s">"Success"</span><span class="o">,</span>
+    <span class="s">"data"</span><span class="o">:</span> <span class="o">{</span>
+        <span class="s">"total_page"</span><span class="o">:</span> <span class="mi">1</span><span class="o">,</span>
+        <span class="s">"current_page"</span><span class="o">:</span> <span class="mi">1</span><span class="o">,</span>
+        <span class="s">"page_size"</span><span class="o">:</span> <span class="mi">10</span><span class="o">,</span>
+        <span class="s">"count"</span><span class="o">:</span> <span class="mi">5</span><span class="o">,</span>
+        <span class="s">"data"</span><span class="o">:</span> <span class="o">[</span>
+            <span class="o">{</span>
+                <span class="s">"id"</span><span class="o">:</span> <span class="s">"a29ab07f1d374c22a72e884d4e822b29"</span><span class="o">,</span>
+                <span class="c1">//......</span>
+            <span class="o">}</span><span class="c1">//....</span>
+        <span class="o">]</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="接口json格式">接口json格式</h3>
+
+<p>后端响应json给前端需要注意以下几点：</p>
+
+<p><strong>1、json格式需固定</strong></p>
+
+<p>例如如下图形</p>
+
+<p><img src="/images/blog/front-back-summary/tb.png" alt="" /></p>
+
+<p>如上图所示,横向是时间,纵向是value值</p>
+
+<p>我们给出的json结构应该如此：</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"date"</span><span class="p">:</span><span class="s2">"2018-01"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"value"</span><span class="p">:</span><span class="mi">100</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"date"</span><span class="p">:</span><span class="s2">"2018-02"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"value"</span><span class="p">:</span><span class="mi">200</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+    </span><span class="err">//more...</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<p>在工作中,我们经常碰见这样的数据格式：</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="w">
+    </span><span class="s2">"2018-01"</span><span class="err">:</span><span class="p">{</span><span class="w">
+    	</span><span class="err">value:</span><span class="mi">100</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"2018-02"</span><span class="err">:</span><span class="p">{</span><span class="w">
+    	</span><span class="err">value:</span><span class="mi">200</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+    </span><span class="err">//more...</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<p>这里所说的json格式固定主要针对此种情况,后端给到前端的接口格式必须是固定的，所有动态数据值都需相应的key与之对应</p>
+
+<p><strong>2、所有返回接口数据需直接可用,越简单越好</strong></p>
+
+<p>后端提供给前端的接口数据,最终交给前端的工作，只需要让前端渲染数据即可,越简单越好，不因掺杂过多的业务逻辑让前端处理，所有复杂的业务逻辑，能合并规避掉的都需后端处理掉.</p>
+
+<h3 id="接口文档编写">接口文档编写</h3>
+
+<p>接口文档编写是前后端对接重要依据，后端写明接口文档，前端根据接口文档对接</p>
+
+<p>文档形势目前主要分几种：</p>
+
+<p>1、依赖swagger框架，自动生成接口文档（swagger只能生成基于key-value详细参数方式，针对json格式，无法说明具体请求内容）</p>
+
+<p>2、手动编写说明文档，推荐markdown编写</p>
+
+<h2 id="接口对接">接口对接</h2>
+
+<p>万事俱备,只欠东风,虽然上面我们准备了所有我们该准备的，接口定义完美无缺,接口文档也已说明，但在对接时任然可能出现问题，此时我想我们还需注意的细节</p>
+
+<p><strong>1、后端接口需自行进行Junit单元测试</strong></p>
+
+<p>Spring目前集成Junit框架可方便进行单元测试，包括对业务bean的方法测试，以及针对api的mock测试</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RunWith</span><span class="o">(</span><span class="nc">SpringRunner</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="nd">@SpringBootTest</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">QcWebApplicationTests</span> <span class="o">{</span>
+
+	<span class="nd">@Autowired</span>
+	<span class="kd">private</span> <span class="nc">WebApplicationContext</span> <span class="n">context</span><span class="o">;</span>
+
+	<span class="kd">private</span> <span class="nc">MockMvc</span> <span class="n">mvc</span><span class="o">;</span>
+
+	<span class="nd">@Autowired</span>
+	<span class="nc">QcFieldService</span> <span class="n">qcFieldService</span><span class="o">;</span>
+
+	<span class="nd">@Before</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setUp</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="c1">//初始化mock对象</span>
+		<span class="n">mvc</span> <span class="o">=</span> <span class="nc">MockMvcBuilders</span><span class="o">.</span><span class="na">webAppContextSetup</span><span class="o">(</span><span class="n">context</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
+	<span class="o">}</span>
+
+	<span class="nd">@Test</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">queryByDsId</span><span class="o">(){</span>
+		<span class="k">try</span> <span class="o">{</span>
+            <span class="c1">//针对mock-接口Controller层测试</span>
+			<span class="n">mvc</span><span class="o">.</span><span class="na">perform</span><span class="o">(</span><span class="nc">MockMvcRequestBuilders</span><span class="o">.</span><span class="na">post</span><span class="o">(</span><span class="s">"/qc/entity/queryByDsId"</span><span class="o">)</span>
+                    <span class="o">.</span><span class="na">contentType</span><span class="o">(</span><span class="nc">MediaType</span><span class="o">.</span><span class="na">APPLICATION_JSON_UTF8</span><span class="o">)</span>
+                    <span class="o">.</span><span class="na">param</span><span class="o">(</span><span class="s">"dsId"</span><span class="o">,</span> <span class="s">"7d4c101498c742368ef7232f492b95bc"</span><span class="o">)</span>
+                    <span class="o">.</span><span class="na">accept</span><span class="o">(</span><span class="nc">MediaType</span><span class="o">.</span><span class="na">APPLICATION_JSON</span><span class="o">))</span>
+                    <span class="o">.</span><span class="na">andExpect</span><span class="o">(</span><span class="nc">MockMvcResultMatchers</span><span class="o">.</span><span class="na">status</span><span class="o">().</span><span class="na">isOk</span><span class="o">())</span>
+                    <span class="o">.</span><span class="na">andDo</span><span class="o">(</span><span class="nc">MockMvcResultHandlers</span><span class="o">.</span><span class="na">print</span><span class="o">());</span>
+		<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+			<span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+    
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testUpdateField</span><span class="o">(){</span>
+		<span class="nc">QcField</span> <span class="n">qcField</span><span class="o">=</span><span class="k">new</span> <span class="nc">QcField</span><span class="o">();</span>
+		<span class="n">qcField</span><span class="o">.</span><span class="na">setId</span><span class="o">(</span><span class="s">"513ee55f5dc2498cb69b14b558bc73e6"</span><span class="o">);</span>
+		<span class="n">qcField</span><span class="o">.</span><span class="na">setShortName</span><span class="o">(</span><span class="s">"密码"</span><span class="o">);</span>
+        <span class="c1">//业务bean-service方法测试</span>
+		<span class="n">qcFieldService</span><span class="o">.</span><span class="na">updateBatchFields</span><span class="o">(</span><span class="nc">Lists</span><span class="o">.</span><span class="na">newArrayList</span><span class="o">(</span><span class="n">qcField</span><span class="o">));</span>
+	<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>2、使用工具测试，推荐PostMan</strong></p>
+
+<p>作为接口调试神器,Postman大名想必大家都已知道</p>
+
+<p>作为后端来说,我们需要学会查看chrome推荐给我们的审查元素的功能，可参看<a href="https://segmentfault.com/a/1190000000683599">Chrome开发工具介绍</a></p>
+
+<p>chrome提供了一个可以copy当前接口的url功能，最终生成curl命令行</p>
+
+<p><img src="/images/blog/front-back-summary/copy.png" alt="" /></p>
+
+<p>最终通过<code class="language-plaintext highlighter-rouge">Copy as cURL(bash)</code>功能可生成curl命令</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">curl</span> <span class="err">'</span><span class="nl">http:</span><span class="c1">//demo.com/qc/ds/getAll' -H 'Origin: http://demo.com' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: zh-CN,zh;q=0.9' -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36' -H 'Content-Type: application/x-www-form-urlencoded' -H 'Accept: application/json, text/plain, */*' -H 'Referer: http://demo.com/index.html' -H 'Connection: keep-alive' --data 'current_page=1&amp;page_size=6&amp;' --compressed</span>
+</code></pre></div></div>
+
+<p>以上命令可以在Linux等各终端直接执行</p>
+
+<p><strong>curl命令</strong>是一个利用URL规则在命令行下工作的文件传输工具。它支持文件的上传和下载，所以是综合传输工具，但按传统，习惯称curl为下载工具。作为一款强力工具，curl支持包括HTTP、HTTPS、<a href="http://man.linuxde.net/ftp">ftp</a>等众多协议，还支持POST、cookies、认证、从指定偏移处下载部分文件、用户代理字符串、限速、文件大小、进度条等特征。做网页处理流程和数据检索自动化，curl可以祝一臂之力。</p>
+
+<p>postman提供导入curl命令行</p>
+
+<p><img src="/images/blog/front-back-summary/im.png" alt="" /></p>
+
+<p><strong>3、前后端需心平气和沟通，勿推卸责任，前后端开发人员水平不尽相同,作为同事,需要的是团结合作，努力将事情做好,而非相互推卸</strong></p>
+
+<h2 id="结语">结语</h2>
+
+<p>前后端分离,简化了我们的开发方式,不同人专注于不同的领域,技术价值最大化,大大提高工作效率,我们在掌握这些技能的同时,也需要加强自身的发展,以适应当前的技术发展趋势,不管是前端还是后端,多了解一些，总是没错的,古人云：<strong>技多不压身</strong>，我想也正是此理！！！</p>
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2018/04/22/front-back-summary/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div style="text-align: center;">
+  <h2>微信公众号</h2>
+</div>
+<div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

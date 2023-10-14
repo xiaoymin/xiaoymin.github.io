@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>Spring Boot框架中如何优雅的注入实体Bean &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2020/09/23/spring-boot-conditional/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="Spring Boot框架中如何优雅的注入实体Bean">
+      
+    <meta name="keywords" content="Spring Boot,Conditional">
+    <meta name="og:keywords" content="Spring Boot,Conditional">
+      
+    <meta name="description" content="在Spring Boot框架中,注入实体Bean是几乎每一个Java程序员都能遇到的事情,因为Spring Boot采用约定优于配置的策略,去除了原来在Spring MVC中通过Xml进行注入的方式,全部通过Java Configuration的编码方式进行实体Bean的注入,">
+    <meta name="og:description" content="在Spring Boot框架中,注入实体Bean是几乎每一个Java程序员都能遇到的事情,因为Spring Boot采用约定优于配置的策略,去除了原来在Spring MVC中通过Xml进行注入的方式,全部通过Java Configuration的编码方式进行实体Bean的注入,">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2020/09/23/spring-boot-conditional/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2020-09-23">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="Spring Boot框架中如">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">Spring Boot框架中如何优雅的注入实体Bean</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2020/09/23
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#Spring" title="Spring">Spring</a>
+          </span>
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#Boot" title="Boot">Boot</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <p>在<code class="language-plaintext highlighter-rouge">Spring Boot</code>框架中,注入实体<code class="language-plaintext highlighter-rouge">Bean</code>是几乎每一个Java程序员都能遇到的事情,因为<code class="language-plaintext highlighter-rouge">Spring Boot</code>采用约定优于配置的策略,去除了原来在<code class="language-plaintext highlighter-rouge">Spring MVC</code>中通过Xml进行注入的方式,全部通过Java Configuration的编码方式进行实体<code class="language-plaintext highlighter-rouge">Bean</code>的注入,</p>
+
+<p>因此我们在开发中，对于外部组件、自己封装的业务SDK等等都需要开发者自行将实体Bean注入到<code class="language-plaintext highlighter-rouge">Spring</code>的容器中，然后通过注解在<code class="language-plaintext highlighter-rouge">Spring</code>的框架中方便的进行使用</p>
+
+<p>那么,在<code class="language-plaintext highlighter-rouge">Spring Boot</code>框架中,我们在注入实体<code class="language-plaintext highlighter-rouge">Bean</code>时,如何优雅的进行注入呢?或者我们在注入实体<code class="language-plaintext highlighter-rouge">Bean</code>的同时,我们应该注意什么?</p>
+
+<h2 id="常规注入">常规注入</h2>
+
+<p>常规注入很简单,通过使用<code class="language-plaintext highlighter-rouge">@Bean</code>注解即可完成简单的实体Bean注入，如下示例：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AdminKernelConfig</span> <span class="o">{</span>
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="nc">DynamicWechatRoute</span> <span class="nf">dynamicWechatRoute</span><span class="o">(){</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">DynamicWechatRoute</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>在常规注入时,假如我们要注入的Bean是通过构造函数来创建的,此时主要有2中方式进行构造</p>
+
+<p>通过<code class="language-plaintext highlighter-rouge">@Autowired</code>注解引入外部依赖Bean，然后传递进行构造，如下代码：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AdminKernelConfig</span> <span class="o">{</span>
+    <span class="nd">@Autowired</span> 
+    <span class="nc">Environment</span> <span class="n">environment</span><span class="o">;</span>
+    
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="nc">DynamicWechatRoute</span> <span class="nf">dynamicWechatRoute</span><span class="o">(){</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">DynamicWechatRoute</span><span class="o">(</span><span class="n">environment</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>另外也可以通过参数传递直接引用，代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AdminKernelConfig</span> <span class="o">{</span>
+    
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="nc">DynamicWechatRoute</span> <span class="nf">dynamicWechatRoute</span><span class="o">(</span><span class="nc">Environment</span> <span class="n">environment</span><span class="o">){</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">DynamicWechatRoute</span><span class="o">(</span><span class="n">environment</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="配置注入">配置注入</h2>
+
+<p>很多时候我们创建的实体类都是需要通过外部传参进行构造的，通过基础类型参数或者封装的实体Property类进行构造，一般外部参数是通过写在Spring Boot的配置中</p>
+
+<p>通过<code class="language-plaintext highlighter-rouge">@Value</code>注解引入外部变量进行实体Bean构造,如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AdminKernelConfig</span> <span class="o">{</span>
+    
+    <span class="nd">@Value</span><span class="o">(</span><span class="s">"${signKey}"</span><span class="o">)</span>
+    <span class="nc">String</span> <span class="n">signKey</span><span class="o">;</span>
+    
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="nc">DynamicWechatRoute</span> <span class="nf">dynamicWechatRoute</span><span class="o">(){</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">DynamicWechatRoute</span><span class="o">(</span><span class="n">signKey</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>上面这种是很常规简单的做法,我们构造的实体类只需要一个基础String类型即可完成构造</p>
+
+<p>但通常情况下,外部参数通常都很多,这种情况我们通常会单独写一个配置属性类进行封装，然后在实体类中通过该配置属性类进行参数构造，通过<code class="language-plaintext highlighter-rouge">@EnableConfigurationProperties</code>和<code class="language-plaintext highlighter-rouge">@ConfigurationProperties(prefix = "your.prefix")</code>这两个注解配合使用实现效果</p>
+
+<p><code class="language-plaintext highlighter-rouge">@ConfigurationProperties</code>注解作用于我们的配置属性类上,配置一个前缀属性即可,例如：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@ConfigurationProperties</span><span class="o">(</span><span class="n">prefix</span> <span class="o">=</span> <span class="s">"test"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestProperties</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">accessKeyId</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">accessKeySecret</span><span class="o">;</span>
+    <span class="c1">//getter &amp; setter</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>配上属性前缀<code class="language-plaintext highlighter-rouge">test</code>,此时我们可以在<code class="language-plaintext highlighter-rouge">application.yml</code>的配置文件中进行配置，代码如下：</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">test</span><span class="pi">:</span>
+    <span class="na">accessKeyId</span><span class="pi">:</span> <span class="s">abc</span>
+    <span class="na">accessKeySecret</span><span class="pi">:</span> <span class="s">cdeeeeeeeeeeeee</span>
+</code></pre></div></div>
+
+<p>配置好后,我们在我们的JavaConfiguration配置类即可进行引用注入,如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@EnableConfigurationProperties</span><span class="o">(</span><span class="nc">TestProperties</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AdminKernelConfig</span> <span class="o">{</span>
+    
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="nc">DynamicWechatRoute</span> <span class="nf">dynamicWechatRoute</span><span class="o">(</span><span class="nc">TestProperties</span> <span class="n">testProperties</span><span class="o">){</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">DynamicWechatRoute</span><span class="o">(</span><span class="n">testProperties</span><span class="o">);</span>
+    <span class="o">}</span>
+    
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>这种方式的好处是避免我们在Config类中定义大量的注解<code class="language-plaintext highlighter-rouge">@Value</code>对属性进行引用，造成代码结构上混乱。</p>
+
+<h2 id="条件注入">条件注入</h2>
+
+<p>条件注入作为Spring框架提供给开发者的高级特性而存在,开发者希望能针对某些特定的条件满足的情况下，才注入Bean到Spring的容器中,这种特性提供了很好的可扩展性。</p>
+
+<p>针对条件注入,Spring提供了<code class="language-plaintext highlighter-rouge">@Conditional</code>注解来解决这个问题.先来看<code class="language-plaintext highlighter-rouge">@Conditional</code>注解的源码：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Target</span><span class="o">({</span><span class="nc">ElementType</span><span class="o">.</span><span class="na">TYPE</span><span class="o">,</span> <span class="nc">ElementType</span><span class="o">.</span><span class="na">METHOD</span><span class="o">})</span>
+<span class="nd">@Retention</span><span class="o">(</span><span class="nc">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
+<span class="nd">@Documented</span>
+<span class="kd">public</span> <span class="nd">@interface</span> <span class="nc">Conditional</span> <span class="o">{</span>
+
+	<span class="cm">/**
+	 * All {@link Condition Conditions} that must {@linkplain Condition#matches match}
+	 * in order for the component to be registered.
+	 */</span>
+	<span class="nc">Class</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="nc">Condition</span><span class="o">&gt;[]</span> <span class="nf">value</span><span class="o">();</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">@Condtional</code>注解提供了一个属性value,该属性声明了一个<code class="language-plaintext highlighter-rouge">Condition</code>的class，<code class="language-plaintext highlighter-rouge">Condition</code>是Spring提供的接口</p>
+
+<p>源码：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Condition</span> <span class="o">{</span>
+
+	<span class="cm">/**
+	 * Determine if the condition matches.
+	 * @param context the condition context
+	 * @param metadata metadata of the {@link org.springframework.core.type.AnnotationMetadata class}
+	 * or {@link org.springframework.core.type.MethodMetadata method} being checked
+	 * @return {@code true} if the condition matches and the component can be registered,
+	 * or {@code false} to veto the annotated component's registration
+	 */</span>
+	<span class="kt">boolean</span> <span class="nf">matches</span><span class="o">(</span><span class="nc">ConditionContext</span> <span class="n">context</span><span class="o">,</span> <span class="nc">AnnotatedTypeMetadata</span> <span class="n">metadata</span><span class="o">);</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>从源码可以得知,<code class="language-plaintext highlighter-rouge">@Conditional</code>注解可以作用于类、方法，只要提供的Condition全部满足的情况下,才会将实体Bean注入到所有的容器中.</p>
+
+<p>如果<code class="language-plaintext highlighter-rouge">@Conditional</code>作用于拥有<code class="language-plaintext highlighter-rouge">@Configuration</code>注解的类上,那么该类下的所有Bean的创建注入都需要满足<code class="language-plaintext highlighter-rouge">@Conditional</code>注解的条件才可以注入</p>
+
+<p>如果<code class="language-plaintext highlighter-rouge">@Conditional</code>作用于方法上,那么该方法需要注入Bean时,只有满足了条件的情况下才会注入.</p>
+
+<p>Spring Boot为我们提供了很多默认的<code class="language-plaintext highlighter-rouge">Condition</code>实现类,通过默认提供的Condition基本可以满足我们的日常需求,如果不满足,开发者可自定义Condtion的实现开发自己的装载Bean需求。</p>
+
+<p>接下来,先看Spring Boot为我们提供的默认Condition实现,包路径：<code class="language-plaintext highlighter-rouge">org.springframework.boot.autoconfigure.condition</code>，</p>
+
+<p>常用应用程序使用注解，主要包含以下:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>注解</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">@ConditionalOnProperty</code></td>
+      <td>根据特定的属性进行条件注入</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">@ConditionalOnExpression</code></td>
+      <td>根据SPEL表达式组合复杂情况,满足的情况下条件注入</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">@ConditionalOnBean</code></td>
+      <td>根据容器中存在外部某个实体Bean的情况下条件注入</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">@ConditionalOnMissingBean</code></td>
+      <td>容器中不存在某个实体Bean的情况下条件注入</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">@ConditionalOnResource</code></td>
+      <td>资源文件存在的情况下载进行条件注入</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="常用注解">常用注解</h3>
+
+<p>以下关于<code class="language-plaintext highlighter-rouge">@Conditional</code>注解的是Spring Boot提供给开发者可以在应用程序中使用的注解。</p>
+
+<h4 id="conditionalonproperty">@ConditionalOnProperty</h4>
+
+<p><code class="language-plaintext highlighter-rouge">@ConditionalOnProperty</code>注解是Spring Boot框架中最常用的条件注解,它允许根据特定的环境属性有条件的进行Bean注入.</p>
+
+<p>示例代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@ConditionalOnProperty</span><span class="o">(</span><span class="n">value</span><span class="o">=</span><span class="s">"knife4j.enabled"</span><span class="o">,</span> <span class="n">havingValue</span> <span class="o">=</span> <span class="s">"true"</span><span class="o">,</span><span class="n">matchIfMissing</span> <span class="o">=</span> <span class="kc">true</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Knife4jModule</span> <span class="o">{</span>
+ <span class="c1">//more..</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>在上面的代码示例中,仅当<code class="language-plaintext highlighter-rouge">knife4j.enabled</code>的属性为<code class="language-plaintext highlighter-rouge">true</code>时，才会加载<code class="language-plaintext highlighter-rouge">Knife4jModule</code>这个配置模块，如果开发者根本没有配置这个属性,由于我们将<code class="language-plaintext highlighter-rouge">matchIfMissing</code>定义为<code class="language-plaintext highlighter-rouge">true</code>，因此程序启动时仍将加载该模块。</p>
+
+<h4 id="conditionalonexpression">@ConditionalOnExpression</h4>
+
+<p>如果我们需要基于多个属性的条件进行组合才能创建Bean,那么我们可以使用<code class="language-plaintext highlighter-rouge">@ConditionalOnExpression</code>注解</p>
+
+<p>示例代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@ConditionalOnExpression</span><span class="o">(</span><span class="n">value</span><span class="o">=</span><span class="s">"${knife4j.enabled:true} and ${knife4j.basic.enabled:true}"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Knife4jModule</span> <span class="o">{</span>
+ <span class="c1">//more..</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>通过Spring提供的<a href="https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#expressions">SPEL</a>表达式组合多个表达式的复杂情况，仅到表达式中满足条件时，才会加载<code class="language-plaintext highlighter-rouge">Knife4jModule</code>这个配置模块</p>
+
+<h4 id="conditionalonbean">@ConditionalOnBean</h4>
+
+<p>通常情况下,我们希望只有在某一个Bean可用的情况下,我们在加载配置注入我们的实体Bean</p>
+
+<p>示例代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@ConditionalOnBean</span><span class="o">(</span><span class="nc">SwaggerModule</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Knife4jModule</span> <span class="o">{</span>
+ <span class="c1">//more..</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>在加载<code class="language-plaintext highlighter-rouge">Knife4jModule</code>之前,我们需要<code class="language-plaintext highlighter-rouge">SwaggerModel</code>的实体Bean在Spring的容器中存在可用时,才加载该配置</p>
+
+<h4 id="conditionalonmissingbean">@ConditionalOnMissingBean</h4>
+
+<p><code class="language-plaintext highlighter-rouge">@ConditionalOnMissingBean</code>和<code class="language-plaintext highlighter-rouge">@ConditionalOnBean</code>意思正好相反,只有在Spring的容器中不存在该实体Bean时才进行条件注入</p>
+
+<p>示例代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">OnMissingBeanModule</span> <span class="o">{</span>
+
+  <span class="nd">@Bean</span>
+  <span class="nd">@ConditionalOnMissingBean</span>
+  <span class="kd">public</span> <span class="nc">DataSource</span> <span class="nf">dataSource</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">InMemoryDataSource</span><span class="o">();</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>一般该注解作用于实体Bean本身,从上面的示例中,只有在Spring容器中不存在<code class="language-plaintext highlighter-rouge">DataSource</code>的实例Bean时,才进行加载条件注入Bean.</p>
+
+<h4 id="conditionalonresource">@ConditionalOnResource</h4>
+
+<p>根据某些资源的情况下载加载Bean的情况,可以使用<code class="language-plaintext highlighter-rouge">@ConditionalOnResource</code>注解</p>
+
+<p>示例代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@ConditionalOnResource</span><span class="o">(</span><span class="n">resources</span> <span class="o">=</span> <span class="s">"/logback.xml"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">LogbackModule</span> <span class="o">{</span>
+  <span class="c1">//...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">LogbackModule</code>模块仅当<code class="language-plaintext highlighter-rouge">logback.xml</code>资源文件在当前环境中存在的情况下才加载.</p>
+
+<p>通过这种方式,我们可以根据找到自己模块的配置后才进行实体Bean的创建.</p>
+
+<h3 id="不常用注解">不常用注解</h3>
+
+<p>虽然Spring Boot提供了很多默认的<code class="language-plaintext highlighter-rouge">@Conditional</code>的注解扩展实现,但是并不是所有的扩展实现都是提供给开发者来使用的,有些则是提供给框架内部进行使用的.</p>
+
+<h4 id="conditiononclass">@ConditionOnClass</h4>
+
+<p>仅当某个类在类路径上时才加载Bean</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@ConditionalOnClass</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"this.clazz.does.not.Exist"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">OnClassModule</span> <span class="o">{</span>
+	<span class="c1">//  ...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="conditionalonmissingclass">@ConditionalOnMissingClass</h4>
+
+<p>仅当某个类不在类路径上时才加载Bean</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@ConditionalOnMissingClass</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"this.clazz.does.not.Exist"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">OnMissingClassModule</span> <span class="o">{</span>
+  <span class="c1">//...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="conditionalonjndi">@ConditionalOnJndi</h4>
+
+<p>仅当通过JNDI可以使用某些资源时才加载Bean</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@ConditionalOnJndi</span><span class="o">(</span><span class="s">"java:comp/env/foo"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">OnJndiModule</span> <span class="o">{</span>
+  <span class="c1">//...</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<h4 id="conditionalonjava">@ConditionalOnJava</h4>
+
+<p>仅当在java某个版本时才加载Bean</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@ConditionalOnJava</span><span class="o">(</span><span class="nc">JavaVersion</span><span class="o">.</span><span class="na">EIGHT</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">OnJavaModule</span> <span class="o">{</span>
+  <span class="c1">//...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="自定义">自定义</h3>
+
+<p>通过上面的不常用注解,我们其实可以发现,针对各种条件下才能对Bean进行注入的实在太多,这种情况下,当我们的程序需要在某种情况下才能注入Bean时,Spring肯定不能满足,此时就需要自定义条件注入Condition</p>
+
+<p>简单的自定义实现</p>
+
+<blockquote>
+  <p>目前假设有需求,我们在创建某个实体Bean时,需要根据配置文件的某一个String属性进行对比,只有在Bean上给定的目标值和配置文件中给定的属性值相等的情况下才注入该Bean</p>
+</blockquote>
+
+<p>通过上面的需求,我们首先需要定义Condition接口的实现，代码如下</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ConditionOnKeyApply</span> <span class="kd">implements</span> <span class="nc">Condition</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">matches</span><span class="o">(</span><span class="nc">ConditionContext</span> <span class="n">conditionContext</span><span class="o">,</span> <span class="nc">AnnotatedTypeMetadata</span> <span class="n">annotatedTypeMetadata</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;</span> <span class="n">multiValueMap</span><span class="o">=</span><span class="n">annotatedTypeMetadata</span><span class="o">.</span><span class="na">getAnnotationAttributes</span><span class="o">(</span><span class="nc">ConditionOnKey</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+        <span class="c1">//获取property</span>
+        <span class="nc">String</span> <span class="n">propertyValue</span><span class="o">=</span><span class="nc">Objects</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">multiValueMap</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"property"</span><span class="o">),</span><span class="s">""</span><span class="o">);</span>
+        <span class="c1">//获取目标值</span>
+        <span class="nc">String</span> <span class="n">targetValue</span><span class="o">=</span><span class="nc">Objects</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">multiValueMap</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"targetValue"</span><span class="o">),</span><span class="s">""</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="nc">StrUtil</span><span class="o">.</span><span class="na">isNotBlank</span><span class="o">(</span><span class="n">propertyValue</span><span class="o">)&amp;&amp;</span><span class="nc">StrUtil</span><span class="o">.</span><span class="na">isNotBlank</span><span class="o">(</span><span class="n">targetValue</span><span class="o">)){</span>
+            <span class="c1">//都不为空的情况下</span>
+            <span class="nc">Environment</span> <span class="n">environment</span><span class="o">=</span><span class="n">conditionContext</span><span class="o">.</span><span class="na">getEnvironment</span><span class="o">();</span>
+            <span class="c1">//从配置环境中获取值</span>
+            <span class="nc">String</span> <span class="n">sourceValue</span><span class="o">=</span><span class="n">environment</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="n">propertyValue</span><span class="o">);</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"环境值:"</span><span class="o">+</span><span class="n">sourceValue</span><span class="o">+</span><span class="s">",目标值:"</span><span class="o">+</span><span class="n">targetValue</span><span class="o">);</span>
+            <span class="c1">// 进行比对</span>
+            <span class="k">return</span> <span class="nc">StrUtil</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="n">sourceValue</span><span class="o">,</span><span class="n">targetValue</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>定义我们自定义的注解<code class="language-plaintext highlighter-rouge">@ConditionOnKey</code>，代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Retention</span><span class="o">(</span><span class="nc">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
+<span class="nd">@Target</span><span class="o">({</span><span class="nc">ElementType</span><span class="o">.</span><span class="na">TYPE</span><span class="o">,</span><span class="nc">ElementType</span><span class="o">.</span><span class="na">METHOD</span><span class="o">})</span>
+<span class="nd">@Documented</span>
+<span class="c1">//指定Conditional的实现类</span>
+<span class="nd">@Conditional</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="nc">ConditionOnKeyApply</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nd">@interface</span> <span class="nc">ConditionOnKey</span> <span class="o">{</span>
+    <span class="cm">/**
+     * 获取某个属性的env值
+     * @return
+     */</span>
+    <span class="nc">String</span> <span class="nf">property</span><span class="o">();</span>
+
+    <span class="cm">/**
+     * 目标值
+     * @return
+     */</span>
+    <span class="nc">String</span> <span class="nf">targetValue</span><span class="o">()</span> <span class="k">default</span> <span class="s">"true"</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>在JavaConfiguration中进行注入</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ConditionKeyConfig</span> <span class="o">{</span>
+
+
+    <span class="nd">@Bean</span>
+    <span class="nd">@ConditionOnKey</span><span class="o">(</span><span class="n">property</span> <span class="o">=</span> <span class="s">"key"</span><span class="o">,</span><span class="n">targetValue</span> <span class="o">=</span> <span class="s">"test"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">ConditionKeyModel</span> <span class="nf">conditionKeyModel</span><span class="o">(){</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">ConditionKeyModel</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>从注入的代码中,如果我们在<code class="language-plaintext highlighter-rouge">application.yml</code>配置文件中配置一个属性为<code class="language-plaintext highlighter-rouge">key</code>，值为<code class="language-plaintext highlighter-rouge">test</code>的情况下，<code class="language-plaintext highlighter-rouge">ConditionKeyModel</code>这个实体会注入Spring容器中,否则不会进行注入.</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">key</span><span class="pi">:</span> <span class="s">test</span>
+</code></pre></div></div>
+
+<h2 id="外部导入">外部导入</h2>
+
+<p>通常我们在使用第三方技术组件时,只需要简单的在Spring Boot的启动类上加入<code class="language-plaintext highlighter-rouge">@Enablexxx</code>等这类注解，既可以帮我们快速集成第三方的技术能力。</p>
+
+<p>这种方式我们在自己封装时也可以使用,通常<code class="language-plaintext highlighter-rouge">@Enablexx</code>注解使用的是<code class="language-plaintext highlighter-rouge">@Import</code>注解来导入一个java configuration的配置文件类进行实现</p>
+
+<p>看一个Swagger的示例，一般我们在使用swagger的时候通常使用<code class="language-plaintext highlighter-rouge">@EnableSwagger2</code>来使用，如下代码：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@EnableSwagger2</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SwaggerConfiguration</span> <span class="o">{</span>
+    
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">@EnableSwagger2</code>的注解源码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Retention</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">annotation</span><span class="o">.</span><span class="na">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
+<span class="nd">@Target</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="o">{</span> <span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">annotation</span><span class="o">.</span><span class="na">ElementType</span><span class="o">.</span><span class="na">TYPE</span> <span class="o">})</span>
+<span class="nd">@Documented</span>
+<span class="nd">@Import</span><span class="o">({</span><span class="nc">Swagger2DocumentationConfiguration</span><span class="o">.</span><span class="na">class</span><span class="o">})</span>
+<span class="kd">public</span> <span class="nd">@interface</span> <span class="nc">EnableSwagger2</span> <span class="o">{</span>
+    
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>注解上除了标注该注解的作用目标以及<code class="language-plaintext highlighter-rouge">Retention</code>，还使用了<code class="language-plaintext highlighter-rouge">@Import</code>注解将<code class="language-plaintext highlighter-rouge">Swagger2DocumentationConfiguration</code>类进行了导入，来看源码：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@Import</span><span class="o">({</span> <span class="nc">SpringfoxWebMvcConfiguration</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="nc">SwaggerCommonConfiguration</span><span class="o">.</span><span class="na">class</span> <span class="o">})</span>
+<span class="nd">@ComponentScan</span><span class="o">(</span><span class="n">basePackages</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="s">"springfox.documentation.swagger2.mappers"</span>
+<span class="o">})</span>
+<span class="nd">@ConditionalOnWebApplication</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Swagger2DocumentationConfiguration</span> <span class="o">{</span>
+  <span class="nd">@Bean</span>
+  <span class="kd">public</span> <span class="nc">JacksonModuleRegistrar</span> <span class="nf">swagger2Module</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">Swagger2JacksonModule</span><span class="o">();</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Bean</span>
+  <span class="kd">public</span> <span class="nc">HandlerMapping</span> <span class="nf">swagger2ControllerMapping</span><span class="o">(</span>
+      <span class="nc">Environment</span> <span class="n">environment</span><span class="o">,</span>
+      <span class="nc">DocumentationCache</span> <span class="n">documentationCache</span><span class="o">,</span>
+      <span class="nc">ServiceModelToSwagger2Mapper</span> <span class="n">mapper</span><span class="o">,</span>
+      <span class="nc">JsonSerializer</span> <span class="n">jsonSerializer</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">PropertySourcedRequestMappingHandlerMapping</span><span class="o">(</span>
+        <span class="n">environment</span><span class="o">,</span>
+        <span class="k">new</span> <span class="nf">Swagger2Controller</span><span class="o">(</span><span class="n">environment</span><span class="o">,</span> <span class="n">documentationCache</span><span class="o">,</span> <span class="n">mapper</span><span class="o">,</span> <span class="n">jsonSerializer</span><span class="o">));</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>源码中是一个Configuration类，然后通过上面我们说的最简单的常规注入了2个实体Bean</p>
+
+<p>一般这种方式我们可以在封装自己的组件时进行使用,通过提供一个<code class="language-plaintext highlighter-rouge">@Enable</code>系列的注解，方便外部人员使用和记忆.</p>
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2020/09/23/spring-boot-conditional/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div style="text-align: center;">
+  <h2>微信公众号</h2>
+</div>
+<div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>Spring Boot 任务task源码分析 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2018/01/26/spring-boot-task-sources/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="Spring Boot 任务task源码分析">
+      
+    <meta name="keywords" content="Spring Boot">
+    <meta name="og:keywords" content="Spring Boot">
+      
+    <meta name="description" content="EnableScheduling注解">
+    <meta name="og:description" content="EnableScheduling注解">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2018/01/26/spring-boot-task-sources/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2018-01-26">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="Spring Boot 任务t">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">Spring Boot 任务task源码分析</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2018/01/26
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#Spring" title="Spring">Spring</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <h2 id="enablescheduling注解">EnableScheduling注解</h2>
+
+<p>在Spring Boot中添加任务job时,已提供很好的支持,只需在SpringBoot启动类加<code class="language-plaintext highlighter-rouge">@EnableScheduling</code>注解即可</p>
+
+<p>如：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.lishiots.lshui</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.springframework.boot.SpringApplication</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.boot.autoconfigure.SpringBootApplication</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.scheduling.annotation.EnableScheduling</span><span class="o">;</span>
+
+<span class="nd">@SpringBootApplication</span>
+<span class="nd">@EnableScheduling</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ApiApplication</span> <span class="o">{</span>
+
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+		<span class="nc">SpringApplication</span><span class="o">.</span><span class="na">run</span><span class="o">(</span><span class="nc">ApiApplication</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>EnableScheduling注解源码：</p>
+
+<p>1、导入<code class="language-plaintext highlighter-rouge">SchedulingConfiguration</code>配置</p>
+
+<p>2、注入<code class="language-plaintext highlighter-rouge">ScheduledAnnotationBeanPostProcessor</code>Bean实例</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/*
+ * Copyright 2002-2016 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */</span>
+
+<span class="kn">package</span> <span class="nn">org.springframework.scheduling.annotation</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.lang.annotation.Documented</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.lang.annotation.ElementType</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.lang.annotation.Retention</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.lang.annotation.RetentionPolicy</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.lang.annotation.Target</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.concurrent.Executor</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.springframework.context.annotation.Configuration</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.context.annotation.Import</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.scheduling.Trigger</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.scheduling.config.ScheduledTaskRegistrar</span><span class="o">;</span>
+
+<span class="cm">/**
+ * Enables Spring's scheduled task execution capability, similar to
+ * functionality found in Spring's {@code &lt;task:*&gt;} XML namespace. To be used
+ * on @{@link Configuration} classes as follows:
+ *
+ * &lt;pre class="code"&gt;
+ * &amp;#064;Configuration
+ * &amp;#064;EnableScheduling
+ * public class AppConfig {
+ *
+ *     // various &amp;#064;Bean definitions
+ * }&lt;/pre&gt;
+ *
+ * This enables detection of @{@link Scheduled} annotations on any Spring-managed
+ * bean in the container. For example, given a class {@code MyTask}
+ *
+ * &lt;pre class="code"&gt;
+ * package com.myco.tasks;
+ *
+ * public class MyTask {
+ *
+ *     &amp;#064;Scheduled(fixedRate=1000)
+ *     public void work() {
+ *         // task execution logic
+ *     }
+ * }&lt;/pre&gt;
+ *
+ * the following configuration would ensure that {@code MyTask.work()} is called
+ * once every 1000 ms:
+ *
+ * &lt;pre class="code"&gt;
+ * &amp;#064;Configuration
+ * &amp;#064;EnableScheduling
+ * public class AppConfig {
+ *
+ *     &amp;#064;Bean
+ *     public MyTask task() {
+ *         return new MyTask();
+ *     }
+ * }&lt;/pre&gt;
+ *
+ * Alternatively, if {@code MyTask} were annotated with {@code @Component}, the
+ * following configuration would ensure that its {@code @Scheduled} method is
+ * invoked at the desired interval:
+ *
+ * &lt;pre class="code"&gt;
+ * &amp;#064;Configuration
+ * &amp;#064;EnableScheduling
+ * &amp;#064;ComponentScan(basePackages="com.myco.tasks")
+ * public class AppConfig {
+ * }&lt;/pre&gt;
+ *
+ * Methods annotated with {@code @Scheduled} may even be declared directly within
+ * {@code @Configuration} classes:
+ *
+ * &lt;pre class="code"&gt;
+ * &amp;#064;Configuration
+ * &amp;#064;EnableScheduling
+ * public class AppConfig {
+ *
+ *     &amp;#064;Scheduled(fixedRate=1000)
+ *     public void work() {
+ *         // task execution logic
+ *     }
+ * }&lt;/pre&gt;
+ *
+ * &lt;p&gt;By default, will be searching for an associated scheduler definition: either
+ * a unique {@link org.springframework.scheduling.TaskScheduler} bean in the context,
+ * or a {@code TaskScheduler} bean named "taskScheduler" otherwise; the same lookup
+ * will also be performed for a {@link java.util.concurrent.ScheduledExecutorService}
+ * bean. If neither of the two is resolvable, a local single-threaded default
+ * scheduler will be created and used within the registrar.
+ *
+ * &lt;p&gt;When more control is desired, a {@code @Configuration} class may implement
+ * {@link SchedulingConfigurer}. This allows access to the underlying
+ * {@link ScheduledTaskRegistrar} instance. For example, the following example
+ * demonstrates how to customize the {@link Executor} used to execute scheduled
+ * tasks:
+ *
+ * &lt;pre class="code"&gt;
+ * &amp;#064;Configuration
+ * &amp;#064;EnableScheduling
+ * public class AppConfig implements SchedulingConfigurer {
+ *
+ *     &amp;#064;Override
+ *     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
+ *         taskRegistrar.setScheduler(taskExecutor());
+ *     }
+ *
+ *     &amp;#064;Bean(destroyMethod="shutdown")
+ *     public Executor taskExecutor() {
+ *         return Executors.newScheduledThreadPool(100);
+ *     }
+ * }&lt;/pre&gt;
+ *
+ * &lt;p&gt;Note in the example above the use of {@code @Bean(destroyMethod="shutdown")}.
+ * This ensures that the task executor is properly shut down when the Spring
+ * application context itself is closed.
+ *
+ * &lt;p&gt;Implementing {@code SchedulingConfigurer} also allows for fine-grained
+ * control over task registration via the {@code ScheduledTaskRegistrar}.
+ * For example, the following configures the execution of a particular bean
+ * method per a custom {@code Trigger} implementation:
+ *
+ * &lt;pre class="code"&gt;
+ * &amp;#064;Configuration
+ * &amp;#064;EnableScheduling
+ * public class AppConfig implements SchedulingConfigurer {
+ *
+ *     &amp;#064;Override
+ *     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
+ *         taskRegistrar.setScheduler(taskScheduler());
+ *         taskRegistrar.addTriggerTask(
+ *             new Runnable() {
+ *                 public void run() {
+ *                     myTask().work();
+ *                 }
+ *             },
+ *             new CustomTrigger()
+ *         );
+ *     }
+ *
+ *     &amp;#064;Bean(destroyMethod="shutdown")
+ *     public Executor taskScheduler() {
+ *         return Executors.newScheduledThreadPool(42);
+ *     }
+ *
+ *     &amp;#064;Bean
+ *     public MyTask myTask() {
+ *         return new MyTask();
+ *     }
+ * }&lt;/pre&gt;
+ *
+ * &lt;p&gt;For reference, the example above can be compared to the following Spring XML
+ * configuration:
+ *
+ * &lt;pre class="code"&gt;
+ * {@code
+ * &lt;beans&gt;
+ *
+ *     &lt;task:annotation-driven scheduler="taskScheduler"/&gt;
+ *
+ *     &lt;task:scheduler id="taskScheduler" pool-size="42"/&gt;
+ *
+ *     &lt;task:scheduled-tasks scheduler="taskScheduler"&gt;
+ *         &lt;task:scheduled ref="myTask" method="work" fixed-rate="1000"/&gt;
+ *     &lt;/task:scheduled-tasks&gt;
+ *
+ *     &lt;bean id="myTask" class="com.foo.MyTask"/&gt;
+ *
+ * &lt;/beans&gt;
+ * }&lt;/pre&gt;
+ *
+ * The examples are equivalent save that in XML a &lt;em&gt;fixed-rate&lt;/em&gt; period is used
+ * instead of a custom &lt;em&gt;{@code Trigger}&lt;/em&gt; implementation; this is because the
+ * {@code task:} namespace {@code scheduled} cannot easily expose such support. This is
+ * but one demonstration how the code-based approach allows for maximum configurability
+ * through direct access to actual componentry.&lt;p&gt;
+ *
+ * @author Chris Beams
+ * @author Juergen Hoeller
+ * @since 3.1
+ * @see Scheduled
+ * @see SchedulingConfiguration
+ * @see SchedulingConfigurer
+ * @see ScheduledTaskRegistrar
+ * @see Trigger
+ * @see ScheduledAnnotationBeanPostProcessor
+ */</span>
+<span class="nd">@Target</span><span class="o">(</span><span class="nc">ElementType</span><span class="o">.</span><span class="na">TYPE</span><span class="o">)</span>
+<span class="nd">@Retention</span><span class="o">(</span><span class="nc">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
+<span class="nd">@Import</span><span class="o">(</span><span class="nc">SchedulingConfiguration</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="nd">@Documented</span>
+<span class="kd">public</span> <span class="nd">@interface</span> <span class="nc">EnableScheduling</span> <span class="o">{</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>##Scheduled注解</p>
+
+<p>job类只需在方法上加<code class="language-plaintext highlighter-rouge">@Scheduled</code>注解即可,支持cron表达式</p>
+
+<p>例如：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/***
+ *
+ * @since:screen-api 1.0
+ * @author &lt;a href="mailto:xiaoymin@foxmail.com"&gt;xiaoymin@foxmail.com&lt;/a&gt; 
+ * 2018/01/22 13:44
+ */</span>
+<span class="nd">@Component</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">JgJob</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">Logger</span> <span class="n">logger</span> <span class="o">=</span> <span class="nc">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="nc">JgJob</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="nc">JgService</span> <span class="n">jgService</span><span class="o">;</span>
+
+    <span class="nd">@Scheduled</span><span class="o">(</span><span class="n">cron</span> <span class="o">=</span> <span class="s">"0 0/2 * * * ?"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">jgFlowJob</span><span class="o">(){</span>
+        <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"同步极光数据任务开始..."</span><span class="o">);</span>
+        <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="k">new</span> <span class="nc">DateTime</span><span class="o">().</span><span class="na">toString</span><span class="o">(</span><span class="s">"yyyy-MM-dd HH:mm:ss"</span><span class="o">));</span>
+        <span class="nc">String</span> <span class="n">date</span><span class="o">=</span><span class="nc">DateTime</span><span class="o">.</span><span class="na">now</span><span class="o">().</span><span class="na">toString</span><span class="o">(</span><span class="s">"yyyyMMddHHmm"</span><span class="o">);</span>
+        <span class="n">jgService</span><span class="o">.</span><span class="na">syncJgTouristFlow</span><span class="o">(</span><span class="n">date</span><span class="o">);</span>
+        <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"同步极光数据任务结束..."</span><span class="o">);</span>
+    <span class="o">}</span>
+  
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>查看<code class="language-plaintext highlighter-rouge">Scheduled</code>注解源码：</p>
+
+<ul>
+  <li>使用该注解标注的方法将会被执行，指定cron或者fxedDelay或者fixedRate属性</li>
+  <li>该注解标注必须无参数,如果有返回参数,将会被忽略</li>
+  <li>通过类<code class="language-plaintext highlighter-rouge">ScheduledAnnotationBeanPostProcessor</code>注入</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * An annotation that marks a method to be scheduled. Exactly one of
+ * the {@link #cron()}, {@link #fixedDelay()}, or {@link #fixedRate()}
+ * attributes must be specified.
+ *
+ * &lt;p&gt;The annotated method must expect no arguments. It will typically have
+ * a {@code void} return type; if not, the returned value will be ignored
+ * when called through the scheduler.
+ *
+ * &lt;p&gt;Processing of {@code @Scheduled} annotations is performed by
+ * registering a {@link ScheduledAnnotationBeanPostProcessor}. This can be
+ * done manually or, more conveniently, through the {@code &lt;task:annotation-driven/&gt;}
+ * element or @{@link EnableScheduling} annotation.
+ *
+ * &lt;p&gt;This annotation may be used as a &lt;em&gt;meta-annotation&lt;/em&gt; to create custom
+ * &lt;em&gt;composed annotations&lt;/em&gt; with attribute overrides.
+ *
+ * @author Mark Fisher
+ * @author Dave Syer
+ * @author Chris Beams
+ * @since 3.0
+ * @see EnableScheduling
+ * @see ScheduledAnnotationBeanPostProcessor
+ * @see Schedules
+ */</span>
+<span class="nd">@Target</span><span class="o">({</span><span class="nc">ElementType</span><span class="o">.</span><span class="na">METHOD</span><span class="o">,</span> <span class="nc">ElementType</span><span class="o">.</span><span class="na">ANNOTATION_TYPE</span><span class="o">})</span>
+<span class="nd">@Retention</span><span class="o">(</span><span class="nc">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
+<span class="nd">@Documented</span>
+<span class="nd">@Repeatable</span><span class="o">(</span><span class="nc">Schedules</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nd">@interface</span> <span class="nc">Scheduled</span> <span class="o">{</span>
+ <span class="o">....</span> 
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>##SchedulingConfiguration</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * {@code @Configuration} class that registers a {@link ScheduledAnnotationBeanPostProcessor}
+ * bean capable of processing Spring's @{@link Scheduled} annotation.
+ *
+ * &lt;p&gt;This configuration class is automatically imported when using the
+ * {@link EnableScheduling @EnableScheduling} annotation. See
+ * {@code @EnableScheduling}'s javadoc for complete usage details.
+ *
+ * @author Chris Beams
+ * @since 3.1
+ * @see EnableScheduling
+ * @see ScheduledAnnotationBeanPostProcessor
+ */</span>
+<span class="nd">@Configuration</span>
+<span class="nd">@Role</span><span class="o">(</span><span class="nc">BeanDefinition</span><span class="o">.</span><span class="na">ROLE_INFRASTRUCTURE</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SchedulingConfiguration</span> <span class="o">{</span>
+
+	<span class="nd">@Bean</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="nc">TaskManagementConfigUtils</span><span class="o">.</span><span class="na">SCHEDULED_ANNOTATION_PROCESSOR_BEAN_NAME</span><span class="o">)</span>
+	<span class="nd">@Role</span><span class="o">(</span><span class="nc">BeanDefinition</span><span class="o">.</span><span class="na">ROLE_INFRASTRUCTURE</span><span class="o">)</span>
+	<span class="kd">public</span> <span class="nc">ScheduledAnnotationBeanPostProcessor</span> <span class="nf">scheduledAnnotationProcessor</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="k">new</span> <span class="nf">ScheduledAnnotationBeanPostProcessor</span><span class="o">();</span>
+	<span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="scheduledannotationbeanpostprocessor">ScheduledAnnotationBeanPostProcessor</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/*
+ * Copyright 2002-2017 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */</span>
+
+<span class="kn">package</span> <span class="nn">org.springframework.scheduling.annotation</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.lang.reflect.Method</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Collection</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Collections</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.IdentityHashMap</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.LinkedHashSet</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Map</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Set</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.TimeZone</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.concurrent.ConcurrentHashMap</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.concurrent.ScheduledExecutorService</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.apache.commons.logging.Log</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.commons.logging.LogFactory</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.springframework.aop.support.AopUtils</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.beans.factory.BeanFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.beans.factory.BeanFactoryAware</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.beans.factory.BeanNameAware</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.beans.factory.DisposableBean</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.beans.factory.ListableBeanFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.beans.factory.NoSuchBeanDefinitionException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.beans.factory.NoUniqueBeanDefinitionException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.beans.factory.SmartInitializingSingleton</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.beans.factory.config.AutowireCapableBeanFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.beans.factory.config.ConfigurableBeanFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.beans.factory.config.DestructionAwareBeanPostProcessor</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.beans.factory.config.NamedBeanHolder</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.beans.factory.support.MergedBeanDefinitionPostProcessor</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.beans.factory.support.RootBeanDefinition</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.context.ApplicationContext</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.context.ApplicationContextAware</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.context.ApplicationListener</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.context.EmbeddedValueResolverAware</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.context.event.ContextRefreshedEvent</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.core.MethodIntrospector</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.core.Ordered</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.core.annotation.AnnotatedElementUtils</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.scheduling.TaskScheduler</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.scheduling.Trigger</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.scheduling.config.CronTask</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.scheduling.config.IntervalTask</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.scheduling.config.ScheduledTask</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.scheduling.config.ScheduledTaskRegistrar</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.scheduling.support.CronTrigger</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.scheduling.support.ScheduledMethodRunnable</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.util.Assert</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.util.StringUtils</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.util.StringValueResolver</span><span class="o">;</span>
+
+<span class="cm">/**
+ * Bean post-processor that registers methods annotated with @{@link Scheduled}
+ * to be invoked by a {@link org.springframework.scheduling.TaskScheduler} according
+ * to the "fixedRate", "fixedDelay", or "cron" expression provided via the annotation.
+ *
+ * &lt;p&gt;This post-processor is automatically registered by Spring's
+ * {@code &lt;task:annotation-driven&gt;} XML element, and also by the
+ * {@link EnableScheduling @EnableScheduling} annotation.
+ *
+ * &lt;p&gt;Autodetects any {@link SchedulingConfigurer} instances in the container,
+ * allowing for customization of the scheduler to be used or for fine-grained
+ * control over task registration (e.g. registration of {@link Trigger} tasks.
+ * See the @{@link EnableScheduling} javadocs for complete usage details.
+ *
+ * @author Mark Fisher
+ * @author Juergen Hoeller
+ * @author Chris Beams
+ * @author Elizabeth Chatman
+ * @since 3.0
+ * @see Scheduled
+ * @see EnableScheduling
+ * @see SchedulingConfigurer
+ * @see org.springframework.scheduling.TaskScheduler
+ * @see org.springframework.scheduling.config.ScheduledTaskRegistrar
+ * @see AsyncAnnotationBeanPostProcessor
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ScheduledAnnotationBeanPostProcessor</span>
+		<span class="kd">implements</span> <span class="nc">MergedBeanDefinitionPostProcessor</span><span class="o">,</span> <span class="nc">DestructionAwareBeanPostProcessor</span><span class="o">,</span>
+		<span class="nc">Ordered</span><span class="o">,</span> <span class="nc">EmbeddedValueResolverAware</span><span class="o">,</span> <span class="nc">BeanNameAware</span><span class="o">,</span> <span class="nc">BeanFactoryAware</span><span class="o">,</span> <span class="nc">ApplicationContextAware</span><span class="o">,</span>
+		<span class="nc">SmartInitializingSingleton</span><span class="o">,</span> <span class="nc">ApplicationListener</span><span class="o">&lt;</span><span class="nc">ContextRefreshedEvent</span><span class="o">&gt;,</span> <span class="nc">DisposableBean</span> <span class="o">{</span>
+
+	<span class="cm">/**
+	 * The default name of the {@link TaskScheduler} bean to pick up: "taskScheduler".
+	 * &lt;p&gt;Note that the initial lookup happens by type; this is just the fallback
+	 * in case of multiple scheduler beans found in the context.
+	 * @since 4.2
+	 */</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">DEFAULT_TASK_SCHEDULER_BEAN_NAME</span> <span class="o">=</span> <span class="s">"taskScheduler"</span><span class="o">;</span>
+
+
+	<span class="kd">protected</span> <span class="kd">final</span> <span class="nc">Log</span> <span class="n">logger</span> <span class="o">=</span> <span class="nc">LogFactory</span><span class="o">.</span><span class="na">getLog</span><span class="o">(</span><span class="n">getClass</span><span class="o">());</span>
+
+	<span class="kd">private</span> <span class="nc">Object</span> <span class="n">scheduler</span><span class="o">;</span>
+
+	<span class="kd">private</span> <span class="nc">StringValueResolver</span> <span class="n">embeddedValueResolver</span><span class="o">;</span>
+
+	<span class="kd">private</span> <span class="nc">String</span> <span class="n">beanName</span><span class="o">;</span>
+
+	<span class="kd">private</span> <span class="nc">BeanFactory</span> <span class="n">beanFactory</span><span class="o">;</span>
+
+	<span class="kd">private</span> <span class="nc">ApplicationContext</span> <span class="n">applicationContext</span><span class="o">;</span>
+
+	<span class="kd">private</span> <span class="kd">final</span> <span class="nc">ScheduledTaskRegistrar</span> <span class="n">registrar</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ScheduledTaskRegistrar</span><span class="o">();</span>
+
+	<span class="kd">private</span> <span class="kd">final</span> <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">Class</span><span class="o">&lt;?&gt;&gt;</span> <span class="n">nonAnnotatedClasses</span> <span class="o">=</span>
+			<span class="nc">Collections</span><span class="o">.</span><span class="na">newSetFromMap</span><span class="o">(</span><span class="k">new</span> <span class="nc">ConcurrentHashMap</span><span class="o">&lt;</span><span class="nc">Class</span><span class="o">&lt;?&gt;,</span> <span class="nc">Boolean</span><span class="o">&gt;(</span><span class="mi">64</span><span class="o">));</span>
+
+	<span class="kd">private</span> <span class="kd">final</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">,</span> <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">ScheduledTask</span><span class="o">&gt;&gt;</span> <span class="n">scheduledTasks</span> <span class="o">=</span>
+			<span class="k">new</span> <span class="nc">IdentityHashMap</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">,</span> <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">ScheduledTask</span><span class="o">&gt;&gt;(</span><span class="mi">16</span><span class="o">);</span>
+
+
+	<span class="nd">@Override</span>
+	<span class="kd">public</span> <span class="kt">int</span> <span class="nf">getOrder</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="no">LOWEST_PRECEDENCE</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="cm">/**
+	 * Set the {@link org.springframework.scheduling.TaskScheduler} that will invoke
+	 * the scheduled methods, or a {@link java.util.concurrent.ScheduledExecutorService}
+	 * to be wrapped as a TaskScheduler.
+	 * &lt;p&gt;If not specified, default scheduler resolution will apply: searching for a
+	 * unique {@link TaskScheduler} bean in the context, or for a {@link TaskScheduler}
+	 * bean named "taskScheduler" otherwise; the same lookup will also be performed for
+	 * a {@link ScheduledExecutorService} bean. If neither of the two is resolvable,
+	 * a local single-threaded default scheduler will be created within the registrar.
+	 * @see #DEFAULT_TASK_SCHEDULER_BEAN_NAME
+	 */</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setScheduler</span><span class="o">(</span><span class="nc">Object</span> <span class="n">scheduler</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">scheduler</span> <span class="o">=</span> <span class="n">scheduler</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="nd">@Override</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setEmbeddedValueResolver</span><span class="o">(</span><span class="nc">StringValueResolver</span> <span class="n">resolver</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">embeddedValueResolver</span> <span class="o">=</span> <span class="n">resolver</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="nd">@Override</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setBeanName</span><span class="o">(</span><span class="nc">String</span> <span class="n">beanName</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">beanName</span> <span class="o">=</span> <span class="n">beanName</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="cm">/**
+	 * Making a {@link BeanFactory} available is optional; if not set,
+	 * {@link SchedulingConfigurer} beans won't get autodetected and
+	 * a {@link #setScheduler scheduler} has to be explicitly configured.
+	 */</span>
+	<span class="nd">@Override</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setBeanFactory</span><span class="o">(</span><span class="nc">BeanFactory</span> <span class="n">beanFactory</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">beanFactory</span> <span class="o">=</span> <span class="n">beanFactory</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="cm">/**
+	 * Setting an {@link ApplicationContext} is optional: If set, registered
+	 * tasks will be activated in the {@link ContextRefreshedEvent} phase;
+	 * if not set, it will happen at {@link #afterSingletonsInstantiated} time.
+	 */</span>
+	<span class="nd">@Override</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setApplicationContext</span><span class="o">(</span><span class="nc">ApplicationContext</span> <span class="n">applicationContext</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">applicationContext</span> <span class="o">=</span> <span class="n">applicationContext</span><span class="o">;</span>
+		<span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">beanFactory</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">this</span><span class="o">.</span><span class="na">beanFactory</span> <span class="o">=</span> <span class="n">applicationContext</span><span class="o">;</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+
+
+	<span class="nd">@Override</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">afterSingletonsInstantiated</span><span class="o">()</span> <span class="o">{</span>
+		<span class="c1">// Remove resolved singleton classes from cache</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">nonAnnotatedClasses</span><span class="o">.</span><span class="na">clear</span><span class="o">();</span>
+
+		<span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">applicationContext</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+			<span class="c1">// Not running in an ApplicationContext -&gt; register tasks early...</span>
+			<span class="n">finishRegistration</span><span class="o">();</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+
+	<span class="nd">@Override</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">onApplicationEvent</span><span class="o">(</span><span class="nc">ContextRefreshedEvent</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">if</span> <span class="o">(</span><span class="n">event</span><span class="o">.</span><span class="na">getApplicationContext</span><span class="o">()</span> <span class="o">==</span> <span class="k">this</span><span class="o">.</span><span class="na">applicationContext</span><span class="o">)</span> <span class="o">{</span>
+			<span class="c1">// Running in an ApplicationContext -&gt; register tasks this late...</span>
+			<span class="c1">// giving other ContextRefreshedEvent listeners a chance to perform</span>
+			<span class="c1">// their work at the same time (e.g. Spring Batch's job registration).</span>
+			<span class="n">finishRegistration</span><span class="o">();</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+
+	<span class="kd">private</span> <span class="kt">void</span> <span class="nf">finishRegistration</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">scheduler</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">this</span><span class="o">.</span><span class="na">registrar</span><span class="o">.</span><span class="na">setScheduler</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">scheduler</span><span class="o">);</span>
+		<span class="o">}</span>
+
+		<span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">beanFactory</span> <span class="k">instanceof</span> <span class="nc">ListableBeanFactory</span><span class="o">)</span> <span class="o">{</span>
+			<span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">SchedulingConfigurer</span><span class="o">&gt;</span> <span class="n">configurers</span> <span class="o">=</span>
+					<span class="o">((</span><span class="nc">ListableBeanFactory</span><span class="o">)</span> <span class="k">this</span><span class="o">.</span><span class="na">beanFactory</span><span class="o">).</span><span class="na">getBeansOfType</span><span class="o">(</span><span class="nc">SchedulingConfigurer</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+			<span class="k">for</span> <span class="o">(</span><span class="nc">SchedulingConfigurer</span> <span class="n">configurer</span> <span class="o">:</span> <span class="n">configurers</span><span class="o">.</span><span class="na">values</span><span class="o">())</span> <span class="o">{</span>
+				<span class="n">configurer</span><span class="o">.</span><span class="na">configureTasks</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">registrar</span><span class="o">);</span>
+			<span class="o">}</span>
+		<span class="o">}</span>
+
+		<span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">registrar</span><span class="o">.</span><span class="na">hasTasks</span><span class="o">()</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="o">.</span><span class="na">registrar</span><span class="o">.</span><span class="na">getScheduler</span><span class="o">()</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+			<span class="nc">Assert</span><span class="o">.</span><span class="na">state</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">beanFactory</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">,</span> <span class="s">"BeanFactory must be set to find scheduler by type"</span><span class="o">);</span>
+			<span class="k">try</span> <span class="o">{</span>
+				<span class="c1">// Search for TaskScheduler bean...</span>
+				<span class="k">this</span><span class="o">.</span><span class="na">registrar</span><span class="o">.</span><span class="na">setTaskScheduler</span><span class="o">(</span><span class="n">resolveSchedulerBean</span><span class="o">(</span><span class="nc">TaskScheduler</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="kc">false</span><span class="o">));</span>
+			<span class="o">}</span>
+			<span class="k">catch</span> <span class="o">(</span><span class="nc">NoUniqueBeanDefinitionException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+				<span class="n">logger</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Could not find unique TaskScheduler bean"</span><span class="o">,</span> <span class="n">ex</span><span class="o">);</span>
+				<span class="k">try</span> <span class="o">{</span>
+					<span class="k">this</span><span class="o">.</span><span class="na">registrar</span><span class="o">.</span><span class="na">setTaskScheduler</span><span class="o">(</span><span class="n">resolveSchedulerBean</span><span class="o">(</span><span class="nc">TaskScheduler</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="kc">true</span><span class="o">));</span>
+				<span class="o">}</span>
+				<span class="k">catch</span> <span class="o">(</span><span class="nc">NoSuchBeanDefinitionException</span> <span class="n">ex2</span><span class="o">)</span> <span class="o">{</span>
+					<span class="k">if</span> <span class="o">(</span><span class="n">logger</span><span class="o">.</span><span class="na">isInfoEnabled</span><span class="o">())</span> <span class="o">{</span>
+						<span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"More than one TaskScheduler bean exists within the context, and "</span> <span class="o">+</span>
+								<span class="s">"none is named 'taskScheduler'. Mark one of them as primary or name it 'taskScheduler' "</span> <span class="o">+</span>
+								<span class="s">"(possibly as an alias); or implement the SchedulingConfigurer interface and call "</span> <span class="o">+</span>
+								<span class="s">"ScheduledTaskRegistrar#setScheduler explicitly within the configureTasks() callback: "</span> <span class="o">+</span>
+								<span class="n">ex</span><span class="o">.</span><span class="na">getBeanNamesFound</span><span class="o">());</span>
+					<span class="o">}</span>
+				<span class="o">}</span>
+			<span class="o">}</span>
+			<span class="k">catch</span> <span class="o">(</span><span class="nc">NoSuchBeanDefinitionException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+				<span class="n">logger</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Could not find default TaskScheduler bean"</span><span class="o">,</span> <span class="n">ex</span><span class="o">);</span>
+				<span class="c1">// Search for ScheduledExecutorService bean next...</span>
+				<span class="k">try</span> <span class="o">{</span>
+					<span class="k">this</span><span class="o">.</span><span class="na">registrar</span><span class="o">.</span><span class="na">setScheduler</span><span class="o">(</span><span class="n">resolveSchedulerBean</span><span class="o">(</span><span class="nc">ScheduledExecutorService</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="kc">false</span><span class="o">));</span>
+				<span class="o">}</span>
+				<span class="k">catch</span> <span class="o">(</span><span class="nc">NoUniqueBeanDefinitionException</span> <span class="n">ex2</span><span class="o">)</span> <span class="o">{</span>
+					<span class="n">logger</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Could not find unique ScheduledExecutorService bean"</span><span class="o">,</span> <span class="n">ex2</span><span class="o">);</span>
+					<span class="k">try</span> <span class="o">{</span>
+						<span class="k">this</span><span class="o">.</span><span class="na">registrar</span><span class="o">.</span><span class="na">setScheduler</span><span class="o">(</span><span class="n">resolveSchedulerBean</span><span class="o">(</span><span class="nc">ScheduledExecutorService</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="kc">true</span><span class="o">));</span>
+					<span class="o">}</span>
+					<span class="k">catch</span> <span class="o">(</span><span class="nc">NoSuchBeanDefinitionException</span> <span class="n">ex3</span><span class="o">)</span> <span class="o">{</span>
+						<span class="k">if</span> <span class="o">(</span><span class="n">logger</span><span class="o">.</span><span class="na">isInfoEnabled</span><span class="o">())</span> <span class="o">{</span>
+							<span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"More than one ScheduledExecutorService bean exists within the context, and "</span> <span class="o">+</span>
+									<span class="s">"none is named 'taskScheduler'. Mark one of them as primary or name it 'taskScheduler' "</span> <span class="o">+</span>
+									<span class="s">"(possibly as an alias); or implement the SchedulingConfigurer interface and call "</span> <span class="o">+</span>
+									<span class="s">"ScheduledTaskRegistrar#setScheduler explicitly within the configureTasks() callback: "</span> <span class="o">+</span>
+									<span class="n">ex2</span><span class="o">.</span><span class="na">getBeanNamesFound</span><span class="o">());</span>
+						<span class="o">}</span>
+					<span class="o">}</span>
+				<span class="o">}</span>
+				<span class="k">catch</span> <span class="o">(</span><span class="nc">NoSuchBeanDefinitionException</span> <span class="n">ex2</span><span class="o">)</span> <span class="o">{</span>
+					<span class="n">logger</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Could not find default ScheduledExecutorService bean"</span><span class="o">,</span> <span class="n">ex2</span><span class="o">);</span>
+					<span class="c1">// Giving up -&gt; falling back to default scheduler within the registrar...</span>
+					<span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"No TaskScheduler/ScheduledExecutorService bean found for scheduled processing"</span><span class="o">);</span>
+				<span class="o">}</span>
+			<span class="o">}</span>
+		<span class="o">}</span>
+
+		<span class="k">this</span><span class="o">.</span><span class="na">registrar</span><span class="o">.</span><span class="na">afterPropertiesSet</span><span class="o">();</span>
+	<span class="o">}</span>
+
+	<span class="kd">private</span> <span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="no">T</span> <span class="nf">resolveSchedulerBean</span><span class="o">(</span><span class="nc">Class</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">schedulerType</span><span class="o">,</span> <span class="kt">boolean</span> <span class="n">byName</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">if</span> <span class="o">(</span><span class="n">byName</span><span class="o">)</span> <span class="o">{</span>
+			<span class="no">T</span> <span class="n">scheduler</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">beanFactory</span><span class="o">.</span><span class="na">getBean</span><span class="o">(</span><span class="no">DEFAULT_TASK_SCHEDULER_BEAN_NAME</span><span class="o">,</span> <span class="n">schedulerType</span><span class="o">);</span>
+			<span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">beanFactory</span> <span class="k">instanceof</span> <span class="nc">ConfigurableBeanFactory</span><span class="o">)</span> <span class="o">{</span>
+				<span class="o">((</span><span class="nc">ConfigurableBeanFactory</span><span class="o">)</span> <span class="k">this</span><span class="o">.</span><span class="na">beanFactory</span><span class="o">).</span><span class="na">registerDependentBean</span><span class="o">(</span>
+						<span class="no">DEFAULT_TASK_SCHEDULER_BEAN_NAME</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">beanName</span><span class="o">);</span>
+			<span class="o">}</span>
+			<span class="k">return</span> <span class="n">scheduler</span><span class="o">;</span>
+		<span class="o">}</span>
+		<span class="k">else</span> <span class="nf">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">beanFactory</span> <span class="k">instanceof</span> <span class="nc">AutowireCapableBeanFactory</span><span class="o">)</span> <span class="o">{</span>
+			<span class="nc">NamedBeanHolder</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">holder</span> <span class="o">=</span> <span class="o">((</span><span class="nc">AutowireCapableBeanFactory</span><span class="o">)</span> <span class="k">this</span><span class="o">.</span><span class="na">beanFactory</span><span class="o">).</span><span class="na">resolveNamedBean</span><span class="o">(</span><span class="n">schedulerType</span><span class="o">);</span>
+			<span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">beanFactory</span> <span class="k">instanceof</span> <span class="nc">ConfigurableBeanFactory</span><span class="o">)</span> <span class="o">{</span>
+				<span class="o">((</span><span class="nc">ConfigurableBeanFactory</span><span class="o">)</span> <span class="k">this</span><span class="o">.</span><span class="na">beanFactory</span><span class="o">).</span><span class="na">registerDependentBean</span><span class="o">(</span>
+						<span class="n">holder</span><span class="o">.</span><span class="na">getBeanName</span><span class="o">(),</span> <span class="k">this</span><span class="o">.</span><span class="na">beanName</span><span class="o">);</span>
+			<span class="o">}</span>
+			<span class="k">return</span> <span class="n">holder</span><span class="o">.</span><span class="na">getBeanInstance</span><span class="o">();</span>
+		<span class="o">}</span>
+		<span class="k">else</span> <span class="o">{</span>
+			<span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">beanFactory</span><span class="o">.</span><span class="na">getBean</span><span class="o">(</span><span class="n">schedulerType</span><span class="o">);</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+
+
+	<span class="nd">@Override</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">postProcessMergedBeanDefinition</span><span class="o">(</span><span class="nc">RootBeanDefinition</span> <span class="n">beanDefinition</span><span class="o">,</span> <span class="nc">Class</span><span class="o">&lt;?&gt;</span> <span class="n">beanType</span><span class="o">,</span> <span class="nc">String</span> <span class="n">beanName</span><span class="o">)</span> <span class="o">{</span>
+	<span class="o">}</span>
+
+	<span class="nd">@Override</span>
+	<span class="kd">public</span> <span class="nc">Object</span> <span class="nf">postProcessBeforeInitialization</span><span class="o">(</span><span class="nc">Object</span> <span class="n">bean</span><span class="o">,</span> <span class="nc">String</span> <span class="n">beanName</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="n">bean</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="nd">@Override</span>
+	<span class="kd">public</span> <span class="nc">Object</span> <span class="nf">postProcessAfterInitialization</span><span class="o">(</span><span class="kd">final</span> <span class="nc">Object</span> <span class="n">bean</span><span class="o">,</span> <span class="nc">String</span> <span class="n">beanName</span><span class="o">)</span> <span class="o">{</span>
+		<span class="nc">Class</span><span class="o">&lt;?&gt;</span> <span class="n">targetClass</span> <span class="o">=</span> <span class="nc">AopUtils</span><span class="o">.</span><span class="na">getTargetClass</span><span class="o">(</span><span class="n">bean</span><span class="o">);</span>
+		<span class="k">if</span> <span class="o">(!</span><span class="k">this</span><span class="o">.</span><span class="na">nonAnnotatedClasses</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">targetClass</span><span class="o">))</span> <span class="o">{</span>
+			<span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Method</span><span class="o">,</span> <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">Scheduled</span><span class="o">&gt;&gt;</span> <span class="n">annotatedMethods</span> <span class="o">=</span> <span class="nc">MethodIntrospector</span><span class="o">.</span><span class="na">selectMethods</span><span class="o">(</span><span class="n">targetClass</span><span class="o">,</span>
+					<span class="k">new</span> <span class="nc">MethodIntrospector</span><span class="o">.</span><span class="na">MetadataLookup</span><span class="o">&lt;</span><span class="nc">Set</span><span class="o">&lt;</span><span class="nc">Scheduled</span><span class="o">&gt;&gt;()</span> <span class="o">{</span>
+						<span class="nd">@Override</span>
+						<span class="kd">public</span> <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">Scheduled</span><span class="o">&gt;</span> <span class="nf">inspect</span><span class="o">(</span><span class="nc">Method</span> <span class="n">method</span><span class="o">)</span> <span class="o">{</span>
+							<span class="nc">Set</span><span class="o">&lt;</span><span class="nc">Scheduled</span><span class="o">&gt;</span> <span class="n">scheduledMethods</span> <span class="o">=</span> <span class="nc">AnnotatedElementUtils</span><span class="o">.</span><span class="na">getMergedRepeatableAnnotations</span><span class="o">(</span>
+									<span class="n">method</span><span class="o">,</span> <span class="nc">Scheduled</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="nc">Schedules</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+							<span class="k">return</span> <span class="o">(!</span><span class="n">scheduledMethods</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">()</span> <span class="o">?</span> <span class="n">scheduledMethods</span> <span class="o">:</span> <span class="kc">null</span><span class="o">);</span>
+						<span class="o">}</span>
+					<span class="o">});</span>
+			<span class="k">if</span> <span class="o">(</span><span class="n">annotatedMethods</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+				<span class="k">this</span><span class="o">.</span><span class="na">nonAnnotatedClasses</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">targetClass</span><span class="o">);</span>
+				<span class="k">if</span> <span class="o">(</span><span class="n">logger</span><span class="o">.</span><span class="na">isTraceEnabled</span><span class="o">())</span> <span class="o">{</span>
+					<span class="n">logger</span><span class="o">.</span><span class="na">trace</span><span class="o">(</span><span class="s">"No @Scheduled annotations found on bean class: "</span> <span class="o">+</span> <span class="n">bean</span><span class="o">.</span><span class="na">getClass</span><span class="o">());</span>
+				<span class="o">}</span>
+			<span class="o">}</span>
+			<span class="k">else</span> <span class="o">{</span>
+				<span class="c1">// Non-empty set of methods</span>
+				<span class="k">for</span> <span class="o">(</span><span class="nc">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="nc">Method</span><span class="o">,</span> <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">Scheduled</span><span class="o">&gt;&gt;</span> <span class="n">entry</span> <span class="o">:</span> <span class="n">annotatedMethods</span><span class="o">.</span><span class="na">entrySet</span><span class="o">())</span> <span class="o">{</span>
+					<span class="nc">Method</span> <span class="n">method</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="na">getKey</span><span class="o">();</span>
+					<span class="k">for</span> <span class="o">(</span><span class="nc">Scheduled</span> <span class="n">scheduled</span> <span class="o">:</span> <span class="n">entry</span><span class="o">.</span><span class="na">getValue</span><span class="o">())</span> <span class="o">{</span>
+						<span class="n">processScheduled</span><span class="o">(</span><span class="n">scheduled</span><span class="o">,</span> <span class="n">method</span><span class="o">,</span> <span class="n">bean</span><span class="o">);</span>
+					<span class="o">}</span>
+				<span class="o">}</span>
+				<span class="k">if</span> <span class="o">(</span><span class="n">logger</span><span class="o">.</span><span class="na">isDebugEnabled</span><span class="o">())</span> <span class="o">{</span>
+					<span class="n">logger</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="n">annotatedMethods</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">+</span> <span class="s">" @Scheduled methods processed on bean '"</span> <span class="o">+</span> <span class="n">beanName</span> <span class="o">+</span>
+							<span class="s">"': "</span> <span class="o">+</span> <span class="n">annotatedMethods</span><span class="o">);</span>
+				<span class="o">}</span>
+			<span class="o">}</span>
+		<span class="o">}</span>
+		<span class="k">return</span> <span class="n">bean</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">processScheduled</span><span class="o">(</span><span class="nc">Scheduled</span> <span class="n">scheduled</span><span class="o">,</span> <span class="nc">Method</span> <span class="n">method</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">bean</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">try</span> <span class="o">{</span>
+			<span class="nc">Assert</span><span class="o">.</span><span class="na">isTrue</span><span class="o">(</span><span class="n">method</span><span class="o">.</span><span class="na">getParameterTypes</span><span class="o">().</span><span class="na">length</span> <span class="o">==</span> <span class="mi">0</span><span class="o">,</span>
+					<span class="s">"Only no-arg methods may be annotated with @Scheduled"</span><span class="o">);</span>
+
+			<span class="nc">Method</span> <span class="n">invocableMethod</span> <span class="o">=</span> <span class="nc">AopUtils</span><span class="o">.</span><span class="na">selectInvocableMethod</span><span class="o">(</span><span class="n">method</span><span class="o">,</span> <span class="n">bean</span><span class="o">.</span><span class="na">getClass</span><span class="o">());</span>
+			<span class="nc">Runnable</span> <span class="n">runnable</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ScheduledMethodRunnable</span><span class="o">(</span><span class="n">bean</span><span class="o">,</span> <span class="n">invocableMethod</span><span class="o">);</span>
+			<span class="kt">boolean</span> <span class="n">processedSchedule</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+			<span class="nc">String</span> <span class="n">errorMessage</span> <span class="o">=</span>
+					<span class="s">"Exactly one of the 'cron', 'fixedDelay(String)', or 'fixedRate(String)' attributes is required"</span><span class="o">;</span>
+
+			<span class="nc">Set</span><span class="o">&lt;</span><span class="nc">ScheduledTask</span><span class="o">&gt;</span> <span class="n">tasks</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LinkedHashSet</span><span class="o">&lt;</span><span class="nc">ScheduledTask</span><span class="o">&gt;(</span><span class="mi">4</span><span class="o">);</span>
+
+			<span class="c1">// Determine initial delay</span>
+			<span class="kt">long</span> <span class="n">initialDelay</span> <span class="o">=</span> <span class="n">scheduled</span><span class="o">.</span><span class="na">initialDelay</span><span class="o">();</span>
+			<span class="nc">String</span> <span class="n">initialDelayString</span> <span class="o">=</span> <span class="n">scheduled</span><span class="o">.</span><span class="na">initialDelayString</span><span class="o">();</span>
+			<span class="k">if</span> <span class="o">(</span><span class="nc">StringUtils</span><span class="o">.</span><span class="na">hasText</span><span class="o">(</span><span class="n">initialDelayString</span><span class="o">))</span> <span class="o">{</span>
+				<span class="nc">Assert</span><span class="o">.</span><span class="na">isTrue</span><span class="o">(</span><span class="n">initialDelay</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">,</span> <span class="s">"Specify 'initialDelay' or 'initialDelayString', not both"</span><span class="o">);</span>
+				<span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">embeddedValueResolver</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+					<span class="n">initialDelayString</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">embeddedValueResolver</span><span class="o">.</span><span class="na">resolveStringValue</span><span class="o">(</span><span class="n">initialDelayString</span><span class="o">);</span>
+				<span class="o">}</span>
+				<span class="k">try</span> <span class="o">{</span>
+					<span class="n">initialDelay</span> <span class="o">=</span> <span class="nc">Long</span><span class="o">.</span><span class="na">parseLong</span><span class="o">(</span><span class="n">initialDelayString</span><span class="o">);</span>
+				<span class="o">}</span>
+				<span class="k">catch</span> <span class="o">(</span><span class="nc">NumberFormatException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+					<span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span>
+							<span class="s">"Invalid initialDelayString value \""</span> <span class="o">+</span> <span class="n">initialDelayString</span> <span class="o">+</span> <span class="s">"\" - cannot parse into integer"</span><span class="o">);</span>
+				<span class="o">}</span>
+			<span class="o">}</span>
+
+			<span class="c1">// Check cron expression</span>
+			<span class="nc">String</span> <span class="n">cron</span> <span class="o">=</span> <span class="n">scheduled</span><span class="o">.</span><span class="na">cron</span><span class="o">();</span>
+			<span class="k">if</span> <span class="o">(</span><span class="nc">StringUtils</span><span class="o">.</span><span class="na">hasText</span><span class="o">(</span><span class="n">cron</span><span class="o">))</span> <span class="o">{</span>
+				<span class="nc">Assert</span><span class="o">.</span><span class="na">isTrue</span><span class="o">(</span><span class="n">initialDelay</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="s">"'initialDelay' not supported for cron triggers"</span><span class="o">);</span>
+				<span class="n">processedSchedule</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+				<span class="nc">String</span> <span class="n">zone</span> <span class="o">=</span> <span class="n">scheduled</span><span class="o">.</span><span class="na">zone</span><span class="o">();</span>
+				<span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">embeddedValueResolver</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+					<span class="n">cron</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">embeddedValueResolver</span><span class="o">.</span><span class="na">resolveStringValue</span><span class="o">(</span><span class="n">cron</span><span class="o">);</span>
+					<span class="n">zone</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">embeddedValueResolver</span><span class="o">.</span><span class="na">resolveStringValue</span><span class="o">(</span><span class="n">zone</span><span class="o">);</span>
+				<span class="o">}</span>
+				<span class="nc">TimeZone</span> <span class="n">timeZone</span><span class="o">;</span>
+				<span class="k">if</span> <span class="o">(</span><span class="nc">StringUtils</span><span class="o">.</span><span class="na">hasText</span><span class="o">(</span><span class="n">zone</span><span class="o">))</span> <span class="o">{</span>
+					<span class="n">timeZone</span> <span class="o">=</span> <span class="nc">StringUtils</span><span class="o">.</span><span class="na">parseTimeZoneString</span><span class="o">(</span><span class="n">zone</span><span class="o">);</span>
+				<span class="o">}</span>
+				<span class="k">else</span> <span class="o">{</span>
+					<span class="n">timeZone</span> <span class="o">=</span> <span class="nc">TimeZone</span><span class="o">.</span><span class="na">getDefault</span><span class="o">();</span>
+				<span class="o">}</span>
+				<span class="n">tasks</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">registrar</span><span class="o">.</span><span class="na">scheduleCronTask</span><span class="o">(</span><span class="k">new</span> <span class="nc">CronTask</span><span class="o">(</span><span class="n">runnable</span><span class="o">,</span> <span class="k">new</span> <span class="nc">CronTrigger</span><span class="o">(</span><span class="n">cron</span><span class="o">,</span> <span class="n">timeZone</span><span class="o">))));</span>
+			<span class="o">}</span>
+
+			<span class="c1">// At this point we don't need to differentiate between initial delay set or not anymore</span>
+			<span class="k">if</span> <span class="o">(</span><span class="n">initialDelay</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+				<span class="n">initialDelay</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+			<span class="o">}</span>
+
+			<span class="c1">// Check fixed delay</span>
+			<span class="kt">long</span> <span class="n">fixedDelay</span> <span class="o">=</span> <span class="n">scheduled</span><span class="o">.</span><span class="na">fixedDelay</span><span class="o">();</span>
+			<span class="k">if</span> <span class="o">(</span><span class="n">fixedDelay</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+				<span class="nc">Assert</span><span class="o">.</span><span class="na">isTrue</span><span class="o">(!</span><span class="n">processedSchedule</span><span class="o">,</span> <span class="n">errorMessage</span><span class="o">);</span>
+				<span class="n">processedSchedule</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+				<span class="n">tasks</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">registrar</span><span class="o">.</span><span class="na">scheduleFixedDelayTask</span><span class="o">(</span><span class="k">new</span> <span class="nc">IntervalTask</span><span class="o">(</span><span class="n">runnable</span><span class="o">,</span> <span class="n">fixedDelay</span><span class="o">,</span> <span class="n">initialDelay</span><span class="o">)));</span>
+			<span class="o">}</span>
+			<span class="nc">String</span> <span class="n">fixedDelayString</span> <span class="o">=</span> <span class="n">scheduled</span><span class="o">.</span><span class="na">fixedDelayString</span><span class="o">();</span>
+			<span class="k">if</span> <span class="o">(</span><span class="nc">StringUtils</span><span class="o">.</span><span class="na">hasText</span><span class="o">(</span><span class="n">fixedDelayString</span><span class="o">))</span> <span class="o">{</span>
+				<span class="nc">Assert</span><span class="o">.</span><span class="na">isTrue</span><span class="o">(!</span><span class="n">processedSchedule</span><span class="o">,</span> <span class="n">errorMessage</span><span class="o">);</span>
+				<span class="n">processedSchedule</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+				<span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">embeddedValueResolver</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+					<span class="n">fixedDelayString</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">embeddedValueResolver</span><span class="o">.</span><span class="na">resolveStringValue</span><span class="o">(</span><span class="n">fixedDelayString</span><span class="o">);</span>
+				<span class="o">}</span>
+				<span class="k">try</span> <span class="o">{</span>
+					<span class="n">fixedDelay</span> <span class="o">=</span> <span class="nc">Long</span><span class="o">.</span><span class="na">parseLong</span><span class="o">(</span><span class="n">fixedDelayString</span><span class="o">);</span>
+				<span class="o">}</span>
+				<span class="k">catch</span> <span class="o">(</span><span class="nc">NumberFormatException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+					<span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span>
+							<span class="s">"Invalid fixedDelayString value \""</span> <span class="o">+</span> <span class="n">fixedDelayString</span> <span class="o">+</span> <span class="s">"\" - cannot parse into integer"</span><span class="o">);</span>
+				<span class="o">}</span>
+				<span class="n">tasks</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">registrar</span><span class="o">.</span><span class="na">scheduleFixedDelayTask</span><span class="o">(</span><span class="k">new</span> <span class="nc">IntervalTask</span><span class="o">(</span><span class="n">runnable</span><span class="o">,</span> <span class="n">fixedDelay</span><span class="o">,</span> <span class="n">initialDelay</span><span class="o">)));</span>
+			<span class="o">}</span>
+
+			<span class="c1">// Check fixed rate</span>
+			<span class="kt">long</span> <span class="n">fixedRate</span> <span class="o">=</span> <span class="n">scheduled</span><span class="o">.</span><span class="na">fixedRate</span><span class="o">();</span>
+			<span class="k">if</span> <span class="o">(</span><span class="n">fixedRate</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+				<span class="nc">Assert</span><span class="o">.</span><span class="na">isTrue</span><span class="o">(!</span><span class="n">processedSchedule</span><span class="o">,</span> <span class="n">errorMessage</span><span class="o">);</span>
+				<span class="n">processedSchedule</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+				<span class="n">tasks</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">registrar</span><span class="o">.</span><span class="na">scheduleFixedRateTask</span><span class="o">(</span><span class="k">new</span> <span class="nc">IntervalTask</span><span class="o">(</span><span class="n">runnable</span><span class="o">,</span> <span class="n">fixedRate</span><span class="o">,</span> <span class="n">initialDelay</span><span class="o">)));</span>
+			<span class="o">}</span>
+			<span class="nc">String</span> <span class="n">fixedRateString</span> <span class="o">=</span> <span class="n">scheduled</span><span class="o">.</span><span class="na">fixedRateString</span><span class="o">();</span>
+			<span class="k">if</span> <span class="o">(</span><span class="nc">StringUtils</span><span class="o">.</span><span class="na">hasText</span><span class="o">(</span><span class="n">fixedRateString</span><span class="o">))</span> <span class="o">{</span>
+				<span class="nc">Assert</span><span class="o">.</span><span class="na">isTrue</span><span class="o">(!</span><span class="n">processedSchedule</span><span class="o">,</span> <span class="n">errorMessage</span><span class="o">);</span>
+				<span class="n">processedSchedule</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+				<span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">embeddedValueResolver</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+					<span class="n">fixedRateString</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">embeddedValueResolver</span><span class="o">.</span><span class="na">resolveStringValue</span><span class="o">(</span><span class="n">fixedRateString</span><span class="o">);</span>
+				<span class="o">}</span>
+				<span class="k">try</span> <span class="o">{</span>
+					<span class="n">fixedRate</span> <span class="o">=</span> <span class="nc">Long</span><span class="o">.</span><span class="na">parseLong</span><span class="o">(</span><span class="n">fixedRateString</span><span class="o">);</span>
+				<span class="o">}</span>
+				<span class="k">catch</span> <span class="o">(</span><span class="nc">NumberFormatException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+					<span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span>
+							<span class="s">"Invalid fixedRateString value \""</span> <span class="o">+</span> <span class="n">fixedRateString</span> <span class="o">+</span> <span class="s">"\" - cannot parse into integer"</span><span class="o">);</span>
+				<span class="o">}</span>
+				<span class="n">tasks</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">registrar</span><span class="o">.</span><span class="na">scheduleFixedRateTask</span><span class="o">(</span><span class="k">new</span> <span class="nc">IntervalTask</span><span class="o">(</span><span class="n">runnable</span><span class="o">,</span> <span class="n">fixedRate</span><span class="o">,</span> <span class="n">initialDelay</span><span class="o">)));</span>
+			<span class="o">}</span>
+
+			<span class="c1">// Check whether we had any attribute set</span>
+			<span class="nc">Assert</span><span class="o">.</span><span class="na">isTrue</span><span class="o">(</span><span class="n">processedSchedule</span><span class="o">,</span> <span class="n">errorMessage</span><span class="o">);</span>
+
+			<span class="c1">// Finally register the scheduled tasks</span>
+			<span class="kd">synchronized</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">scheduledTasks</span><span class="o">)</span> <span class="o">{</span>
+				<span class="nc">Set</span><span class="o">&lt;</span><span class="nc">ScheduledTask</span><span class="o">&gt;</span> <span class="n">registeredTasks</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">scheduledTasks</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">bean</span><span class="o">);</span>
+				<span class="k">if</span> <span class="o">(</span><span class="n">registeredTasks</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+					<span class="n">registeredTasks</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LinkedHashSet</span><span class="o">&lt;</span><span class="nc">ScheduledTask</span><span class="o">&gt;(</span><span class="mi">4</span><span class="o">);</span>
+					<span class="k">this</span><span class="o">.</span><span class="na">scheduledTasks</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">bean</span><span class="o">,</span> <span class="n">registeredTasks</span><span class="o">);</span>
+				<span class="o">}</span>
+				<span class="n">registeredTasks</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">tasks</span><span class="o">);</span>
+			<span class="o">}</span>
+		<span class="o">}</span>
+		<span class="k">catch</span> <span class="o">(</span><span class="nc">IllegalArgumentException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalStateException</span><span class="o">(</span>
+					<span class="s">"Encountered invalid @Scheduled method '"</span> <span class="o">+</span> <span class="n">method</span><span class="o">.</span><span class="na">getName</span><span class="o">()</span> <span class="o">+</span> <span class="s">"': "</span> <span class="o">+</span> <span class="n">ex</span><span class="o">.</span><span class="na">getMessage</span><span class="o">());</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+
+
+	<span class="nd">@Override</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">postProcessBeforeDestruction</span><span class="o">(</span><span class="nc">Object</span> <span class="n">bean</span><span class="o">,</span> <span class="nc">String</span> <span class="n">beanName</span><span class="o">)</span> <span class="o">{</span>
+		<span class="nc">Set</span><span class="o">&lt;</span><span class="nc">ScheduledTask</span><span class="o">&gt;</span> <span class="n">tasks</span><span class="o">;</span>
+		<span class="kd">synchronized</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">scheduledTasks</span><span class="o">)</span> <span class="o">{</span>
+			<span class="n">tasks</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">scheduledTasks</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">bean</span><span class="o">);</span>
+		<span class="o">}</span>
+		<span class="k">if</span> <span class="o">(</span><span class="n">tasks</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">for</span> <span class="o">(</span><span class="nc">ScheduledTask</span> <span class="n">task</span> <span class="o">:</span> <span class="n">tasks</span><span class="o">)</span> <span class="o">{</span>
+				<span class="n">task</span><span class="o">.</span><span class="na">cancel</span><span class="o">();</span>
+			<span class="o">}</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+
+	<span class="nd">@Override</span>
+	<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">requiresDestruction</span><span class="o">(</span><span class="nc">Object</span> <span class="n">bean</span><span class="o">)</span> <span class="o">{</span>
+		<span class="kd">synchronized</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">scheduledTasks</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">scheduledTasks</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="n">bean</span><span class="o">);</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+
+	<span class="nd">@Override</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">destroy</span><span class="o">()</span> <span class="o">{</span>
+		<span class="kd">synchronized</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">scheduledTasks</span><span class="o">)</span> <span class="o">{</span>
+			<span class="nc">Collection</span><span class="o">&lt;</span><span class="nc">Set</span><span class="o">&lt;</span><span class="nc">ScheduledTask</span><span class="o">&gt;&gt;</span> <span class="n">allTasks</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">scheduledTasks</span><span class="o">.</span><span class="na">values</span><span class="o">();</span>
+			<span class="k">for</span> <span class="o">(</span><span class="nc">Set</span><span class="o">&lt;</span><span class="nc">ScheduledTask</span><span class="o">&gt;</span> <span class="n">tasks</span> <span class="o">:</span> <span class="n">allTasks</span><span class="o">)</span> <span class="o">{</span>
+				<span class="k">for</span> <span class="o">(</span><span class="nc">ScheduledTask</span> <span class="n">task</span> <span class="o">:</span> <span class="n">tasks</span><span class="o">)</span> <span class="o">{</span>
+					<span class="n">task</span><span class="o">.</span><span class="na">cancel</span><span class="o">();</span>
+				<span class="o">}</span>
+			<span class="o">}</span>
+			<span class="k">this</span><span class="o">.</span><span class="na">scheduledTasks</span><span class="o">.</span><span class="na">clear</span><span class="o">();</span>
+		<span class="o">}</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">registrar</span><span class="o">.</span><span class="na">destroy</span><span class="o">();</span>
+	<span class="o">}</span>
+
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<h2 id="scheduledmethodrunnable">ScheduledMethodRunnable</h2>
+
+<p>任务执行方法,主要包括两个属性：</p>
+
+<blockquote>
+  <p>target–&gt; Spring 容器 bean实例</p>
+
+  <p>method –&gt; Bean对象方法</p>
+</blockquote>
+
+<p>源码：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/*
+ * Copyright 2002-2012 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */</span>
+
+<span class="kn">package</span> <span class="nn">org.springframework.scheduling.support</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.lang.reflect.InvocationTargetException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.lang.reflect.Method</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.lang.reflect.UndeclaredThrowableException</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.springframework.util.ReflectionUtils</span><span class="o">;</span>
+
+<span class="cm">/**
+ * Variant of {@link MethodInvokingRunnable} meant to be used for processing
+ * of no-arg scheduled methods. Propagates user exceptions to the caller,
+ * assuming that an error strategy for Runnables is in place.
+ *
+ * @author Juergen Hoeller
+ * @since 3.0.6
+ * @see org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ScheduledMethodRunnable</span> <span class="kd">implements</span> <span class="nc">Runnable</span> <span class="o">{</span>
+
+	<span class="kd">private</span> <span class="kd">final</span> <span class="nc">Object</span> <span class="n">target</span><span class="o">;</span>
+
+	<span class="kd">private</span> <span class="kd">final</span> <span class="nc">Method</span> <span class="n">method</span><span class="o">;</span>
+
+
+	<span class="kd">public</span> <span class="nf">ScheduledMethodRunnable</span><span class="o">(</span><span class="nc">Object</span> <span class="n">target</span><span class="o">,</span> <span class="nc">Method</span> <span class="n">method</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">target</span> <span class="o">=</span> <span class="n">target</span><span class="o">;</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">method</span> <span class="o">=</span> <span class="n">method</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="nf">ScheduledMethodRunnable</span><span class="o">(</span><span class="nc">Object</span> <span class="n">target</span><span class="o">,</span> <span class="nc">String</span> <span class="n">methodName</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">NoSuchMethodException</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">target</span> <span class="o">=</span> <span class="n">target</span><span class="o">;</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">method</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getMethod</span><span class="o">(</span><span class="n">methodName</span><span class="o">);</span>
+	<span class="o">}</span>
+
+
+	<span class="kd">public</span> <span class="nc">Object</span> <span class="nf">getTarget</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">target</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="nc">Method</span> <span class="nf">getMethod</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">method</span><span class="o">;</span>
+	<span class="o">}</span>
+
+
+	<span class="nd">@Override</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">try</span> <span class="o">{</span>
+			<span class="nc">ReflectionUtils</span><span class="o">.</span><span class="na">makeAccessible</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">method</span><span class="o">);</span>
+			<span class="k">this</span><span class="o">.</span><span class="na">method</span><span class="o">.</span><span class="na">invoke</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">target</span><span class="o">);</span>
+		<span class="o">}</span>
+		<span class="k">catch</span> <span class="o">(</span><span class="nc">InvocationTargetException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+			<span class="nc">ReflectionUtils</span><span class="o">.</span><span class="na">rethrowRuntimeException</span><span class="o">(</span><span class="n">ex</span><span class="o">.</span><span class="na">getTargetException</span><span class="o">());</span>
+		<span class="o">}</span>
+		<span class="k">catch</span> <span class="o">(</span><span class="nc">IllegalAccessException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">throw</span> <span class="k">new</span> <span class="nf">UndeclaredThrowableException</span><span class="o">(</span><span class="n">ex</span><span class="o">);</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2018/01/26/spring-boot-task-sources/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div style="text-align: center;">
+  <h2>微信公众号</h2>
+</div>
+<div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

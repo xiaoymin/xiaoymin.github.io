@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>Linux部署常用命令 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2017/03/30/common-command-linux/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="Linux部署常用命令">
+      
+    <meta name="keywords" content="Linux">
+    <meta name="og:keywords" content="Linux">
+      
+    <meta name="description" content="目的">
+    <meta name="og:description" content="目的">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2017/03/30/common-command-linux/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2017-03-30">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="Linux部署常用命令">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">Linux部署常用命令</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2017/03/30
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#Linux" title="Linux">Linux</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <h1 id="目的">目的</h1>
+
+<p>该文档主要针对初次在Linux机器上部署应用，对Linux操作系统不熟悉的开发者用户，列举一些常用的命令集合以及部署步骤，供开发者对Linux系统有一个初步的了解和学习</p>
+
+<h1 id="工具">工具</h1>
+
+<p>推荐部署工具：</p>
+
+<p>终端工具：XShell 5</p>
+
+<p>文件上传：XFtp</p>
+
+<h1 id="linux常用命令">Linux常用命令</h1>
+
+<p>1、man:该命令是学习参数命令,任何linux终端命令都可以通过该命令查看参数学习，具体操作明细，命令如下：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lishi@iZbp10yas4kb5a9dudjbw2Z:~&gt; man vim
+</code></pre></div></div>
+
+<p>回车后会详细显示vim命令的具体参数及用法</p>
+
+<p><img src="/images/blog/common-command-linux/man.png" alt="" /></p>
+
+<p>2、cd:切换文件夹命令，例如从当前/home目录切换到/mnt目录，命令如下：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lishi@iZbp10yas4kb5a9dudjbw2Z:~&gt; <span class="nb">cd</span> /
+lishi@iZbp10yas4kb5a9dudjbw2Z:/&gt; <span class="nb">cd</span> /mnt
+lishi@iZbp10yas4kb5a9dudjbw2Z:/mnt&gt; <span class="nb">pwd</span>
+/mnt
+lishi@iZbp10yas4kb5a9dudjbw2Z:/mnt&gt; 
+</code></pre></div></div>
+
+<p>3、pwd:显示当前用户所在文件夹位置，命令如下：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lishi@iZbp10yas4kb5a9dudjbw2Z:/mnt&gt; <span class="nb">pwd</span>
+/mnt
+lishi@iZbp10yas4kb5a9dudjbw2Z:/mnt&gt; 
+</code></pre></div></div>
+
+<p>4、ps:展示当前进程详情，一般用于查找</p>
+
+<p>例如我想知道当前linux系统运行了多少java相关的进程，命令如下：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ps-ef|grep java
+</code></pre></div></div>
+
+<p>5、netstat: 打印网络连接、路由表、接口统计、伪装连接和多播成员</p>
+
+<p>该命令一般用于通过端口号查找进程，命令如下：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lishi@iZbp10yas4kb5a9dudjbw2Z:/mnt&gt; netstat <span class="nt">-anp</span>|grep 8080
+<span class="o">(</span>Not all processes could be identified, non-owned process info
+ will not be shown, you would have to be root to see it all.<span class="o">)</span>
+tcp        0      0 0.0.0.0:8080            0.0.0.0:<span class="k">*</span>               LISTEN      -                   
+lishi@iZbp10yas4kb5a9dudjbw2Z:/mnt&gt; 
+</code></pre></div></div>
+
+<p>6、kill:终止进程服务</p>
+
+<p>命令：kill -9 pid</p>
+
+<p>Pid是进程号</p>
+
+<p><img src="/images/blog/common-command-linux/kill.png" alt="" /></p>
+
+<p>7、mv:移动文件</p>
+
+<p>该命令可以作为移动文件命令，也可以作为更名命令使用；</p>
+
+<p><img src="/images/blog/common-command-linux/mv.png" alt="" /></p>
+
+<p>8、mkdir：创建文件夹</p>
+
+<p><img src="/images/blog/common-command-linux/mkdir.png" alt="" /></p>
+
+<p>9、ls:展示文件夹目录列表信息</p>
+
+<p>命令如下：</p>
+
+<p><img src="/images/blog/common-command-linux/clip_image001.png" alt="img" /></p>
+
+<p>10、vim:编辑器</p>
+
+<p>vim是linux 一个编辑器软件，详细参数请通过man命令或网上资料学习使用，这里不一一列举</p>
+
+<p>字母i进入编辑状态</p>
+
+<p>按钮esc退出编辑状态</p>
+
+<p>:wq保存当前文件并退出</p>
+
+<p>:wq!强制保存并退出</p>
+
+<p>:q!不保存退出</p>
+
+<h2 id="tomcat命令">tomcat命令</h2>
+
+<p>首先cd到tomcat主目录，然后执行下面命令</p>
+
+<h3 id="binstartupsh启动当前tomcat服务">bin/startup.sh:启动当前tomcat服务</h3>
+
+<h3 id="binshutdownsh关闭当前tomcat服务">bin/shutdown.sh:关闭当前tomcat服务</h3>
+
+<h2 id="nginx命令">nginx命令</h2>
+
+<p>首先cd到nginx主目录，然后执行下面命令</p>
+
+<h3 id="sbinnginx启动nginx">sbin/nginx:启动nginx</h3>
+
+<h3 id="sbinnginx--s-reload重启nginx">sbin/nginx -s reload:重启nginx</h3>
+
+<h3 id="sbinnginx--t测试nginx配置是否正确是否可启动">sbin/nginx -t:测试nginx配置是否正确，是否可启动</h3>
+
+<h2 id="pm2命令">pm2命令</h2>
+
+<p>pm2是nodejs的进程管理器，角色类似于Java应用中的tomcat，一般我们的nodejs应用都是通过node命令来启动</p>
+
+<p>例如：</p>
+
+<p><img src="/images/blog/common-command-linux/clip_image003.jpg" alt="img" /></p>
+
+<p>这种方式服务端部署的时候不是很稳定及规范,所以nodejs应用部署使用pm2</p>
+
+<p>通过pm2 help可以查看明细参数</p>
+
+<p><img src="/images/blog/common-command-linux/clip_image005.jpg" alt="img" /></p>
+
+<p>主要命令如下：</p>
+
+<p><img src="/images/blog/common-command-linux/k-v.png" alt="" /></p>
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2017/03/30/common-command-linux/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div style="text-align: center;">
+  <h2>微信公众号</h2>
+</div>
+<div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkwiki=self.webpackChunkwiki||[]).push([[3053],{48695:a=>{a.exports=JSON.parse('[{"label":"langchain","permalink":"/langchain/tags/langchain","count":1},{"label":"\u7ffb\u8bd1","permalink":"/langchain/tags/\u7ffb\u8bd1","count":1},{"label":"2023\u5e74","permalink":"/langchain/tags/2023-\u5e74","count":1}]')}}]);

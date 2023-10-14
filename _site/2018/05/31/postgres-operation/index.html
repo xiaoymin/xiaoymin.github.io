@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>postgresql 安装|重置密码|备份数据|导入数据 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2018/05/31/postgres-operation/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="postgresql 安装|重置密码|备份数据|导入数据">
+      
+    <meta name="keywords" content="postgresql">
+    <meta name="og:keywords" content="postgresql">
+      
+    <meta name="description" content="安装">
+    <meta name="og:description" content="安装">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2018/05/31/postgres-operation/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2018-05-31">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="postgresql 安装|重">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">postgresql 安装|重置密码|备份数据|导入数据</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2018/05/31
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#数据库" title="数据库">数据库</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <h2 id="安装">安装</h2>
+
+<p>本机在Centos 7环境下安装postgresql</p>
+
+<p>使用如下图安装方式安装完成,<a href="https://www.postgresql.org/download/linux/redhat/">安装指南</a></p>
+
+<p><img src="/images/blog/postgres-operation/install.png" alt="" /></p>
+
+<h2 id="重置密码">重置密码</h2>
+
+<p>完成安装后,并不知道postgresql的密码，在服务器终端通过ps命令可以查到postgres的进程，如下：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@ZABBIX-SERVER 9.5]# ps <span class="nt">-ef</span>|grep postgres
+root     24737 24564  0 13:40 pts/1    00:00:00 su postgres
+postgres 24738 24737  0 13:40 pts/1    00:00:00 bash
+postgres 24902     1  0 13:43 pts/1    00:00:00 /usr/pgsql-9.5/bin/postgres <span class="nt">-D</span> /var/lib/pgsql/9.5/data
+postgres 24903 24902  0 13:43 ?        00:00:00 postgres: logger process   
+postgres 24905 24902  0 13:43 ?        00:00:00 postgres: checkpointer process   
+postgres 24906 24902  0 13:43 ?        00:00:00 postgres: writer process   
+postgres 24907 24902  0 13:43 ?        00:00:00 postgres: wal writer process   
+postgres 24908 24902  0 13:43 ?        00:00:00 postgres: autovacuum launcher process   
+postgres 24909 24902  0 13:43 ?        00:00:00 postgres: stats collector process   
+root     26244 24816  0 13:50 pts/3    00:00:00 <span class="nb">grep</span> <span class="nt">--color</span><span class="o">=</span>auto postgres
+<span class="o">[</span>root@ZABBIX-SERVER 9.5]# 
+
+</code></pre></div></div>
+
+<p>通过ps命令,postgres默认安装路径在<code class="language-plaintext highlighter-rouge">/usr/pgsql-9.5/</code>目录下，配置文件在<code class="language-plaintext highlighter-rouge">/var/lib/pgsql/9.5/data</code>中，该目录也是数据库存储目录</p>
+
+<p>编辑pg_hba.conf文件</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vim /var/lib/pgsql/9.5/data/pg_hda.conf
+</code></pre></div></div>
+
+<p>将原来所有方式修改为trust，如下：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># "local" is for Unix domain socket connections only</span>
+<span class="nb">local   </span>all             all                                     md5
+<span class="c"># IPv4 local connections:</span>
+host    all             all             127.0.0.1/32            trust
+host    all             all             0.0.0.0/0               trust
+<span class="c"># IPv6 local connections:</span>
+host    all             all             ::1/128                 trust
+
+</code></pre></div></div>
+
+<p>修改完成后重启</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>su postgres
+<span class="nb">cd</span> /usr/pgsql-9.5/bin
+./pg_ctl restart <span class="nt">-D</span> /var/lib/pgsql/9.5/data
+等待服务器进程关闭 .... 完成
+服务器进程已经关闭
+正在启动服务器进程
+bash-4.2<span class="nv">$ </span>&lt; 2018-05-31 13:43:30.580 CST <span class="o">&gt;</span>日志:  无法绑定 IPv6 套接字: 无法指定被请求的地址
+&lt; 2018-05-31 13:43:30.580 CST <span class="o">&gt;</span>提示:  是否有其它 postmaster 已经在端口 5432 上运行了? 如果没有, 请等待几秒钟后然后再重试.
+&lt; 2018-05-31 13:43:30.601 CST <span class="o">&gt;</span>日志:  日志输出重定向到日志收集进程
+&lt; 2018-05-31 13:43:30.601 CST <span class="o">&gt;</span>提示:  后续的日志输出将出现在目录 <span class="s2">"pg_log"</span>中.
+
+</code></pre></div></div>
+
+<p>重启完成后,使用postgres登录</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@ZABBIX-SERVER 9.5]# psql <span class="nt">--username</span><span class="o">=</span>postgres
+用户 postgres 的口令：
+psql <span class="o">(</span>9.5.13<span class="o">)</span>
+输入 <span class="s2">"help"</span> 来获取帮助信息.
+<span class="nv">postgres</span><span class="o">=</span><span class="c"># ^C</span>
+</code></pre></div></div>
+
+<p>在该会话中执行修改密码命令：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ALTER USER postgres WITH PASSWORD <span class="s1">'新密码'</span><span class="p">;</span> 
+</code></pre></div></div>
+
+<p>操作完成的，执行：\q命令回车退出。 </p>
+
+<p>最后,恢复pg_hba.conf设置为md5并重启服务</p>
+
+<h2 id="重启数据库">重启数据库</h2>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">.</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">pgsql</span><span class="o">-</span><span class="mi">9</span><span class="p">.</span><span class="mi">5</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">pg_ctl</span> <span class="k">restart</span> <span class="o">-</span><span class="n">D</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">pgsql</span><span class="o">/</span><span class="mi">9</span><span class="p">.</span><span class="mi">5</span><span class="o">/</span><span class="k">data</span>
+</code></pre></div></div>
+
+<h2 id="创建数据库">创建数据库</h2>
+
+<p>创建用户数据库，如testdb：</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">postgres</span><span class="o">=#</span> <span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="n">testdb</span> <span class="k">OWNER</span> <span class="n">dbuser</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>将testdb数据库的所有权限都赋予dbuser：</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">postgres</span><span class="o">=#</span> <span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">PRIVILEGES</span> <span class="k">ON</span> <span class="k">DATABASE</span> <span class="n">testdb</span> <span class="k">TO</span> <span class="n">dbuser</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h2 id="删除数据库">删除数据库</h2>
+
+<p>例如删除testdb：</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">postgres</span><span class="o">=#</span> <span class="k">DROP</span> <span class="k">DATABASE</span> <span class="n">testdb</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h2 id="备份数据">备份数据</h2>
+
+<p>使用如下命令：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pg_dump <span class="nt">-h</span> 127.0.0.1 <span class="nt">-U</span> postgres databasename <span class="o">&gt;</span> db_backup_date.sql
+</code></pre></div></div>
+
+<p>-h:目标主机</p>
+
+<p>-U：用户名称</p>
+
+<h2 id="导入数据库">导入数据库</h2>
+
+<p>使用如下命令：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>psql <span class="nt">-U</span> postgres <span class="nt">-d</span> databasename <span class="nt">-f</span> back_db_conf0529.sql 
+</code></pre></div></div>
+
+<p>-U：用户名称</p>
+
+<p>-d：数据库名称</p>
+
+<p>-f：导入数据库文件</p>
+
+<h2 id="相关操作">相关操作</h2>
+
+<h3 id="查看数据库">查看数据库</h3>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">postgres</span><span class="o">=#</span> <span class="err">\</span><span class="n">l</span>               <span class="o">//</span><span class="err">\加上字母</span><span class="n">l</span><span class="p">,</span><span class="err">相当于</span><span class="n">mysql</span><span class="err">的，</span><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">databases</span><span class="p">;</span>
+                                         <span class="err">资料库列表</span>
+       <span class="err">名称</span>        <span class="o">|</span>  <span class="err">拥有者</span>  <span class="o">|</span> <span class="err">字元编码</span> <span class="o">|</span>  <span class="err">校对规则</span>   <span class="o">|</span>    <span class="n">Ctype</span>    <span class="o">|</span>       <span class="err">存取权限</span>        
+<span class="c1">-------------------+----------+----------+-------------+-------------+-----------------------</span>
+ <span class="n">ots_am_bdp_conf</span>   <span class="o">|</span> <span class="n">postgres</span> <span class="o">|</span> <span class="n">UTF8</span>     <span class="o">|</span> <span class="n">zh_CN</span><span class="p">.</span><span class="n">UTF</span><span class="o">-</span><span class="mi">8</span> <span class="o">|</span> <span class="n">zh_CN</span><span class="p">.</span><span class="n">UTF</span><span class="o">-</span><span class="mi">8</span> <span class="o">|</span> 
+ <span class="n">ots_app_conf</span>      <span class="o">|</span> <span class="n">postgres</span> <span class="o">|</span> <span class="n">UTF8</span>     <span class="o">|</span> <span class="n">zh_CN</span><span class="p">.</span><span class="n">UTF</span><span class="o">-</span><span class="mi">8</span> <span class="o">|</span> <span class="n">zh_CN</span><span class="p">.</span><span class="n">UTF</span><span class="o">-</span><span class="mi">8</span> <span class="o">|</span> 
+ <span class="n">ots_business_test</span> <span class="o">|</span> <span class="n">postgres</span> <span class="o">|</span> <span class="n">UTF8</span>     <span class="o">|</span> <span class="n">zh_CN</span><span class="p">.</span><span class="n">UTF</span><span class="o">-</span><span class="mi">8</span> <span class="o">|</span> <span class="n">zh_CN</span><span class="p">.</span><span class="n">UTF</span><span class="o">-</span><span class="mi">8</span> <span class="o">|</span> 
+ <span class="n">postgres</span>          <span class="o">|</span> <span class="n">postgres</span> <span class="o">|</span> <span class="n">UTF8</span>     <span class="o">|</span> <span class="n">zh_CN</span><span class="p">.</span><span class="n">UTF</span><span class="o">-</span><span class="mi">8</span> <span class="o">|</span> <span class="n">zh_CN</span><span class="p">.</span><span class="n">UTF</span><span class="o">-</span><span class="mi">8</span> <span class="o">|</span> 
+ <span class="n">template0</span>         <span class="o">|</span> <span class="n">postgres</span> <span class="o">|</span> <span class="n">UTF8</span>     <span class="o">|</span> <span class="n">zh_CN</span><span class="p">.</span><span class="n">UTF</span><span class="o">-</span><span class="mi">8</span> <span class="o">|</span> <span class="n">zh_CN</span><span class="p">.</span><span class="n">UTF</span><span class="o">-</span><span class="mi">8</span> <span class="o">|</span> <span class="o">=</span><span class="k">c</span><span class="o">/</span><span class="n">postgres</span>          <span class="o">+</span>
+                   <span class="o">|</span>          <span class="o">|</span>          <span class="o">|</span>             <span class="o">|</span>             <span class="o">|</span> <span class="n">postgres</span><span class="o">=</span><span class="n">CTc</span><span class="o">/</span><span class="n">postgres</span>
+ <span class="n">template1</span>         <span class="o">|</span> <span class="n">postgres</span> <span class="o">|</span> <span class="n">UTF8</span>     <span class="o">|</span> <span class="n">zh_CN</span><span class="p">.</span><span class="n">UTF</span><span class="o">-</span><span class="mi">8</span> <span class="o">|</span> <span class="n">zh_CN</span><span class="p">.</span><span class="n">UTF</span><span class="o">-</span><span class="mi">8</span> <span class="o">|</span> <span class="o">=</span><span class="k">c</span><span class="o">/</span><span class="n">postgres</span>          <span class="o">+</span>
+                   <span class="o">|</span>          <span class="o">|</span>          <span class="o">|</span>             <span class="o">|</span>             <span class="o">|</span> <span class="n">postgres</span><span class="o">=</span><span class="n">CTc</span><span class="o">/</span><span class="n">postgres</span>
+<span class="p">(</span><span class="mi">6</span> <span class="err">行记录</span><span class="p">)</span>
+
+<span class="n">postgres</span><span class="o">=#</span> 
+<span class="n">postgres</span><span class="o">=#</span> <span class="k">select</span> <span class="n">pg_database_size</span><span class="p">(</span><span class="s1">'ots_business_test'</span><span class="p">);</span>   <span class="o">//</span><span class="err">查看</span><span class="n">ots_business_test</span><span class="err">数据库的大小</span>  
+ <span class="n">pg_database_size</span> 
+<span class="c1">------------------</span>
+        <span class="mi">399552276</span>
+<span class="p">(</span><span class="mi">1</span> <span class="err">行记录</span><span class="p">)</span>
+
+<span class="n">postgres</span><span class="o">=#</span> <span class="k">select</span> <span class="n">pg_database</span><span class="p">.</span><span class="n">datname</span><span class="p">,</span> <span class="n">pg_database_size</span><span class="p">(</span><span class="n">pg_database</span><span class="p">.</span><span class="n">datname</span><span class="p">)</span> <span class="k">AS</span> <span class="k">size</span> <span class="k">from</span> <span class="n">pg_database</span><span class="p">;</span>  <span class="o">//</span><span class="err">查看所有数据库的大小</span>  
+      <span class="n">datname</span>      <span class="o">|</span>   <span class="k">size</span>    
+<span class="c1">-------------------+-----------</span>
+ <span class="n">template1</span>         <span class="o">|</span>   <span class="mi">6865412</span>
+ <span class="n">template0</span>         <span class="o">|</span>   <span class="mi">6857220</span>
+ <span class="n">postgres</span>          <span class="o">|</span>   <span class="mi">7089940</span>
+ <span class="n">ots_business_test</span> <span class="o">|</span> <span class="mi">399552276</span>
+ <span class="n">ots_am_bdp_conf</span>   <span class="o">|</span>  <span class="mi">12939028</span>
+ <span class="n">ots_app_conf</span>      <span class="o">|</span>   <span class="mi">8359700</span>
+<span class="p">(</span><span class="mi">6</span> <span class="err">行记录</span><span class="p">)</span>
+
+<span class="n">postgres</span><span class="o">=#</span> <span class="k">select</span> <span class="n">pg_size_pretty</span><span class="p">(</span><span class="n">pg_database_size</span><span class="p">(</span><span class="s1">'ots_app_conf'</span><span class="p">));</span>   <span class="o">//</span><span class="err">以</span><span class="n">KB</span><span class="err">，</span><span class="n">MB</span><span class="err">，</span><span class="n">GB</span><span class="err">的方式来查看数据库大小</span>  
+ <span class="n">pg_size_pretty</span> 
+<span class="c1">----------------</span>
+ <span class="mi">8164</span> <span class="n">kB</span>
+<span class="p">(</span><span class="mi">1</span> <span class="err">行记录</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<h3 id="查看多表">查看多表</h3>
+
+<pre><code class="language-mssql">postgres=# select * from pg_tables;  //查询所有的表,相当于mysql的show tables;
+     schemaname     |        tablename        | tableowner | tablespace | hasindexes | hasrules | hastriggers 
+--------------------+-------------------------+------------+------------+------------+----------+-------------
+ pg_catalog         | pg_statistic            | postgres   |            | t          | f        | f
+ pg_catalog         | pg_cast                 | postgres   |            | t          | f        | f
+ pg_catalog         | pg_authid               | postgres   | pg_global  | t          | f        | f
+ //more...
+
+postgres=# \d pg_cast;   //相当于mysql的，mysql&gt; desc pg_cast;  
+  资料表 "pg_catalog.pg_cast"
+    栏位     |  型别  | 修饰词 
+-------------+--------+--------
+ castsource  | oid    | 非空
+ casttarget  | oid    | 非空
+ castfunc    | oid    | 非空
+ castcontext | "char" | 非空
+ castmethod  | "char" | 非空
+索引：
+    "pg_cast_oid_index" UNIQUE, btree (oid)
+    "pg_cast_source_target_index" UNIQUE, btree (castsource, casttarget)
+
+postgres=# select pg_relation_size('pg_cast');    //查看表大小  
+ pg_relation_size 
+------------------
+            16384
+(1 行记录)
+postgres=# select pg_size_pretty(pg_relation_size('pg_cast'));   //以KB，MB，GB的方式来查看表大小  
+ pg_size_pretty 
+----------------
+ 16 kB
+(1 行记录)
+
+postgres=# select pg_size_pretty(pg_total_relation_size('pg_cast'));  //查看表的总大小，包括索引大小 
+ pg_size_pretty 
+----------------
+ 80 kB
+(1 行记录)
+
+
+
+</code></pre>
+
+<h3 id="查看索引">查看索引</h3>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">postgres</span><span class="o">=&gt;</span> <span class="err">\</span><span class="n">di</span>                      <span class="o">//</span><span class="err">相当于</span><span class="n">mysql</span><span class="err">的，</span><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="k">index</span> <span class="k">from</span> <span class="n">test</span><span class="p">;</span>  
+                <span class="n">List</span> <span class="k">of</span> <span class="n">relations</span>  
+ <span class="k">Schema</span> <span class="o">|</span>     <span class="n">Name</span>      <span class="o">|</span> <span class="k">Type</span>  <span class="o">|</span>  <span class="k">Owner</span>  <span class="o">|</span> <span class="k">Table</span>  
+<span class="c1">--------+---------------+-------+---------+-------  </span>
+ <span class="k">public</span> <span class="o">|</span> <span class="n">playboy_id_pk</span> <span class="o">|</span> <span class="k">index</span> <span class="o">|</span> <span class="n">playboy</span> <span class="o">|</span> <span class="n">test</span>  
+<span class="p">(</span><span class="mi">1</span> <span class="k">row</span><span class="p">)</span>  
+  
+<span class="n">postgres</span><span class="o">=&gt;</span> <span class="k">select</span> <span class="n">pg_size_pretty</span><span class="p">(</span><span class="n">pg_relation_size</span><span class="p">(</span><span class="s1">'playboy_id_pk'</span><span class="p">));</span>    <span class="o">//</span><span class="err">查看索大小</span>  
+ <span class="n">pg_size_pretty</span>  
+<span class="c1">----------------  </span>
+ <span class="mi">8192</span> <span class="n">bytes</span>  
+<span class="p">(</span><span class="mi">1</span> <span class="k">row</span><span class="p">)</span>  
+</code></pre></div></div>
+
+<h3 id="查看表空间以及大小">查看表空间，以及大小</h3>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">postgres</span><span class="o">=&gt;</span> <span class="k">select</span> <span class="n">spcname</span> <span class="k">from</span> <span class="n">pg_tablespace</span><span class="p">;</span>         <span class="o">//</span><span class="err">查看所有表空间</span>  
+  <span class="n">spcname</span>  
+<span class="c1">------------  </span>
+ <span class="n">pg_default</span>  
+ <span class="n">pg_global</span>  
+<span class="p">(</span><span class="mi">2</span> <span class="k">rows</span><span class="p">)</span>  
+  
+<span class="n">postgres</span><span class="o">=&gt;</span> <span class="k">select</span> <span class="n">pg_size_pretty</span><span class="p">(</span><span class="n">pg_tablespace_size</span><span class="p">(</span><span class="s1">'pg_default'</span><span class="p">));</span>   <span class="o">//</span><span class="err">查看表空间大小</span>  
+ <span class="n">pg_size_pretty</span>  
+<span class="c1">----------------  </span>
+ <span class="mi">14</span> <span class="n">MB</span>  
+<span class="p">(</span><span class="mi">1</span> <span class="k">row</span><span class="p">)</span>  
+</code></pre></div></div>
+
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2018/05/31/postgres-operation/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div style="text-align: center;">
+  <h2>微信公众号</h2>
+</div>
+<div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

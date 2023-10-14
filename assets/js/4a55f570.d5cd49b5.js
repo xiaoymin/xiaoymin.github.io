@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkwiki=self.webpackChunkwiki||[]).push([[7200],{50535:s=>{s.exports=JSON.parse('{"name":"docusaurus-plugin-content-docs","id":"chatgpt"}')}}]);

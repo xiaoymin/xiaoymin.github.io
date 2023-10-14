@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>Spring Security框架中踢人下线技术探索 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2021/04/20/spring-security-out-session/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="Spring Security框架中踢人下线技术探索">
+      
+    <meta name="keywords" content="Spring Boot,Security,踢人下线,Spring Security">
+    <meta name="og:keywords" content="Spring Boot,Security,踢人下线,Spring Security">
+      
+    <meta name="description" content="1.背景">
+    <meta name="og:description" content="1.背景">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2021/04/20/spring-security-out-session/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2021-04-20">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="Spring Security">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">Spring Security框架中踢人下线技术探索</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2021/04/20
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#Spring" title="Spring">Spring</a>
+          </span>
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#Boot" title="Boot">Boot</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <h2 id="1背景">1.背景</h2>
+
+<p>在某次项目的开发中，使用到了Spring Security权限框架进行后端权限开发的权限校验，底层集成Spring Session组件，非常方便的集成Redis进行分布式Session的会话集群部署。系统正式上线后，各个部署节点能够非常方便的进行集群部署，用户的Session会话信息全部保存在Redis中间件库中，开发者不用关心具体的实现，Spring Session组件已经全部集成好了。</p>
+
+<p>但是在系统的用户管理模块中，提供了对系统用户账号的<strong>删除</strong>功能以及<strong>禁用</strong>功能,针对这两个功能，需求方给出的具体要求是：</p>
+
+<ul>
+  <li><strong>删除</strong>：当管理员删除当前用户账号时,如果当前账号已经登录系统,则需要剔除下线，并且不可登录</li>
+  <li><strong>禁用</strong>：当管理员对当前账号禁用操作时，如果当前账号已经登录系统,则需要剔除下线，并且登录时，提示当前账号已禁用</li>
+</ul>
+
+<h2 id="2需求分析">2.需求分析</h2>
+
+<p>从上面的需求来看，不管是<strong>删除</strong>还是<strong>禁用</strong>功能，都需要实现，如果当前账号已经登录系统，则需要剔除下线，而<strong>禁用</strong>操作只需要再登录时给出提示信息即可，这个在业务登录方法中就可以实现，不必从底层框架进行考虑。</p>
+
+<p>因此，从底层技术测进行考虑时，我们需要探索如何在Spring Security权限框架中实现踢人下线的功能。</p>
+
+<p>既然需求已经明确，从功能的实现可能性方面入手，我们则需要从几个方面进行考虑：</p>
+
+<ul>
+  <li>1)、在Spring Security框架中，用户登录的Session会话信息存储在哪里？</li>
+  <li>2)、在Spring Security框架中，Session会话如何存储，主要存储哪些信息?</li>
+  <li>3)、如何根据账号收集当前该账号登录的所有Session会话信息？</li>
+  <li>4)、如何在服务端主动销毁Session对象？</li>
+</ul>
+
+<p>1)、在Spring Security框架中，用户登录的Session会话信息存储在哪里？</p>
+
+<p>如果我们不考虑分布式Session会话的情况，单体Spring Boot项目中，服务端Session会话肯定存储在内存中，这样的弊端是如果当前应用需要做负载均衡进行部署时,用户请求服务端接口时，会存在Session会话丢失的情况，因为用户登录的会话信息都存在JVM内存中，没有进程之间的共享互通。</p>
+
+<p>为了解决分布式应用Session会话不丢失的问题,Spring Session组件发布了，该组件提供了基于JDBC\Redis等中间件的方式，将用户端的Session会话存储在中间件中，这样分布式应用获取用户会话时，都会从中间件去获取会话Session，这样也保证了服务可以做负载部署以保证Session会话不丢失。本文主要讨论的也是这种情况,集成Redis中间件用来保存用户会话信息。</p>
+
+<p>2)、在Spring Security框架中，Session会话如何存储，主要存储哪些信息?</p>
+
+<p>由于我们使用了Redis中间件，所以，在Spring Security权限框架中产生的Session会话信息，肯定存储与Redis中，这点毫无疑问，那么存储了哪些信息呢？我会在接下来的源码分析中进行介绍</p>
+
+<p>3)、如何根据账号收集当前该账号登录的所有Session会话信息？</p>
+
+<p>我们从上面的需求分析中已经得知Session会话已经存储在Redis中，那么我们是否可以做这样的假设，我们只需要根据Spring Security中在Redis中存储的键值，找到和登录用户名相关的Redis缓存数据，就可以通过调用Security封装的方法进行获取，得到当前登录账号的会话信息呢？这个我们需要在源码中去找到答案</p>
+
+<p>4)、如何在服务端主动销毁Session对象？</p>
+
+<p>如果是单体的Spring Boot应用，Session信息肯定存储在JVM的内存中，服务端要主动销毁Session对象只需要找到Security权限框架如何存储的就可以进行删除。</p>
+
+<p>在分布式的Spring Boot应用中，我们从上面已经得知Session会话信息以及存储在Redis中间件中，那么我们只需要得到当前登录的Session在Redis中的键值，就可以调用方法进行删除操作，从而主动在服务端销毁Session会话</p>
+
+<h2 id="3源码分析">3.源码分析</h2>
+
+<p><strong>在上面的需求分析中，我们已经提出了假设，并且根据假设，做出来技术性的判断，接下来我们需要从Spring Security以及Spring Session组件的源码中，去寻找我们需要的答案。</strong></p>
+
+<p>首先，我们在源码分析前，我们需要找到入口，也就是我们在使用Spring Security框架，并且使用Spring Session组件时，我们如何使用的。</p>
+
+<p>在<code class="language-plaintext highlighter-rouge">pom.xml</code>文件中引入组件的依赖是必不可少的，如下：</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!--Spring Security组件--&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>spring-boot-starter-security<span class="nt">&lt;/artifactId&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+<span class="c">&lt;!--Spring针对Redis操作组件--&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>spring-boot-starter-data-redis<span class="nt">&lt;/artifactId&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+<span class="c">&lt;!--Spring Session集成Redis分布式Session会话--&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.springframework.session<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>spring-session-data-redis<span class="nt">&lt;/artifactId&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
+
+<p>接下来，我们在Spring Boot项目中，需要添加<code class="language-plaintext highlighter-rouge">@EnableRedisHttpSession</code>注解，以开启Redis组件对Session会话的支持，该注解我们需要制定Spring Session在Redis中存储的Redis命名空间，已经Session会话的时效性，示例代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@SpringBootApplication</span>
+<span class="nd">@EnableRedisHttpSession</span><span class="o">(</span><span class="n">redisNamespace</span> <span class="o">=</span> <span class="s">"fish-admin:session"</span><span class="o">,</span><span class="n">maxInactiveIntervalInSeconds</span> <span class="o">=</span> <span class="mi">7200</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">FishAdminApplication</span> <span class="o">{</span>
+
+    <span class="kd">static</span> <span class="nc">Logger</span> <span class="n">logger</span><span class="o">=</span> <span class="nc">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="nc">FishAdminApplication</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">UnknownHostException</span> <span class="o">{</span>
+        <span class="nc">ConfigurableApplicationContext</span> <span class="n">application</span><span class="o">=</span><span class="nc">SpringApplication</span><span class="o">.</span><span class="na">run</span><span class="o">(</span><span class="nc">FishAdminApplication</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
+        <span class="nc">Environment</span> <span class="n">env</span> <span class="o">=</span> <span class="n">application</span><span class="o">.</span><span class="na">getEnvironment</span><span class="o">();</span>
+        <span class="nc">String</span> <span class="n">host</span><span class="o">=</span> <span class="nc">InetAddress</span><span class="o">.</span><span class="na">getLocalHost</span><span class="o">().</span><span class="na">getHostAddress</span><span class="o">();</span>
+        <span class="nc">String</span> <span class="n">port</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">"server.port"</span><span class="o">);</span>
+        <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"\n----------------------------------------------------------\n\t"</span> <span class="o">+</span>
+                        <span class="s">"Application '{}' is running! Access URLs:\n\t"</span> <span class="o">+</span>
+                        <span class="s">"Local: \t\thttp://localhost:{}\n\t"</span> <span class="o">+</span>
+                        <span class="s">"External: \thttp://{}:{}\n\t"</span><span class="o">+</span>
+                        <span class="s">"Doc: \thttp://{}:{}/doc.html\n\t"</span><span class="o">+</span>
+                        <span class="s">"----------------------------------------------------------"</span><span class="o">,</span>
+                <span class="n">env</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">"spring.application.name"</span><span class="o">),</span>
+                <span class="n">env</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">"server.port"</span><span class="o">),</span>
+                <span class="n">host</span><span class="o">,</span><span class="n">port</span><span class="o">,</span>
+                <span class="n">host</span><span class="o">,</span><span class="n">port</span><span class="o">);</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p>在上面的代码中，我们指定Redis的命名空间是<code class="language-plaintext highlighter-rouge">fish-admin:session</code>，默认最大失效<code class="language-plaintext highlighter-rouge">7200</code>秒。</p>
+
+<p>如果开发者默认不指定这两个属性的话，命名空间默认值是<code class="language-plaintext highlighter-rouge">spring:session</code>,默认最大时效则是<code class="language-plaintext highlighter-rouge">1800</code>秒</p>
+
+<p>在上面我们已经说过了，既然是看源码，我们需要找到入口，这是看源码最好的方式，我们在使用Spring Session组件时，需要使用<code class="language-plaintext highlighter-rouge">@EnableRedisHttpSession</code>注解，那么该注解就是我们需要重点关注的对象，我们需要搞清楚，该注解的作用是什么？</p>
+
+<p><code class="language-plaintext highlighter-rouge">EnableRedisHttpSession.java</code>部分源码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Retention</span><span class="o">(</span><span class="nc">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
+<span class="nd">@Target</span><span class="o">(</span><span class="nc">ElementType</span><span class="o">.</span><span class="na">TYPE</span><span class="o">)</span>
+<span class="nd">@Documented</span>
+<span class="nd">@Import</span><span class="o">(</span><span class="nc">RedisHttpSessionConfiguration</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="nd">@Configuration</span><span class="o">(</span><span class="n">proxyBeanMethods</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nd">@interface</span> <span class="nc">EnableRedisHttpSession</span> <span class="o">{</span>
+     <span class="c1">//more property..   </span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>在该注解中，我们可以看到，最关键的是在该注解之上，使用<code class="language-plaintext highlighter-rouge">@Import</code>注解导入了<code class="language-plaintext highlighter-rouge">RedisHttpSessionConfiguration.java</code>配置类，如果你经常翻看Spring Boot相关的源码，你会敏锐的察觉到，该配置类就是我们最终要找的类</p>
+
+<p>先来看该类的UML图，如下：</p>
+
+<p><img src="/assets/images/springboot/security-out-session/RedisHttpSessionConfiguration.png" alt="RedisHttpSessionConfiguration" /></p>
+
+<p>该类实现了Spring框架中很多<code class="language-plaintext highlighter-rouge">Aware</code>类型接口，<code class="language-plaintext highlighter-rouge">Aware</code>类型的接口我们都知道，Spring容器在启动创建实体Bean后，会调用<code class="language-plaintext highlighter-rouge">Aware</code>系列的set方法传参赋值</p>
+
+<p>当然，最核心的，我们从源码中可以看到，是Spring Session组件会向Spring容器中注入两个实体<code class="language-plaintext highlighter-rouge">Bean</code>，代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Bean</span>
+<span class="kd">public</span> <span class="nc">RedisIndexedSessionRepository</span> <span class="nf">sessionRepository</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">RedisTemplate</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;</span> <span class="n">redisTemplate</span> <span class="o">=</span> <span class="n">createRedisTemplate</span><span class="o">();</span>
+    <span class="nc">RedisIndexedSessionRepository</span> <span class="n">sessionRepository</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">RedisIndexedSessionRepository</span><span class="o">(</span><span class="n">redisTemplate</span><span class="o">);</span>
+    <span class="n">sessionRepository</span><span class="o">.</span><span class="na">setApplicationEventPublisher</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">applicationEventPublisher</span><span class="o">);</span>
+    <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">indexResolver</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">sessionRepository</span><span class="o">.</span><span class="na">setIndexResolver</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">indexResolver</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">defaultRedisSerializer</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">sessionRepository</span><span class="o">.</span><span class="na">setDefaultSerializer</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">defaultRedisSerializer</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="n">sessionRepository</span><span class="o">.</span><span class="na">setDefaultMaxInactiveInterval</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">maxInactiveIntervalInSeconds</span><span class="o">);</span>
+    <span class="k">if</span> <span class="o">(</span><span class="nc">StringUtils</span><span class="o">.</span><span class="na">hasText</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">redisNamespace</span><span class="o">))</span> <span class="o">{</span>
+        <span class="n">sessionRepository</span><span class="o">.</span><span class="na">setRedisKeyNamespace</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">redisNamespace</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="n">sessionRepository</span><span class="o">.</span><span class="na">setFlushMode</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">flushMode</span><span class="o">);</span>
+    <span class="n">sessionRepository</span><span class="o">.</span><span class="na">setSaveMode</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">saveMode</span><span class="o">);</span>
+    <span class="kt">int</span> <span class="n">database</span> <span class="o">=</span> <span class="n">resolveDatabase</span><span class="o">();</span>
+    <span class="n">sessionRepository</span><span class="o">.</span><span class="na">setDatabase</span><span class="o">(</span><span class="n">database</span><span class="o">);</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">sessionRepositoryCustomizers</span>
+        <span class="o">.</span><span class="na">forEach</span><span class="o">((</span><span class="n">sessionRepositoryCustomizer</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">sessionRepositoryCustomizer</span><span class="o">.</span><span class="na">customize</span><span class="o">(</span><span class="n">sessionRepository</span><span class="o">));</span>
+    <span class="k">return</span> <span class="n">sessionRepository</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="nd">@Bean</span>
+<span class="kd">public</span> <span class="nc">RedisMessageListenerContainer</span> <span class="nf">springSessionRedisMessageListenerContainer</span><span class="o">(</span>
+    <span class="nc">RedisIndexedSessionRepository</span> <span class="n">sessionRepository</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">RedisMessageListenerContainer</span> <span class="n">container</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">RedisMessageListenerContainer</span><span class="o">();</span>
+    <span class="n">container</span><span class="o">.</span><span class="na">setConnectionFactory</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">redisConnectionFactory</span><span class="o">);</span>
+    <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">redisTaskExecutor</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">container</span><span class="o">.</span><span class="na">setTaskExecutor</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">redisTaskExecutor</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">redisSubscriptionExecutor</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">container</span><span class="o">.</span><span class="na">setSubscriptionExecutor</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">redisSubscriptionExecutor</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="n">container</span><span class="o">.</span><span class="na">addMessageListener</span><span class="o">(</span><span class="n">sessionRepository</span><span class="o">,</span>
+                                 <span class="nc">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="k">new</span> <span class="nc">ChannelTopic</span><span class="o">(</span><span class="n">sessionRepository</span><span class="o">.</span><span class="na">getSessionDeletedChannel</span><span class="o">()),</span>
+                                               <span class="k">new</span> <span class="nf">ChannelTopic</span><span class="o">(</span><span class="n">sessionRepository</span><span class="o">.</span><span class="na">getSessionExpiredChannel</span><span class="o">())));</span>
+    <span class="n">container</span><span class="o">.</span><span class="na">addMessageListener</span><span class="o">(</span><span class="n">sessionRepository</span><span class="o">,</span>
+                                 <span class="nc">Collections</span><span class="o">.</span><span class="na">singletonList</span><span class="o">(</span><span class="k">new</span> <span class="nc">PatternTopic</span><span class="o">(</span><span class="n">sessionRepository</span><span class="o">.</span><span class="na">getSessionCreatedChannelPrefix</span><span class="o">()</span> <span class="o">+</span> <span class="s">"*"</span><span class="o">)));</span>
+    <span class="k">return</span> <span class="n">container</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">RedisIndexedSessionRepository</code>以及<code class="language-plaintext highlighter-rouge">RedisMessageListenerContainer</code>的实体Bean</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">RedisMessageListenerContainer</code>:该类是Redis的消息通知回调机制实体类，Redis提供了针对不同Key的操作回调消息通知，比如常见的删除key、key过期等事件的回调，在Spring Session组件中注入该实体Bean，从代码中也可以看出是用来监听处理Session会话的过期以及删除事件</li>
+  <li><code class="language-plaintext highlighter-rouge">RedisIndexedSessionRepository</code>:该类是Spring Session组件提供基于Redis的针对Session会话一系列操作的具体实现类，是我们接下来源码分析的重点。</li>
+</ul>
+
+<p>先来看<code class="language-plaintext highlighter-rouge">RedisIndexedSessionRepository</code>类的UML类图结构，如下图：</p>
+
+<p><img src="/assets/images/springboot/security-out-session/RedisIndexedSessionRepository.png" alt="RedisIndexedSessionRepository" /></p>
+
+<p><code class="language-plaintext highlighter-rouge">RedisIndexedSessionRepository</code>实现了<code class="language-plaintext highlighter-rouge">FindByIndexNameSessionRepository</code>接口，而<code class="language-plaintext highlighter-rouge">FindByIndexNameSessionRepository</code>接口又继承Spring Security权限框架提供的顶级<code class="language-plaintext highlighter-rouge">SessionRepository</code>接口，UML类图中，我们可以得到几个重要的信息：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">RedisIndexedSessionRepository</code>拥有创建Session会话、销毁删除Session会话的能力</li>
+  <li><code class="language-plaintext highlighter-rouge">RedisIndexedSessionRepository</code>由于实现自<code class="language-plaintext highlighter-rouge">FindByIndexNameSessionRepository</code>接口，而该接口提供了根据<code class="language-plaintext highlighter-rouge">PrincipalName</code>查找Session会话的能力</li>
+  <li>拥有Redis回调事件的处理消息能力，因为实现了<code class="language-plaintext highlighter-rouge">MessageListener</code>接口</li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">SessionRepository</code>是Spring Security提供的顶级接口，源码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">SessionRepository</span><span class="o">&lt;</span><span class="no">S</span> <span class="kd">extends</span> <span class="nc">Session</span><span class="o">&gt;</span> <span class="o">{</span>
+
+	<span class="cm">/**
+	 * Creates a new {@link Session} that is capable of being persisted by this
+	 * {@link SessionRepository}.
+	 *
+	 * &lt;p&gt;
+	 * This allows optimizations and customizations in how the {@link Session} is
+	 * persisted. For example, the implementation returned might keep track of the changes
+	 * ensuring that only the delta needs to be persisted on a save.
+	 * &lt;/p&gt;
+	 * @return a new {@link Session} that is capable of being persisted by this
+	 * {@link SessionRepository}
+	 */</span>
+	<span class="no">S</span> <span class="nf">createSession</span><span class="o">();</span>
+
+	<span class="cm">/**
+	 * Ensures the {@link Session} created by
+	 * {@link org.springframework.session.SessionRepository#createSession()} is saved.
+	 *
+	 * &lt;p&gt;
+	 * Some implementations may choose to save as the {@link Session} is updated by
+	 * returning a {@link Session} that immediately persists any changes. In this case,
+	 * this method may not actually do anything.
+	 * &lt;/p&gt;
+	 * @param session the {@link Session} to save
+	 */</span>
+	<span class="kt">void</span> <span class="nf">save</span><span class="o">(</span><span class="no">S</span> <span class="n">session</span><span class="o">);</span>
+
+	<span class="cm">/**
+	 * Gets the {@link Session} by the {@link Session#getId()} or null if no
+	 * {@link Session} is found.
+	 * @param id the {@link org.springframework.session.Session#getId()} to lookup
+	 * @return the {@link Session} by the {@link Session#getId()} or null if no
+	 * {@link Session} is found.
+	 */</span>
+	<span class="no">S</span> <span class="nf">findById</span><span class="o">(</span><span class="nc">String</span> <span class="n">id</span><span class="o">);</span>
+
+	<span class="cm">/**
+	 * Deletes the {@link Session} with the given {@link Session#getId()} or does nothing
+	 * if the {@link Session} is not found.
+	 * @param id the {@link org.springframework.session.Session#getId()} to delete
+	 */</span>
+	<span class="kt">void</span> <span class="nf">deleteById</span><span class="o">(</span><span class="nc">String</span> <span class="n">id</span><span class="o">);</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>该接口提供四个方法：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">createSession</code>:创建Session会话</li>
+  <li><code class="language-plaintext highlighter-rouge">save</code>:保存Session会话</li>
+  <li><code class="language-plaintext highlighter-rouge">findById</code>:根据<code class="language-plaintext highlighter-rouge">SessionId</code>查找获取Session会话对象信息</li>
+  <li><code class="language-plaintext highlighter-rouge">deleteById</code>:根据<code class="language-plaintext highlighter-rouge">SessionId</code>进行删除</li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">FindByIndexNameSessionRepository</code>源码主要是提供根据账号名称进行查询的功能，如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">FindByIndexNameSessionRepository</span><span class="o">&lt;</span><span class="no">S</span> <span class="kd">extends</span> <span class="nc">Session</span><span class="o">&gt;</span> <span class="kd">extends</span> <span class="nc">SessionRepository</span><span class="o">&lt;</span><span class="no">S</span><span class="o">&gt;</span> <span class="o">{</span>
+
+	<span class="cm">/**
+	 * 当前存储的用户名前缀，使用Redis进行存储时，存储的key值是:redisNamespace+
+	 */</span>
+	<span class="nc">String</span> <span class="no">PRINCIPAL_NAME_INDEX_NAME</span> <span class="o">=</span> <span class="nc">FindByIndexNameSessionRepository</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getName</span><span class="o">()</span>
+			<span class="o">.</span><span class="na">concat</span><span class="o">(</span><span class="s">".PRINCIPAL_NAME_INDEX_NAME"</span><span class="o">);</span>
+
+	<span class="cm">/**
+	 * Find a {@link Map} of the session id to the {@link Session} of all sessions that
+	 * contain the specified index name index value.
+	 * @param indexName the name of the index (i.e.
+	 * {@link FindByIndexNameSessionRepository#PRINCIPAL_NAME_INDEX_NAME})
+	 * @param indexValue the value of the index to search for.
+	 * @return a {@code Map} (never {@code null}) of the session id to the {@code Session}
+	 * of all sessions that contain the specified index name and index value. If no
+	 * results are found, an empty {@code Map} is returned.
+	 */</span>
+	<span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="no">S</span><span class="o">&gt;</span> <span class="nf">findByIndexNameAndIndexValue</span><span class="o">(</span><span class="nc">String</span> <span class="n">indexName</span><span class="o">,</span> <span class="nc">String</span> <span class="n">indexValue</span><span class="o">);</span>
+
+	<span class="cm">/**
+	 * Find a {@link Map} of the session id to the {@link Session} of all sessions that
+	 * contain the index with the name
+	 * {@link FindByIndexNameSessionRepository#PRINCIPAL_NAME_INDEX_NAME} and the
+	 * specified principal name.
+	 * @param principalName the principal name
+	 * @return a {@code Map} (never {@code null}) of the session id to the {@code Session}
+	 * of all sessions that contain the specified principal name. If no results are found,
+	 * an empty {@code Map} is returned.
+	 * @since 2.1.0
+	 */</span>
+	<span class="k">default</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="no">S</span><span class="o">&gt;</span> <span class="nf">findByPrincipalName</span><span class="o">(</span><span class="nc">String</span> <span class="n">principalName</span><span class="o">)</span> <span class="o">{</span>
+
+		<span class="k">return</span> <span class="nf">findByIndexNameAndIndexValue</span><span class="o">(</span><span class="no">PRINCIPAL_NAME_INDEX_NAME</span><span class="o">,</span> <span class="n">principalName</span><span class="o">);</span>
+
+	<span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>该接口最核心的功能是提供了根据用户名查找获取Session会话的接口，这对我们后面实现踢人功能很有帮助。</p>
+
+<p>通过查看<code class="language-plaintext highlighter-rouge">SessionRepository</code>接口以及<code class="language-plaintext highlighter-rouge">FindByIndexNameSessionRepository</code>接口的源码我们得知：</p>
+
+<ul>
+  <li>Redis的实现最终实现了这两个接口，因此获得了基于Redis中间件创建及销毁Session会话的能力</li>
+  <li>根据账号去查找当前的所有登录会话Session符合我们最终需要服务端主动踢人下线的功能需求。</li>
+</ul>
+
+<p>接下来我们只需要关注<code class="language-plaintext highlighter-rouge">RedisIndexedSessionRepository</code>的实现即可。首先来看<code class="language-plaintext highlighter-rouge">findByPrincipalName</code>方法，源码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">RedisSession</span><span class="o">&gt;</span> <span class="nf">findByIndexNameAndIndexValue</span><span class="o">(</span><span class="nc">String</span> <span class="n">indexName</span><span class="o">,</span> <span class="nc">String</span> <span class="n">indexValue</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">//如果名称不匹配，则直接反馈空集合Map</span>
+    <span class="k">if</span> <span class="o">(!</span><span class="no">PRINCIPAL_NAME_INDEX_NAME</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">indexName</span><span class="o">))</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">Collections</span><span class="o">.</span><span class="na">emptyMap</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="c1">//获取拼装的Key值</span>
+    <span class="nc">String</span> <span class="n">principalKey</span> <span class="o">=</span> <span class="n">getPrincipalKey</span><span class="o">(</span><span class="n">indexValue</span><span class="o">);</span>
+    <span class="c1">//从Redis中获取该Key值的成员数</span>
+    <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">&gt;</span> <span class="n">sessionIds</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">sessionRedisOperations</span><span class="o">.</span><span class="na">boundSetOps</span><span class="o">(</span><span class="n">principalKey</span><span class="o">).</span><span class="na">members</span><span class="o">();</span>
+    <span class="c1">//初始化Map集合</span>
+    <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">RedisSession</span><span class="o">&gt;</span> <span class="n">sessions</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;(</span><span class="n">sessionIds</span><span class="o">.</span><span class="na">size</span><span class="o">());</span>
+    <span class="c1">//循环遍历</span>
+    <span class="k">for</span> <span class="o">(</span><span class="nc">Object</span> <span class="n">id</span> <span class="o">:</span> <span class="n">sessionIds</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">//根据id查找Session会话</span>
+        <span class="nc">RedisSession</span> <span class="n">session</span> <span class="o">=</span> <span class="n">findById</span><span class="o">((</span><span class="nc">String</span><span class="o">)</span> <span class="n">id</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">session</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">sessions</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">session</span><span class="o">.</span><span class="na">getId</span><span class="o">(),</span> <span class="n">session</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">sessions</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="nc">String</span> <span class="nf">getPrincipalKey</span><span class="o">(</span><span class="nc">String</span> <span class="n">principalName</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">namespace</span> <span class="o">+</span> <span class="s">"index:"</span> <span class="o">+</span> <span class="nc">FindByIndexNameSessionRepository</span><span class="o">.</span><span class="na">PRINCIPAL_NAME_INDEX_NAME</span> <span class="o">+</span> <span class="s">":"</span>
+        <span class="o">+</span> <span class="n">principalName</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>接下来我们看删除Session会话的方法实现：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">deleteById</span><span class="o">(</span><span class="nc">String</span> <span class="n">sessionId</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">//根据sessionId获取Session会话</span>
+    <span class="nc">RedisSession</span> <span class="n">session</span> <span class="o">=</span> <span class="n">getSession</span><span class="o">(</span><span class="n">sessionId</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">session</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span><span class="o">;</span>
+    <span class="o">}</span>
+	<span class="c1">//从Redis中移除所有存储的针对principal的key值</span>
+    <span class="n">cleanupPrincipalIndex</span><span class="o">(</span><span class="n">session</span><span class="o">);</span>
+    <span class="c1">//Redis中删除SessionId所对应的key值</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">expirationPolicy</span><span class="o">.</span><span class="na">onDelete</span><span class="o">(</span><span class="n">session</span><span class="o">);</span>
+    <span class="c1">//移除Session会话创建时，存储的过期key值</span>
+    <span class="nc">String</span> <span class="n">expireKey</span> <span class="o">=</span> <span class="n">getExpiredKey</span><span class="o">(</span><span class="n">session</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">sessionRedisOperations</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="n">expireKey</span><span class="o">);</span>
+    <span class="c1">//设置当前session会话最大存活时间为0</span>
+    <span class="n">session</span><span class="o">.</span><span class="na">setMaxInactiveInterval</span><span class="o">(</span><span class="nc">Duration</span><span class="o">.</span><span class="na">ZERO</span><span class="o">);</span>
+    <span class="c1">//执行save方法</span>
+    <span class="n">save</span><span class="o">(</span><span class="n">session</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>从上面的代码中，我们已经知道了Spring Session组件对于Session相关的处理方法，其实我们基于上面的两个核心方法，我们已经获得了踢人下线的能力，但是，既然<code class="language-plaintext highlighter-rouge">RedisIndexedSessionRepository</code>实现了<code class="language-plaintext highlighter-rouge">MessageListener</code>接口，我们需要继续跟踪一下该接口的具体实现方法，我们直接来看<code class="language-plaintext highlighter-rouge">onMessage</code>方法，代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">onMessage</span><span class="o">(</span><span class="nc">Message</span> <span class="n">message</span><span class="o">,</span> <span class="kt">byte</span><span class="o">[]</span> <span class="n">pattern</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">byte</span><span class="o">[]</span> <span class="n">messageChannel</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="na">getChannel</span><span class="o">();</span>
+    <span class="kt">byte</span><span class="o">[]</span> <span class="n">messageBody</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="na">getBody</span><span class="o">();</span>
+
+    <span class="nc">String</span> <span class="n">channel</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">String</span><span class="o">(</span><span class="n">messageChannel</span><span class="o">);</span>
+
+    <span class="k">if</span> <span class="o">(</span><span class="n">channel</span><span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">sessionCreatedChannelPrefix</span><span class="o">))</span> <span class="o">{</span>
+        <span class="c1">// TODO: is this thread safe?</span>
+        <span class="nd">@SuppressWarnings</span><span class="o">(</span><span class="s">"unchecked"</span><span class="o">)</span>
+        <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;</span> <span class="n">loaded</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;)</span> <span class="k">this</span><span class="o">.</span><span class="na">defaultSerializer</span><span class="o">.</span><span class="na">deserialize</span><span class="o">(</span><span class="n">message</span><span class="o">.</span><span class="na">getBody</span><span class="o">());</span>
+        <span class="n">handleCreated</span><span class="o">(</span><span class="n">loaded</span><span class="o">,</span> <span class="n">channel</span><span class="o">);</span>
+        <span class="k">return</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nc">String</span> <span class="n">body</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">String</span><span class="o">(</span><span class="n">messageBody</span><span class="o">);</span>
+    <span class="k">if</span> <span class="o">(!</span><span class="n">body</span><span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="n">getExpiredKeyPrefix</span><span class="o">()))</span> <span class="o">{</span>
+        <span class="k">return</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kt">boolean</span> <span class="n">isDeleted</span> <span class="o">=</span> <span class="n">channel</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">sessionDeletedChannel</span><span class="o">);</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">isDeleted</span> <span class="o">||</span> <span class="n">channel</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">sessionExpiredChannel</span><span class="o">))</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">beginIndex</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="na">lastIndexOf</span><span class="o">(</span><span class="s">":"</span><span class="o">)</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">endIndex</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="na">length</span><span class="o">();</span>
+        <span class="nc">String</span> <span class="n">sessionId</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="na">substring</span><span class="o">(</span><span class="n">beginIndex</span><span class="o">,</span> <span class="n">endIndex</span><span class="o">);</span>
+
+        <span class="nc">RedisSession</span> <span class="n">session</span> <span class="o">=</span> <span class="n">getSession</span><span class="o">(</span><span class="n">sessionId</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+
+        <span class="k">if</span> <span class="o">(</span><span class="n">session</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">logger</span><span class="o">.</span><span class="na">warn</span><span class="o">(</span><span class="s">"Unable to publish SessionDestroyedEvent for session "</span> <span class="o">+</span> <span class="n">sessionId</span><span class="o">);</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="k">if</span> <span class="o">(</span><span class="n">logger</span><span class="o">.</span><span class="na">isDebugEnabled</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">logger</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Publishing SessionDestroyedEvent for session "</span> <span class="o">+</span> <span class="n">sessionId</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="n">cleanupPrincipalIndex</span><span class="o">(</span><span class="n">session</span><span class="o">);</span>
+
+        <span class="k">if</span> <span class="o">(</span><span class="n">isDeleted</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">handleDeleted</span><span class="o">(</span><span class="n">session</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">else</span> <span class="o">{</span>
+            <span class="n">handleExpired</span><span class="o">(</span><span class="n">session</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">private</span> <span class="kt">void</span> <span class="nf">handleDeleted</span><span class="o">(</span><span class="nc">RedisSession</span> <span class="n">session</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">publishEvent</span><span class="o">(</span><span class="k">new</span> <span class="nc">SessionDeletedEvent</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="n">session</span><span class="o">));</span>
+<span class="o">}</span>
+
+<span class="kd">private</span> <span class="kt">void</span> <span class="nf">handleExpired</span><span class="o">(</span><span class="nc">RedisSession</span> <span class="n">session</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">publishEvent</span><span class="o">(</span><span class="k">new</span> <span class="nc">SessionExpiredEvent</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="n">session</span><span class="o">));</span>
+<span class="o">}</span>
+
+<span class="kd">private</span> <span class="kt">void</span> <span class="nf">publishEvent</span><span class="o">(</span><span class="nc">ApplicationEvent</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">eventPublisher</span><span class="o">.</span><span class="na">publishEvent</span><span class="o">(</span><span class="n">event</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="k">catch</span> <span class="o">(</span><span class="nc">Throwable</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">logger</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">"Error publishing "</span> <span class="o">+</span> <span class="n">event</span> <span class="o">+</span> <span class="s">"."</span><span class="o">,</span> <span class="n">ex</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>在<code class="language-plaintext highlighter-rouge">onMessage</code>方法中，最核心的是最后一个判断，分别执行<code class="language-plaintext highlighter-rouge">handleDeleted</code>和<code class="language-plaintext highlighter-rouge">handleExpired</code>方法，从源码中我们可以看到，当当前Session会话被删除或者失效时，Spring Session会通过<code class="language-plaintext highlighter-rouge">ApplicationEventPublisher</code>广播一个事件，分别处理<code class="language-plaintext highlighter-rouge">SessionExpiredEvent</code>和<code class="language-plaintext highlighter-rouge">SessionDeletedEvent</code>事件</p>
+
+<p>这是Spring Session组件为开发者预留的针对Session会话的Event事件，如果开发者对于当前的<code class="language-plaintext highlighter-rouge">Sesssion</code>会话的删除或者失效有特殊的处理需求，则可以通过监听该事件进行处理。</p>
+
+<p>例如，开发者针对Session会话的操作都需要做业务操作，记录日志保存到DB数据库中，此时，开发者只需要使用Spring提供的<code class="language-plaintext highlighter-rouge">EventListener</code>实现就可以很轻松的实现，示例代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Component</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SecuritySessionEventListener</span> <span class="o">{</span>
+
+    <span class="nd">@EventListener</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">sessionDestroyed</span><span class="o">(</span><span class="nc">SessionDestroyedEvent</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">//session销毁事件处理方法...</span>
+    <span class="o">}</span>
+
+    <span class="nd">@EventListener</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">sessionCreated</span><span class="o">(</span><span class="nc">SessionCreatedEvent</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">//session创建会话事件处理方法...</span>
+    <span class="o">}</span>
+
+    <span class="nd">@EventListener</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">sessionExired</span><span class="o">(</span><span class="nc">SessionExpiredEvent</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">//session会话过期事件处理方法...</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="4解决方案">4.解决方案</h2>
+
+<p>我们分析了Spring Session针对Session基于Redis的实现，接下来，我们从源码中已经知道了该如何查找Session会话以及销毁会话的方法，此时，我们可以来改造我们的框架代码了</p>
+
+<p>创建<code class="language-plaintext highlighter-rouge">SessionService</code>接口，代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">SessionService</span> <span class="o">{</span>
+
+    <span class="cm">/**
+     *
+     * @param account
+     * @return
+     */</span>
+    <span class="kt">boolean</span> <span class="nf">hasLogin</span><span class="o">(</span><span class="nc">String</span> <span class="n">account</span><span class="o">);</span>
+
+    <span class="cm">/**
+     * 根據账号查找当前session会话
+     * @param account 账号
+     * @return
+     */</span>
+    <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="o">?</span> <span class="kd">extends</span> <span class="nc">Session</span><span class="o">&gt;</span> <span class="nf">loadByAccount</span><span class="o">(</span><span class="nc">String</span> <span class="n">account</span><span class="o">);</span>
+
+    <span class="cm">/**
+     * 销毁当前session会话
+     * @param account
+     */</span>
+    <span class="kt">void</span> <span class="nf">destroySession</span><span class="o">(</span><span class="nc">String</span> <span class="n">account</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>声明该接口主要包含3个方法：</p>
+
+<ul>
+  <li>hasLogin:通过传递登录账号，判断该账号是否已经登录过，该方法是一个业务的延伸，比如我们对当前账号判断是否已经登录过，如果登录则提示需要退出才能继续登录的操作等</li>
+  <li>loadByAccount:根据登录账号获取当前已经登录的Session会话Map集合</li>
+  <li>destroySession:根据登录账号销毁当前所有该账号的Session会话信息，此接口和产品经理要求的踢人下线操作一致</li>
+</ul>
+
+<p>接下来就是实现类，由于我们是基于Redis来处理，因此，我们需要将源码分析中的<code class="language-plaintext highlighter-rouge">RedisIndexedSessionRepository</code>实体Bean进行引入，借助该类实现该接口方法</p>
+
+<p><code class="language-plaintext highlighter-rouge">RedisSessionService</code>方法实现如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * SpringSession集成底层Redis实现，如果底层分布式会话保持方式不是基于Redis,则该类无法正常使用
+ * @author &lt;a href="mailto:xiaoymin@foxmail.com"&gt;xiaoymin@foxmail.com&lt;/a&gt;
+ * 2021/04/20 16:23
+ * @since:fish 1.0
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">RedisSessionService</span> <span class="kd">implements</span> <span class="nc">SessionService</span> <span class="o">{</span>
+
+    <span class="nc">Logger</span> <span class="n">logger</span><span class="o">=</span> <span class="nc">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="nc">RedisSessionService</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+    <span class="kd">final</span> <span class="nc">RedisIndexedSessionRepository</span> <span class="n">redisIndexedSessionRepository</span><span class="o">;</span>
+
+    <span class="kd">final</span> <span class="nc">ApplicationEventPublisher</span> <span class="n">applicationEventPublisher</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">RedisSessionService</span><span class="o">(</span><span class="nc">RedisIndexedSessionRepository</span> <span class="n">redisIndexedSessionRepository</span><span class="o">,</span> <span class="nc">ApplicationEventPublisher</span> <span class="n">applicationEventPublisher</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">redisIndexedSessionRepository</span> <span class="o">=</span> <span class="n">redisIndexedSessionRepository</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">applicationEventPublisher</span> <span class="o">=</span> <span class="n">applicationEventPublisher</span><span class="o">;</span>
+    <span class="o">}</span>
+
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">hasLogin</span><span class="o">(</span><span class="nc">String</span> <span class="n">account</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">CollectionUtil</span><span class="o">.</span><span class="na">isNotEmpty</span><span class="o">(</span><span class="n">loadByAccount</span><span class="o">(</span><span class="n">account</span><span class="o">));</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="o">?</span> <span class="kd">extends</span> <span class="nc">Session</span><span class="o">&gt;</span> <span class="nf">loadByAccount</span><span class="o">(</span><span class="nc">String</span> <span class="n">account</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"收集当前登录会话session，账号:{}"</span><span class="o">,</span><span class="n">account</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">redisIndexedSessionRepository</span><span class="o">.</span><span class="na">findByIndexNameAndIndexValue</span><span class="o">(</span><span class="nc">FindByIndexNameSessionRepository</span><span class="o">.</span><span class="na">PRINCIPAL_NAME_INDEX_NAME</span><span class="o">,</span><span class="n">account</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">destroySession</span><span class="o">(</span><span class="nc">String</span> <span class="n">account</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"销毁当前登录session会话,账号：{}"</span><span class="o">,</span><span class="n">account</span><span class="o">);</span>
+        <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,?</span> <span class="kd">extends</span> <span class="nc">Session</span><span class="o">&gt;</span> <span class="n">sessionMap</span><span class="o">=</span><span class="n">loadByAccount</span><span class="o">(</span><span class="n">account</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="nc">CollectionUtil</span><span class="o">.</span><span class="na">isNotEmpty</span><span class="o">(</span><span class="n">sessionMap</span><span class="o">)){</span>
+            <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"当前登录会话size:{}"</span><span class="o">,</span><span class="n">sessionMap</span><span class="o">.</span><span class="na">size</span><span class="o">());</span>
+            <span class="k">for</span> <span class="o">(</span><span class="nc">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,?</span> <span class="kd">extends</span> <span class="nc">Session</span><span class="o">&gt;</span> <span class="nl">sessionEntry:</span><span class="n">sessionMap</span><span class="o">.</span><span class="na">entrySet</span><span class="o">()){</span>
+                <span class="nc">String</span> <span class="n">key</span><span class="o">=</span><span class="n">sessionEntry</span><span class="o">.</span><span class="na">getKey</span><span class="o">();</span>
+                <span class="nc">Session</span> <span class="n">session</span><span class="o">=</span><span class="n">sessionEntry</span><span class="o">.</span><span class="na">getValue</span><span class="o">();</span>
+                <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"destroy session key:{}"</span><span class="o">,</span><span class="n">key</span><span class="o">);</span>
+                <span class="c1">//删除</span>
+                <span class="n">redisIndexedSessionRepository</span><span class="o">.</span><span class="na">deleteById</span><span class="o">(</span><span class="n">session</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
+                <span class="c1">//广播Session会话销毁事件</span>
+                <span class="n">applicationEventPublisher</span><span class="o">.</span><span class="na">publishEvent</span><span class="o">(</span><span class="k">new</span> <span class="nc">SessionDestroyedEvent</span><span class="o">(</span><span class="n">redisIndexedSessionRepository</span><span class="o">,</span><span class="n">session</span><span class="o">));</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>在<code class="language-plaintext highlighter-rouge">destroySession</code>方法实现中，首先根据账号获取当前所有登录会话信息，如果会话不为空，则遍历会话Map集合，执行删除会话操作，并且通过<code class="language-plaintext highlighter-rouge">applicationEventPublisher</code>广播一个会话被销毁的事件。该广播事件非必须，但是从代码的全局进行考虑，还是需要加上</p>
+
+<p>接下来，我们就可以将该类注入到Spring的容器中的，注入实体Bean代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Bean</span>
+<span class="kd">public</span> <span class="nc">RedisSessionService</span> <span class="nf">sessionService</span><span class="o">(</span><span class="nc">RedisIndexedSessionRepository</span> <span class="n">redisIndexedSessionRepository</span><span class="o">,</span> <span class="nc">ApplicationEventPublisher</span> <span class="n">applicationEventPublisher</span><span class="o">){</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">RedisSessionService</span><span class="o">(</span><span class="n">redisIndexedSessionRepository</span><span class="o">,</span><span class="n">applicationEventPublisher</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>PS:</strong>我们为什么需要创建接口而不是直接创建class的方式通过<code class="language-plaintext highlighter-rouge">@Service</code>等注解进行注入，而是通过抽象接口实现类的方式，最终通过JavaConfig的方式进行注入呢？从代码的耦合度上来看，由于Spring Session提供处理基于Redis的能力处理Session会话之外，还提供了诸如JDBC\mongo等多元化的扩展方式，因此，为了代码解耦，通过抽象接口的方式是更合理的。</p>
+</blockquote>
+
+<p>接下来，我们在我们的用户管理的业务Service方法中就可以进行操作了</p>
+
+<p><strong>删除用户的业务Service方法</strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+* 根据主键id删除用户管理
+* @param id 主键id
+* @return 是否删除成功
+*/</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="nc">RestfulMessage</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="nf">delete</span><span class="o">(</span><span class="nc">Integer</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"根据主键id删除用户管理,id:{}"</span><span class="o">,</span><span class="n">id</span><span class="o">);</span>
+    <span class="nc">FishUserInfo</span> <span class="n">fishUserInfo</span><span class="o">=</span><span class="n">fishUserInfoMapper</span><span class="o">.</span><span class="na">selectByPrimaryKey</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
+    <span class="n">assertArgumentNotEmpty</span><span class="o">(</span><span class="n">fishUserInfo</span><span class="o">,</span><span class="s">"请求数据非法"</span><span class="o">);</span>
+    <span class="kt">int</span> <span class="n">ret</span><span class="o">=</span><span class="n">fishUserInfoMapper</span><span class="o">.</span><span class="na">deleteByPrimaryKey</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
+    <span class="c1">//删除成功，如果该角色在线，则强制剔除下线</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">ret</span><span class="o">&gt;</span><span class="mi">0</span><span class="o">){</span>
+        <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"用户会话剔除下线"</span><span class="o">);</span>
+        <span class="n">sessionService</span><span class="o">.</span><span class="na">destroySession</span><span class="o">(</span><span class="n">fishUserInfo</span><span class="o">.</span><span class="na">getAccount</span><span class="o">());</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">ret</span><span class="o">&gt;</span><span class="mi">0</span><span class="o">?</span><span class="nc">RestfulMessage</span><span class="o">.</span><span class="na">success</span><span class="o">(</span><span class="s">"删除成功"</span><span class="o">):</span><span class="nc">RestfulMessage</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">"删除失败"</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>禁用用户</strong></p>
+
+<blockquote>
+  <p>禁用用户其实操作方法和删除一样，区别在于禁用操作只是将用户在数据库中的状态进行变更，而删除则是将该用户的数据从数据库DB中进行删除。更新库的用户状态后，调用destroySession删除该账号的所有Session会话操作即可</p>
+</blockquote>
+
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2021/04/20/spring-security-out-session/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div style="text-align: center;">
+  <h2>微信公众号</h2>
+</div>
+<div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

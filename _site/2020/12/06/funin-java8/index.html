@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>有意思的两段java代码 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2020/12/06/funin-java8/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="有意思的两段java代码">
+      
+    <meta name="keywords" content="java8,gc">
+    <meta name="og:keywords" content="java8,gc">
+      
+    <meta name="description" content="首先，创建一个实体类Order对象，代码如下：```java">
+    <meta name="og:description" content="首先，创建一个实体类Order对象，代码如下：```java">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2020/12/06/funin-java8/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2020-12-06">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="有意思的两段java代码">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">有意思的两段java代码</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2020/12/06
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#Java" title="Java">Java</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <p>首先，创建一个实体类Order对象，代码如下：</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Order</span><span class="o">{</span>
+        <span class="kd">private</span> <span class="nc">String</span> <span class="n">orderNo</span><span class="o">;</span>
+        <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+
+        <span class="kd">public</span> <span class="nf">Order</span><span class="o">(){</span>
+            <span class="n">setOrderNo</span><span class="o">(</span><span class="s">"order:"</span><span class="o">+</span> <span class="no">UUID</span><span class="o">.</span><span class="na">randomUUID</span><span class="o">().</span><span class="na">toString</span><span class="o">());</span>
+            <span class="n">setName</span><span class="o">(</span><span class="s">"name:"</span><span class="o">+</span><span class="no">UUID</span><span class="o">.</span><span class="na">randomUUID</span><span class="o">().</span><span class="na">toString</span><span class="o">());</span>
+        <span class="o">}</span>
+
+        <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getOrderNo</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">orderNo</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setOrderNo</span><span class="o">(</span><span class="nc">String</span> <span class="n">orderNo</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">orderNo</span> <span class="o">=</span> <span class="n">orderNo</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">name</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setName</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+        <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+<p>第一个 方法，使用for循环遍历查找，即使找到也不做任何事，代码片段如下：</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">test2</span><span class="o">(){</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Order</span><span class="o">&gt;</span> <span class="n">orderList</span><span class="o">=</span><span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">1000</span><span class="o">;</span><span class="n">i</span><span class="o">++){</span>
+            <span class="n">orderList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">Order</span><span class="o">());</span>
+        <span class="o">}</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"aaaaa"</span><span class="o">);</span>
+        <span class="kt">boolean</span> <span class="n">flag</span><span class="o">=</span><span class="kc">true</span><span class="o">;</span>
+        <span class="nc">AtomicLong</span> <span class="n">atomicLong</span><span class="o">=</span><span class="k">new</span> <span class="nc">AtomicLong</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+        <span class="k">do</span> <span class="o">{</span>
+            <span class="c1">//遍历</span>
+            <span class="k">for</span> <span class="o">(</span><span class="nc">Order</span> <span class="nl">order:</span><span class="n">orderList</span><span class="o">){</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">order</span><span class="o">.</span><span class="na">getName</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="s">"abc"</span><span class="o">)){</span>
+                    <span class="c1">//find but do nothing</span>
+                    <span class="nc">Optional</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">order</span><span class="o">);</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+            <span class="c1">//orderList.stream().filter(order -&gt; order.getName().equals("abc")).findFirst();</span>
+            <span class="kt">long</span> <span class="n">value</span><span class="o">=</span><span class="n">atomicLong</span><span class="o">.</span><span class="na">incrementAndGet</span><span class="o">();</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">value</span><span class="o">&gt;</span><span class="mi">10000L</span><span class="o">){</span>
+                <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"推出"</span><span class="o">);</span>
+                <span class="n">flag</span><span class="o">=</span><span class="kc">false</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span><span class="k">while</span> <span class="o">(</span><span class="n">flag</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>第二个方法，使用java8中的lambda表达式stream中的filter进行查找,代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">test1</span><span class="o">(){</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Order</span><span class="o">&gt;</span> <span class="n">orderList</span><span class="o">=</span><span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">1000</span><span class="o">;</span><span class="n">i</span><span class="o">++){</span>
+            <span class="n">orderList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">Order</span><span class="o">());</span>
+        <span class="o">}</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"aaaaa"</span><span class="o">);</span>
+        <span class="kt">boolean</span> <span class="n">flag</span><span class="o">=</span><span class="kc">true</span><span class="o">;</span>
+        <span class="nc">AtomicLong</span> <span class="n">atomicLong</span><span class="o">=</span><span class="k">new</span> <span class="nc">AtomicLong</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+        <span class="k">do</span> <span class="o">{</span>
+            <span class="c1">//遍历</span>
+            <span class="n">orderList</span><span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">filter</span><span class="o">(</span><span class="n">order</span> <span class="o">-&gt;</span> <span class="n">order</span><span class="o">.</span><span class="na">getName</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="s">"abc"</span><span class="o">)).</span><span class="na">findFirst</span><span class="o">();</span>
+            <span class="kt">long</span> <span class="n">value</span><span class="o">=</span><span class="n">atomicLong</span><span class="o">.</span><span class="na">incrementAndGet</span><span class="o">();</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">value</span><span class="o">&gt;</span><span class="mi">10000L</span><span class="o">){</span>
+                <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"推出"</span><span class="o">);</span>
+                <span class="n">flag</span><span class="o">=</span><span class="kc">false</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span><span class="k">while</span> <span class="o">(</span><span class="n">flag</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>两段代码如果不设置java的Xmx参数，都能正常运行，假设设置参数</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">java</span> <span class="o">-</span><span class="nc">Xmx2m</span>
+</code></pre></div></div>
+
+<p>那么第二段使用java8的lambda表达式的程序将会报错，抛出异常</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+Exception <span class="k">in </span>thread <span class="s2">"main"</span> java.lang.InternalError: <span class="nv">zero_L</span><span class="o">=</span>Lambda<span class="o">(</span>a0:L<span class="o">)=&gt;{</span>
+    t1:L<span class="o">=</span>LambdaForm.identity_L<span class="o">((</span>null<span class="o">))</span><span class="p">;</span>t1:L<span class="o">}</span>
+	at java.lang.invoke.MethodHandleStatics.newInternalError<span class="o">(</span>MethodHandleStatics.java:127<span class="o">)</span>
+	at java.lang.invoke.LambdaForm.compileToBytecode<span class="o">(</span>LambdaForm.java:660<span class="o">)</span>
+	at java.lang.invoke.LambdaForm.prepare<span class="o">(</span>LambdaForm.java:635<span class="o">)</span>
+	at java.lang.invoke.MethodHandle.&lt;init&gt;<span class="o">(</span>MethodHandle.java:461<span class="o">)</span>
+	at java.lang.invoke.BoundMethodHandle.&lt;init&gt;<span class="o">(</span>BoundMethodHandle.java:58<span class="o">)</span>
+	at java.lang.invoke.SimpleMethodHandle.&lt;init&gt;<span class="o">(</span>SimpleMethodHandle.java:37<span class="o">)</span>
+	at java.lang.invoke.SimpleMethodHandle.make<span class="o">(</span>SimpleMethodHandle.java:41<span class="o">)</span>
+	at java.lang.invoke.LambdaForm.createIdentityForms<span class="o">(</span>LambdaForm.java:1783<span class="o">)</span>
+	at java.lang.invoke.LambdaForm.&lt;clinit&gt;<span class="o">(</span>LambdaForm.java:1833<span class="o">)</span>
+	at java.lang.invoke.DirectMethodHandle.makePreparedLambdaForm<span class="o">(</span>DirectMethodHandle.java:222<span class="o">)</span>
+	at java.lang.invoke.DirectMethodHandle.preparedLambdaForm<span class="o">(</span>DirectMethodHandle.java:187<span class="o">)</span>
+	at java.lang.invoke.DirectMethodHandle.preparedLambdaForm<span class="o">(</span>DirectMethodHandle.java:176<span class="o">)</span>
+	at java.lang.invoke.DirectMethodHandle.make<span class="o">(</span>DirectMethodHandle.java:83<span class="o">)</span>
+	at java.lang.invoke.MethodHandles<span class="nv">$Lookup</span>.getDirectMethodCommon<span class="o">(</span>MethodHandles.java:1655<span class="o">)</span>
+	at java.lang.invoke.MethodHandles<span class="nv">$Lookup</span>.getDirectMethodNoSecurityManager<span class="o">(</span>MethodHandles.java:1612<span class="o">)</span>
+	at java.lang.invoke.MethodHandles<span class="nv">$Lookup</span>.getDirectMethodForConstant<span class="o">(</span>MethodHandles.java:1797<span class="o">)</span>
+	at java.lang.invoke.MethodHandles<span class="nv">$Lookup</span>.linkMethodHandleConstant<span class="o">(</span>MethodHandles.java:1746<span class="o">)</span>
+	at java.lang.invoke.MethodHandleNatives.linkMethodHandleConstant<span class="o">(</span>MethodHandleNatives.java:477<span class="o">)</span>
+	at com.github.xiaoymin.Java8Test.test1<span class="o">(</span>Java8Test.java:63<span class="o">)</span>
+	at com.github.xiaoymin.Java8Test.main<span class="o">(</span>Java8Test.java:24<span class="o">)</span>
+Caused by: java.lang.OutOfMemoryError: GC overhead limit exceeded
+	at jdk.internal.org.objectweb.asm.ByteVector.&lt;init&gt;<span class="o">(</span>ByteVector.java:84<span class="o">)</span>
+	at jdk.internal.org.objectweb.asm.MethodWriter.visitAnnotation<span class="o">(</span>MethodWriter.java:555<span class="o">)</span>
+	at java.lang.invoke.InvokerBytecodeGenerator.generateCustomizedCodeBytes<span class="o">(</span>InvokerBytecodeGenerator.java:640<span class="o">)</span>
+	at java.lang.invoke.InvokerBytecodeGenerator.generateCustomizedCode<span class="o">(</span>InvokerBytecodeGenerator.java:618<span class="o">)</span>
+	at java.lang.invoke.LambdaForm.compileToBytecode<span class="o">(</span>LambdaForm.java:654<span class="o">)</span>
+	... 18 more
+<span class="k">***</span> java.lang.instrument ASSERTION FAILED <span class="k">***</span>: <span class="s2">"!errorOutstanding"</span> with message can<span class="s1">'t create byte arrau at JPLISAgent.c line: 813
+*** java.lang.instrument ASSERTION FAILED ***: "!errorOutstanding" with message can'</span>t create byte arrau at JPLISAgent.c line: 813
+<span class="k">***</span> java.lang.instrument ASSERTION FAILED <span class="k">***</span>: <span class="s2">"!errorOutstanding"</span> with message can<span class="s1">'t create byte arrau at JPLISAgent.c line: 813
+
+</span></code></pre></div></div>
+
+<p>那么，是否可以认为在超过2层的for循环中，对于集合的筛选或者等其他各种操作，应该禁用java8的stream操作？</p>
+
+<p>因为一旦外层for循环次数较多，java8中的stream操作将会创造很多临时对象，必然导致JVM频繁的GC操作！！</p>
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2020/12/06/funin-java8/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div style="text-align: center;">
+  <h2>微信公众号</h2>
+</div>
+<div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

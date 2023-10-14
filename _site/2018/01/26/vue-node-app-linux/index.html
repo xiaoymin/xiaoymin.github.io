@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>在Linux操作系统上部署VUE开发的node应用 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2018/01/26/vue-node-app-linux/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="在Linux操作系统上部署VUE开发的node应用">
+      
+    <meta name="keywords" content="Linux,nodejs,vue">
+    <meta name="og:keywords" content="Linux,nodejs,vue">
+      
+    <meta name="description" content="Linux 服务器">
+    <meta name="og:description" content="Linux 服务器">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2018/01/26/vue-node-app-linux/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2018-01-26">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="在Linux操作系统上部署VU">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">在Linux操作系统上部署VUE开发的node应用</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2018/01/26
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#Linux" title="Linux">Linux</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <h2 id="linux-服务器">Linux 服务器</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CentOS Linux release 7.3.1611 <span class="o">(</span>Core<span class="o">)</span> 
+</code></pre></div></div>
+
+<h2 id="配置node环境">配置node环境</h2>
+
+<p>查看node是否安装</p>
+
+<pre><code class="language-she">[root@localhost ~]# node
+bash: node: 未找到命令...
+</code></pre>
+
+<p>从以上命令看出,node环境没有安装,需要安装node基础环境</p>
+
+<p>首先去node<a href="https://nodejs.org/en/">官网</a>下载node的安装包</p>
+
+<p>英文官网访问太慢可以访问<a href="http://nodejs.cn/">中文官网</a></p>
+
+<p>阿里云镜像：https://npm.taobao.org/mirrors/node/</p>
+
+<p>本次下载的node版本是：<code class="language-plaintext highlighter-rouge">node-v6.11.3-linux-x64.tar.xz</code></p>
+
+<p><strong>解压</strong></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 解压</span>
+<span class="o">[</span>root@localhost ~]# <span class="nb">tar</span> <span class="nt">-xvf</span> node-v6.11.3-linux-x64.tar.xz
+<span class="o">[</span>root@localhost ~]# <span class="nb">mv </span>node-v6.11.3-linux-x64 /usr/local/node
+<span class="c">## 配置环境变量</span>
+<span class="o">[</span>root@localhost ~]# vim /etc/profile
+
+<span class="o">[</span>root@localhost ~]# node
+</code></pre></div></div>
+
+<p><strong>配置环境变量</strong></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@localhost ~]# vim /etc/profile
+
+<span class="nb">export </span><span class="nv">NODE_HOME</span><span class="o">=</span>/usr/local/node
+<span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$NODE_HOME</span>/bin:<span class="nv">$PATH</span>
+<span class="o">[</span>root@localhost <span class="nb">local</span><span class="o">]</span><span class="c"># source /etc/profile</span>
+<span class="o">[</span>root@localhost <span class="nb">local</span><span class="o">]</span><span class="c"># node -v</span>
+v6.11.3 
+</code></pre></div></div>
+
+<h2 id="部署">部署</h2>
+
+<p>该项目是依赖nuxt开发,参考文章：<a href="https://zh.nuxtjs.org/guide/commands">nuxt commands章节</a></p>
+
+<p>官网说明中可以在项目中的package.json文件中查看</p>
+
+<p>package.json配置文件如下：</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"off"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.0"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"off"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"author"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jzc"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"private"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"config"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"nuxt"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"127.0.0.1"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"port"</span><span class="p">:</span><span class="w"> </span><span class="s2">"18010"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"dev"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nuxt"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"build"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nuxt build"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nuxt start"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"generate"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nuxt generate"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"lint"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eslint --ext .js,.vue --ignore-path .gitignore ."</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"precommit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"npm run lint"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"dependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"animejs"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^2.2.0"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"less"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^2.7.3"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"less-loader"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^4.0.5"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"nuxt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^1.0.0"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"vue-awesome-swiper"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^3.1.2"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"babel-eslint"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^8.2.1"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"eslint"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^4.15.0"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"eslint-friendly-formatter"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^3.0.0"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"eslint-loader"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^1.7.1"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"eslint-plugin-vue"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^4.0.0"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>先执行build操作</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@localhost ~] npm run build
+
+<span class="o">&gt;</span> off@1.0.0 build /mnt/lishi/website
+<span class="o">&gt;</span> nuxt build
+
+  ████████████████████ 100% 
+
+Build completed <span class="k">in </span>14.168s
+
+
+
+
+ WARNING  Compiled with 1 warnings                                                                                                                                                     10:50:26
+
+ warning  
+
+asset size limit: The following asset<span class="o">(</span>s<span class="o">)</span> exceed the recommended size limit <span class="o">(</span>300 kB<span class="o">)</span><span class="nb">.</span>
+This can impact web performance.
+Assets: 
+  img/banner.c8fa5d3.png <span class="o">(</span>679 kB<span class="o">)</span>
+  img/cs.7924e8d.png <span class="o">(</span>816 kB<span class="o">)</span>
+  img/video.f81e697.png <span class="o">(</span>356 kB<span class="o">)</span>
+  img/OTS.426eca7.png <span class="o">(</span>475 kB<span class="o">)</span>
+  img/bender.0761e66.png <span class="o">(</span>639 kB<span class="o">)</span>
+  img/introduce.7c0f1a1.png <span class="o">(</span>421 kB<span class="o">)</span>
+  img/control.f36ce27.png <span class="o">(</span>479 kB<span class="o">)</span>
+
+Hash: 711ed163bda0e68a99b7
+Version: webpack 3.10.0
+Time: 14173ms
+                                            Asset       Size  Chunks                    Chunk Names
+                          img/ambient.f5922ac.png    2.62 kB          <span class="o">[</span>emitted]         
+             img/administration_hover.875f478.png    2.58 kB          <span class="o">[</span>emitted]         
+                        img/zhengshu4.9846a5d.png    26.7 kB          <span class="o">[</span>emitted]         
+                       img/experience.9e12d2c.png    1.47 kB          <span class="o">[</span>emitted]         
+                           img/ticket.978864e.png     1.3 kB          <span class="o">[</span>emitted]         
+                          img/service.a5b3c65.png    1.83 kB          <span class="o">[</span>emitted]         
+                          img/iPhoneX.248a9cc.png    23.5 kB          <span class="o">[</span>emitted]         
+                      img/jingguanjia.8afc7c3.png    3.45 kB          <span class="o">[</span>emitted]         
+                 img/contentServiceBg.c9eb329.png     233 kB          <span class="o">[</span>emitted]         
+                          img/tourist.5a236ea.png    3.16 kB          <span class="o">[</span>emitted]         
+                        img/zhengshu3.07ef39a.png    37.1 kB          <span class="o">[</span>emitted]         
+                       img/youguanjia.09f7ff1.png    2.89 kB          <span class="o">[</span>emitted]         
+                img/emergencyHandling.900bb3c.png    1.37 kB          <span class="o">[</span>emitted]         
+                                img/b.d3ce94c.jpg    39.1 kB          <span class="o">[</span>emitted]         
+                 img/experience_hover.58b2c47.png    1.47 kB          <span class="o">[</span>emitted]         
+                       img/parkingLot.8c62aba.png    2.25 kB          <span class="o">[</span>emitted]         
+                        img/marketing.1fb5e28.png    1.77 kB          <span class="o">[</span>emitted]         
+                             img/roam.9faa35b.png    2.91 kB          <span class="o">[</span>emitted]         
+                         img/evaluate.ea2bdeb.png    2.18 kB          <span class="o">[</span>emitted]         
+                           img/QRCode.0a50fbd.png    11.5 kB          <span class="o">[</span>emitted]         
+                     img/scenicSpotBg.a5b307c.png     184 kB          <span class="o">[</span>emitted]         
+                       img/government.d086f44.png    1.78 kB          <span class="o">[</span>emitted]         
+                              img/web.315c435.png    3.28 kB          <span class="o">[</span>emitted]         
+                                img/c.238373a.jpg    20.7 kB          <span class="o">[</span>emitted]         
+                           img/server.41de726.png    2.15 kB          <span class="o">[</span>emitted]         
+                   img/serviceContent.5d5f7c6.png    2.29 kB          <span class="o">[</span>emitted]         
+                          img/levelBg.0562974.png    4.65 kB          <span class="o">[</span>emitted]         
+                       img/enterprise.56dae04.png    3.22 kB          <span class="o">[</span>emitted]         
+                 img/evaluationSystem.730526f.png    3.46 kB          <span class="o">[</span>emitted]         
+                         img/shujujia.bb08350.png    3.01 kB          <span class="o">[</span>emitted]         
+                        img/keepWatch.c55759f.png    1.91 kB          <span class="o">[</span>emitted]         
+                     img/server_hover.fdef7a3.png    2.31 kB          <span class="o">[</span>emitted]         
+                           img/banner.c8fa5d3.png     679 kB          <span class="o">[</span>emitted]  <span class="o">[</span>big]  
+                               img/cs.7924e8d.png     816 kB          <span class="o">[</span>emitted]  <span class="o">[</span>big]  
+                            img/video.f81e697.png     356 kB          <span class="o">[</span>emitted]  <span class="o">[</span>big]  
+                        img/zhengshu2.4a19c1d.png    10.7 kB          <span class="o">[</span>emitted]         
+                                img/a.2ba6f0c.jpg    26.4 kB          <span class="o">[</span>emitted]         
+                     img/scenicSpotBg.9804948.png    4.74 kB          <span class="o">[</span>emitted]         
+                        img/marketing.35166b4.png    1.21 kB          <span class="o">[</span>emitted]         
+                          img/monitor.8af33d3.png    2.65 kB          <span class="o">[</span>emitted]         
+                           img/WeChat.896ae2d.png    2.36 kB          <span class="o">[</span>emitted]         
+                             img/Wifi.f7571ea.png    2.61 kB          <span class="o">[</span>emitted]         
+                   img/administration.fc3f856.png    2.52 kB          <span class="o">[</span>emitted]         
+                        img/broadcast.3372863.png     2.3 kB          <span class="o">[</span>emitted]         
+                  img/onlineRetailers.2b9a700.png    2.22 kB          <span class="o">[</span>emitted]         
+                        img/marketing.ae28534.png    2.59 kB          <span class="o">[</span>emitted]         
+                      img/body2-item3.3b33ea4.png    3.44 kB          <span class="o">[</span>emitted]         
+                        img/zhengshu5.907473c.png    47.8 kB          <span class="o">[</span>emitted]         
+                      img/body2-item1.cffdfb7.png    3.49 kB          <span class="o">[</span>emitted]         
+                      img/body2-item2.8b4ef31.png    3.66 kB          <span class="o">[</span>emitted]         
+                              img/OTS.426eca7.png     475 kB          <span class="o">[</span>emitted]  <span class="o">[</span>big]  
+                       img/recreation.417f692.png    3.04 kB          <span class="o">[</span>emitted]         
+                             img/logo.ae9fae7.png    10.1 kB          <span class="o">[</span>emitted]         
+                          img/release.f878c29.png     2.5 kB          <span class="o">[</span>emitted]         
+                           img/bender.0761e66.png     639 kB          <span class="o">[</span>emitted]  <span class="o">[</span>big]  
+                       img/enterprise.b12daef.png    2.11 kB          <span class="o">[</span>emitted]         
+                      img/marketingBg.0831255.png     2.6 kB          <span class="o">[</span>emitted]         
+                            img/level.c7b1a8d.png    3.84 kB          <span class="o">[</span>emitted]         
+                               img/VR.e0368e4.png    2.08 kB          <span class="o">[</span>emitted]         
+                        img/zhengshu1.4a19c1d.png    10.7 kB          <span class="o">[</span>emitted]         
+                        img/introduce.7c0f1a1.png     421 kB          <span class="o">[</span>emitted]  <span class="o">[</span>big]  
+                          img/control.f36ce27.png     479 kB          <span class="o">[</span>emitted]  <span class="o">[</span>big]  
+                       img/scenicSpot.775e2d1.png    4.05 kB          <span class="o">[</span>emitted]         
+                       img/body3-back.d346a0b.png     270 kB          <span class="o">[</span>emitted]         
+               img/vehiclesAndVessels.28c0194.png    2.41 kB          <span class="o">[</span>emitted]         
+                       img/streetLamp.27a4c2e.png    2.06 kB          <span class="o">[</span>emitted]         
+                         img/analysis.3d36965.png    2.16 kB          <span class="o">[</span>emitted]         
+                          img/support.18f87fd.png    1.68 kB          <span class="o">[</span>emitted]         
+                  img/onlineRetailers.94150fa.png    1.74 kB          <span class="o">[</span>emitted]         
+                     img/enterpriseBg.4d6b672.png    4.81 kB          <span class="o">[</span>emitted]         
+                            img/voice.aeb96b7.png    1.56 kB          <span class="o">[</span>emitted]         
+                  img/marketing_hover.a87ef11.png    3.12 kB          <span class="o">[</span>emitted]         
+                         img/serverBg.95d78c4.png     213 kB          <span class="o">[</span>emitted]         
+pages/product/jingguanjia.6d096988929c96b79c84.js    36.3 kB       0  <span class="o">[</span>emitted]         pages/product/jingguanjia
+      pages/aboutUS/index.b87dc531e556bf7861ed.js    45.4 kB       1  <span class="o">[</span>emitted]         pages/aboutUS/index
+ pages/product/youguanjia.8b2dc5016946854c880d.js    19.9 kB       2  <span class="o">[</span>emitted]         pages/product/youguanjia
+              pages/index.cfc2a9df7c5b2fea91db.js    38.1 kB       3  <span class="o">[</span>emitted]         pages/index
+   pages/product/shujujia.88e3f673ff804d0569bd.js    19.5 kB       4  <span class="o">[</span>emitted]         pages/product/shujujia
+         pages/News/index.cc009a13f2a811d4f9c5.js    32.6 kB       5  <span class="o">[</span>emitted]         pages/News/index
+          layouts/default.7dd836b9fa5dbc88593f.js    1.41 kB       6  <span class="o">[</span>emitted]         layouts/default
+                   vendor.258d4bae08c591e6eccc.js     284 kB       7  <span class="o">[</span>emitted]         vendor
+                      app.b0507b107754ae5b2939.js    29.8 kB       8  <span class="o">[</span>emitted]         app
+                 manifest.711ed163bda0e68a99b7.js    1.79 kB       9  <span class="o">[</span>emitted]         manifest
+                                         LICENSES  697 bytes          <span class="o">[</span>emitted]         
+ + 3 hidden assets
+
+WARNING <span class="k">in </span>asset size limit: The following asset<span class="o">(</span>s<span class="o">)</span> exceed the recommended size limit <span class="o">(</span>300 kB<span class="o">)</span><span class="nb">.</span>
+This can impact web performance.
+Assets: 
+  img/banner.c8fa5d3.png <span class="o">(</span>679 kB<span class="o">)</span>
+  img/cs.7924e8d.png <span class="o">(</span>816 kB<span class="o">)</span>
+  img/video.f81e697.png <span class="o">(</span>356 kB<span class="o">)</span>
+  img/OTS.426eca7.png <span class="o">(</span>475 kB<span class="o">)</span>
+  img/bender.0761e66.png <span class="o">(</span>639 kB<span class="o">)</span>
+  img/introduce.7c0f1a1.png <span class="o">(</span>421 kB<span class="o">)</span>
+  img/control.f36ce27.png <span class="o">(</span>479 kB<span class="o">)</span>
+Hash: a096aa98f9ed65c1ec48
+Version: webpack 3.10.0
+Time: 2641ms
+             Asset    Size  Chunks             Chunk Names
+server-bundle.json  507 kB          <span class="o">[</span>emitted]
+</code></pre></div></div>
+
+<p>最终后台启动</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@localhost ~] npm run start &amp;
+<span class="o">&gt;</span> off@1.0.0 start /mnt/lishi/website
+<span class="o">&gt;</span> nuxt start
+
+
+ OPEN  http://iZbp10yas4kb5a9dudjbw2Z:18010
+
+
+</code></pre></div></div>
+
+<h2 id="其他">其他</h2>
+
+<p>node程序最终启动成功,可以通过ps命令查找进程</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@localhost ~] ps <span class="nt">-ef</span>|grep node
+lishi    10155 10145  0 11:19 pts/1    00:00:03 node /mnt/project/website/node_modules/.bin/nuxt start
+root     13134 10274  0 13:43 pts/1    00:00:00 <span class="nb">grep</span> <span class="nt">--color</span><span class="o">=</span>auto node
+<span class="o">[</span>root@localhost ~] 
+
+</code></pre></div></div>
+
+<p>通过端口查找：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@localhost ~] netstat <span class="nt">-anp</span>|grep 8083
+<span class="o">(</span>Not all processes could be identified, non-owned process info
+ will not be shown, you would have to be root to see it all.<span class="o">)</span>
+tcp        0      0 0.0.0.0:8083            0.0.0.0:<span class="k">*</span>               LISTEN      27562/java          
+<span class="o">[</span>root@localhost ~] netstat <span class="nt">-anp</span>|grep 18010
+<span class="o">(</span>Not all processes could be identified, non-owned process info
+ will not be shown, you would have to be root to see it all.<span class="o">)</span>
+tcp        0      0 127.0.0.1:18010         0.0.0.0:<span class="k">*</span>               LISTEN      10155/node          
+lishi@iZbp10yas4kb5a9dudjbw2Z:/usr/local/nginx/conf/vhost&gt; 
+
+</code></pre></div></div>
+
+<p>通过上面列出来的进程信息,18010端口是node开启的服务器,8083是后台Java开启的tomcat服务</p>
+
+<p>比较之后，会发现一个是127.0.0.1，一个是0.0.0.0</p>
+
+<p>重点说明 0.0.0.0 是对外开放，通过服务域名、ip可以访问的端口</p>
+
+<p>127.0.0.1 只能对本机 localhost访问，也是保护此端口安全性</p>
+
+<p>所以最终node启用的服务 最后我只能改由nginx代理才能出去，这个怎么解决尚未有解决方案</p>
+
+<h2 id="pm2">pm2</h2>
+
+<p><em>pm2</em> 是一个带有负载均衡功能的Node应用的进程管理器.当你要把你的独立代码利用全部的服务器上的所有CPU,并保证进程永远都活着,0秒的重载, <em>PM2</em>是完美的</p>
+
+<p>PM2是node进程管理工具，可以利用它来简化很多node应用管理的繁琐任务，如性能监控、自动重启、负载均衡等，而且使用非常简单。</p>
+
+<h3 id="安装">安装</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lishi@iZbp10yas4kb5a9dudjbw2Z:/mnt/lishi/website&gt; npm <span class="nb">install</span> <span class="nt">-g</span> pm2
+/usr/local/node-v9.0.0/bin/pm2 -&gt; /usr/local/node-v9.0.0/lib/node_modules/pm2/bin/pm2
+/usr/local/node-v9.0.0/bin/pm2-dev -&gt; /usr/local/node-v9.0.0/lib/node_modules/pm2/bin/pm2-dev
+/usr/local/node-v9.0.0/bin/pm2-docker -&gt; /usr/local/node-v9.0.0/lib/node_modules/pm2/bin/pm2-docker
+/usr/local/node-v9.0.0/bin/pm2-runtime -&gt; /usr/local/node-v9.0.0/lib/node_modules/pm2/bin/pm2-runtime
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.1.3 <span class="o">(</span>node_modules/pm2/node_modules/fsevents<span class="o">)</span>:
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform <span class="k">for </span>fsevents@1.1.3: wanted <span class="o">{</span><span class="s2">"os"</span>:<span class="s2">"darwin"</span>,<span class="s2">"arch"</span>:<span class="s2">"any"</span><span class="o">}</span> <span class="o">(</span>current: <span class="o">{</span><span class="s2">"os"</span>:<span class="s2">"linux"</span>,<span class="s2">"arch"</span>:<span class="s2">"x64"</span><span class="o">})</span>
+
++ pm2@2.9.3
+added 252 packages <span class="k">in </span>119.179s
+lishi@iZbp10yas4kb5a9dudjbw2Z:/mnt/lishi/website&gt; pm2 list
+
+<span class="o">&gt;&gt;&gt;&gt;</span> In-memory PM2 is out-of-date, <span class="k">do</span>:
+<span class="o">&gt;&gt;&gt;&gt;</span> <span class="nv">$ </span>pm2 update
+In memory PM2 version: 2.7.0
+Local PM2 version: 2.9.3
+
+┌──────────┬────┬──────┬─────┬────────┬─────────┬────────┬─────┬─────┬──────┬──────────┐
+│ App name │ <span class="nb">id</span> │ mode │ pid │ status │ restart │ <span class="nb">uptime</span> │ cpu │ mem │ user │ watching │
+└──────────┴────┴──────┴─────┴────────┴─────────┴────────┴─────┴─────┴──────┴──────────┘
+ Use <span class="sb">`</span>pm2 show &lt;<span class="nb">id</span>|name&gt;<span class="sb">`</span> to get more details about an app
+
+</code></pre></div></div>
+
+<p>nuxt.js的项目启动命令，先执行<code class="language-plaintext highlighter-rouge">npm run build</code>,在执行<code class="language-plaintext highlighter-rouge">npm run start</code>,pm2也支持参数的传递，也有大神说pm2启动nuxt只需要执行<code class="language-plaintext highlighter-rouge">pm2 start npm -- run start</code>,到目前为止，表示项目没有这样启动成功过。</p>
+
+<p>所以我们要知道<code class="language-plaintext highlighter-rouge">package.json</code>这个文件，当我们执行<code class="language-plaintext highlighter-rouge">npm run dev</code>的时候，其实使用npm去启动了<code class="language-plaintext highlighter-rouge">./node_modules/nuxt/bin/nuxt</code>这个文件。当我们cd到我们的项目目录之后，我们最终可以执行如下命令来启动：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pm2 start ./node_modules/nuxt/bin/nuxt <span class="nt">--</span> start
+</code></pre></div></div>
+
+<p>以上命令启动是默认端口3000，如果我们要自定义端口 需要执行参数</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lishi@iZbp10yas4kb5a9dudjbw2Z:/mnt/lishi/website&gt; netstat <span class="nt">-anp</span>|grep nux
+<span class="o">(</span>Not all processes could be identified, non-owned process info
+ will not be shown, you would have to be root to see it all.<span class="o">)</span>
+tcp        0      0 127.0.0.1:3000          0.0.0.0:<span class="k">*</span>               LISTEN      3804/nuxt           
+</code></pre></div></div>
+
+<p>查看帮助文档：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lishi@iZbp10yas4kb5a9dudjbw2Z:/mnt/lishi/website&gt; ./node_modules/nuxt/bin/nuxt <span class="nt">--help</span>
+
+    Description
+      Starts the application <span class="k">in </span>development mode <span class="o">(</span>hot-code reloading, error
+      reporting, etc<span class="o">)</span>
+    Usage
+      <span class="nv">$ </span>nuxt dev &lt;<span class="nb">dir</span><span class="o">&gt;</span> <span class="nt">-p</span> &lt;port number&gt; <span class="nt">-H</span> &lt;<span class="nb">hostname</span><span class="o">&gt;</span>
+    Options
+      <span class="nt">--port</span>, <span class="nt">-p</span>          A port number on which to start the application
+      <span class="nt">--hostname</span>, <span class="nt">-H</span>      Hostname on which to start the application
+      <span class="nt">--spa</span>               Launch <span class="k">in </span>SPA mode
+      <span class="nt">--universal</span>         Launch <span class="k">in </span>Universal mode <span class="o">(</span>default<span class="o">)</span>
+      <span class="nt">--config-file</span>, <span class="nt">-c</span>   Path to Nuxt.js config file <span class="o">(</span>default: nuxt.config.js<span class="o">)</span>
+      <span class="nt">--help</span>, <span class="nt">-h</span>          Displays this message
+  
+
+</code></pre></div></div>
+
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2018/01/26/vue-node-app-linux/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div style="text-align: center;">
+  <h2>微信公众号</h2>
+</div>
+<div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

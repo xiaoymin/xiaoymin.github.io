@@ -1,0 +1,34 @@
+- reponame: Knife4j
+  stars: 3118
+  forks: 718
+  url: https://gitee.com/xiaoym/knife4j
+  lastupt: 2020-11-04
+  description: Knife4j是为Java MVC框架集成Swagger生成Api文档的工具,前身是swagger-bootstrap-ui
+
+- reponame: oss-server
+  stars: 359
+  forks: 133
+  url: https://gitee.com/xiaoym/oss-server
+  lastupt: 2019-02-25
+  description: oss-server是针对项目开发时提供的小型对象存储系统,开发者在针对文件上传时业务剥离,同时方便文件迁移，为满足单个项目，多个系统的情况下，提供统一的oss服务
+
+- reponame: swagger-bootstrap-ui-demo
+  stars: 437
+  forks: 182
+  url: https://gitee.com/xiaoym/swagger-bootstrap-ui-demo
+  lastupt: 2020-11-04
+  description: swagger-bootstrap-ui演示项目
+
+- reponame: jsonp
+  stars: 26
+  forks: 5
+  url: https://gitee.com/xiaoym/jsonp
+  lastupt: 2015-09-13
+  description: spring mvc框架 关于jsonp的处理
+
+- reponame: JFormParser
+  stars: 5
+  forks: 3
+  url: https://gitee.com/xiaoym/JFormParser
+  lastupt: 2017-01-20
+  description: 根据json结构体,生成页面,达到解放后端开发人员的目的,降低后端对前端开发要求,后端专心开发后台接口等服务程序,前期以表单元素为主,后期会增加更多页面元素的支持，适用于后台CMS之类管理界面

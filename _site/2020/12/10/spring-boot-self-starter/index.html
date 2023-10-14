@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>Spring Boot自定义starter必知必会条件 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2020/12/10/spring-boot-self-starter/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="Spring Boot自定义starter必知必会条件">
+      
+    <meta name="keywords" content="Spring Boot,starter,自定义starter">
+    <meta name="og:keywords" content="Spring Boot,starter,自定义starter">
+      
+    <meta name="description" content="前言">
+    <meta name="og:description" content="前言">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2020/12/10/spring-boot-self-starter/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2020-12-10">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="Spring Boot自定义s">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">Spring Boot自定义starter必知必会条件</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2020/12/10
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#Spring" title="Spring">Spring</a>
+          </span>
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#Boot" title="Boot">Boot</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <h2 id="前言">前言</h2>
+
+<p>在目前的Spring Boot框架中,不管是Spring Boot官方还是非官方,都提供了非常多的starter系列组件,助力开发者在企业应用中的开发,提升研发人员的工作效率,Spring Boot框架提出的约定大于配置的规则，确实帮助开发者简化了以前Spring MVC时代的很多繁杂的配置。让开发者用起来也是非常爽的。</p>
+
+<p>尽管Spring Boot或者一些开源组件已经帮助我们提供了非常多的starter组件，在满足日常的开发中,已经完全没有问题了。但有时候因为需求的可变性，导致企业架构也会随着调整，那么在Spring Boot框架中，官方或开源的第三方starter肯定不能满足企业内部研发人员的要求，这时候就需要开发者自定义企业内部的starter了。</p>
+
+<p>企业或个人自定义Spring Boot的starter组件主要从哪些方面来入手呢，或者什么时候需要自定义starter组件？我个人认为主要有以下几个方面：</p>
+
+<ul>
+  <li>规范企业内部编码流程，统一各个技术中间件的代码规范</li>
+  <li>减少不同类型中间件的使用成本，提升研发人员的研发工作效率</li>
+  <li>减少冗余代码的使用，统一封装，统一管理。</li>
+  <li>屏蔽中间件底层细节，暴露配置属性及方法，减少学习使用成本</li>
+  <li>可能还有更多？</li>
+</ul>
+
+<p>本篇博客结合自身的开发经验以及目前Spring Boot如何配置元数据的官方介绍文档进行结合，进行综合阐述。</p>
+
+<p>Spring Boot官方元数据文档地址：<a href="https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-configuration-metadata.html">https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-configuration-metadata.html</a></p>
+
+<p>封装Spring Boot的starter范围可以是一组规范的业务方法，也可以是通用的中间件底层。开发者通过封装，一定程度上也能起到规范企业编码的作用,同时也能组合复用公共业务逻辑。</p>
+
+<p>那么我们在自定义Spring Boot框架的starter组件时,我们需要准备什么呢？</p>
+
+<p>我认为主要包含以下几个方面：</p>
+
+<ul>
+  <li>自定义starter的作用</li>
+  <li>命名规范</li>
+  <li>理解Maven或者Gradle依赖包管理的jar包引用传递机制</li>
+  <li>理解Spring Boot框架中基于Java代码的Configuration配置</li>
+  <li>理解Spring Boot框架自动装载的过程</li>
+  <li>学会利用Spring Boot提供的<code class="language-plaintext highlighter-rouge">@Conditional</code>系列条件注入充分发挥Spring Boot的优点</li>
+  <li>学会如何配置自定义starter组件时对外的属性注释配置，可以参考<a href="https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-configuration-metadata.html">官方文档</a></li>
+</ul>
+
+<h2 id="自定义starter的作用">自定义starter的作用</h2>
+
+<p>我们在自定义starter组件之前，开发者首先需要想清楚，这个starter组件能带来什么，简化开发？或者复用组件的封装供其他同事使用，不写重复代码等等，这些都是需要思考清楚的。</p>
+
+<p>自定义starter的场景很多，例如：</p>
+
+<ul>
+  <li>项目中发送短信对接了不同的云服务商，那么可以封装一个短信的starter，屏蔽对接的细节，开发者只需要配置相应的厂商配置信息就可以使用该服务商发送短信了</li>
+  <li>OSS存储对接不同的云服务商，例如阿里云、七牛云、腾讯云等等</li>
+  <li>企业内部中间件封装使用，简化开发配置</li>
+  <li>more…</li>
+</ul>
+
+<p>根据笔者的经验,我认为自定义的starter的作用无外乎以下几个方面：</p>
+
+<ul>
+  <li>充分利用Spring的特性，容器/依赖注入特性，将核心的类组件注入容器中,方便开发者通过注入直接获取拿来使用</li>
+  <li>通过属性初始化中间件的流程，屏蔽具体的细节</li>
+  <li>….</li>
+</ul>
+
+<h2 id="starter命名规范">starter命名规范</h2>
+
+<p>根据Spring Boot的官方要求，如果是开发者指定第三方的starter组件，那么命名规范是<code class="language-plaintext highlighter-rouge">yourname-spring-boot-starter</code></p>
+
+<p>拿<a href="https://xiaoym.gitee.io/knife4j/">Knife4j</a>举例说明如下：</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>com.github.xiaoymin<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>knife4j-spring-boot-starter<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="c">&lt;!--在引用时请在maven中央仓库搜索2.X最新版本号--&gt;</span>
+    <span class="nt">&lt;version&gt;</span>2.0.8<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
+
+<p>而Spring Boot官方维护发布的starter名称规范则是：<code class="language-plaintext highlighter-rouge">spring-boot-starter-name</code></p>
+
+<p>例如我们引用最多的web组件，引用maven配置如下：</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>spring-boot-starter-web<span class="nt">&lt;/artifactId&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
+
+<h2 id="jar包引用传递依赖机制">jar包引用传递依赖机制</h2>
+
+<p>这是自定义封装Spring Boot的starter的前提条件，Gradle笔者并未使用过，这里仅以Maven为例进行阐述说明！</p>
+
+<p>通常我们在封装一个SDK的jar包时，该jar包可能需要引用到第三方的jar包作为依赖包来辅助我们完成对该jar包的封装，但是我们在引用的时候是有讲究的。</p>
+
+<p>针对Spring Boot的自定义starter说到底也是一个jar包，既然是jar包必然会用到第三方的jar(ps:全部都是你写的代码除外)，那么我们应该如何明确在starter中的jar包的依赖传递，我认为主要有以下方面：</p>
+
+<ul>
+  <li>作为第三方组件使用jar包时，明确第三方组件的版本</li>
+  <li>作为编译期间的包，需要修改默认的scope范围值，仅仅在编译期间生效，最终打包后引用不传递</li>
+  <li>自定义封装starter必须引用Spring Boot官方提供的</li>
+</ul>
+
+<p>在定义Spring Boot的第三方starter时，主要用到Maven管理jar包中的两种依赖隔离方式(均可以使用)，分别如下：</p>
+
+<ul>
+  <li>明确使用<code class="language-plaintext highlighter-rouge">&lt;optional&gt;true&gt;&lt;/optional&gt;</code>属性来强指定jar包不传递</li>
+  <li>使用<code class="language-plaintext highlighter-rouge">&lt;scope&gt;provided&lt;/scope&gt;</code>仅仅在编译期间有效，jar包依赖性不传递</li>
+</ul>
+
+<p>一般我们在自定义Spring Boot的starter组件时，都需要引用Spring Boot提供给开发者的依赖包，如下：</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>spring-boot-autoconfigure<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>2.3.0.RELEASE<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;scope&gt;</span>provided<span class="nt">&lt;/scope&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
+
+<p>当然，你也可以使用<code class="language-plaintext highlighter-rouge">optional</code>模式，如下：</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nt">&lt;dependency&gt;</span>
+     <span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+     <span class="nt">&lt;artifactId&gt;</span>spring-boot-autoconfigure<span class="nt">&lt;/artifactId&gt;</span>
+     <span class="nt">&lt;version&gt;</span>2.3.0.RELEASE<span class="nt">&lt;/version&gt;</span>
+     <span class="nt">&lt;optional&gt;</span>true<span class="nt">&lt;/optional&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
+
+<h2 id="java代码方式的configuration">Java代码方式的Configuration</h2>
+
+<p>基于Java编码的方式配置Spring的Bean已经成了目前的主流，这主要也是得益于Spring Boot框架的流行！</p>
+
+<p>在Spring MVC框架流行的时候，开发人员一般都是通过配置XML文件来注入实体Bean的</p>
+
+<p>而通过java编码的方式注入Bean的前提是<code class="language-plaintext highlighter-rouge">@Configuration</code>注解加在一个配置Java实体类上即可，示例如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyAutoConfiguration</span><span class="o">{</span>
+    
+    <span class="c1">//do others...</span>
+    
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="spring-boot框架的自动装载">Spring Boot框架的自动装载</h2>
+
+<p>对于Spring Boot框架自定义的starter组件来说，提供的使用方式而言，我认为目前主要有3种方式，这个主要看封装starter组件的作者如何开放来定</p>
+
+<h3 id="手工import导入">手工<code class="language-plaintext highlighter-rouge">@Import</code>导入</h3>
+
+<p>第一种情况：使用者使用<code class="language-plaintext highlighter-rouge">@Import</code>注解将封装的starter组件的Java编码Configuration配置文件进行导入</p>
+
+<p>假设目前封装的一个简单的Configuration配置如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DemoAuthConfiguration</span> <span class="o">{</span>
+
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="nc">DemoClient</span> <span class="nf">demoClient</span><span class="o">(){</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">DemoClient</span><span class="o">();</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>开发者通过<code class="language-plaintext highlighter-rouge">DemoAutoConfiguration.java</code>向Spring的容器中注入了一个<code class="language-plaintext highlighter-rouge">DemoClient</code>的实体Bean,由于隶属于不同的package包路径，自定义的starter组件包路径是：<code class="language-plaintext highlighter-rouge">com.demo.spring</code></p>
+
+<p>而开发者的项目主目录包路径是：<code class="language-plaintext highlighter-rouge">com.test</code>,所以Spring Boot框架默认是不会加载该配置的，此时，如果开发者要在Spring的容器中获取<code class="language-plaintext highlighter-rouge">DemoClient</code>的实体Bean应该怎么办呢？使用者应该在自己的主配置中使用<code class="language-plaintext highlighter-rouge">@Import</code>注解将该配置导入进来交给Spring容器初始化时进行创建，示例如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Import</span><span class="o">(</span><span class="nc">DemoAutoConfiguration</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="nd">@SpringBootApplication</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DemoDemoApplication</span> <span class="o">{</span>
+    
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+        <span class="nc">SpringApplication</span><span class="o">.</span><span class="na">run</span><span class="o">(</span><span class="nc">DemoDemoApplication</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="提供便于记忆的注解enablexxx">提供便于记忆的注解<code class="language-plaintext highlighter-rouge">@EnableXXX</code></h3>
+
+<p><code class="language-plaintext highlighter-rouge">@Enablexxx</code>系列注解相信开发者并不陌生，比如我们要使用Spring Boot的定时任务功能，我们会在启动入口引入<code class="language-plaintext highlighter-rouge">@EnableScheduling</code>注解，我们使用Springfox的Swagger组件，我们会引入<code class="language-plaintext highlighter-rouge">@EnableSwagger2</code>注解</p>
+
+<p>其实这种方式只是为了让开发者能够更加方便的记忆，一个<code class="language-plaintext highlighter-rouge">@Enablexxx</code>系列注解，其所代表的功能特点也基本符合该starter组件，是在上面手工通过<code class="language-plaintext highlighter-rouge">@Import</code>注解的升级版本。</p>
+
+<p>毕竟<code class="language-plaintext highlighter-rouge">Enable</code>单词所代表的含义是<strong>启用</strong>,这有利于开发者记忆</p>
+
+<p>继续通过上面第一种的示例进行改在，此时，我们可以提供<code class="language-plaintext highlighter-rouge">@EnableDemoClient</code>注解，代码示例如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Documented</span>
+<span class="nd">@Retention</span><span class="o">(</span><span class="nc">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
+<span class="nd">@Target</span><span class="o">(</span><span class="nc">ElementType</span><span class="o">.</span><span class="na">TYPE</span><span class="o">)</span>
+<span class="nd">@Import</span><span class="o">(</span><span class="nc">DemoAutoConfiguration</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nd">@interface</span> <span class="nc">EnableDemoClient</span> <span class="o">{</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>大家应该也看到了，我们在该<code class="language-plaintext highlighter-rouge">@EnableDemoClient</code>注解中，使用了<code class="language-plaintext highlighter-rouge">@Import</code>注解的方式导入了<code class="language-plaintext highlighter-rouge">DemoAutoConfiguration</code>配置</p>
+
+<p>此时，我们在项目中可以使用<code class="language-plaintext highlighter-rouge">@EnableDemoClient</code>注解了，代码示例如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@EnableDemoClient</span>
+<span class="nd">@SpringBootApplication</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DemoDemoApplication</span> <span class="o">{</span>
+    
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+        <span class="nc">SpringApplication</span><span class="o">.</span><span class="na">run</span><span class="o">(</span><span class="nc">DemoDemoApplication</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>当然，<code class="language-plaintext highlighter-rouge">@Enable</code>这种注解作用不仅仅局限于此，还可以在该注解上定义外部的配置属性，通过配置该注解的方式达到最终初始化的目的。</p>
+
+<h3 id="自动装载">自动装载</h3>
+
+<p>自动装载是Spring Boot的一重大特点，开发者通过配置文件的方式即可默认加载第三方的starter配置，非常的方便，是上面两种方式的升级版</p>
+
+<p>在之前的基础上，如果开发者希望在Maven的pom.xml工程中引入了该组件，就可以使用<code class="language-plaintext highlighter-rouge">DemoClient</code>类，那么此时我们应该怎么做呢？</p>
+
+<p>我们需要在工程中创建<code class="language-plaintext highlighter-rouge">spring.factories</code>文件，文件目录：<code class="language-plaintext highlighter-rouge">src/resources/META-INF/spring.factories</code></p>
+
+<p>在<code class="language-plaintext highlighter-rouge">spring.factories</code>文件中,配置开发者自定义的configuration类，如下：</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">org.springframework.boot.autoconfigure.EnableAutoConfiguration</span><span class="p">=</span><span class="s">com.demo.spring.DemoAutoConfiguration</span>
+</code></pre></div></div>
+
+<p>配置好后，此时再打包我们自定义的starter组件，Spring Boot框架默认会自动装载该配置类，我们在业务代码中也就可以直接使用了</p>
+
+<p>我们可以在<code class="language-plaintext highlighter-rouge">SpringApplication.java</code>源码中看到Spring Boot初始化获取该类列表的过程</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="nc">Collection</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="nf">getSpringFactoriesInstances</span><span class="o">(</span><span class="nc">Class</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">type</span><span class="o">,</span> <span class="nc">Class</span><span class="o">&lt;?&gt;[]</span> <span class="n">parameterTypes</span><span class="o">,</span> <span class="nc">Object</span><span class="o">...</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+		<span class="nc">ClassLoader</span> <span class="n">classLoader</span> <span class="o">=</span> <span class="n">getClassLoader</span><span class="o">();</span>
+		<span class="c1">// Use names and ensure unique to protect against duplicates</span>
+		<span class="nc">Set</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">names</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LinkedHashSet</span><span class="o">&lt;&gt;(</span><span class="nc">SpringFactoriesLoader</span><span class="o">.</span><span class="na">loadFactoryNames</span><span class="o">(</span><span class="n">type</span><span class="o">,</span> <span class="n">classLoader</span><span class="o">));</span>
+		<span class="nc">List</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">instances</span> <span class="o">=</span> <span class="n">createSpringFactoriesInstances</span><span class="o">(</span><span class="n">type</span><span class="o">,</span> <span class="n">parameterTypes</span><span class="o">,</span> <span class="n">classLoader</span><span class="o">,</span> <span class="n">args</span><span class="o">,</span> <span class="n">names</span><span class="o">);</span>
+		<span class="nc">AnnotationAwareOrderComparator</span><span class="o">.</span><span class="na">sort</span><span class="o">(</span><span class="n">instances</span><span class="o">);</span>
+		<span class="k">return</span> <span class="n">instances</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>上述方法中的<code class="language-plaintext highlighter-rouge">SpringFactoriesLoader.loadFactoryNames</code>方法如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="nf">loadFactoryNames</span><span class="o">(</span><span class="nc">Class</span><span class="o">&lt;?&gt;</span> <span class="n">factoryType</span><span class="o">,</span> <span class="nd">@Nullable</span> <span class="nc">ClassLoader</span> <span class="n">classLoader</span><span class="o">)</span> <span class="o">{</span>
+		<span class="nc">String</span> <span class="n">factoryTypeName</span> <span class="o">=</span> <span class="n">factoryType</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
+		<span class="k">return</span> <span class="nf">loadSpringFactories</span><span class="o">(</span><span class="n">classLoader</span><span class="o">).</span><span class="na">getOrDefault</span><span class="o">(</span><span class="n">factoryTypeName</span><span class="o">,</span> <span class="nc">Collections</span><span class="o">.</span><span class="na">emptyList</span><span class="o">());</span>
+<span class="o">}</span>
+
+<span class="kd">private</span> <span class="kd">static</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;&gt;</span> <span class="nf">loadSpringFactories</span><span class="o">(</span><span class="nd">@Nullable</span> <span class="nc">ClassLoader</span> <span class="n">classLoader</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">MultiValueMap</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">classLoader</span><span class="o">);</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">result</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="c1">//加载META-INF/spring.factories配置，创建MultiValueMap集合放到该集合中</span>
+        <span class="nc">Enumeration</span><span class="o">&lt;</span><span class="no">URL</span><span class="o">&gt;</span> <span class="n">urls</span> <span class="o">=</span> <span class="o">(</span><span class="n">classLoader</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">?</span>
+                                 <span class="n">classLoader</span><span class="o">.</span><span class="na">getResources</span><span class="o">(</span><span class="no">FACTORIES_RESOURCE_LOCATION</span><span class="o">)</span> <span class="o">:</span>
+                                 <span class="nc">ClassLoader</span><span class="o">.</span><span class="na">getSystemResources</span><span class="o">(</span><span class="no">FACTORIES_RESOURCE_LOCATION</span><span class="o">));</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LinkedMultiValueMap</span><span class="o">&lt;&gt;();</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">urls</span><span class="o">.</span><span class="na">hasMoreElements</span><span class="o">())</span> <span class="o">{</span>
+            <span class="no">URL</span> <span class="n">url</span> <span class="o">=</span> <span class="n">urls</span><span class="o">.</span><span class="na">nextElement</span><span class="o">();</span>
+            <span class="nc">UrlResource</span> <span class="n">resource</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">UrlResource</span><span class="o">(</span><span class="n">url</span><span class="o">);</span>
+            <span class="nc">Properties</span> <span class="n">properties</span> <span class="o">=</span> <span class="nc">PropertiesLoaderUtils</span><span class="o">.</span><span class="na">loadProperties</span><span class="o">(</span><span class="n">resource</span><span class="o">);</span>
+            <span class="k">for</span> <span class="o">(</span><span class="nc">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;?,</span> <span class="o">?&gt;</span> <span class="n">entry</span> <span class="o">:</span> <span class="n">properties</span><span class="o">.</span><span class="na">entrySet</span><span class="o">())</span> <span class="o">{</span>
+                <span class="nc">String</span> <span class="n">factoryTypeName</span> <span class="o">=</span> <span class="o">((</span><span class="nc">String</span><span class="o">)</span> <span class="n">entry</span><span class="o">.</span><span class="na">getKey</span><span class="o">()).</span><span class="na">trim</span><span class="o">();</span>
+                <span class="k">for</span> <span class="o">(</span><span class="nc">String</span> <span class="n">factoryImplementationName</span> <span class="o">:</span> <span class="nc">StringUtils</span><span class="o">.</span><span class="na">commaDelimitedListToStringArray</span><span class="o">((</span><span class="nc">String</span><span class="o">)</span> <span class="n">entry</span><span class="o">.</span><span class="na">getValue</span><span class="o">()))</span> <span class="o">{</span>
+                    <span class="n">result</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">factoryTypeName</span><span class="o">,</span> <span class="n">factoryImplementationName</span><span class="o">.</span><span class="na">trim</span><span class="o">());</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="n">cache</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">classLoader</span><span class="o">,</span> <span class="n">result</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span><span class="s">"Unable to load factories from location ["</span> <span class="o">+</span>
+                                           <span class="no">FACTORIES_RESOURCE_LOCATION</span> <span class="o">+</span> <span class="s">"]"</span><span class="o">,</span> <span class="n">ex</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="充分利用spring-boot提供的conditional条件注入组件">充分利用Spring Boot提供的<code class="language-plaintext highlighter-rouge">@Conditional</code>条件注入组件</h2>
+
+<p>通过上面的文章介绍，为Spring Boot框架制定一个简单的starter组件相信已经不在话下。但是，这才仅仅开始而已。</p>
+
+<p>在上面介绍的自动装载过程中，开发者是否会存在疑问？</p>
+
+<blockquote>
+  <p>当我们在pom.xml引入我们自定义的starter组件后,Spring Boot框架默认会将该组件直接注入到Spring的容器中，这种方式虽然在使用上并没有什么问题，但当我们封装给第三方使用时,这种方式往往会存在冲突，假设开发者自定义的starter组件中包含了向容器中注入Filter等过滤器,那么该过滤器直接生效,会全范围影响整个应用程序.这在实际开发中是不允许的！</p>
+
+  <p>那么应该怎么办呢?此时，我们就需要充分利用Spring Boot框架为开发者提供的<code class="language-plaintext highlighter-rouge">@Conditional</code>系列条件注入了</p>
+</blockquote>
+
+<p>条件注入顾名思义,就是只有使用者满足了组件规定的条件时，组件才会向Spring容器中进行注入Bean或者初始化的操作.这种方式也是将选择权直接交给使用者进行选择，减少非必要的组件冲突，是在Spring Boot自定义starter组件中必不可少的一环。</p>
+
+<p>条件注入通常也配合属性类一起来进行使用,提供配置属性选项也是方便使用者在Spring Boot的配置文件<code class="language-plaintext highlighter-rouge">application.yml</code>或者<code class="language-plaintext highlighter-rouge">application.properties</code>进行配置开启操作，例如我们常见的配置操作如下：</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">server</span><span class="pi">:</span>
+  <span class="na">port</span><span class="pi">:</span> <span class="m">18568</span>
+  <span class="na">servlet</span><span class="pi">:</span>
+    <span class="na">context-path</span><span class="pi">:</span> <span class="s">/test</span>
+</code></pre></div></div>
+
+<p>为Spring Boot的程序指定启动端口号和<code class="language-plaintext highlighter-rouge">context-path</code>属性.</p>
+
+<p>我们继续以上面示例中的<code class="language-plaintext highlighter-rouge">DemoClient</code>为例进行阐述</p>
+
+<blockquote>
+  <p>假设我们的<code class="language-plaintext highlighter-rouge">DemoClient</code>是对接外部API接口的封装组件，该组件规定访问外部API时需要提供<code class="language-plaintext highlighter-rouge">appid</code>和<code class="language-plaintext highlighter-rouge">secret</code>,根据appid及secret获取token，最后根据token才能调用API获取接口数据，</p>
+</blockquote>
+
+<p>那么,此时，我们的<code class="language-plaintext highlighter-rouge">DemoClient</code>的部分模拟接口代码可能会如下面示例：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DemoClient</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">appid</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">secret</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">DemoClient</span><span class="o">(</span><span class="nc">String</span> <span class="n">appid</span><span class="o">,</span> <span class="nc">String</span> <span class="n">secret</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">appid</span> <span class="o">=</span> <span class="n">appid</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">secret</span> <span class="o">=</span> <span class="n">secret</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * 获取资源
+     * @return
+     */</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">listResources</span><span class="o">(){</span>
+        <span class="c1">//获取token</span>
+        <span class="nc">String</span> <span class="n">token</span><span class="o">=</span><span class="n">getToken</span><span class="o">();</span>
+        <span class="c1">//根据Token请求数据</span>
+        <span class="k">return</span> <span class="no">UUID</span><span class="o">.</span><span class="na">randomUUID</span><span class="o">().</span><span class="na">toString</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="nf">getToken</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">//根据appid &amp; secret获取第三方API接口token</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>在上面的代码示例中，如果开发者要使用<code class="language-plaintext highlighter-rouge">DemoClient</code>的方法调用第三方的接口资源，那么需要传递<code class="language-plaintext highlighter-rouge">appid</code>及<code class="language-plaintext highlighter-rouge">secret</code>参数才能构造实体类，又考虑到我们需要利用Spring Boot的条件注入，只有开发者配置了开启操作，才能在Spring容器中使用<code class="language-plaintext highlighter-rouge">DemoClient</code>的方法。</p>
+
+<p>那么此时，我们可以给该starter组件抽象一个<code class="language-plaintext highlighter-rouge">DemoProperties</code>的外部配置类来交给使用者在配置文件中进行配置开启操作，代码示例如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@ConfigurationProperties</span><span class="o">(</span><span class="n">prefix</span> <span class="o">=</span> <span class="s">"demo"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DemoProperties</span> <span class="o">{</span>
+    <span class="cm">/**
+     * 是否启用
+     */</span>
+    <span class="kd">private</span> <span class="kt">boolean</span> <span class="n">enable</span><span class="o">=</span><span class="kc">false</span><span class="o">;</span>
+    
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">appid</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">secret</span><span class="o">;</span>
+    
+    <span class="c1">//getter and setter...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>在配置类属性中，我们使用到了<code class="language-plaintext highlighter-rouge">@ConfigurationProperties</code>注解，并配置了<code class="language-plaintext highlighter-rouge">prefix</code>前缀参数,配置前缀也是自定义starter组件中所必须的，这约束了命名空间。一般是结合自身的业务以及starter组件所代表的功能含义进行命名<code class="language-plaintext highlighter-rouge">prefix</code>,有助于开发使用者记忆。</p>
+
+<p>此时，我们的<code class="language-plaintext highlighter-rouge">DemoAutoConfiguration.java</code>配置类进行了调整，代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@EnableConfigurationProperties</span><span class="o">(</span><span class="nc">DemoProperties</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="nd">@ConditionalOnProperty</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"demo.enable"</span><span class="o">,</span><span class="n">havingValue</span> <span class="o">=</span> <span class="s">"true"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DemoAutoConfiguration</span> <span class="o">{</span>
+
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="nc">DemoClient</span> <span class="nf">demoClient</span><span class="o">(</span><span class="nc">DemoProperties</span> <span class="n">demoProperties</span><span class="o">){</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">DemoClient</span><span class="o">(</span><span class="n">demoProperties</span><span class="o">.</span><span class="na">getAppid</span><span class="o">(),</span> <span class="n">demoProperties</span><span class="o">.</span><span class="na">getSecret</span><span class="o">());</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>和上面的配置类进行比较不难发现,此处我们又多用了两个注解：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">@EnableConfigurationProperties</code>:该注解是我们自定义指定Proerpty实体类时，必须启用的注解，和实体类中的<code class="language-plaintext highlighter-rouge">@ConfigurationProperties</code>注解配合一起使用</li>
+  <li><code class="language-plaintext highlighter-rouge">@ConditionalOnProperty</code>:Spring Boot框架中条件注入的一种，代码根据配置的属性进行条件判断注入，此处我们配置了只有当<code class="language-plaintext highlighter-rouge">demo.enable=true</code>时，<code class="language-plaintext highlighter-rouge">DemoAutoConfiguration</code>配置类才会加载，向Spring容器中注入<code class="language-plaintext highlighter-rouge">DemoClient</code>的实体Bean</li>
+</ul>
+
+<p>当自定义starter组件封装到这一步时，基本已经快完结了，开发者可以通过在Spring Boot的配置文件中进行配置，来开启是否使用<code class="language-plaintext highlighter-rouge">DemoClient</code>组件</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">demo</span><span class="pi">:</span>
+  <span class="c1"># 通过配置该属性的true 或者false ，来开启组件的使用</span>
+  <span class="na">enable</span><span class="pi">:</span> <span class="no">true</span>
+  <span class="na">appid</span><span class="pi">:</span> <span class="s">xxx</span>
+  <span class="na">secret</span><span class="pi">:</span> <span class="s">xxxx</span>
+</code></pre></div></div>
+
+<h2 id="属性元数据配置">属性元数据配置</h2>
+
+<p>通过上面的配置，我们已经能够自定义一个Spring Boot框架的starter组件了，但是对于使用者来说，封装该starter组件的开发者还尚有最后一步需要完成，那就是给属性类提供元数据注释，提供元数据注释也是为了让使用者在配置<code class="language-plaintext highlighter-rouge">application.yml</code>属性时，通过IDEA等编辑器能够给出提示，这对使用者而已是大有裨益的，因为每一个属性都会有相应的注释供开发者进行参考。例如Knife4j组件提供的元数据注释如下图：</p>
+
+<p><img src="https://oscimg.oschina.net/oscnet/up-91e85f9a3926723e50f6b05ae548d76b291.png" alt="" /></p>
+
+<p>那么我们在制定starter组件时，如何给属性类提供元数据注释呢？目前主要有两种方式：</p>
+
+<h3 id="引入spring-boot-configuration-processor自动注释">引入<code class="language-plaintext highlighter-rouge">spring-boot-configuration-processor</code>自动注释</h3>
+
+<p>我们可以在自定义是starter组件中引入该组件，依赖如下：</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>spring-boot-configuration-processor<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>2.3.0.RELEASE<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;optional&gt;</span>true<span class="nt">&lt;/optional&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
+
+<p>引入该组件后，此时，我们只需要在我们的Java属性类中给每一个属性使用标准的javadoc进行注释即可，如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@ConfigurationProperties</span><span class="o">(</span><span class="n">prefix</span> <span class="o">=</span> <span class="s">"demo"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DemoProperties</span> <span class="o">{</span>
+    <span class="cm">/**
+     * 是否启用
+     */</span>
+    <span class="kd">private</span> <span class="kt">boolean</span> <span class="n">enable</span><span class="o">=</span><span class="kc">false</span><span class="o">;</span>
+
+    <span class="cm">/**
+     * 第三方appid
+     */</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">appid</span><span class="o">;</span>
+    <span class="cm">/**
+     * 第三方secret
+     */</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">secret</span><span class="o">;</span>
+    
+    <span class="c1">//getter and setter...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>最终在使用时，就会出现提示，如下图：</p>
+
+<p><img src="/assets/images/springboot/self/authMetaData.png" alt="" /></p>
+
+<p>这种方式如果属性类不是太多的情况下，开发者可以使用，很方便</p>
+
+<h3 id="手工编写spring-configuration-meatadatajson文件">手工编写<code class="language-plaintext highlighter-rouge">spring-configuration-meatadata.json</code>文件</h3>
+
+<p><code class="language-plaintext highlighter-rouge">spring-boot-configuration-processor</code>组件最终在打包生成starter的jar包时，也是帮助我们自动生成了<code class="language-plaintext highlighter-rouge">spring-configuration-metadata.json</code>文件,该文件和上面提到的<code class="language-plaintext highlighter-rouge">spring.factories</code>是同级目录</p>
+
+<p>手工编写<code class="language-plaintext highlighter-rouge">spring-configuration-metadata.json</code>也是我推荐的方式，因为不仅仅是每个属性的注释，有时候我们还可以用更多的属性配置以便使用者使用。</p>
+
+<p>结果如下：</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"groups"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"demo"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"com.demo.spring.DemoProperties"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"sourceType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"com.demo.spring.DemoProperties"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"demo.appid"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"java.lang.String"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"第三方appid"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"sourceType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"com.demo.spring.DemoProperties"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"demo.enable"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"java.lang.Boolean"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"是否启用"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"sourceType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"com.demo.spring.DemoProperties"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"defaultValue"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"demo.secret"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"java.lang.String"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"第三方secret"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"sourceType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"com.demo.spring.DemoProperties"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"hints"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>我们主要使用到的属性有3个：<code class="language-plaintext highlighter-rouge">groups</code>、<code class="language-plaintext highlighter-rouge">properties</code>、<code class="language-plaintext highlighter-rouge">hints</code></p>
+
+<p><strong>groups</strong></p>
+
+<p>字面意思分组，按我的理解即当我们使用的实体时，配置的<code class="language-plaintext highlighter-rouge">prefix</code>即代表该group，例如上面我们为<code class="language-plaintext highlighter-rouge">DemoProperties</code>配置了prefix的前缀是<code class="language-plaintext highlighter-rouge">demo</code>,那么分组这里可以设置为<code class="language-plaintext highlighter-rouge">demo</code>,当然如果<code class="language-plaintext highlighter-rouge">DemoProperties</code>类中包含的属性是一个第三方类，假设如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DemoProperties</span><span class="o">{</span>
+    
+    <span class="kd">private</span> <span class="nc">OtherProperties</span> <span class="n">other</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>那么我们可以在groups属性中配置一个名为<code class="language-plaintext highlighter-rouge">demo.other</code>的分组名称</p>
+
+<p>其包含的属性如下：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>属性名称</th>
+      <th>类型</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>name</td>
+      <td>String</td>
+      <td>分组名称，可以理解为<code class="language-plaintext highlighter-rouge">prefix</code></td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>String</td>
+      <td>组数据类名</td>
+    </tr>
+    <tr>
+      <td>description</td>
+      <td>String</td>
+      <td>分组简单的描述，可以省略</td>
+    </tr>
+    <tr>
+      <td>sourceType</td>
+      <td>String</td>
+      <td>组数据源类名,同type，如果源类型未知，可以忽略该属性</td>
+    </tr>
+    <tr>
+      <td>sourceMethod</td>
+      <td>String</td>
+      <td>组方法的名称，（例如，带<code class="language-plaintext highlighter-rouge">@ConfigurationProperties</code>注解的<code class="language-plaintext highlighter-rouge">@Bean</code>方法的名称）。 如果源方法未知，则可以省略。</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>properties</strong></p>
+
+<p>顾名思义，就是我们实体类每个属性的配置，有多少属性需要添加元数据注释说明，就需要在该数组下全部添加，需要注意的是配置name时需要配置全路径，例如：<code class="language-plaintext highlighter-rouge">demo.enable</code>等</p>
+
+<p>其包含的属性如下：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>属性名称</th>
+      <th>类型</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>name</td>
+      <td>String</td>
+      <td>属性名称</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>String</td>
+      <td>属性类型</td>
+    </tr>
+    <tr>
+      <td>description</td>
+      <td>String</td>
+      <td>属性的简介说明</td>
+    </tr>
+    <tr>
+      <td>sourceType</td>
+      <td>String</td>
+      <td>该属性归属于那个类型</td>
+    </tr>
+    <tr>
+      <td>defaultValue</td>
+      <td>Object</td>
+      <td>该属性默认值</td>
+    </tr>
+    <tr>
+      <td>deprecation</td>
+      <td>Deprecation</td>
+      <td>用于指定该属性是否过时</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>过时选项<code class="language-plaintext highlighter-rouge">Deprecation</code>包含以下几个属性：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>名称</th>
+      <th>类型</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>level</td>
+      <td>String</td>
+      <td>过时的级别,可以指定<code class="language-plaintext highlighter-rouge">warning</code>或者<code class="language-plaintext highlighter-rouge">error</code>,当指定为<code class="language-plaintext highlighter-rouge">warning</code>时，代表该属性还可用，而指定<code class="language-plaintext highlighter-rouge">error</code>则代表彻底废弃</td>
+    </tr>
+    <tr>
+      <td>reason</td>
+      <td>String</td>
+      <td>原因</td>
+    </tr>
+    <tr>
+      <td>replacement</td>
+      <td>String</td>
+      <td>替换属性</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>hints</strong></p>
+
+<p>针对该属性，我的理解是类似于Java中的枚举，只不过是给每一个属性的值配置一个说明，方便使用者在配置的时候能够按照规定的值进行正确配置</p>
+
+<p>例如上面我们的示例：<code class="language-plaintext highlighter-rouge">demo.enable</code>属性，该属性类型为Boolean类型，要配置也只有两种值(true或者false)</p>
+
+<p>那么我们可以给该值配置一个hints进行说明，示例如下：</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"hints"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"demo.enable"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"values"</span><span class="p">:[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"启用DemoClient组件"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"禁用DemoClient组件"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<p>当我们进行这样的配置后，最终使用者在使用时就会出现如下图所示的提示:
+<img src="/assets/images/springboot/self/metaHints.png" alt="" /></p>
+
+<p>这对使用该starter组件的开发者来说，每个属性都有相应的说明，是非常方便的</p>
+
+<p>hints主要包含的属性如下：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>名称</th>
+      <th>类型</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>name</td>
+      <td>String</td>
+      <td>属性名称</td>
+    </tr>
+    <tr>
+      <td>values</td>
+      <td>ValueHint[]</td>
+      <td>一个ValueHint的数组</td>
+    </tr>
+    <tr>
+      <td>providers</td>
+      <td>ValueProvider[]</td>
+      <td>一个ValueProvinder数组</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>ValueHint是对其提供的值进行注释说明，其属性如下:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>名称</th>
+      <th>类型</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>value</td>
+      <td>Object</td>
+      <td>属性对应的值</td>
+    </tr>
+    <tr>
+      <td>description</td>
+      <td>String</td>
+      <td>该值的描述信息</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>ValueProvider包含属性：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>名称</th>
+      <th>类型</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>name</td>
+      <td>String</td>
+      <td>属性名称</td>
+    </tr>
+    <tr>
+      <td>parameters</td>
+      <td>JSON Object</td>
+      <td>提供程序支持的其他参数类型</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>在上面我提过，hints类似于枚举，这映射到ValueHint属性，当我们配置了hints属性中的<code class="language-plaintext highlighter-rouge">values</code>时而不提供<code class="language-plaintext highlighter-rouge">providers</code>属性时，如果开发者最终在使用时，只能配置ValueHint中定义的值，否则配置其他值时会在IDEA编辑器中就会爆红出错</p>
+
+<p>还是以上面的示例，假设我们给appid配置hint值，如下：</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"hints"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"demo.appid"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"values"</span><span class="p">:[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test1"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"测试appid1"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test2"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"测试appid2"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<p>那么我们在使用组件时，在<code class="language-plaintext highlighter-rouge">application.yml</code>配置文件中配置其他值时，idea会提示错误，如下图：</p>
+
+<p><img src="/assets/images/springboot/self/metaHints1.png" alt="" /></p>
+
+<p>此时，<code class="language-plaintext highlighter-rouge">providers</code>属性就可以排上用场了</p>
+
+<p>修改上面的配置如下：</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"hints"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"demo.appid"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"values"</span><span class="p">:[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test1"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"测试appid1"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test2"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"测试appid2"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="nl">"providers"</span><span class="p">:[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"name"</span><span class="p">:</span><span class="s2">"any"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<p>我们可以配置providers为<code class="language-plaintext highlighter-rouge">any</code>,这样说明开发者除了可以配置<code class="language-plaintext highlighter-rouge">test1</code>、<code class="language-plaintext highlighter-rouge">test2</code>外，当配置其他值时，也是允许的</p>
+
+<p>针对<code class="language-plaintext highlighter-rouge">providers</code>中的name属性，主要有以下类别供选择：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Name</th>
+      <th style="text-align: left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">any</code></td>
+      <td style="text-align: left">Permits any additional value to be provided.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">class-reference</code></td>
+      <td style="text-align: left">Auto-completes the classes available in the project. Usually constrained by a base class that is specified by the <code class="language-plaintext highlighter-rouge">target</code> parameter.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">handle-as</code></td>
+      <td style="text-align: left">Handles the property as if it were defined by the type defined by the mandatory <code class="language-plaintext highlighter-rouge">target</code> parameter.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">logger-name</code></td>
+      <td style="text-align: left">Auto-completes valid logger names and <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-custom-log-groups">logger groups</a>. Typically, package and class names available in the current project can be auto-completed as well as defined groups.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">spring-bean-reference</code></td>
+      <td style="text-align: left">Auto-completes the available bean names in the current project. Usually constrained by a base class that is specified by the <code class="language-plaintext highlighter-rouge">target</code> parameter.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">spring-profile-name</code></td>
+      <td style="text-align: left">Auto-completes the available Spring profile names in the project.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="附录">附录</h2>
+
+<ul>
+  <li><a href="/2020/09/23/spring-boot-conditional/">Spring Boot框架中如何优雅的注入实体Bean</a></li>
+  <li><a href="https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-configuration-metadata.html">Spring Boot Configuration Metadata Document</a></li>
+</ul>
+
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2020/12/10/spring-boot-self-starter/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div style="text-align: center;">
+  <h2>微信公众号</h2>
+</div>
+<div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

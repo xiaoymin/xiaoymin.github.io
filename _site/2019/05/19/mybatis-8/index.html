@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>mybatis 源码系列(八) Java基础之wait()、notify()、notifyAll()方法 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2019/05/19/mybatis-8/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="mybatis 源码系列(八) Java基础之wait()、notify()、notifyAll()方法">
+      
+    <meta name="keywords" content="mybatis 源码系列,mybatis,并发">
+    <meta name="og:keywords" content="mybatis 源码系列,mybatis,并发">
+      
+    <meta name="description" content="在研究mybatis的连接池数据源源码时,我们看到了wait()、notifyAll()方法的使用,工作中因为很少使用到这类方法的调用,所以，其中概念也有些模糊了,写一遍博客记录一下.">
+    <meta name="og:description" content="在研究mybatis的连接池数据源源码时,我们看到了wait()、notifyAll()方法的使用,工作中因为很少使用到这类方法的调用,所以，其中概念也有些模糊了,写一遍博客记录一下.">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2019/05/19/mybatis-8/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2019-05-19">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="mybatis 源码系列(八)">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">mybatis 源码系列(八) Java基础之wait()、notify()、notifyAll()方法</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2019/05/19
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#mybatis" title="mybatis">mybatis</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <p>在研究mybatis的连接池数据源源码时,我们看到了wait()、notifyAll()方法的使用,工作中因为很少使用到这类方法的调用,所以，其中概念也有些模糊了,写一遍博客记录一下.</p>
+
+<p>在读取mybatis提供的PooledDataSource源码中,获取PooledConnection对象时如果最大活动连接数达到上限后,则调用wait()方法等待,当调用close关闭连接时,再调用notify方法唤起等待的线程.</p>
+
+<p>先来看jdk中的注释</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+     * Causes the current thread to wait until another thread invokes the
+     * {@link java.lang.Object#notify()} method or the
+     * {@link java.lang.Object#notifyAll()} method for this object.
+     * In other words, this method behaves exactly as if it simply
+     * performs the call {@code wait(0)}.
+     * &lt;p&gt;
+     * The current thread must own this object's monitor. The thread
+     * releases ownership of this monitor and waits until another thread
+     * notifies threads waiting on this object's monitor to wake up
+     * either through a call to the {@code notify} method or the
+     * {@code notifyAll} method. The thread then waits until it can
+     * re-obtain ownership of the monitor and resumes execution.
+     * &lt;p&gt;
+     * As in the one argument version, interrupts and spurious wakeups are
+     * possible, and this method should always be used in a loop:
+     * &lt;pre&gt;
+     *     synchronized (obj) {
+     *         while (&amp;lt;condition does not hold&amp;gt;)
+     *             obj.wait();
+     *         ... // Perform action appropriate to condition
+     *     }
+     * &lt;/pre&gt;
+     * This method should only be called by a thread that is the owner
+     * of this object's monitor. See the {@code notify} method for a
+     * description of the ways in which a thread can become the owner of
+     * a monitor.
+     *
+     * @throws  IllegalMonitorStateException  if the current thread is not
+     *               the owner of the object's monitor.
+     * @throws  InterruptedException if any thread interrupted the
+     *             current thread before or while the current thread
+     *             was waiting for a notification.  The &lt;i&gt;interrupted
+     *             status&lt;/i&gt; of the current thread is cleared when
+     *             this exception is thrown.
+     * @see        java.lang.Object#notify()
+     * @see        java.lang.Object#notifyAll()
+     */</span>
+<span class="kd">public</span> <span class="kd">final</span> <span class="kt">void</span> <span class="nf">wait</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">InterruptedException</span> <span class="o">{</span>
+    <span class="n">wait</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+<span class="o">}</span>
+<span class="cm">/**
+     * Wakes up a single thread that is waiting on this object's
+     * monitor. If any threads are waiting on this object, one of them
+     * is chosen to be awakened. The choice is arbitrary and occurs at
+     * the discretion of the implementation. A thread waits on an object's
+     * monitor by calling one of the {@code wait} methods.
+     * &lt;p&gt;
+     * The awakened thread will not be able to proceed until the current
+     * thread relinquishes the lock on this object. The awakened thread will
+     * compete in the usual manner with any other threads that might be
+     * actively competing to synchronize on this object; for example, the
+     * awakened thread enjoys no reliable privilege or disadvantage in being
+     * the next thread to lock this object.
+     * &lt;p&gt;
+     * This method should only be called by a thread that is the owner
+     * of this object's monitor. A thread becomes the owner of the
+     * object's monitor in one of three ways:
+     * &lt;ul&gt;
+     * &lt;li&gt;By executing a synchronized instance method of that object.
+     * &lt;li&gt;By executing the body of a {@code synchronized} statement
+     *     that synchronizes on the object.
+     * &lt;li&gt;For objects of type {@code Class,} by executing a
+     *     synchronized static method of that class.
+     * &lt;/ul&gt;
+     * &lt;p&gt;
+     * Only one thread at a time can own an object's monitor.
+     *
+     * @throws  IllegalMonitorStateException  if the current thread is not
+     *               the owner of this object's monitor.
+     * @see        java.lang.Object#notifyAll()
+     * @see        java.lang.Object#wait()
+     */</span>
+<span class="kd">public</span> <span class="kd">final</span> <span class="kd">native</span> <span class="kt">void</span> <span class="nf">notify</span><span class="o">();</span>
+</code></pre></div></div>
+
+<p><strong>通过查看JDK的注释方法,我们应该知道</strong>：</p>
+
+<ul>
+  <li>不管是wait方法或者notify、notifyAll,调用方法必须在synchronized同步代码块中,也就是说当前线程必须拥有对象的监视器,这样做的原因是防止线程信号丢失,否则会抛出IllegalMonitorStateException异常。</li>
+  <li>调用wait()方法前的检查操作必须使用while循环，有时在没有调用notify()方法的情况下,线程会被重新激活等待，使用if会造成虚假唤醒的问题，而使用while循环可以确保条件被检查到</li>
+  <li>如果是一个线程的话,notify和notifyAll效果一样,如果是多个线程的情况下,notify只会随机唤醒其中一个线程,而notifyAll会唤醒所有线程,唤醒后的所有线程会竞争获取对象锁.</li>
+  <li>另外,尽量避免在同步块中获取锁,或者调用外部方法(因为你不知道这个方法会发生什么),尽量避免造成死锁</li>
+  <li>如果你不知道自己在做什么的话,或者对notify不是很清楚,请使用notifyAll代替</li>
+</ul>
+
+<p>为了达到上面的效果,可以写一个简单的阻塞队列实现<code class="language-plaintext highlighter-rouge">BlockingQueue</code></p>
+
+<p>首先我们应该抽取相应的条件：</p>
+
+<ul>
+  <li>队列有大小,也就是说我们的队里中如果已满,则线程必须等待</li>
+  <li>如果队里已经消费,则需要唤醒等待的线程,可以重新加入数据</li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">BlockingQueue.java</code></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/***
+ *
+ * @since:mybatis-advance 1.0
+ * @author &lt;a href="mailto:xiaoymin@foxmail.com"&gt;xiaoymin@foxmail.com&lt;/a&gt; 
+ * 2019/05/20 21:41
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">BlockingQueue</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="o">{</span>
+
+    <span class="cm">/**
+     * 容量
+     */</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">capacity</span><span class="o">;</span>
+
+
+    <span class="kd">private</span> <span class="nc">Queue</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">queue</span><span class="o">=</span><span class="k">new</span> <span class="nc">LinkedList</span><span class="o">&lt;&gt;();</span>
+
+    <span class="kd">public</span> <span class="nf">BlockingQueue</span><span class="o">(</span><span class="kt">int</span> <span class="n">capacity</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">capacity</span> <span class="o">=</span> <span class="n">capacity</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/***
+     * 添加元素
+     * @param t
+     */</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">add</span><span class="o">(</span><span class="no">T</span> <span class="n">t</span><span class="o">){</span>
+        <span class="kd">synchronized</span> <span class="o">(</span><span class="k">this</span><span class="o">){</span>
+            <span class="c1">//如果队列已满,wait等待</span>
+            <span class="k">while</span> <span class="o">(</span><span class="n">queue</span><span class="o">.</span><span class="na">size</span><span class="o">()==</span><span class="n">capacity</span><span class="o">){</span>
+                <span class="k">try</span> <span class="o">{</span>
+                    <span class="n">wait</span><span class="o">();</span>
+                <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+            <span class="n">queue</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">t</span><span class="o">);</span>
+            <span class="c1">//已经添加元素,唤醒消费线程</span>
+            <span class="n">notifyAll</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="cm">/***
+     * 获取元素
+     * @return
+     */</span>
+    <span class="kd">public</span> <span class="no">T</span> <span class="nf">get</span><span class="o">(){</span>
+        <span class="no">T</span> <span class="n">obj</span><span class="o">=</span><span class="kc">null</span><span class="o">;</span>
+        <span class="c1">//获取对象锁</span>
+        <span class="kd">synchronized</span> <span class="o">(</span><span class="k">this</span><span class="o">){</span>
+            <span class="c1">//如果当前队列中没有数据,则等待</span>
+            <span class="k">while</span> <span class="o">(</span><span class="n">queue</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">()){</span>
+                <span class="k">try</span> <span class="o">{</span>
+                    <span class="n">wait</span><span class="o">();</span>
+                <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+            <span class="n">obj</span><span class="o">=</span><span class="n">queue</span><span class="o">.</span><span class="na">remove</span><span class="o">();</span>
+            <span class="c1">//获取得到obj,唤醒其他线程</span>
+            <span class="n">notifyAll</span><span class="o">();</span>
+            <span class="k">return</span> <span class="n">obj</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>此时,如果我们用两个线程来测试一下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">BlockingQueue</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">blockingQueue</span><span class="o">=</span><span class="k">new</span> <span class="nc">BlockingQueue</span><span class="o">&lt;&gt;(</span><span class="mi">10</span><span class="o">);</span>
+
+        <span class="nc">Thread</span> <span class="n">t</span><span class="o">=</span><span class="k">new</span> <span class="nc">Thread</span><span class="o">(</span><span class="k">new</span> <span class="nc">Runnable</span><span class="o">()</span> <span class="o">{</span>
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+                <span class="c1">//provider</span>
+                <span class="k">while</span> <span class="o">(</span><span class="kc">true</span><span class="o">){</span>
+                    <span class="n">blockingQueue</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"test"</span><span class="o">);</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">});</span>
+
+        <span class="n">t</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+
+        <span class="nc">Thread</span> <span class="n">tc</span><span class="o">=</span><span class="k">new</span> <span class="nc">Thread</span><span class="o">(</span><span class="k">new</span> <span class="nc">Runnable</span><span class="o">()</span> <span class="o">{</span>
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+                <span class="k">while</span> <span class="o">(</span><span class="kc">true</span><span class="o">){</span>
+                    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"获取的数据:"</span><span class="o">+</span><span class="n">blockingQueue</span><span class="o">.</span><span class="na">get</span><span class="o">());</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">});</span>
+        <span class="n">tc</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p>tc线程会一直输出,这是因为我们的add数据和get数据都是一对一的，而我们的容量是10，这不会造成阻塞,如果我们有多个生成者,而只有一个消费者呢,此时我们改一下代码</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">BlockingQueue</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">blockingQueue</span><span class="o">=</span><span class="k">new</span> <span class="nc">BlockingQueue</span><span class="o">&lt;&gt;(</span><span class="mi">10</span><span class="o">);</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">10</span><span class="o">;</span><span class="n">i</span><span class="o">++){</span>
+        <span class="nc">Provider</span> <span class="n">p</span><span class="o">=</span><span class="k">new</span> <span class="nc">Provider</span><span class="o">(</span><span class="n">blockingQueue</span><span class="o">);</span>
+        <span class="n">p</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">"线程"</span><span class="o">+</span><span class="n">i</span><span class="o">);</span>
+        <span class="n">p</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="c1">//创建2个消费线程</span>
+
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">;</span><span class="n">i</span><span class="o">++){</span>
+        <span class="nc">Consumer</span> <span class="n">c</span><span class="o">=</span><span class="k">new</span> <span class="nc">Consumer</span><span class="o">(</span><span class="n">blockingQueue</span><span class="o">);</span>
+        <span class="n">c</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">"消费线程"</span><span class="o">+</span><span class="n">i</span><span class="o">);</span>
+        <span class="n">c</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+
+<span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Provider</span> <span class="kd">extends</span> <span class="nc">Thread</span><span class="o">{</span>
+
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">BlockingQueue</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">blockingQueue</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">Provider</span><span class="o">(</span><span class="nc">BlockingQueue</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">blockingQueue</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">blockingQueue</span><span class="o">=</span><span class="n">blockingQueue</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">while</span> <span class="o">(</span><span class="kc">true</span><span class="o">){</span>
+            <span class="n">blockingQueue</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="nc">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">()+</span><span class="s">"--产生的数据"</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+
+<span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Consumer</span> <span class="kd">extends</span> <span class="nc">Thread</span><span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">BlockingQueue</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">blockingQueue</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">Consumer</span><span class="o">(</span><span class="nc">BlockingQueue</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">blockingQueue</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">blockingQueue</span> <span class="o">=</span> <span class="n">blockingQueue</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">(){</span>
+        <span class="k">while</span> <span class="o">(</span><span class="kc">true</span><span class="o">){</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="nc">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">()+</span><span class="s">"---------&gt;"</span><span class="o">+</span><span class="n">blockingQueue</span><span class="o">.</span><span class="na">get</span><span class="o">());</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2019/05/19/mybatis-8/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div style="text-align: center;">
+  <h2>微信公众号</h2>
+</div>
+<div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

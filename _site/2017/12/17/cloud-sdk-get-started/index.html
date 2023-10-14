@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>云数据中心sdk快速入门 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2017/12/17/cloud-sdk-get-started/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="云数据中心sdk快速入门">
+      
+    <meta name="keywords" content="数据中心、cloud-sdk">
+    <meta name="og:keywords" content="数据中心、cloud-sdk">
+      
+    <meta name="description" content="公司目前开发基础技术架构是：Spring、Spring Boot、lishicloud-sdk">
+    <meta name="og:description" content="公司目前开发基础技术架构是：Spring、Spring Boot、lishicloud-sdk">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2017/12/17/cloud-sdk-get-started/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2017-12-17">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="云数据中心sdk快速入门">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">云数据中心sdk快速入门</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2017/12/17
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#Blog" title="Blog">Blog</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <p>公司目前开发基础技术架构是：<code class="language-plaintext highlighter-rouge">Spring</code>、<code class="language-plaintext highlighter-rouge">Spring Boot</code>、<code class="language-plaintext highlighter-rouge">lishicloud-sdk</code></p>
+
+<p>其中<code class="language-plaintext highlighter-rouge">Spring</code>、<code class="language-plaintext highlighter-rouge">Spring Boot</code>都是目前网上流行的开源框架</p>
+
+<p><code class="language-plaintext highlighter-rouge">lishicloud-sdk</code>是公司针对云数据中心(cdc)开发工具包,封装了云数据中心所有的接口api操作</p>
+
+<h2 id="架构说明">架构说明</h2>
+
+<p>spring、Spring Boot都是网上开源框架,自行搜索学习,这里不再叙述</p>
+
+<p>lishicloud-sdk是云数据中心(cdc)提供数据CRUD操作,详细请参考<code class="language-plaintext highlighter-rouge">《lishicloud-sdk开发指南v0.4.9.pdf》</code></p>
+
+<h2 id="快速开始">快速开始</h2>
+
+<p>首先,我们基础架构是Spring,我们通常说的松耦合操作,需要使用到Spring的容器</p>
+
+<p>因为sdk是开发工具包,所以sdk提供给我们的工具类,我们需要通过Spring 的容器bean注入达到目的</p>
+
+<p>sdk提供的核心工具类<code class="language-plaintext highlighter-rouge">com.lishiots.cloud.sdk.client.CloudQueryRunner</code></p>
+
+<p>在Spring Xml时代,需要通过在spring 的Xml配置文件中注入,例如：</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!--云数据中心基本信息--&gt;</span>
+ <span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">"cloudConnection"</span> <span class="na">class=</span><span class="s">"com.lishiots.cloud.sdk.basic.CloudBasicConnection"</span><span class="nt">&gt;</span>
+     <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"url"</span> <span class="na">value=</span><span class="s">"y.lishiots.com"</span> <span class="nt">/&gt;</span>
+     <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"port"</span> <span class="na">value=</span><span class="s">"80"</span> <span class="nt">/&gt;</span>
+     <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"userName"</span> <span class="na">value=</span><span class="s">"xx"</span> <span class="nt">/&gt;</span>
+     <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"password"</span> <span class="na">value=</span><span class="s">"appsecret"</span> <span class="nt">/&gt;</span>
+ <span class="nt">&lt;/bean&gt;</span>
+ <span class="c">&lt;!--注入连接池管理类--&gt;</span>
+ <span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">"cloudPoolingConnectionManager"</span> <span class="na">class=</span><span class="s">"com.lishiots.cloud.sdk.basic.CloudPoolingConnectionManager"</span><span class="nt">&gt;</span>
+     <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"connection"</span> <span class="na">ref=</span><span class="s">"cloudConnection"</span><span class="nt">&gt;&lt;/property&gt;</span>
+ <span class="nt">&lt;/bean&gt;</span>
+ <span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">"cloudDataSource"</span> <span class="na">class=</span><span class="s">"com.lishiots.cloud.sdk.basic.CloudBasicDataSource"</span><span class="nt">&gt;</span>
+     <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"cloudPoolingConnectionManager"</span> <span class="na">ref=</span><span class="s">"cloudPoolingConnectionManager"</span><span class="nt">&gt;&lt;/property&gt;</span>
+ <span class="nt">&lt;/bean&gt;</span>
+ <span class="c">&lt;!--注入CloudQueryRunner实例--&gt;</span>
+ <span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">"run"</span> <span class="na">class=</span><span class="s">"com.lishiots.cloud.sdk.client.CloudQueryRunner"</span><span class="nt">&gt;</span>
+     <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"dataSource"</span> <span class="na">ref=</span><span class="s">"cloudDataSource"</span> <span class="nt">/&gt;</span>
+ <span class="nt">&lt;/bean&gt;</span>
+</code></pre></div></div>
+
+<p>在Spring Boot中会有所差别,<code class="language-plaintext highlighter-rouge">@Configuration</code>标注这是一个配置类,通过<code class="language-plaintext highlighter-rouge">@Bean</code>注解来达到注入bean的目的,如下:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">CdcConfiguration</span> <span class="o">{</span>
+
+    <span class="nd">@Value</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"${cdc.host}"</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">host</span><span class="o">;</span>
+    <span class="nd">@Value</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"${cdc.port}"</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">Integer</span> <span class="n">port</span><span class="o">;</span>
+    <span class="nd">@Value</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"${cdc.appid}"</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">appid</span><span class="o">;</span>
+    <span class="nd">@Value</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"${cdc.appsecret}"</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">appsecret</span><span class="o">;</span>
+
+
+    <span class="nd">@Bean</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"cloudQueryRunner"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">CloudQueryRunner</span> <span class="nf">cloudQueryRunner</span><span class="o">(){</span>
+        <span class="nc">CloudBasicConnection</span> <span class="n">cloudBasicConnection</span><span class="o">=</span><span class="k">new</span> <span class="nc">CloudBasicConnection</span><span class="o">();</span>
+        <span class="nc">LogbackLogger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"host:"</span><span class="o">+</span><span class="n">host</span><span class="o">+</span><span class="s">",port:"</span><span class="o">+</span><span class="n">port</span><span class="o">+</span><span class="s">",appid:"</span><span class="o">+</span><span class="n">appid</span><span class="o">+</span><span class="s">",appsecret:"</span><span class="o">+</span><span class="n">appsecret</span><span class="o">);</span>
+        <span class="n">cloudBasicConnection</span><span class="o">.</span><span class="na">setUrl</span><span class="o">(</span><span class="n">host</span><span class="o">);</span>
+        <span class="n">cloudBasicConnection</span><span class="o">.</span><span class="na">setPort</span><span class="o">(</span><span class="n">port</span><span class="o">);</span>
+        <span class="c1">//appid &amp; appsecret</span>
+        <span class="n">cloudBasicConnection</span><span class="o">.</span><span class="na">setUserName</span><span class="o">(</span><span class="n">appid</span><span class="o">);</span>
+        <span class="n">cloudBasicConnection</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="n">appsecret</span><span class="o">);</span>
+        <span class="c1">//创建连接池管理类</span>
+        <span class="nc">LogbackLogger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"create cloudPoolingConnectionManager..."</span><span class="o">);</span>
+        <span class="nc">CloudPoolingConnectionManager</span> <span class="n">cloudPoolingConnectionManager</span><span class="o">=</span><span class="k">new</span> <span class="nc">CloudPoolingConnectionManager</span><span class="o">();</span>
+        <span class="n">cloudPoolingConnectionManager</span><span class="o">.</span><span class="na">setConnection</span><span class="o">(</span><span class="n">cloudBasicConnection</span><span class="o">);</span>
+        <span class="c1">//创建数据源</span>
+        <span class="nc">LogbackLogger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"create cloudBasicDataSource..."</span><span class="o">);</span>
+        <span class="nc">CloudBasicDataSource</span> <span class="n">cloudBasicDataSource</span><span class="o">=</span><span class="k">new</span> <span class="nc">CloudBasicDataSource</span><span class="o">();</span>
+        <span class="n">cloudBasicDataSource</span><span class="o">.</span><span class="na">setCloudPoolingConnectionManager</span><span class="o">(</span><span class="n">cloudPoolingConnectionManager</span><span class="o">);</span>
+        <span class="c1">//创建查询runner</span>
+        <span class="nc">LogbackLogger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"create cloudQueryRunner..."</span><span class="o">);</span>
+        <span class="nc">CloudQueryRunner</span> <span class="n">runner</span><span class="o">=</span><span class="k">new</span> <span class="nc">CloudQueryRunner</span><span class="o">();</span>
+        <span class="n">runner</span><span class="o">.</span><span class="na">setDataSource</span><span class="o">(</span><span class="n">cloudBasicDataSource</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">runner</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>通过以上操作,我们可以通过<code class="language-plaintext highlighter-rouge">@Autowired</code>自动注入实例,如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Service</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">CommonServiceImpl</span> <span class="kd">implements</span> <span class="nc">CommonService</span> <span class="o">{</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="kd">private</span> <span class="nc">CloudQueryRunner</span> <span class="n">cloudQueryRunner</span><span class="o">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="nc">List</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="nf">queryAllData</span><span class="o">(</span><span class="nc">Class</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">clzss</span><span class="o">,</span><span class="nc">String</span> <span class="n">resourceName</span><span class="o">,</span> <span class="nc">RequestExample</span> <span class="n">requestExample</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">boolean</span> <span class="n">flag</span><span class="o">=</span><span class="kc">true</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">current_page</span><span class="o">=</span><span class="mi">1</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">page_size</span><span class="o">=</span><span class="n">requestExample</span><span class="o">.</span><span class="na">getPageSize</span><span class="o">();</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">commonStats</span><span class="o">=</span> <span class="nc">Lists</span><span class="o">.</span><span class="na">newArrayList</span><span class="o">();</span>
+        <span class="k">do</span> <span class="o">{</span>
+            <span class="nc">Pagination</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">flowPagination</span><span class="o">=</span><span class="n">cloudQueryRunner</span><span class="o">.</span><span class="na">queryListByExample</span><span class="o">(</span><span class="n">clzss</span><span class="o">,</span><span class="n">resourceName</span><span class="o">,</span><span class="n">requestExample</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">flowPagination</span><span class="o">!=</span><span class="kc">null</span><span class="o">&amp;&amp;</span><span class="n">flowPagination</span><span class="o">.</span><span class="na">getCount</span><span class="o">()&gt;</span><span class="mi">0</span><span class="o">){</span>
+                <span class="c1">//计算总页数</span>
+                <span class="c1">//部位</span>
+                <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"common。"</span><span class="o">);</span>
+                <span class="kt">int</span> <span class="n">totalPage</span><span class="o">=(</span><span class="n">flowPagination</span><span class="o">.</span><span class="na">getCount</span><span class="o">()+</span><span class="n">page_size</span><span class="o">-</span><span class="mi">1</span><span class="o">)/</span><span class="n">page_size</span><span class="o">;</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">current_page</span><span class="o">&lt;</span><span class="n">totalPage</span><span class="o">){</span>
+                    <span class="n">current_page</span><span class="o">++;</span>
+                <span class="o">}</span><span class="k">else</span><span class="o">{</span>
+                    <span class="n">flag</span><span class="o">=</span><span class="kc">false</span><span class="o">;</span>
+                <span class="o">}</span>
+                <span class="n">requestExample</span><span class="o">.</span><span class="na">setCurrentPage</span><span class="o">(</span><span class="n">current_page</span><span class="o">);</span>
+                <span class="n">commonStats</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">flowPagination</span><span class="o">.</span><span class="na">getData</span><span class="o">());</span>
+            <span class="o">}</span><span class="k">else</span><span class="o">{</span>
+                <span class="n">flag</span><span class="o">=</span><span class="kc">false</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span><span class="k">while</span> <span class="o">(</span><span class="n">flag</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">commonStats</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>  
+</code></pre></div></div>
+
+<h3 id="增加">增加</h3>
+
+<p>数据新增操作,提供对象即可,对象包含的字段必须是数据库表字段存在的字段，不能多、可以少(除必填字段)</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">JSONObject</span> <span class="n">jsonObject</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">JSONObject</span><span class="o">();</span>
+<span class="n">jsonObject</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"modu_rq_url"</span><span class="o">,</span> <span class="n">rqUrl</span><span class="o">);</span>
+<span class="n">jsonObject</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"modu_img_url"</span><span class="o">,</span> <span class="n">imgUrl</span><span class="o">);</span>
+<span class="n">jsonObject</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"modu_url"</span><span class="o">,</span> <span class="n">moduUrl</span><span class="o">);</span>
+<span class="n">jsonObject</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"modu_name"</span><span class="o">,</span> <span class="n">moduName</span><span class="o">);</span>
+<span class="n">jsonObject</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"modu_plate_id"</span><span class="o">,</span> <span class="n">pid</span><span class="o">);</span>
+<span class="c1">//这里可以是jsonobject、也可以是对象实例</span>
+<span class="nc">RestMessage</span> <span class="n">message</span> <span class="o">=</span> <span class="n">cloudQueryRunner</span><span class="o">.</span><span class="na">insert</span><span class="o">(</span><span class="s">"modu"</span><span class="o">,</span> <span class="n">jsonObject</span><span class="o">);</span>
+<span class="c1">//数据新增，返回新增记录主键id</span>
+<span class="c1">//通过对象.getId()获取</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">message</span><span class="o">.</span><span class="na">getId</span><span class="o">())</span>
+</code></pre></div></div>
+
+<h3 id="批量新增">批量新增</h3>
+
+<p>类似新增操作，只是把对象放入集合中</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">List</span> <span class="n">list</span><span class="o">=</span><span class="k">new</span> <span class="nc">ArrayList</span><span class="o">();</span>
+<span class="nc">JSONObject</span> <span class="n">jsonObject</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">JSONObject</span><span class="o">();</span>
+<span class="n">jsonObject</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"modu_rq_url"</span><span class="o">,</span> <span class="n">rqUrl</span><span class="o">);</span>
+<span class="n">jsonObject</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"modu_img_url"</span><span class="o">,</span> <span class="n">imgUrl</span><span class="o">);</span>
+<span class="n">jsonObject</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"modu_url"</span><span class="o">,</span> <span class="n">moduUrl</span><span class="o">);</span>
+<span class="n">jsonObject</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"modu_name"</span><span class="o">,</span> <span class="n">moduName</span><span class="o">);</span>
+<span class="n">jsonObject</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"modu_plate_id"</span><span class="o">,</span> <span class="n">pid</span><span class="o">);</span>
+<span class="c1">//加入结合数组</span>
+<span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">jsonObject</span><span class="o">);</span>
+<span class="c1">//这里可以是jsonobject、也可以是对象实例,调用insertBatch方法</span>
+<span class="nc">RestMessage</span> <span class="n">message</span> <span class="o">=</span> <span class="n">cloudQueryRunner</span><span class="o">.</span><span class="na">insertBatch</span><span class="o">(</span><span class="s">"modu"</span><span class="o">,</span> <span class="n">list</span><span class="o">);</span>
+<span class="c1">//数据批量新增，返回批量新增记录主键id，逗号分隔 ，多条记录,如：id1,id2,id3...</span>
+<span class="c1">//通过对象.getId()获取</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">message</span><span class="o">.</span><span class="na">getId</span><span class="o">())</span>
+</code></pre></div></div>
+
+<p>###编辑</p>
+
+<p>数据编辑操作,除更新字段,需要添加pkid主键字段,非id,这是云数据中心规定字段</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">JSONObject</span> <span class="n">jsonObject</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">JSONObject</span><span class="o">();</span>
+<span class="n">jsonObject</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"modu_rq_url"</span><span class="o">,</span> <span class="n">rqUrl</span><span class="o">);</span>
+<span class="n">jsonObject</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"modu_img_url"</span><span class="o">,</span> <span class="n">imgUrl</span><span class="o">);</span>
+<span class="n">jsonObject</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"modu_url"</span><span class="o">,</span> <span class="n">moduUrl</span><span class="o">);</span>
+<span class="n">jsonObject</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"modu_name"</span><span class="o">,</span> <span class="n">moduName</span><span class="o">);</span>
+<span class="n">jsonObject</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"modu_plate_id"</span><span class="o">,</span> <span class="n">pid</span><span class="o">);</span>
+<span class="c1">//更新id</span>
+<span class="n">jsonObject</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"pkid"</span><span class="o">,</span> <span class="n">pkid</span><span class="o">);</span>
+<span class="c1">//这里可以是jsonobject、也可以是对象实例</span>
+<span class="nc">RestMessage</span> <span class="n">message</span> <span class="o">=</span> <span class="n">cloudQueryRunner</span><span class="o">.</span><span class="na">update</span><span class="o">(</span><span class="s">"modu"</span><span class="o">,</span> <span class="n">jsonObject</span><span class="o">);</span>
+<span class="c1">//数据编辑，返回编辑记录主键id</span>
+<span class="c1">//通过对象.getId()获取</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">message</span><span class="o">.</span><span class="na">getId</span><span class="o">())</span>
+</code></pre></div></div>
+
+<h3 id="批量编辑">批量编辑</h3>
+
+<p>和编辑类似</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">List</span> <span class="n">list</span><span class="o">=</span><span class="k">new</span> <span class="nc">ArrayList</span><span class="o">();</span>
+<span class="nc">JSONObject</span> <span class="n">jsonObject</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">JSONObject</span><span class="o">();</span>
+<span class="n">jsonObject</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"modu_rq_url"</span><span class="o">,</span> <span class="n">rqUrl</span><span class="o">);</span>
+<span class="n">jsonObject</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"modu_img_url"</span><span class="o">,</span> <span class="n">imgUrl</span><span class="o">);</span>
+<span class="n">jsonObject</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"modu_url"</span><span class="o">,</span> <span class="n">moduUrl</span><span class="o">);</span>
+<span class="n">jsonObject</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"modu_name"</span><span class="o">,</span> <span class="n">moduName</span><span class="o">);</span>
+<span class="n">jsonObject</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"modu_plate_id"</span><span class="o">,</span> <span class="n">pid</span><span class="o">);</span>
+<span class="c1">//更新id</span>
+<span class="n">jsonObject</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"pkid"</span><span class="o">,</span> <span class="n">pkid</span><span class="o">);</span>
+<span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">jsonObject</span><span class="o">);</span>
+<span class="c1">//这里可以是jsonobject、也可以是对象实例,调用updateBatch方法</span>
+<span class="nc">RestMessage</span> <span class="n">message</span> <span class="o">=</span> <span class="n">cloudQueryRunner</span><span class="o">.</span><span class="na">updateBatch</span><span class="o">(</span><span class="s">"modu"</span><span class="o">,</span> <span class="n">list</span><span class="o">);</span>
+<span class="c1">//数据批量编辑，返回批量编辑记录主键id，逗号分隔 ，多条记录,如：id1,id2,id3...</span>
+<span class="c1">//通过对象.getId()获取</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">message</span><span class="o">.</span><span class="na">getId</span><span class="o">())</span>
+</code></pre></div></div>
+
+<h3 id="删除">删除</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">RestMessage</span> <span class="n">message</span> <span class="o">=</span> <span class="n">cloudQueryRunner</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="s">"modu"</span><span class="o">,</span> <span class="n">pkid</span><span class="o">);</span>
+<span class="c1">//数据删除，返回删除记录主键id</span>
+<span class="c1">//通过对象.getId()获取</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">message</span><span class="o">.</span><span class="na">getId</span><span class="o">())</span>
+</code></pre></div></div>
+
+<h3 id="批量删除">批量删除</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//传入多个id数组</span>
+<span class="nc">RestMessage</span> <span class="n">message</span> <span class="o">=</span> <span class="n">cloudQueryRunner</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="s">"modu"</span><span class="o">,</span> <span class="n">pkid</span><span class="o">,</span><span class="n">pkid1</span><span class="o">,</span><span class="n">pkid3</span><span class="o">...);</span>
+<span class="c1">//数据删除，返回删除记录主键id</span>
+<span class="c1">//通过对象.getId()获取</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">message</span><span class="o">.</span><span class="na">getId</span><span class="o">())</span>
+</code></pre></div></div>
+
+<h3 id="查询">查询</h3>
+
+<p>除了云数据中心支持的nativeSQL查询数据，云数据中心还提供了多功能语法查询,同时也推荐开发者使用该方式查询数据，因为nativeSQL涉及到安全性等方面，云数据中心针对nativeSQL的接口以后可能会做调整，封闭也有可能.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//requestExample对象</span>
+<span class="nc">RequestExample</span> <span class="n">requestExample</span><span class="o">=</span><span class="k">new</span> <span class="nc">RequestExample</span><span class="o">(</span><span class="mi">10</span><span class="o">,</span><span class="mi">1</span><span class="o">);</span>
+<span class="n">requestExample</span><span class="o">.</span><span class="na">addRelations</span><span class="o">(</span><span class="k">new</span> <span class="nc">Relation</span><span class="o">(</span><span class="s">"scenic_info"</span><span class="o">,</span><span class="s">"scenic_info"</span><span class="o">,</span><span class="s">"id"</span><span class="o">,</span><span class="s">"scenic_id"</span><span class="o">));</span>
+<span class="n">requestExample</span><span class="o">.</span><span class="na">addSort</span><span class="o">(</span><span class="s">"create_time"</span><span class="o">,</span><span class="s">"desc"</span><span class="o">);</span>
+<span class="nc">RequestExample</span><span class="o">.</span><span class="na">Criteria</span> <span class="n">criteria</span><span class="o">=</span><span class="n">requestExample</span><span class="o">.</span><span class="na">create</span><span class="o">();</span>
+<span class="n">criteria</span><span class="o">.</span><span class="na">getMust</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">requestExample</span><span class="o">.</span><span class="na">createParam</span><span class="o">().</span><span class="na">addFuzzy</span><span class="o">(</span><span class="s">"title"</span><span class="o">,</span><span class="s">"test"</span><span class="o">));</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="k">new</span> <span class="nc">Gson</span><span class="o">().</span><span class="na">toJson</span><span class="o">(</span><span class="n">requestExample</span><span class="o">));</span>
+<span class="c1">//使用queryBuilder查询表user_info数据</span>
+<span class="nc">Pagination</span><span class="o">&lt;</span><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;&gt;</span> <span class="n">pagination</span><span class="o">=</span><span class="n">cloudQueryRunner</span><span class="o">.</span><span class="na">queryListByExample</span><span class="o">(</span><span class="s">"member_info"</span><span class="o">,</span><span class="n">requestExample</span><span class="o">);</span>
+<span class="c1">//遍历user_info数据</span>
+<span class="k">for</span> <span class="o">(</span><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;</span> <span class="nl">map:</span><span class="n">pagination</span><span class="o">.</span><span class="na">getData</span><span class="o">()){</span>
+    <span class="c1">//do something</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>Sdk主要针对云数据中心给出的多功能查询结构体，封装了RequestExample对象，所有多功能查询，包括表关联查询，单表查询都可以使用该对象</p>
+
+<p>云数据中心查询结构体如下：</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"page_size"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"current_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"display_fields"</span><span class="p">:</span><span class="w"> </span><span class="s2">"id"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"query"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"must_not"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+        </span><span class="nl">"should"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+        </span><span class="nl">"must"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"prefix"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+                </span><span class="nl">"term"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+                </span><span class="nl">"fuzzy"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"range"</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"sort"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"create_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"desc"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"rel"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"rel_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"o2o"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"rel_res_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"scenic_info"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"rel_res_alias"</span><span class="p">:</span><span class="w"> </span><span class="s2">"scenic_info"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"rel_res_field"</span><span class="p">:</span><span class="w"> </span><span class="s2">"id"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"rel_symbol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"="</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"on_field"</span><span class="p">:</span><span class="w"> </span><span class="s2">"scenic_id"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"where"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"must"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+                </span><span class="nl">"mustNot"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+                </span><span class="nl">"should"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span></code></pre></div></div>
+
+<p>主要包含以下属性：</p>
+
+<ul>
+  <li>query:该属性是条件查询属性，包含必须有、必须没有、应该三大子属性，同时每个子属性又包含模糊、匹配、前缀匹配、区间这四种匹配模式供开发者调用</li>
+  <li>sort:该属性是排序字段，是一个map对象，添加字段的排序属性，云数据中心会按排序好的字段顺序给出数据</li>
+  <li>rel：该属性是关联查询属性，详细介绍请参考<a href="#_关联查询">关联查询</a>章节</li>
+  <li>
+    <p>current_page:当前页面</p>
+  </li>
+  <li>page_size:页码大小</li>
+  <li>display_fields: 可选择的返回资源属性,不填则返回所有属性</li>
+</ul>
+
+<p>如上面的JSON体中，”<a href="">fuzzy</a>”:{“title”:”test”}就是一个判断式，它代表的是title的模糊匹配test值。</p>
+
+<p>除了fuzzy外，还有另外三个条件判断式的匹配方式(MATCH)，下面我们简单介绍一下。</p>
+
+<ul>
+  <li>term : 完全匹配;</li>
+  <li>prefix : 前缀匹配;</li>
+  <li>fuzzy : 模糊匹配;</li>
+  <li>range : 范围匹配。</li>
+</ul>
+
+<p>must/must_not/should为三个查询判断模式,</p>
+
+<ul>
+  <li>must: 必须满足的判断模式。must里面的条件判断式越多，结果越精确。</li>
+  <li>must_not：必须不包含(排除)的判断模式。只要满足must_not下的条件判断式的结果都不会被返回。</li>
+  <li>should：该模式的主要用途是查询满足多个条件的其中一个或多个的情况。所以，should下的条件判断式必须大于等于两个。</li>
+</ul>
+
+<p>如何需要输入多个相同键，不同值的参数？</p>
+
+<p>因为JSON主要是用键值对来绑定数据的，所以相同的键在同一个{body}里面是不能同时存在的，这和Java中的Map、C#中的Dictionary类似一样。</p>
+
+<p>所以需要在一个查询里面有多个相同键的情况，可以将相同键分装在两个不同的{body}中。</p>
+
+<p>例如： 我们要查询 所有不包含北京和上海的酒店，那可以使用</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"must_not"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"prefix"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"hotel_cn_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"北京"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"prefix"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"hotel_cn_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"上海"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>should的注意点</p>
+
+<p>should表示的是满足多个条件里面的一个或多个即可，所以should的条件判断式至少要有两个。 但是这里需要特别主要的是，如果判断式的键是一样的，则必须这样写</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"should"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"prefix"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"hotel_cn_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"北京"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"prefix"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"hotel_cn_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"上海"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span></code></pre></div></div>
+
+<p>但是如果判断式键不一样，那么如下这样也算是两个判断式:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"should"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"prefix"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"hotel_cn_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"北京"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"hotel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"h"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span></code></pre></div></div>
+
+<p><strong>RequestExample</strong></p>
+
+<p>在前面多功能查询三个章节中，都详细的阐述了云数据中心对于多功能查询的结构，那么我们要如何使用它呢？</p>
+
+<p>在我们sdk中，sdk提供了RequestExample对象，开发者可以轻松使用该对象构建查询结构体，查询我们想要的结果.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//创建requestExample对象,传入页码,当前页</span>
+<span class="nc">RequestExample</span> <span class="n">requestExample</span><span class="o">=</span><span class="k">new</span> <span class="nc">RequestExample</span><span class="o">(</span><span class="mi">10</span><span class="o">,</span><span class="mi">1</span><span class="o">);</span>
+<span class="c1">//如果有排序需求,desc,asc</span>
+<span class="n">requestExample</span><span class="o">.</span><span class="na">addSort</span><span class="o">(</span><span class="s">"create_time"</span><span class="o">,</span><span class="s">"desc"</span><span class="o">);</span>
+<span class="c1">//条件判断</span>
+<span class="nc">RequestExample</span><span class="o">.</span><span class="na">Criteria</span> <span class="n">criteria</span><span class="o">=</span><span class="n">requestExample</span><span class="o">.</span><span class="na">create</span><span class="o">();</span>
+<span class="c1">//必须满足</span>
+<span class="c1">//完全匹配</span>
+<span class="n">criteria</span><span class="o">.</span><span class="na">getMust</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">requestExample</span><span class="o">.</span><span class="na">createParam</span><span class="o">().</span><span class="na">addTerm</span><span class="o">(</span><span class="s">"key"</span><span class="o">,</span><span class="s">"value"</span><span class="o">));</span>
+<span class="c1">//模糊匹配</span>
+<span class="n">criteria</span><span class="o">.</span><span class="na">getMust</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">requestExample</span><span class="o">.</span><span class="na">createParam</span><span class="o">().</span><span class="na">addFuzzy</span><span class="o">(</span><span class="s">"key"</span><span class="o">,</span><span class="s">"value"</span><span class="o">));</span>
+<span class="c1">//前缀匹配</span>
+<span class="n">criteria</span><span class="o">.</span><span class="na">getMust</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">requestExample</span><span class="o">.</span><span class="na">createParam</span><span class="o">().</span><span class="na">addPrefix</span><span class="o">(</span><span class="s">"key"</span><span class="o">,</span><span class="s">"value"</span><span class="o">));</span>
+<span class="c1">//范围</span>
+<span class="c1">//gt:大于</span>
+<span class="c1">//lt：小于</span>
+<span class="c1">//gte:大于等于</span>
+<span class="c1">//lte:小于等于</span>
+<span class="c1">//ne:不等于</span>
+<span class="c1">//eq:等于</span>
+<span class="c1">//例如查询create_time大于2017-01-01 00:00:00</span>
+<span class="nc">Map</span> <span class="n">gt</span><span class="o">=</span><span class="k">new</span> <span class="nc">HashMap</span><span class="o">();</span>
+<span class="n">gt</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"gt"</span><span class="o">,</span><span class="s">"2017-01-01 00:00:00"</span><span class="o">);</span>
+<span class="n">criteria</span><span class="o">.</span><span class="na">getMust</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">requestExample</span><span class="o">.</span><span class="na">createParam</span><span class="o">().</span><span class="na">addRange</span><span class="o">(</span><span class="s">"create_time"</span><span class="o">,</span><span class="n">gt</span><span class="o">));</span>
+
+<span class="c1">//类似不满足、应该满足</span>
+<span class="c1">//criteria.getMustNot().add()</span>
+<span class="c1">//criteria.getShould().add()</span>
+
+
+<span class="c1">//如果有表关联查询,以下语句创建关联语句</span>
+<span class="c1">//创建表关联</span>
+<span class="c1">//例如查询门票信息表中,所属景点关联信息</span>
+<span class="c1">//门票表中存在景点id字段scenic_id</span>
+<span class="nc">Relation</span> <span class="n">relation</span><span class="o">=</span><span class="k">new</span> <span class="nc">Relation</span><span class="o">(</span><span class="s">"scenic_info"</span><span class="o">,</span><span class="s">"scenic_info"</span><span class="o">,</span><span class="s">"id"</span><span class="o">,</span><span class="s">"scenic_id"</span><span class="o">);</span>
+<span class="n">requestExample</span><span class="o">.</span><span class="na">addRelations</span><span class="o">(</span><span class="n">relation</span><span class="o">);</span>
+<span class="c1">//......</span>
+</code></pre></div></div>
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2017/12/17/cloud-sdk-get-started/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div style="text-align: center;">
+  <h2>微信公众号</h2>
+</div>
+<div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

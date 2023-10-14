@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>springfox 源码分析(五) web配置类Plugin插件的使用 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2019/05/23/springfox-5/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="springfox 源码分析(五) web配置类Plugin插件的使用">
+      
+    <meta name="keywords" content="springfox 源码系列,springfox-swagger">
+    <meta name="og:keywords" content="springfox 源码系列,springfox-swagger">
+      
+    <meta name="description" content="时间：2019-5-23 14:46:50">
+    <meta name="og:description" content="时间：2019-5-23 14:46:50">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2019/05/23/springfox-5/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2019-05-23">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="springfox 源码分析(">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">springfox 源码分析(五) web配置类Plugin插件的使用</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2019/05/23
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#springfox" title="springfox">springfox</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <p>时间：2019-5-23 14:46:50</p>
+
+<p>地点：家中</p>
+
+<h2 id="前言">前言</h2>
+
+<p>我们在上一篇文章,通过<code class="language-plaintext highlighter-rouge">@EnableSwagger2</code>注解,知道springfox使用开启Plugin注解的配置,注入了很多Plugin的配置类，结合我们第二篇针对<a href="https://www.xiaominfo.com/2019/05/22/springfox-3/">Spring Plugin的使用文章</a>介绍,该篇主要探索springfox中的各种不同Plugin的具体作用,以及声明了那些方法</p>
+
+<h2 id="插件">插件</h2>
+
+<p>在<code class="language-plaintext highlighter-rouge">SpringfoxWebMvcConfiguration</code>配置中,主要涉及了以下Plugin</p>
+
+<ul>
+  <li>DocumentationPlugin</li>
+  <li>ApiListingBuilderPlugin</li>
+  <li>OperationBuilderPlugin</li>
+  <li>ParameterBuilderPlugin</li>
+  <li>ExpandedParameterBuilderPlugin</li>
+  <li>OperationModelsProviderPlugin</li>
+  <li>DefaultsProviderPlugin</li>
+  <li>PathDecorator</li>
+  <li>ApiListingScannerPlugin</li>
+</ul>
+
+<p>代码结构一览：</p>
+
+<p><img src="/images/springfox/plugins.png" alt="" /></p>
+
+<p>plugin中声明的接口,都是为处理contexts上下文中的属性</p>
+
+<h3 id="documentationplugin">DocumentationPlugin</h3>
+
+<p>先来看<code class="language-plaintext highlighter-rouge">DocumentationPlugin</code>的源码</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">DocumentationPlugin</span> <span class="kd">extends</span> <span class="nc">Plugin</span><span class="o">&lt;</span><span class="nc">DocumentationType</span><span class="o">&gt;</span> <span class="o">{</span>
+  <span class="cm">/**
+   * @return indicator to determine if the plugin is enabled
+   */</span>
+  <span class="kt">boolean</span> <span class="nf">isEnabled</span><span class="o">();</span>
+
+  <span class="nc">DocumentationType</span> <span class="nf">getDocumentationType</span><span class="o">();</span>
+
+  <span class="cm">/**
+   * Creates a documentation context based on a given DocumentationContextBuilder
+   *
+   * @param builder - @see springfox.documentation.spi.service.contexts.DocumentationContextBuilder
+   * @return context to use for building the documentation
+   */</span>
+  <span class="nc">DocumentationContext</span> <span class="nf">configure</span><span class="o">(</span><span class="nc">DocumentationContextBuilder</span> <span class="n">builder</span><span class="o">);</span>
+
+  <span class="cm">/**
+   * Gets the group name for the plugin. This is expected to be unique for each instance of the plugin
+   * @return group the plugin belongs to
+   */</span>
+  <span class="nc">String</span> <span class="nf">getGroupName</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>此Plugin使用的分隔符类是<code class="language-plaintext highlighter-rouge">DocumentationType</code>,文档类型,在Springfox中声明了三个版本的文档类型，主要是：</p>
+
+<ul>
+  <li>SWAGGER_2:swagger的2.0版本</li>
+  <li>SWAGGER_12:Swagger的1.2版本</li>
+  <li>SPRING_WEB:springfox项目是由原spring-mvc-swagger项目演变而来,所以这是最早的一个版本</li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">DocumentationPlugin</code>定义了三个方法：</p>
+
+<ul>
+  <li>是否启用</li>
+  <li>获取文档类型</li>
+  <li>通过文档上下文Builder构建文档上下文对象</li>
+  <li>获取分组名称</li>
+</ul>
+
+<p>那么,他的实现类是谁，我们通过IDEA的编辑器功能能轻松定位到,是Docket类</p>
+
+<p>来看类图：</p>
+
+<p><img src="/images/springfox/DocumentationPlugin.png" alt="" /></p>
+
+<p>由于Docket对象是最终实现类,而我们开发者一般在使用时,都是通过创建Docket的实体对象来注入到Spring的容器中</p>
+
+<p>所以,我们创建几个Docket对象的Bean实例，那么通过<code class="language-plaintext highlighter-rouge">PluginRetry&lt;DocumentationPlugin,DocumentationType&gt;</code>的getPlugins()方法,最终就会获取到外部注入的Docket对象实例,然后再程序中就可以使用了</p>
+
+<h3 id="apilistingbuilderplugin">ApiListingBuilderPlugin</h3>
+
+<p>来看<code class="language-plaintext highlighter-rouge">ApiListingBuilderPlugin</code>的源码</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">ApiListingBuilderPlugin</span> <span class="kd">extends</span> <span class="nc">Plugin</span><span class="o">&lt;</span><span class="nc">DocumentationType</span><span class="o">&gt;</span> <span class="o">{</span>
+  <span class="cm">/**
+   * Implement this method to override the ApiListing using the ApiListingBuilder
+   *
+   * @param apiListingContext - context that can be used to override the model property attributes
+   * @see springfox.documentation.service.ApiListing
+   * @see springfox.documentation.builders.ApiListingBuilder
+   */</span>
+  <span class="kt">void</span> <span class="nf">apply</span><span class="o">(</span><span class="nc">ApiListingContext</span> <span class="n">apiListingContext</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>实现<code class="language-plaintext highlighter-rouge">ApiListingBuilderPlugin</code>插件类需要实现apply方法,主要是处理ApiListingContext上下文的属性信息</p>
+
+<p>来看类图：</p>
+
+<p><img src="/images/springfox/ApiListingBuilderPlugin.png" alt="" /></p>
+
+<p>从<code class="language-plaintext highlighter-rouge">ApiListingBuilderPlugin</code>类图中,我们可以看到,他有三个子类,分别是：</p>
+
+<ul>
+  <li>MediaTypeReader：获取接口的<code class="language-plaintext highlighter-rouge">RequestMapping</code>注解,赋值Produces和Consumes属性</li>
+  <li>ApiListingReader：针对controller名称的处理操作,最后赋值给ApiListingBuilder对象description属性</li>
+  <li>SwaggerApiListingReader:获取@Api注解,赋值tag及description属性</li>
+</ul>
+
+<p>这三个实现类都通过<code class="language-plaintext highlighter-rouge">@Component</code>注解注入到了Spring的容器中</p>
+
+<h3 id="operationbuilderplugin">OperationBuilderPlugin</h3>
+
+<p>springfox中的一些列插件Plugin最终的作用都是分别为定义传参的Context上下文进行一系列的赋值处理</p>
+
+<p>每个上下文中几乎都会存在该对象的Builder,最终通过各种不同的Plugin来分别进行赋值,这样整个程序架构会清晰很多</p>
+
+<p><code class="language-plaintext highlighter-rouge">Operation</code>也不例外,先来看Operation的上下文类</p>
+
+<p><code class="language-plaintext highlighter-rouge">OperationContext.java</code></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">OperationContext</span> <span class="o">{</span>
+    <span class="c1">//builder函数</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">OperationBuilder</span> <span class="n">operationBuilder</span><span class="o">;</span>
+    <span class="c1">//Spring中接口的请求方法类型枚举</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">RequestMethod</span> <span class="n">requestMethod</span><span class="o">;</span>
+    <span class="c1">//请求接口上下文</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">RequestMappingContext</span> <span class="n">requestContext</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">operationIndex</span><span class="o">;</span>
+    <span class="c1">//getter setter and constructor</span>
+    
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>此时,我们来看<code class="language-plaintext highlighter-rouge">OperationBuilderPlugin</code>插件的源码：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">OperationBuilderPlugin</span> <span class="kd">extends</span> <span class="nc">Plugin</span><span class="o">&lt;</span><span class="nc">DocumentationType</span><span class="o">&gt;</span> <span class="o">{</span>
+  <span class="cm">/**
+   * Implement this method to override the Operation using the OperationBuilder available in the context
+   *
+   * @param context - context that can be used to override the parameter attributes
+   * @see springfox.documentation.service.Operation
+   * @see springfox.documentation.builders.OperationBuilder
+   */</span>
+  <span class="kt">void</span> <span class="nf">apply</span><span class="o">(</span><span class="nc">OperationContext</span> <span class="n">context</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>顶级Plugin声明接口,分层逐步给OperationContext对象赋值</p>
+
+<p>先来看部分类图：</p>
+
+<p><img src="/images/springfox/OperationBuilderPlugin.png" alt="" /></p>
+
+<p>由于<code class="language-plaintext highlighter-rouge">OperationBuilderPlugin</code>实现类比较多,此处类图进列出其中四个实现类,我们通过文字来一一说明</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">DefaultOperationReader</code>:请求方法、接口说明、唯一id值</li>
+  <li><code class="language-plaintext highlighter-rouge">MediaTypeReader</code>:consumes、produces</li>
+  <li><code class="language-plaintext highlighter-rouge">OperationAuthReader</code>:权限赋值</li>
+  <li><code class="language-plaintext highlighter-rouge">OperationDeprecatedReader</code>；接口是否过时</li>
+  <li><code class="language-plaintext highlighter-rouge">OperationHiddenReader</code>：是否隐藏</li>
+  <li><code class="language-plaintext highlighter-rouge">OperationHttpMethodReader</code>:接口请求方法</li>
+  <li><code class="language-plaintext highlighter-rouge">OperationImplicitParameterReader</code>:针对<code class="language-plaintext highlighter-rouge">@ApiImplicitParam</code>注解的接口进行读取赋值</li>
+  <li><code class="language-plaintext highlighter-rouge">OperationImplicitParametersReader</code>:针对<code class="language-plaintext highlighter-rouge">@ApiImplicitParams</code>注解的接口进行读取赋值</li>
+  <li><code class="language-plaintext highlighter-rouge">OperationNicknameIntoUniqueIdReader</code>:昵称属性,通过读取<code class="language-plaintext highlighter-rouge">@ApiOperation</code>注解中的<code class="language-plaintext highlighter-rouge">nickname</code>属性进行赋值</li>
+  <li><code class="language-plaintext highlighter-rouge">OperationNotesReader</code>:接口说明</li>
+  <li><code class="language-plaintext highlighter-rouge">OperationParameterHeadersConditionReader</code>:请求头</li>
+  <li><code class="language-plaintext highlighter-rouge">OperationParameterReader</code>:后端配置的全局parameter以及接口的parameter参数进行读取赋值</li>
+  <li><code class="language-plaintext highlighter-rouge">OperationParameterRequestConditionReader</code>:参数条件</li>
+  <li><code class="language-plaintext highlighter-rouge">OperationPositionReader</code>:position属性</li>
+  <li><code class="language-plaintext highlighter-rouge">OperationResponseClassReader</code>:响应类处理</li>
+  <li><code class="language-plaintext highlighter-rouge">OperationSummaryReader</code>:接口名称</li>
+  <li><code class="language-plaintext highlighter-rouge">OperationTagsReader</code>:tags</li>
+  <li><code class="language-plaintext highlighter-rouge">ResponseMessagesReader</code>:响应状态码信息，先读取后端配置的全局,然后读取接口</li>
+  <li><code class="language-plaintext highlighter-rouge">SwaggerMediaTypeReader</code>:consumes、produces</li>
+  <li><code class="language-plaintext highlighter-rouge">SwaggerOperationResponseClassReader</code>:响应class类</li>
+  <li><code class="language-plaintext highlighter-rouge">SwaggerOperationTagsReader</code>：接口的tags处理</li>
+  <li><code class="language-plaintext highlighter-rouge">SwaggerResponseMessageReader</code>:状态码信息,针对<code class="language-plaintext highlighter-rouge">@ApiResponse</code>注解标注的接口</li>
+  <li><code class="language-plaintext highlighter-rouge">VendorExtensionsReader</code>:扩展</li>
+</ul>
+
+<p>整个代码结构一览：</p>
+
+<p><img src="/images/springfox/scan.png" alt="" /></p>
+
+<h3 id="parameterbuilderplugin">ParameterBuilderPlugin</h3>
+
+<p>针对参数处理的Plugin，先来看相关类图：</p>
+
+<p><img src="/images/springfox/ParameterBuilderPlugin.png" alt="" /></p>
+
+<p>总共有七个实现类，我们一一说明：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">ApiParamParameterBuilder</code>:针对接口使用<code class="language-plaintext highlighter-rouge">@ApiParam</code>注解的参数进行处理</li>
+  <li><code class="language-plaintext highlighter-rouge">ParameterDataTypeReader</code>:参数的数据类型</li>
+  <li><code class="language-plaintext highlighter-rouge">ParameterDefaultReader</code>:参数默认值</li>
+  <li><code class="language-plaintext highlighter-rouge">ParameterMultiplesReader</code>:</li>
+  <li><code class="language-plaintext highlighter-rouge">ParameterNameReader</code>:参数名称</li>
+  <li><code class="language-plaintext highlighter-rouge">ParameterRequiredReader</code>:参数是否必须</li>
+  <li><code class="language-plaintext highlighter-rouge">ParameterTypeReader</code>：参数类型，包括（form、header、query、formdata、body），默认是body</li>
+</ul>
+
+<h3 id="expandedparameterbuilderplugin">ExpandedParameterBuilderPlugin</h3>
+
+<p>先来看类图关系</p>
+
+<p><img src="/images/springfox/ExpandedParameterBuilderPlugin.png" alt="" /></p>
+
+<p>从类图关系中,实现类主要有两个：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">ExpandedParameterBuilder</code>:实体类参数的默认属性赋值</li>
+  <li><code class="language-plaintext highlighter-rouge">SwaggerExpandedParameterBuilder</code>:针对我们的类使用<code class="language-plaintext highlighter-rouge">@ApiModelProperty</code>注解的操作</li>
+</ul>
+
+<h3 id="operationmodelsproviderplugin">OperationModelsProviderPlugin</h3>
+
+<p>来看类图关系</p>
+
+<p><img src="/images/springfox/OperationModelsProviderPlugin.png" alt="" /></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">OperationModelsProvider</code>:收集所有的参数Models,返回类型，全局Models</li>
+  <li><code class="language-plaintext highlighter-rouge">SwaggerOperationModelsProvider</code>:接口返回类型已经使用<code class="language-plaintext highlighter-rouge">@ApiResponse</code>标注的返回类型</li>
+</ul>
+
+<h3 id="defaultsproviderplugin">DefaultsProviderPlugin</h3>
+
+<p>来看<code class="language-plaintext highlighter-rouge">DefaultsProviderPlugin</code>的源码</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">DefaultsProviderPlugin</span> <span class="kd">extends</span> <span class="nc">Plugin</span><span class="o">&lt;</span><span class="nc">DocumentationType</span><span class="o">&gt;</span> <span class="o">{</span>
+  <span class="cm">/**
+   * Implement this method to override the @see  springfox.documentation.spi.service.contexts
+   * .DocumentationContextBuilder
+   *
+   * @param documentationType - creates a default DocumentationContextBuilder based on documentation type
+   * @return - returns the documentation context builder
+   */</span>
+  <span class="nc">DocumentationContextBuilder</span> <span class="nf">create</span><span class="o">(</span><span class="nc">DocumentationType</span> <span class="n">documentationType</span><span class="o">);</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>根据文档类型创建<code class="language-plaintext highlighter-rouge">DocumentationContextBuilder</code>对象</p>
+
+<p>而<code class="language-plaintext highlighter-rouge">DefaultsProviderPlugin</code>只有一个实现子类,那就是<code class="language-plaintext highlighter-rouge">springfox.documentation.spring.web.plugins.DefaultConfiguration</code></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DefaultConfiguration</span> <span class="kd">implements</span> <span class="nc">DefaultsProviderPlugin</span> <span class="o">{</span>
+
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">Defaults</span> <span class="n">defaults</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">TypeResolver</span> <span class="n">typeResolver</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">ServletContext</span> <span class="n">servletContext</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="nf">DefaultConfiguration</span><span class="o">(</span><span class="nc">Defaults</span> <span class="n">defaults</span><span class="o">,</span>
+                       <span class="nc">TypeResolver</span> <span class="n">typeResolver</span><span class="o">,</span>
+                       <span class="nc">ServletContext</span> <span class="n">servletContext</span><span class="o">)</span> <span class="o">{</span>
+
+    <span class="k">this</span><span class="o">.</span><span class="na">servletContext</span> <span class="o">=</span> <span class="n">servletContext</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">defaults</span> <span class="o">=</span> <span class="n">defaults</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">typeResolver</span> <span class="o">=</span> <span class="n">typeResolver</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="nc">DocumentationContextBuilder</span> <span class="nf">create</span><span class="o">(</span><span class="nc">DocumentationType</span> <span class="n">documentationType</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">DocumentationContextBuilder</span><span class="o">(</span><span class="n">documentationType</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">operationOrdering</span><span class="o">(</span><span class="n">defaults</span><span class="o">.</span><span class="na">operationOrdering</span><span class="o">())</span>
+            <span class="o">.</span><span class="na">apiDescriptionOrdering</span><span class="o">(</span><span class="n">defaults</span><span class="o">.</span><span class="na">apiDescriptionOrdering</span><span class="o">())</span>
+            <span class="o">.</span><span class="na">apiListingReferenceOrdering</span><span class="o">(</span><span class="n">defaults</span><span class="o">.</span><span class="na">apiListingReferenceOrdering</span><span class="o">())</span>
+            <span class="o">.</span><span class="na">additionalIgnorableTypes</span><span class="o">(</span><span class="n">defaults</span><span class="o">.</span><span class="na">defaultIgnorableParameterTypes</span><span class="o">())</span>
+            <span class="o">.</span><span class="na">rules</span><span class="o">(</span><span class="n">defaults</span><span class="o">.</span><span class="na">defaultRules</span><span class="o">(</span><span class="n">typeResolver</span><span class="o">))</span>
+            <span class="o">.</span><span class="na">defaultResponseMessages</span><span class="o">(</span><span class="n">defaults</span><span class="o">.</span><span class="na">defaultResponseMessages</span><span class="o">())</span>
+            <span class="o">.</span><span class="na">pathProvider</span><span class="o">(</span><span class="k">new</span> <span class="nc">RelativePathProvider</span><span class="o">(</span><span class="n">servletContext</span><span class="o">))</span>
+            <span class="o">.</span><span class="na">typeResolver</span><span class="o">(</span><span class="n">typeResolver</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">enableUrlTemplating</span><span class="o">(</span><span class="kc">false</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">selector</span><span class="o">(</span><span class="nc">ApiSelector</span><span class="o">.</span><span class="na">DEFAULT</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">supports</span><span class="o">(</span><span class="nc">DocumentationType</span> <span class="n">delimiter</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>给DocumentationContextBuilder创建一系列空对象默认值,方便后期其他Plugin进行赋值初始化</p>
+
+<p><code class="language-plaintext highlighter-rouge">Defaults</code>和<code class="language-plaintext highlighter-rouge">TypeResolver</code>在前面的Configuration配置类中已经通过Bean注解进行了注入</p>
+
+<h3 id="pathdecorator">PathDecorator</h3>
+
+<p>先来看类图：</p>
+
+<p><img src="/images/springfox/PathDecorator.png" alt="" /></p>
+
+<p><code class="language-plaintext highlighter-rouge">PathDecorator</code>声明了一个Guava函数库中的Function函数接口</p>
+
+<p><code class="language-plaintext highlighter-rouge">Function</code></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="nd">@GwtCompatible</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Function</span><span class="o">&lt;</span><span class="no">F</span><span class="o">,</span> <span class="no">T</span><span class="o">&gt;</span> <span class="o">{</span>
+  <span class="nd">@Nullable</span>
+  <span class="nd">@CanIgnoreReturnValue</span> <span class="c1">// TODO(kevinb): remove this</span>
+  <span class="no">T</span> <span class="nf">apply</span><span class="o">(</span><span class="nd">@Nullable</span> <span class="no">F</span> <span class="n">input</span><span class="o">);</span>
+
+  <span class="cm">/**
+   * &lt;i&gt;May&lt;/i&gt; return {@code true} if {@object} is a {@code Function} that behaves identically to
+   * this function.
+   *
+   * &lt;p&gt;&lt;b&gt;Warning: do not depend&lt;/b&gt; on the behavior of this method.
+   *
+   * &lt;p&gt;Historically, {@code Function} instances in this library have implemented this method to
+   * recognize certain cases where distinct {@code Function} instances would in fact behave
+   * identically. However, as code migrates to {@code java.util.function}, that behavior will
+   * disappear. It is best not to depend on it.
+   */</span>
+  <span class="nd">@Override</span>
+  <span class="kt">boolean</span> <span class="nf">equals</span><span class="o">(</span><span class="nd">@Nullable</span> <span class="nc">Object</span> <span class="n">object</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>传入输入参数,返回输出参数</p>
+
+<p>主要实现类：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">OperationPathDecorator</code>:basePath处理类</li>
+  <li><code class="language-plaintext highlighter-rouge">PathMappingDecorator</code>:接口path处理</li>
+  <li><code class="language-plaintext highlighter-rouge">PathSanitizer</code>:接口path-origin处理</li>
+  <li><code class="language-plaintext highlighter-rouge">QueryStringUriTemplateDecorator</code>:接口参数处理</li>
+</ul>
+
+<h3 id="apilistingscannerplugin">ApiListingScannerPlugin</h3>
+
+<p>来看源码</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">ApiListingScannerPlugin</span> <span class="kd">extends</span> <span class="nc">Plugin</span><span class="o">&lt;</span><span class="nc">DocumentationType</span><span class="o">&gt;</span> <span class="o">{</span>
+  <span class="cm">/**
+   * Implement this method to manually add ApiDescriptions
+   *
+   * @param context - Documentation context that can be used infer documentation context
+   * @see springfox.documentation.service.ApiDescription
+   * @return List of {@link ApiDescription}
+   */</span>
+  <span class="nc">List</span><span class="o">&lt;</span><span class="nc">ApiDescription</span><span class="o">&gt;</span> <span class="nf">apply</span><span class="o">(</span><span class="nc">DocumentationContext</span> <span class="n">context</span><span class="o">);</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>该Plugin没有任何实现子类</p>
+
+<h2 id="总结">总结</h2>
+
+<p>通过上面的Plugin,我们大致了解了Springfox中定义的Plugin接口,以及实现类,完事具备，此时只需要查看springfox的初始化代码部分了</p>
+
+<p>在下一篇文章中我们继续.</p>
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2019/05/23/springfox-5/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div style="text-align: center;">
+  <h2>微信公众号</h2>
+</div>
+<div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>springfox 源码分析(十六) 分组接口swagger-resouces &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2019/06/01/springfox-16/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="springfox 源码分析(十六) 分组接口swagger-resouces">
+      
+    <meta name="keywords" content="springfox 源码系列,springfox-swagger">
+    <meta name="og:keywords" content="springfox 源码系列,springfox-swagger">
+      
+    <meta name="description" content="通过前面的分析,我们最终得到了springfox的Documentation文档对象,将我们的RESTful接口最终转换为了文档对象,文档对象是包含了接口列表、分组信息等属性的">
+    <meta name="og:description" content="通过前面的分析,我们最终得到了springfox的Documentation文档对象,将我们的RESTful接口最终转换为了文档对象,文档对象是包含了接口列表、分组信息等属性的">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2019/06/01/springfox-16/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2019-06-01">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="springfox 源码分析(">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">springfox 源码分析(十六) 分组接口swagger-resouces</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2019/06/01
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#springfox" title="springfox">springfox</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <p>通过前面的分析,我们最终得到了springfox的Documentation文档对象,将我们的RESTful接口最终转换为了文档对象,文档对象是包含了接口列表、分组信息等属性的</p>
+
+<p>在springfox中,为我们提供了springfox-swagger-ui来呈现最终的接口信息.在ui界面中有两个核心接口：</p>
+
+<ul>
+  <li>swagger-resources:swagger分组接口，创建多少Docket,就会有多少分组信息</li>
+  <li>/v2/api-docs:Swagger接口示例信息,通过Documentation对象最终输出为Swagger标准信息</li>
+</ul>
+
+<p>先来看接口源码：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="nd">@Controller</span>
+<span class="nd">@ApiIgnore</span>
+<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/swagger-resources"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ApiResourceController</span> <span class="o">{</span>
+
+
+  <span class="nd">@Autowired</span><span class="o">(</span><span class="n">required</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+  <span class="kd">private</span> <span class="nc">SecurityConfiguration</span> <span class="n">securityConfiguration</span><span class="o">;</span>
+  <span class="nd">@Autowired</span><span class="o">(</span><span class="n">required</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+  <span class="kd">private</span> <span class="nc">UiConfiguration</span> <span class="n">uiConfiguration</span><span class="o">;</span>
+
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">SwaggerResourcesProvider</span> <span class="n">swaggerResources</span><span class="o">;</span>
+
+  <span class="nd">@Autowired</span>
+  <span class="kd">public</span> <span class="nf">ApiResourceController</span><span class="o">(</span><span class="nc">SwaggerResourcesProvider</span> <span class="n">swaggerResources</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">swaggerResources</span> <span class="o">=</span> <span class="n">swaggerResources</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/configuration/security"</span><span class="o">)</span>
+  <span class="nd">@ResponseBody</span>
+  <span class="kd">public</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">SecurityConfiguration</span><span class="o">&gt;</span> <span class="nf">securityConfiguration</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">SecurityConfiguration</span><span class="o">&gt;(</span>
+        <span class="nc">Optional</span><span class="o">.</span><span class="na">fromNullable</span><span class="o">(</span><span class="n">securityConfiguration</span><span class="o">).</span><span class="na">or</span><span class="o">(</span><span class="nc">SecurityConfigurationBuilder</span><span class="o">.</span><span class="na">builder</span><span class="o">().</span><span class="na">build</span><span class="o">()),</span> <span class="nc">HttpStatus</span><span class="o">.</span><span class="na">OK</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/configuration/ui"</span><span class="o">)</span>
+  <span class="nd">@ResponseBody</span>
+  <span class="kd">public</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">UiConfiguration</span><span class="o">&gt;</span> <span class="nf">uiConfiguration</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">UiConfiguration</span><span class="o">&gt;(</span>
+        <span class="nc">Optional</span><span class="o">.</span><span class="na">fromNullable</span><span class="o">(</span><span class="n">uiConfiguration</span><span class="o">).</span><span class="na">or</span><span class="o">(</span><span class="nc">UiConfigurationBuilder</span><span class="o">.</span><span class="na">builder</span><span class="o">().</span><span class="na">build</span><span class="o">()),</span> <span class="nc">HttpStatus</span><span class="o">.</span><span class="na">OK</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="nd">@RequestMapping</span>
+  <span class="nd">@ResponseBody</span>
+  <span class="kd">public</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">SwaggerResource</span><span class="o">&gt;&gt;</span> <span class="nf">swaggerResources</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">SwaggerResource</span><span class="o">&gt;&gt;(</span><span class="n">swaggerResources</span><span class="o">.</span><span class="na">get</span><span class="o">(),</span> <span class="nc">HttpStatus</span><span class="o">.</span><span class="na">OK</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>通过swaggerResources.get()方法获取最终的信息</p>
+
+<p><code class="language-plaintext highlighter-rouge">SwaggerResourcesProvider</code>是接口,在springfox中只有一个实现类<code class="language-plaintext highlighter-rouge">InMemorySwaggerResourcesProvider</code></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="nd">@Component</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">InMemorySwaggerResourcesProvider</span> <span class="kd">implements</span> <span class="nc">SwaggerResourcesProvider</span> <span class="o">{</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">swagger1Url</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">swagger2Url</span><span class="o">;</span>
+
+  <span class="nd">@VisibleForTesting</span>
+  <span class="kt">boolean</span> <span class="n">swagger1Available</span><span class="o">;</span>
+  <span class="nd">@VisibleForTesting</span>
+  <span class="kt">boolean</span> <span class="n">swagger2Available</span><span class="o">;</span>
+
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">DocumentationCache</span> <span class="n">documentationCache</span><span class="o">;</span>
+
+  <span class="nd">@Autowired</span>
+  <span class="kd">public</span> <span class="nf">InMemorySwaggerResourcesProvider</span><span class="o">(</span>
+      <span class="nc">Environment</span> <span class="n">environment</span><span class="o">,</span>
+      <span class="nc">DocumentationCache</span> <span class="n">documentationCache</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">swagger1Url</span> <span class="o">=</span> <span class="n">environment</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">"springfox.documentation.swagger.v1.path"</span><span class="o">,</span> <span class="s">"/api-docs"</span><span class="o">);</span>
+    <span class="n">swagger2Url</span> <span class="o">=</span> <span class="n">environment</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">"springfox.documentation.swagger.v2.path"</span><span class="o">,</span> <span class="s">"/v2/api-docs"</span><span class="o">);</span>
+    <span class="n">swagger1Available</span> <span class="o">=</span> <span class="n">classByName</span><span class="o">(</span><span class="s">"springfox.documentation.swagger1.web.Swagger1Controller"</span><span class="o">).</span><span class="na">isPresent</span><span class="o">();</span>
+    <span class="n">swagger2Available</span> <span class="o">=</span> <span class="n">classByName</span><span class="o">(</span><span class="s">"springfox.documentation.swagger2.web.Swagger2Controller"</span><span class="o">).</span><span class="na">isPresent</span><span class="o">();</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">documentationCache</span> <span class="o">=</span> <span class="n">documentationCache</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">SwaggerResource</span><span class="o">&gt;</span> <span class="nf">get</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">SwaggerResource</span><span class="o">&gt;</span> <span class="n">resources</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">SwaggerResource</span><span class="o">&gt;();</span>
+
+    <span class="k">for</span> <span class="o">(</span><span class="nc">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Documentation</span><span class="o">&gt;</span> <span class="n">entry</span> <span class="o">:</span> <span class="n">documentationCache</span><span class="o">.</span><span class="na">all</span><span class="o">().</span><span class="na">entrySet</span><span class="o">())</span> <span class="o">{</span>
+      <span class="nc">String</span> <span class="n">swaggerGroup</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="na">getKey</span><span class="o">();</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">swagger1Available</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">SwaggerResource</span> <span class="n">swaggerResource</span> <span class="o">=</span> <span class="n">resource</span><span class="o">(</span><span class="n">swaggerGroup</span><span class="o">,</span> <span class="n">swagger1Url</span><span class="o">);</span>
+        <span class="n">swaggerResource</span><span class="o">.</span><span class="na">setSwaggerVersion</span><span class="o">(</span><span class="s">"1.2"</span><span class="o">);</span>
+        <span class="n">resources</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">swaggerResource</span><span class="o">);</span>
+      <span class="o">}</span>
+
+      <span class="k">if</span> <span class="o">(</span><span class="n">swagger2Available</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">SwaggerResource</span> <span class="n">swaggerResource</span> <span class="o">=</span> <span class="n">resource</span><span class="o">(</span><span class="n">swaggerGroup</span><span class="o">,</span> <span class="n">swagger2Url</span><span class="o">);</span>
+        <span class="n">swaggerResource</span><span class="o">.</span><span class="na">setSwaggerVersion</span><span class="o">(</span><span class="s">"2.0"</span><span class="o">);</span>
+        <span class="n">resources</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">swaggerResource</span><span class="o">);</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="nc">Collections</span><span class="o">.</span><span class="na">sort</span><span class="o">(</span><span class="n">resources</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">resources</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="nc">SwaggerResource</span> <span class="nf">resource</span><span class="o">(</span><span class="nc">String</span> <span class="n">swaggerGroup</span><span class="o">,</span> <span class="nc">String</span> <span class="n">baseUrl</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">SwaggerResource</span> <span class="n">swaggerResource</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SwaggerResource</span><span class="o">();</span>
+    <span class="n">swaggerResource</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="n">swaggerGroup</span><span class="o">);</span>
+    <span class="n">swaggerResource</span><span class="o">.</span><span class="na">setUrl</span><span class="o">(</span><span class="n">swaggerLocation</span><span class="o">(</span><span class="n">baseUrl</span><span class="o">,</span> <span class="n">swaggerGroup</span><span class="o">));</span>
+    <span class="k">return</span> <span class="n">swaggerResource</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="nc">String</span> <span class="nf">swaggerLocation</span><span class="o">(</span><span class="nc">String</span> <span class="n">swaggerUrl</span><span class="o">,</span> <span class="nc">String</span> <span class="n">swaggerGroup</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">String</span> <span class="n">base</span> <span class="o">=</span> <span class="nc">Optional</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">swaggerUrl</span><span class="o">).</span><span class="na">get</span><span class="o">();</span>
+    <span class="k">if</span> <span class="o">(</span><span class="nc">Docket</span><span class="o">.</span><span class="na">DEFAULT_GROUP_NAME</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">swaggerGroup</span><span class="o">))</span> <span class="o">{</span>
+      <span class="k">return</span> <span class="n">base</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">base</span> <span class="o">+</span> <span class="s">"?group="</span> <span class="o">+</span> <span class="n">swaggerGroup</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>通过遍历<code class="language-plaintext highlighter-rouge">DocumentationCache</code>中缓存的Documentation对象,得到接口文档信息的分组信息,响应<code class="language-plaintext highlighter-rouge">SwaggerResource</code>的集合信息</p>
+
+<p>SwaggerResource信息主要包含的字段信息：名称，url、swagger版本</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="nd">@JsonInclude</span><span class="o">(</span><span class="nc">JsonInclude</span><span class="o">.</span><span class="na">Include</span><span class="o">.</span><span class="na">NON_NULL</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SwaggerResource</span> <span class="kd">implements</span> <span class="nc">Comparable</span><span class="o">&lt;</span><span class="nc">SwaggerResource</span><span class="o">&gt;</span> <span class="o">{</span>
+  <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="nc">String</span> <span class="n">url</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="nc">String</span> <span class="n">swaggerVersion</span><span class="o">;</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">int</span> <span class="nf">compareTo</span><span class="o">(</span><span class="nc">SwaggerResource</span> <span class="n">other</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nc">ComparisonChain</span><span class="o">.</span><span class="na">start</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">compare</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">swaggerVersion</span><span class="o">,</span> <span class="n">other</span><span class="o">.</span><span class="na">swaggerVersion</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">compare</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">name</span><span class="o">,</span> <span class="n">other</span><span class="o">.</span><span class="na">name</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">result</span><span class="o">();</span>
+  <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>在开发<code class="language-plaintext highlighter-rouge">swagger-bootstrap-ui</code>的过程中,经常会碰到很多朋友提问,有什么方式能对文档的分组信息进行排序的吗？</p>
+
+<p>我们通过上面的源码可以看到,其实SwaggerResource实现了Comparable接口,但是他的排序规则是先根据swagger的版本进行排序，然后对名称进行排序,asc顺序排序</p>
+
+<p>那么我们如何实现我们自定义的排序方式呢?后面我会详细介绍.</p>
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2019/06/01/springfox-16/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div style="text-align: center;">
+  <h2>微信公众号</h2>
+</div>
+<div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

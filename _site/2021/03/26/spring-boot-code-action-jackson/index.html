@@ -1,0 +1,1797 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>Spring Boot框架中使用Jackson的处理总结 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2021/03/26/spring-boot-code-action-jackson/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="Spring Boot框架中使用Jackson的处理总结">
+      
+    <meta name="keywords" content="Spring Boot,Jackson">
+    <meta name="og:keywords" content="Spring Boot,Jackson">
+      
+    <meta name="description" content="1.前言">
+    <meta name="og:description" content="1.前言">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2021/03/26/spring-boot-code-action-jackson/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2021-03-26">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="Spring Boot框架中使">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">Spring Boot框架中使用Jackson的处理总结</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2021/03/26
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#Spring" title="Spring">Spring</a>
+          </span>
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#Boot" title="Boot">Boot</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <h2 id="1前言">1.前言</h2>
+
+<p>通常我们在使用Spring Boot框架时，如果没有特别指定接口的序列化类型，则会使用Spring Boot框架默认集成的Jackson框架进行处理，通过Jackson框架将服务端响应的数据序列化成JSON格式的数据。</p>
+
+<p>本文主要针对在Spring Boot框架中使用Jackson进行处理的经验进行总结，同时也结合在实际开发场景中碰到的问题以及解决方案进行陈述。</p>
+
+<p>本文涉及到的源码地址：<a href="https://gitee.com/dt_research_institute/code-in-action">https://gitee.com/dt_research_institute/code-in-action</a></p>
+
+<blockquote>
+  <p>PS:目前市面上针对JSON序列化的框架很多,比较出名的就是<a href="https://github.com/FasterXML/jackson">Jackson</a>、<a href="https://github.com/google/gson">Gson</a>、<a href="https://github.com/alibaba/fastjson">FastJson</a>。如果开发者对序列化框架没有特别的要求的情况下，个人建议是直接使用Spring Boot框架默认集成的Jackson，<strong>没有必要</strong>进行更换。</p>
+</blockquote>
+
+<h2 id="2统一序列化时间格式">2.统一序列化时间格式</h2>
+
+<p>在我们的接口中，针对时间类型的字段序列化是最常见的需求之一，一般前后端开发人员会针对时间字段统一进行约束，这样有助于在编码开发时，统一编码规范。</p>
+
+<p>在Spring Boot框架中，如果使用Jackson处理框架，并且没有任何配置的情况下，Jackson针对不同时间类型字段，序列化的格式也会不尽相同。</p>
+
+<p>先来看一个简单示例，<code class="language-plaintext highlighter-rouge">User.java</code>实体类编码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">User</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nc">Integer</span> <span class="n">age</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nc">LocalDateTime</span> <span class="n">birthday</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nc">Date</span> <span class="n">studyDate</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nc">LocalDate</span> <span class="n">workDate</span><span class="o">;</span>
+    
+    <span class="kd">private</span> <span class="nc">Calendar</span> <span class="n">firstWorkDate</span><span class="o">;</span>
+    
+    <span class="kd">public</span> <span class="kd">static</span> <span class="nc">User</span> <span class="nf">buildOne</span><span class="o">(){</span>
+        <span class="nc">User</span> <span class="n">user</span><span class="o">=</span><span class="k">new</span> <span class="nc">User</span><span class="o">();</span>
+        <span class="nc">LocalDateTime</span> <span class="n">now</span><span class="o">=</span><span class="nc">LocalDateTime</span><span class="o">.</span><span class="na">now</span><span class="o">();</span>
+        <span class="n">user</span><span class="o">.</span><span class="na">setWorkDate</span><span class="o">(</span><span class="n">now</span><span class="o">.</span><span class="na">plusYears</span><span class="o">(</span><span class="mi">25</span><span class="o">).</span><span class="na">toLocalDate</span><span class="o">());</span>
+        <span class="n">user</span><span class="o">.</span><span class="na">setStudyDate</span><span class="o">(</span><span class="nc">Date</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">now</span><span class="o">.</span><span class="na">plusYears</span><span class="o">(</span><span class="mi">5</span><span class="o">).</span><span class="na">atZone</span><span class="o">(</span><span class="nc">ZoneId</span><span class="o">.</span><span class="na">systemDefault</span><span class="o">()).</span><span class="na">toInstant</span><span class="o">()));</span>
+        <span class="n">user</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">"姓名-"</span><span class="o">+</span><span class="nc">RandomUtil</span><span class="o">.</span><span class="na">randomString</span><span class="o">(</span><span class="mi">5</span><span class="o">));</span>
+        <span class="n">user</span><span class="o">.</span><span class="na">setAge</span><span class="o">(</span><span class="nc">RandomUtil</span><span class="o">.</span><span class="na">randomInt</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">100</span><span class="o">));</span>
+        <span class="n">user</span><span class="o">.</span><span class="na">setBirthday</span><span class="o">(</span><span class="n">now</span><span class="o">);</span>
+        <span class="n">user</span><span class="o">.</span><span class="na">setFirstWorkDate</span><span class="o">(</span><span class="nc">Calendar</span><span class="o">.</span><span class="na">getInstance</span><span class="o">());</span>
+        <span class="k">return</span> <span class="n">user</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+    <span class="c1">//getter and setter...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>接口代码层也很简单，返回一个User的实体对象即可，代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RestController</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">UserApplication</span> <span class="o">{</span>
+
+
+    <span class="nd">@GetMapping</span><span class="o">(</span><span class="s">"/queryOne"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">User</span><span class="o">&gt;</span> <span class="nf">queryOne</span><span class="o">(){</span>
+        <span class="k">return</span> <span class="nc">ResponseEntity</span><span class="o">.</span><span class="na">ok</span><span class="o">(</span><span class="nc">User</span><span class="o">.</span><span class="na">buildOne</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>如果我们对框架代码没有任何的配置，此时我们通过调用接口<code class="language-plaintext highlighter-rouge">/queryOne</code>，拿到的返回结果数据如下图：</p>
+
+<p><img src="/assets/images/springboot/code-action-jackson/image-20210312085839202.png" alt="image-20210312085839202" /></p>
+
+<p>Jackson序列化框架针对四个不同的时间类型字段，序列化处理的操作是不同的，如果我们对时间字段有格式化的要求时，我们应该如何处理呢？</p>
+
+<h3 id="21-通过jsonformat注解">2.1 通过<code class="language-plaintext highlighter-rouge">@JsonFormat</code>注解</h3>
+
+<p>最直接也是最简单的一种方式，是我们通过使用Jackson提供的<code class="language-plaintext highlighter-rouge">@JsonFormat</code>注解，对需要格式化处理的时间字段进行标注，在<code class="language-plaintext highlighter-rouge">@JsonFormat</code>注解中写上我们的时间格式化字符，<code class="language-plaintext highlighter-rouge">User.java</code>代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">User</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nc">Integer</span> <span class="n">age</span><span class="o">;</span>
+
+    <span class="nd">@JsonFormat</span><span class="o">(</span><span class="n">pattern</span> <span class="o">=</span> <span class="s">"yyyy-MM-dd HH:mm:ss"</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">LocalDateTime</span> <span class="n">birthday</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nc">Date</span> <span class="n">studyDate</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nc">LocalDate</span> <span class="n">workDate</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nc">Calendar</span> <span class="n">firstWorkDate</span><span class="o">;</span>
+    <span class="c1">//getter and setter...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>此时，我们再通过调用接口，拿到的返回结果如下图：</p>
+
+<p><img src="/assets/images/springboot/code-action-jackson/image-20210312090417967.png" alt="image-20210312090417967" /></p>
+
+<p>通过对<code class="language-plaintext highlighter-rouge">birthday</code>字段标注<code class="language-plaintext highlighter-rouge">@JsonFormat</code>注解，最终Jackson框架会将该字段序列化为我们标注的格式类型。</p>
+
+<h3 id="22-配置全局applicationyml">2.2 配置全局<code class="language-plaintext highlighter-rouge">application.yml</code></h3>
+
+<p>通过<code class="language-plaintext highlighter-rouge">@JsonFormat</code>注解的方式虽然能解决问题，但是我们在实际的开发当中，涉及到的时间字段会非常多，如果全部都用注解的方式对项目中的时间字段进行标注，那开发的工作量也会很大，并且多团队一起协同编码时，难免会存在遗漏的情况，因此，<code class="language-plaintext highlighter-rouge">@JsonFormat</code>注解只适用于针对特定的接口，特定的场景下，对序列化响应的时间字段进行约束，而在全局的角度来看，开发者应该考虑通过在<code class="language-plaintext highlighter-rouge">application.yml</code>配置文件中进行全局配置</p>
+
+<p>针对Spring Boot框架中Jackson的全局配置，我们在<code class="language-plaintext highlighter-rouge">application.yml</code>进行配置时，IDEA等编辑器会给出相应的提示，包含的属性如下图：</p>
+
+<p><img src="/assets/images/springboot/code-action-jackson/image-20210312092003557.png" alt="image-20210312092003557" /></p>
+
+<p>开发者可以通过<code class="language-plaintext highlighter-rouge">org.springframework.boot.autoconfigure.jackson.JacksonProperties.java</code>查看所有配置的源码信息</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>配置属性</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">date-format</code></td>
+      <td>日期字段格式化，例如:<code class="language-plaintext highlighter-rouge">yyyy-MM-dd HH:mm:ss</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>针对日期字段的格式化处理，我们只需要使用<code class="language-plaintext highlighter-rouge">date-format</code>属性进行配置即可，<code class="language-plaintext highlighter-rouge">application.yml</code>配置如下：</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">spring</span><span class="pi">:</span>
+  <span class="na">jackson</span><span class="pi">:</span>
+    <span class="na">date-format</span><span class="pi">:</span> <span class="s">yyyy-MM-dd HH:mm:ss</span>
+</code></pre></div></div>
+
+<p>当然，如果有必要的话，还需要配置<code class="language-plaintext highlighter-rouge">time-zone</code>时区属性，不过该属性不配置的情况下，Jackson会使用系统默认时区。</p>
+
+<p>我们从Spring Boot的源码中可以看到对Jackson的时间处理逻辑,<code class="language-plaintext highlighter-rouge">JacksonAutoConfiguration.java</code>中部分代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kt">void</span> <span class="nf">configureDateFormat</span><span class="o">(</span><span class="nc">Jackson2ObjectMapperBuilder</span> <span class="n">builder</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// We support a fully qualified class name extending DateFormat or a date</span>
+    <span class="c1">// pattern string value</span>
+    <span class="nc">String</span> <span class="n">dateFormat</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">jacksonProperties</span><span class="o">.</span><span class="na">getDateFormat</span><span class="o">();</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">dateFormat</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="nc">Class</span><span class="o">&lt;?&gt;</span> <span class="n">dateFormatClass</span> <span class="o">=</span> <span class="nc">ClassUtils</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="n">dateFormat</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+            <span class="n">builder</span><span class="o">.</span><span class="na">dateFormat</span><span class="o">((</span><span class="nc">DateFormat</span><span class="o">)</span> <span class="nc">BeanUtils</span><span class="o">.</span><span class="na">instantiateClass</span><span class="o">(</span><span class="n">dateFormatClass</span><span class="o">));</span>
+        <span class="o">}</span>
+        <span class="k">catch</span> <span class="o">(</span><span class="nc">ClassNotFoundException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">SimpleDateFormat</span> <span class="n">simpleDateFormat</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SimpleDateFormat</span><span class="o">(</span><span class="n">dateFormat</span><span class="o">);</span>
+            <span class="c1">// Since Jackson 2.6.3 we always need to set a TimeZone (see</span>
+            <span class="c1">// gh-4170). If none in our properties fallback to the Jackson's</span>
+            <span class="c1">// default</span>
+            <span class="nc">TimeZone</span> <span class="n">timeZone</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">jacksonProperties</span><span class="o">.</span><span class="na">getTimeZone</span><span class="o">();</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">timeZone</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">timeZone</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ObjectMapper</span><span class="o">().</span><span class="na">getSerializationConfig</span><span class="o">().</span><span class="na">getTimeZone</span><span class="o">();</span>
+            <span class="o">}</span>
+            <span class="n">simpleDateFormat</span><span class="o">.</span><span class="na">setTimeZone</span><span class="o">(</span><span class="n">timeZone</span><span class="o">);</span>
+            <span class="n">builder</span><span class="o">.</span><span class="na">dateFormat</span><span class="o">(</span><span class="n">simpleDateFormat</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>从上面的代码中，我们可以看到的处理逻辑：</p>
+
+<ul>
+  <li>从yml配置文件中拿到<code class="language-plaintext highlighter-rouge">dateFormat</code>属性字段</li>
+  <li>首先通过<code class="language-plaintext highlighter-rouge">ClassUtils.forName</code>方法来判断开发者配置的是否是格式化类，如果配置的是格式化类，则直接配置<code class="language-plaintext highlighter-rouge">dateFormat</code>属性</li>
+  <li>类找不到的情况下,捕获<code class="language-plaintext highlighter-rouge">ClassNotFoundException</code>异常，默认使用JDK自带的<code class="language-plaintext highlighter-rouge">SimpleDateFormat</code>类进行初始化</li>
+</ul>
+
+<p>最终，我们在<code class="language-plaintext highlighter-rouge">application.yml</code>配置文件中配置了全局的Jackson针对日期处理的格式化信息，此时我们再看<code class="language-plaintext highlighter-rouge">/queryOne</code>接口响应的内容是什么情况呢？如下图：</p>
+
+<p><img src="/assets/images/springboot/code-action-jackson/image-20210312094014588.png" alt="image-20210312094014588" /></p>
+
+<p>从图中我们可以发现，除了<code class="language-plaintext highlighter-rouge">LocalDate</code>类型的字段，包含时分秒类型的日期类型：<code class="language-plaintext highlighter-rouge">LocalDateTime</code>、<code class="language-plaintext highlighter-rouge">Date</code>、<code class="language-plaintext highlighter-rouge">Calendar</code>全部按照我们的要求将日期序列化成了<code class="language-plaintext highlighter-rouge">yyyy-MM-dd HH:mm:ss</code>格式，达到了我们的要求。</p>
+
+<h2 id="3jackson在spring-boot框架中的配置选项">3.Jackson在Spring Boot框架中的配置选项</h2>
+
+<p>在上面的时间字段序列化处理，我们已经知道了如何配置，那么在Spring Boot的框架中，针对Jackson的各个配置项主要包含哪些呢？我们通过IDEA的提示可以看到，配置如下图：</p>
+
+<p><img src="/assets/images/springboot/code-action-jackson/image-20210312092003557.png" alt="image-20210312092003557" /></p>
+
+<p>在上面的12个属性中，每个属性的配置都会对Jackson产生不同的效果，接下来，我们逐一详解每个属性配置的作用</p>
+
+<h3 id="31-date-format日期格式化">3.1 date-format日期格式化</h3>
+
+<p><code class="language-plaintext highlighter-rouge">date-format</code>在前面我们已经知道了该属性的作用，主要是针对日期字段的格式化</p>
+
+<h3 id="32-time-zone时区">3.2 time-zone时区</h3>
+
+<p><code class="language-plaintext highlighter-rouge">time-zone</code>字段也是和日期字段类型，使用不同的时区,最终日期类型字段响应的结果会不一样</p>
+
+<p>时区的表示方法有两种：</p>
+
+<ul>
+  <li>指定时区的名称，例如：<code class="language-plaintext highlighter-rouge">Asia/Shanghai</code>,<code class="language-plaintext highlighter-rouge">America/Los_Angeles</code></li>
+  <li>通过格林威治平时<code class="language-plaintext highlighter-rouge">GMT</code>针对时分秒做<code class="language-plaintext highlighter-rouge">+</code>或者<code class="language-plaintext highlighter-rouge">-</code>自定义操作</li>
+</ul>
+
+<p>通过指定时区的名称，假设我们指定当前的项目是<code class="language-plaintext highlighter-rouge">America/Los_Angeles</code>，那么接口响应的数据是什么效果呢?</p>
+
+<blockquote>
+  <p>PS:时区名称如果不是很清楚的话，一般在Linux服务器的<code class="language-plaintext highlighter-rouge">/usr/share/zoneinfo</code>目录可以进行查看，如下图：</p>
+
+  <p><img src="/assets/images/springboot/code-action-jackson/image-20210312131802521.png" alt="image-20210312131802521" /></p>
+</blockquote>
+
+<p><code class="language-plaintext highlighter-rouge">application.yml</code>:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">spring</span><span class="pi">:</span>
+  <span class="na">jackson</span><span class="pi">:</span>
+    <span class="na">date-format</span><span class="pi">:</span> <span class="s">yyyy-MM-dd HH:mm:ss</span>
+    <span class="na">time-zone</span><span class="pi">:</span> <span class="s">America/Los_Angeles</span>
+</code></pre></div></div>
+
+<p>效果图如下：</p>
+
+<p><img src="/assets/images/springboot/code-action-jackson/image-20210312130547087.png" alt="image-20210312130547087" /></p>
+
+<p>我们在结合代码来分析：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//User.java</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="nc">User</span> <span class="nf">buildOne</span><span class="o">(){</span>
+    <span class="nc">User</span> <span class="n">user</span><span class="o">=</span><span class="k">new</span> <span class="nc">User</span><span class="o">();</span>
+    <span class="nc">LocalDateTime</span> <span class="n">now</span><span class="o">=</span><span class="nc">LocalDateTime</span><span class="o">.</span><span class="na">now</span><span class="o">();</span>
+    <span class="n">user</span><span class="o">.</span><span class="na">setWorkDate</span><span class="o">(</span><span class="n">now</span><span class="o">.</span><span class="na">plusYears</span><span class="o">(</span><span class="mi">25</span><span class="o">).</span><span class="na">toLocalDate</span><span class="o">());</span>
+    <span class="n">user</span><span class="o">.</span><span class="na">setStudyDate</span><span class="o">(</span><span class="nc">Date</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">now</span><span class="o">.</span><span class="na">plusYears</span><span class="o">(</span><span class="mi">5</span><span class="o">).</span><span class="na">atZone</span><span class="o">(</span><span class="nc">ZoneId</span><span class="o">.</span><span class="na">systemDefault</span><span class="o">()).</span><span class="na">toInstant</span><span class="o">()));</span>
+    <span class="n">user</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">"姓名-"</span><span class="o">+</span><span class="nc">RandomUtil</span><span class="o">.</span><span class="na">randomString</span><span class="o">(</span><span class="mi">5</span><span class="o">));</span>
+    <span class="n">user</span><span class="o">.</span><span class="na">setAge</span><span class="o">(</span><span class="nc">RandomUtil</span><span class="o">.</span><span class="na">randomInt</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">100</span><span class="o">));</span>
+    <span class="n">user</span><span class="o">.</span><span class="na">setBirthday</span><span class="o">(</span><span class="n">now</span><span class="o">);</span>
+    <span class="n">user</span><span class="o">.</span><span class="na">setFirstWorkDate</span><span class="o">(</span><span class="nc">Calendar</span><span class="o">.</span><span class="na">getInstance</span><span class="o">());</span>
+    <span class="k">return</span> <span class="n">user</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>由于洛杉矶时区与上海时区相差16个小时，因此，Jackson框架针对日期的序列化时，分别做了不同类型的处理，但我们也能看出差别</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">LocalDateTime</code>、<code class="language-plaintext highlighter-rouge">LocalDate</code>类型的字段，Jackson的时区设置不会对该字段产生影响(因为这两个日期类型自带时区属性)</li>
+  <li><code class="language-plaintext highlighter-rouge">Date</code>、<code class="language-plaintext highlighter-rouge">Calendar</code>类型的字段受Jackson序列化框架的时区设置影响</li>
+</ul>
+
+<p>另外一种方式是通过格林威治平时(GMT)做加减法，主要有两种格式支持：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">GMT+HHMM</code>或者<code class="language-plaintext highlighter-rouge">GMT-HHMM</code>或者<code class="language-plaintext highlighter-rouge">GMT+H</code>:其中HH代表的是小时数，MM代表的是分钟数，取值范围是0-9,例如我们常见的GMT+8代表东八区，也就是北京时间</li>
+  <li><code class="language-plaintext highlighter-rouge">GMT+HH:MM</code>或者<code class="language-plaintext highlighter-rouge">GMT-HH:MM</code>:其中HH代表的是小时数，MM代表的是分钟数，取值范围是0-9，和上面意思差不多</li>
+</ul>
+
+<p>可以自己写测试代码进行测试，示例如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TimeTest</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">LocalDateTime</span> <span class="n">localDateTime</span><span class="o">=</span><span class="nc">LocalDateTime</span><span class="o">.</span><span class="na">now</span><span class="o">();</span>
+        <span class="nc">DateTimeFormatter</span> <span class="n">dateTimeFormatter</span><span class="o">=</span><span class="nc">DateTimeFormatter</span><span class="o">.</span><span class="na">ofPattern</span><span class="o">(</span><span class="s">"yyyy-MM-dd HH:mm:ss"</span><span class="o">);</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">localDateTime</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="n">dateTimeFormatter</span><span class="o">));</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="nc">LocalDateTime</span><span class="o">.</span><span class="na">now</span><span class="o">(</span><span class="nc">ZoneId</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="s">"GMT+0901"</span><span class="o">)).</span><span class="na">format</span><span class="o">(</span><span class="n">dateTimeFormatter</span><span class="o">));</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="nc">LocalDateTime</span><span class="o">.</span><span class="na">now</span><span class="o">(</span><span class="nc">ZoneId</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="s">"GMT+09:01"</span><span class="o">)).</span><span class="na">format</span><span class="o">(</span><span class="n">dateTimeFormatter</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="33-locale本地化">3.3 locale本地化</h3>
+
+<p>JSON序列化时Locale的变量设置</p>
+
+<h3 id="34-visibility访问级别">3.4 visibility访问级别</h3>
+
+<p>Jackson支持从私有字段中读取值,但是默认情况下不这样做,如果我们的项目中存在不同的序列化反序列化需求，那么我们可以在配置文件中对<code class="language-plaintext highlighter-rouge">visibility</code>进行配置</p>
+
+<p>我们将上面<code class="language-plaintext highlighter-rouge">User.java</code>代码中的name属性的get方法修饰符从<code class="language-plaintext highlighter-rouge">public</code>变更为<code class="language-plaintext highlighter-rouge">private</code>,其他字段保持不变</p>
+
+<p>代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">User</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nc">Integer</span> <span class="n">age</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Date</span> <span class="n">nowDate</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nc">LocalDateTime</span> <span class="n">birthday</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nc">Date</span> <span class="n">studyDate</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nc">LocalDate</span> <span class="n">workDate</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nc">Calendar</span> <span class="n">firstWorkDate</span><span class="o">;</span>
+
+    <span class="c1">//getter方法修饰符从public修改为private</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">name</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="c1">//other setter and getter</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>此时，我们通过调用<code class="language-plaintext highlighter-rouge">/queryOne</code>接口响应结果如下：</p>
+
+<p><img src="/assets/images/springboot/code-action-jackson/image-20210314191124147.png" alt="image-20210314191124147" /></p>
+
+<p>从结果中我们可以看到，由于我们将name属性的<code class="language-plaintext highlighter-rouge">getter</code>方法设置为了<code class="language-plaintext highlighter-rouge">private</code>，因此jackson在序列化时，没有拿到该字段</p>
+
+<p>此时，我们再修改<code class="language-plaintext highlighter-rouge">application.yml</code>的配置，如下：</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">spring</span><span class="pi">:</span>
+  <span class="na">jackson</span><span class="pi">:</span>
+    <span class="na">visibility</span><span class="pi">:</span>
+      <span class="na">getter</span><span class="pi">:</span> <span class="s">any</span>
+</code></pre></div></div>
+
+<p>我们通过将<code class="language-plaintext highlighter-rouge">getter</code>设置为<code class="language-plaintext highlighter-rouge">any</code>级别的类型，再调用<code class="language-plaintext highlighter-rouge">/queryOne</code>接口，响应结果如下：</p>
+
+<p><img src="/assets/images/springboot/code-action-jackson/image-20210314191405490.png" alt="image-20210314191405490" /></p>
+
+<p>从图中可以看出，jackson序列化结果中又出现了name属性，这代表即使name字段的属性和<code class="language-plaintext highlighter-rouge">getter</code>方法都是<code class="language-plaintext highlighter-rouge">private</code>，但是jackson还是获取到了该成员变量的值，并且进行了序列化处理。</p>
+
+<p>通过设置<code class="language-plaintext highlighter-rouge">visibility</code>属性即可达到上面的效果。开发者根据自己的需要自行进行选择。</p>
+
+<h3 id="35-property-naming-strategy属性命名策略">3.5 property-naming-strategy属性命名策略</h3>
+
+<p>通常比较常见的我们针对java代码中的实体类属性一般都是<a href="https://baike.baidu.com/item/%E9%AA%86%E9%A9%BC%E5%91%BD%E5%90%8D%E6%B3%95/7794053?fromtitle=%E9%A9%BC%E5%B3%B0%E5%91%BD%E5%90%8D%E6%B3%95&amp;fromid=7560610&amp;fr=aladdin">驼峰命名法(Camel-Case)</a>，但是Jackson序列化框架也提供了更多的序列化策略，而<code class="language-plaintext highlighter-rouge">property-naming-strategy</code>就是配置该属性的。</p>
+
+<p>先来看Spring Boot框架如何配置jackson的命名策略</p>
+
+<p><code class="language-plaintext highlighter-rouge">JacksonAutoConfiguration.java</code></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kt">void</span> <span class="nf">configurePropertyNamingStrategyField</span><span class="o">(</span><span class="nc">Jackson2ObjectMapperBuilder</span> <span class="n">builder</span><span class="o">,</span> <span class="nc">String</span> <span class="n">fieldName</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// Find the field (this way we automatically support new constants</span>
+    <span class="c1">// that may be added by Jackson in the future)</span>
+    <span class="nc">Field</span> <span class="n">field</span> <span class="o">=</span> <span class="nc">ReflectionUtils</span><span class="o">.</span><span class="na">findField</span><span class="o">(</span><span class="nc">PropertyNamingStrategy</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">fieldName</span><span class="o">,</span>
+                                            <span class="nc">PropertyNamingStrategy</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="nc">Assert</span><span class="o">.</span><span class="na">notNull</span><span class="o">(</span><span class="n">field</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="s">"Constant named '"</span> <span class="o">+</span> <span class="n">fieldName</span> <span class="o">+</span> <span class="s">"' not found on "</span>
+                   <span class="o">+</span> <span class="nc">PropertyNamingStrategy</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="n">builder</span><span class="o">.</span><span class="na">propertyNamingStrategy</span><span class="o">((</span><span class="nc">PropertyNamingStrategy</span><span class="o">)</span> <span class="n">field</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="kc">null</span><span class="o">));</span>
+    <span class="o">}</span>
+    <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalStateException</span><span class="o">(</span><span class="n">ex</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>通过反射，直接获取<code class="language-plaintext highlighter-rouge">PropertyNamingStrategy</code>类中的成员变量的值</p>
+
+<p><code class="language-plaintext highlighter-rouge">PropertyNamingStrategy</code>定义了Jackson(<code class="language-plaintext highlighter-rouge">2.11.4</code>)框架中的命名策略常量成员变量</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.fasterxml.jackson.databind</span><span class="o">;</span>
+
+<span class="c1">//other import</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">PropertyNamingStrategy</span> <span class="c1">// NOTE: was abstract until 2.7</span>
+    <span class="kd">implements</span> <span class="n">java</span><span class="o">.</span><span class="na">io</span><span class="o">.</span><span class="na">Serializable</span>
+<span class="o">{</span>
+    <span class="cm">/**
+     * Naming convention used in languages like C, where words are in lower-case
+     * letters, separated by underscores.
+     * See {@link SnakeCaseStrategy} for details.
+     *
+     * @since 2.7 (was formerly called {@link #CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES})
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">PropertyNamingStrategy</span> <span class="no">SNAKE_CASE</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SnakeCaseStrategy</span><span class="o">();</span>
+
+    <span class="cm">/**
+     * Naming convention used in languages like Pascal, where words are capitalized
+     * and no separator is used between words.
+     * See {@link PascalCaseStrategy} for details.
+     *
+     * @since 2.7 (was formerly called {@link #PASCAL_CASE_TO_CAMEL_CASE})
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">PropertyNamingStrategy</span> <span class="no">UPPER_CAMEL_CASE</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">UpperCamelCaseStrategy</span><span class="o">();</span>
+
+    <span class="cm">/**
+     * Naming convention used in Java, where words other than first are capitalized
+     * and no separator is used between words. Since this is the native Java naming convention,
+     * naming strategy will not do any transformation between names in data (JSON) and
+     * POJOS.
+     *
+     * @since 2.7 (was formerly called {@link #PASCAL_CASE_TO_CAMEL_CASE})
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">PropertyNamingStrategy</span> <span class="no">LOWER_CAMEL_CASE</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PropertyNamingStrategy</span><span class="o">();</span>
+    
+    <span class="cm">/**
+     * Naming convention in which all words of the logical name are in lower case, and
+     * no separator is used between words.
+     * See {@link LowerCaseStrategy} for details.
+     * 
+     * @since 2.4
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">PropertyNamingStrategy</span> <span class="no">LOWER_CASE</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LowerCaseStrategy</span><span class="o">();</span>
+
+    <span class="cm">/**
+     * Naming convention used in languages like Lisp, where words are in lower-case
+     * letters, separated by hyphens.
+     * See {@link KebabCaseStrategy} for details.
+     * 
+     * @since 2.7
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">PropertyNamingStrategy</span> <span class="no">KEBAB_CASE</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">KebabCaseStrategy</span><span class="o">();</span>
+
+    <span class="cm">/**
+     * Naming convention widely used as configuration properties name, where words are in
+     * lower-case letters, separated by dots.
+     * See {@link LowerDotCaseStrategy} for details.
+     *
+     * @since 2.10
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">PropertyNamingStrategy</span> <span class="no">LOWER_DOT_CASE</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LowerDotCaseStrategy</span><span class="o">();</span>
+    
+    <span class="c1">//others...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>从源码中我们可以看到，有六种策略供我们进行配置，配置示例如下：</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">spring</span><span class="pi">:</span>
+  <span class="na">jackson</span><span class="pi">:</span>
+    <span class="na">date-format</span><span class="pi">:</span> <span class="s">yyyy-MM-dd HH:mm:ss</span>
+    <span class="na">locale</span><span class="pi">:</span> <span class="s">zh_CN</span>
+    <span class="na">time-zone</span><span class="pi">:</span> <span class="s">GMT+8</span>
+    <span class="na">visibility</span><span class="pi">:</span>
+      <span class="na">getter</span><span class="pi">:</span> <span class="s">any</span>
+    <span class="na">property-naming-strategy</span><span class="pi">:</span> <span class="s">LOWER_CAMEL_CASE</span>
+</code></pre></div></div>
+
+<p><strong>SNAKE_CASE</strong></p>
+
+<p><code class="language-plaintext highlighter-rouge">SNAKE_CASE</code>主要包含的规则,详见<a href="https://www.javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/latest/com/fasterxml/jackson/databind/PropertyNamingStrategy.SnakeCaseStrategy.html">SnakeCaseStrategy</a>：</p>
+
+<ul>
+  <li>java属性名称中所有大写的字符都会转换为两个字符，下划线和该字符的小写形式，例如<code class="language-plaintext highlighter-rouge">userName</code>会转换为<code class="language-plaintext highlighter-rouge">user_name</code>,对于连续性的大写字符，近第一个进行下划线转换，后面的大小字符则是小写，例如<code class="language-plaintext highlighter-rouge">theWWW</code>会转换为<code class="language-plaintext highlighter-rouge">the_www</code></li>
+  <li>对于首字母大写的情况，近转成小写，例如:<code class="language-plaintext highlighter-rouge">Results</code>会转换为<code class="language-plaintext highlighter-rouge">results</code>，并不会转换为<code class="language-plaintext highlighter-rouge">_results</code></li>
+  <li>针对属性中已经包含下划线的情况，仅做小写转换处理</li>
+  <li>下划线出现在首位的情况下，会被去除处理，例如属性名：<code class="language-plaintext highlighter-rouge">_user</code>会被转换为<code class="language-plaintext highlighter-rouge">user</code></li>
+</ul>
+
+<p>真实效果如下图：</p>
+
+<p><img src="/assets/images/springboot/code-action-jackson/image-20210315125556270.png" alt="image-20210315125556270" /></p>
+
+<p><strong>UPPER_CAMEL_CASE</strong></p>
+
+<p><code class="language-plaintext highlighter-rouge">UPPER_CAMEL_CASE</code>顾名思义，驼峰命名法的规则，只是首字母会转换为大写，详见<a href="https://www.javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/latest/com/fasterxml/jackson/databind/PropertyNamingStrategy.UpperCamelCaseStrategy.html">UpperCamelCaseStrategy</a></p>
+
+<p>真实效果图如下：</p>
+
+<p><img src="/assets/images/springboot/code-action-jackson/image-20210315131430536.png" alt="image-20210315131430536" /></p>
+
+<p><strong>LOWER_CAMEL_CASE</strong></p>
+
+<p><code class="language-plaintext highlighter-rouge">LOWER_CAMEL_CASE</code>效果和<code class="language-plaintext highlighter-rouge">UPPER_CAMEL_CASE</code>正好相反，其首字母会变成小写，详见<a href="https://www.javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/latest/com/fasterxml/jackson/databind/PropertyNamingStrategies.LowerCamelCaseStrategy.html">LowerCamelCaseStrategy</a></p>
+
+<p>效果图如下：</p>
+
+<p><img src="/assets/images/springboot/code-action-jackson/image-20210315131729151.png" alt="image-20210315131729151" /></p>
+
+<p><strong>LOWER_CASE</strong></p>
+
+<p><code class="language-plaintext highlighter-rouge">LOWER_CASE</code>从命名来看很明显，将属性名 全部转为小写，详见<a href="https://www.javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/latest/com/fasterxml/jackson/databind/PropertyNamingStrategy.LowerCaseStrategy.html">LowerCaseStrategy</a></p>
+
+<p><strong>KEBAB_CASE</strong></p>
+
+<p><code class="language-plaintext highlighter-rouge">KEBAB_CASE</code>策略和<code class="language-plaintext highlighter-rouge">SNAKE_CASE</code>规则类似，只是下划线变成了横线<code class="language-plaintext highlighter-rouge">-</code>,详见<a href="https://www.javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/latest/com/fasterxml/jackson/databind/PropertyNamingStrategy.KebabCaseStrategy.html">KebabCaseStrategy</a></p>
+
+<p>效果图如下：</p>
+
+<p><img src="/assets/images/springboot/code-action-jackson/image-20210315132557384.png" alt="image-20210315132557384" /></p>
+
+<p><strong>LOWER_DOT_CASE</strong></p>
+
+<p><code class="language-plaintext highlighter-rouge">LOWER_DOT_CASE</code>策略和<code class="language-plaintext highlighter-rouge">KEBAB_CASE</code>规则相似，只是由横线变成了点<code class="language-plaintext highlighter-rouge">.</code>，详见<a href="https://www.javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/latest/com/fasterxml/jackson/databind/PropertyNamingStrategy.LowerDotCaseStrategy.html">LowerDotCaseStrategy</a></p>
+
+<p>效果图如下：</p>
+
+<p><img src="/assets/images/springboot/code-action-jackson/image-20210315132720262.png" alt="image-20210315132720262" /></p>
+
+<p><strong>总结</strong>：看了上面这么多属性名称的策略，其实每一种类型只是不同的场景下才需要，如果上面jackson给定的默认策略名称无法满足，我们从源码中也能看到，通过自定义实现类，也能满足企业的个性化需求，非常方便。</p>
+
+<h3 id="36-mapper通用功能开关配置">3.6 mapper通用功能开关配置</h3>
+
+<p><code class="language-plaintext highlighter-rouge">mapper</code>属性是一个Map类型，主要是针对<code class="language-plaintext highlighter-rouge">MapperFeature</code>定义开关属性，是否启用这些特性</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+* Jackson general purpose on/off features.
+*/</span>
+<span class="kd">private</span> <span class="kd">final</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">MapperFeature</span><span class="o">,</span> <span class="nc">Boolean</span><span class="o">&gt;</span> <span class="n">mapper</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">EnumMap</span><span class="o">&lt;&gt;(</span><span class="nc">MapperFeature</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>在<code class="language-plaintext highlighter-rouge">MapperFeature.java</code>中，我们可以跟踪源码来看：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * Enumeration that defines simple on/off features to set
+ * for {@link ObjectMapper}, and accessible (but not changeable)
+ * via {@link ObjectReader} and {@link ObjectWriter} (as well as
+ * through various convenience methods through context objects).
+ *&lt;p&gt;
+ * Note that in addition to being only mutable via {@link ObjectMapper},
+ * changes only take effect when done &lt;b&gt;before any serialization or
+ * deserialization&lt;/b&gt; calls -- that is, caller must follow
+ * "configure-then-use" pattern.
+ */</span>
+<span class="kd">public</span> <span class="kd">enum</span> <span class="nc">MapperFeature</span> <span class="kd">implements</span> <span class="nc">ConfigFeature</span>
+<span class="o">{</span>
+    <span class="c1">//.......</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">MapperFeature</code>是一个枚举类型，对当前jackson的一些特性通过枚举变量的方式来定义开关属性，也是方便使用者来使用的。</p>
+
+<p>主要包含以下枚举变量：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">USE_ANNOTATIONS</code>:</li>
+  <li><code class="language-plaintext highlighter-rouge">USE_GETTERS_AS_SETTERS</code></li>
+  <li><code class="language-plaintext highlighter-rouge">PROPAGATE_TRANSIENT_MARKER</code></li>
+  <li><code class="language-plaintext highlighter-rouge">AUTO_DETECT_CREATORS</code></li>
+  <li><code class="language-plaintext highlighter-rouge">AUTO_DETECT_FIELDS</code></li>
+  <li><code class="language-plaintext highlighter-rouge">AUTO_DETECT_GETTERS</code></li>
+  <li><code class="language-plaintext highlighter-rouge">AUTO_DETECT_IS_GETTERS</code></li>
+  <li><code class="language-plaintext highlighter-rouge">AUTO_DETECT_SETTERS</code></li>
+  <li><code class="language-plaintext highlighter-rouge">REQUIRE_SETTERS_FOR_GETTERS</code></li>
+  <li><code class="language-plaintext highlighter-rouge">ALLOW_FINAL_FIELDS_AS_MUTATORS</code></li>
+  <li><code class="language-plaintext highlighter-rouge">INFER_PROPERTY_MUTATORS</code></li>
+  <li><code class="language-plaintext highlighter-rouge">INFER_CREATOR_FROM_CONSTRUCTOR_PROPERTIES</code></li>
+  <li><code class="language-plaintext highlighter-rouge">CAN_OVERRIDE_ACCESS_MODIFIERS</code></li>
+  <li><code class="language-plaintext highlighter-rouge">OVERRIDE_PUBLIC_ACCESS_MODIFIERS</code></li>
+  <li><code class="language-plaintext highlighter-rouge">USE_STATIC_TYPING</code></li>
+  <li><code class="language-plaintext highlighter-rouge">USE_BASE_TYPE_AS_DEFAULT_IMPL</code></li>
+  <li><code class="language-plaintext highlighter-rouge">DEFAULT_VIEW_INCLUSION</code></li>
+  <li><code class="language-plaintext highlighter-rouge">SORT_PROPERTIES_ALPHABETICALLY</code></li>
+  <li><code class="language-plaintext highlighter-rouge">ACCEPT_CASE_INSENSITIVE_PROPERTIES</code></li>
+  <li><code class="language-plaintext highlighter-rouge">ACCEPT_CASE_INSENSITIVE_ENUMS</code></li>
+  <li><code class="language-plaintext highlighter-rouge">ACCEPT_CASE_INSENSITIVE_VALUES</code></li>
+  <li><code class="language-plaintext highlighter-rouge">USE_WRAPPER_NAME_AS_PROPERTY_NAME</code></li>
+  <li><code class="language-plaintext highlighter-rouge">USE_STD_BEAN_NAMING</code></li>
+  <li><code class="language-plaintext highlighter-rouge">ALLOW_EXPLICIT_PROPERTY_RENAMING</code></li>
+  <li><code class="language-plaintext highlighter-rouge">ALLOW_COERCION_OF_SCALARS</code></li>
+  <li><code class="language-plaintext highlighter-rouge">IGNORE_DUPLICATE_MODULE_REGISTRATIONS</code></li>
+  <li><code class="language-plaintext highlighter-rouge">IGNORE_MERGE_FOR_UNMERGEABLE</code></li>
+  <li><code class="language-plaintext highlighter-rouge">BLOCK_UNSAFE_POLYMORPHIC_BASE_TYPES</code></li>
+</ul>
+
+<h3 id="37-serialization序列化特性开关配置">3.7 serialization序列化特性开关配置</h3>
+
+<p><code class="language-plaintext highlighter-rouge">serialization</code>属性同<code class="language-plaintext highlighter-rouge">mapper</code>类似，也是一个Map类型的属性</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+* Jackson on/off features that affect the way Java objects are serialized.
+*/</span>
+<span class="kd">private</span> <span class="kd">final</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">SerializationFeature</span><span class="o">,</span> <span class="nc">Boolean</span><span class="o">&gt;</span> <span class="n">serialization</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">EnumMap</span><span class="o">&lt;&gt;(</span><span class="nc">SerializationFeature</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</code></pre></div></div>
+
+<h3 id="38-deserialization反序列化开关配置">3.8 deserialization反序列化开关配置</h3>
+
+<p><code class="language-plaintext highlighter-rouge">deserialization</code>反序列化配置</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+* Jackson on/off features that affect the way Java objects are deserialized.
+ */</span>
+<span class="kd">private</span> <span class="kd">final</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">DeserializationFeature</span><span class="o">,</span> <span class="nc">Boolean</span><span class="o">&gt;</span> <span class="n">deserialization</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">EnumMap</span><span class="o">&lt;&gt;(</span><span class="nc">DeserializationFeature</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</code></pre></div></div>
+
+<h3 id="39-parser配置">3.9 parser配置</h3>
+
+<h3 id="310-generator配置">3.10 generator配置</h3>
+
+<h3 id="311-defaultpropertyinclusion序列化包含的属性配置">3.11 defaultPropertyInclusion序列化包含的属性配置</h3>
+
+<p>该属性是一个枚举配置，主要包含：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">ALWAYS</code>:顾名思义，始终包含，和属性的值无关</li>
+  <li><code class="language-plaintext highlighter-rouge">NON_NULL</code>:值非空的属性才会包含属性</li>
+  <li><code class="language-plaintext highlighter-rouge">NON_ABSENT</code>:值非空的属性，或者<code class="language-plaintext highlighter-rouge">Optional</code>类型的属性非空</li>
+  <li><code class="language-plaintext highlighter-rouge">NON_EMPTY</code>: 空值的属性不包含</li>
+  <li><code class="language-plaintext highlighter-rouge">NON_DEFAULT</code>：不使用jackson的默认规则对该字段进行序列化,详见<a href="https://www.logicbig.com/tutorials/misc/jackson/json-include-non-default.html">示例</a></li>
+  <li><code class="language-plaintext highlighter-rouge">CUSTOM</code>:自定义规则</li>
+  <li><code class="language-plaintext highlighter-rouge">USE_DEFAULTS</code>:配置使用该规则的属性字段，将会优先使用class上的注解规则，否则会使用全局的序列化规则，详见<a href="https://www.logicbig.com/tutorials/misc/jackson/json-include-use-defaults.html">示例</a></li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">CUSTOM</code>自定义规则是需要开发者在属性字段上使用<code class="language-plaintext highlighter-rouge">@JsonInclude</code>注解，并且指定<code class="language-plaintext highlighter-rouge">valueFilter</code>属性，该属性需要传递一个<code class="language-plaintext highlighter-rouge">Class</code>，示例如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//User.java</span>
+<span class="c1">//指定value级别是CUSTOM</span>
+<span class="nd">@JsonInclude</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="nc">JsonInclude</span><span class="o">.</span><span class="na">Include</span><span class="o">.</span><span class="na">CUSTOM</span><span class="o">,</span> <span class="n">valueFilter</span> <span class="o">=</span> <span class="nc">StringFilter</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">StringFilter</code>则是判断非空的依据，该依据由开发者自己定义，返回<code class="language-plaintext highlighter-rouge">true</code>将会被排除，<code class="language-plaintext highlighter-rouge">false</code>则不会排除，示例如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//自定义非空判断规则</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">StringFilter</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">equals</span><span class="o">(</span><span class="nc">Object</span> <span class="n">other</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">other</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="c1">// Filter null's.</span>
+            <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="c1">// Filter "custom_string".</span>
+        <span class="k">return</span> <span class="s">"custom_string"</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">other</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="4spring-boot针对jackson的约定配置做的事情">4.Spring Boot针对Jackson的约定配置做的事情</h2>
+
+<p>在前面的文章中，我们已经详细的了解了Jackson在Spring Boot框架中的各个配置项，那么Spring Boot针对Jackson框架在约定配置时会做哪些事情呢?</p>
+
+<p>在Spring Boot的<code class="language-plaintext highlighter-rouge">spring-boot-autoconfigure-x.x.jar</code>包中，我们可以看到Spring Boot框架针对jackson的处理源码，如下图：</p>
+
+<p><img src="/assets/images/springboot/code-action-jackson/image-20210320122535467.png" alt="image-20210320122535467" /></p>
+
+<p>主要包含三个类：</p>
+
+<ul>
+  <li>JacksonProperties:Spring Boot框架提供jackson的配置属性类，即开发者在<code class="language-plaintext highlighter-rouge">application.yml</code>配置文件中的配置项属性</li>
+  <li>JacksonAutoConfiguration:Jackson的默认注入配置类</li>
+  <li>Jackson2ObjectMapperBuilderCustomizer:自定义用于注入jackson的配置辅助接口</li>
+</ul>
+
+<p>核心类是<code class="language-plaintext highlighter-rouge">JacksonAutoConfiguration.java</code>,该类是Spring Boot框架将Jackson相关实体Bean注入Spring容器的关键配置类。其主要作用：</p>
+
+<ul>
+  <li>注入Jackson的<code class="language-plaintext highlighter-rouge">ObjectMapper</code>实体Bean到Spring容器中</li>
+  <li>注入<code class="language-plaintext highlighter-rouge">ParameterNamesModule</code>实体Bean到Spring容器中</li>
+  <li>注入<code class="language-plaintext highlighter-rouge">Jackson2ObjectMapperBuilder</code>实体Bean</li>
+  <li>注入<code class="language-plaintext highlighter-rouge">JsonComponentModule</code>实体Bean</li>
+  <li>注入<code class="language-plaintext highlighter-rouge">StandardJackson2ObjectMapperBuilderCustomizer</code>实体Bean，该类是上面<code class="language-plaintext highlighter-rouge">Jackson2ObjectMapperBuilderCustomizer</code>的实现类，主要用于接收<code class="language-plaintext highlighter-rouge">JacksonProperties</code>属性，将Jackson的外部配置属性接收，然后最终执行<code class="language-plaintext highlighter-rouge">customize</code>方法，构建<code class="language-plaintext highlighter-rouge">ObjectMapper</code>所需要的<code class="language-plaintext highlighter-rouge">Jackson2ObjectMapperBuilder</code>属性，最终为<code class="language-plaintext highlighter-rouge">ObjectMapper</code>属性赋值准备</li>
+</ul>
+
+<p>源码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span><span class="o">(</span><span class="n">proxyBeanMethods</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+<span class="nd">@ConditionalOnClass</span><span class="o">(</span><span class="nc">ObjectMapper</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">JacksonAutoConfiguration</span> <span class="o">{</span>
+
+	<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">Map</span><span class="o">&lt;?,</span> <span class="nc">Boolean</span><span class="o">&gt;</span> <span class="no">FEATURE_DEFAULTS</span><span class="o">;</span>
+
+	<span class="kd">static</span> <span class="o">{</span>
+		<span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">,</span> <span class="nc">Boolean</span><span class="o">&gt;</span> <span class="n">featureDefaults</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+		<span class="n">featureDefaults</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">SerializationFeature</span><span class="o">.</span><span class="na">WRITE_DATES_AS_TIMESTAMPS</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+		<span class="n">featureDefaults</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">SerializationFeature</span><span class="o">.</span><span class="na">WRITE_DURATIONS_AS_TIMESTAMPS</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+		<span class="no">FEATURE_DEFAULTS</span> <span class="o">=</span> <span class="nc">Collections</span><span class="o">.</span><span class="na">unmodifiableMap</span><span class="o">(</span><span class="n">featureDefaults</span><span class="o">);</span>
+	<span class="o">}</span>
+
+	<span class="nd">@Bean</span>
+	<span class="kd">public</span> <span class="nc">JsonComponentModule</span> <span class="nf">jsonComponentModule</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="k">new</span> <span class="nf">JsonComponentModule</span><span class="o">();</span>
+	<span class="o">}</span>
+
+	<span class="nd">@Configuration</span><span class="o">(</span><span class="n">proxyBeanMethods</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+	<span class="nd">@ConditionalOnClass</span><span class="o">(</span><span class="nc">Jackson2ObjectMapperBuilder</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+	<span class="kd">static</span> <span class="kd">class</span> <span class="nc">JacksonObjectMapperConfiguration</span> <span class="o">{</span>
+
+		<span class="nd">@Bean</span>
+		<span class="nd">@Primary</span>
+		<span class="nd">@ConditionalOnMissingBean</span>
+		<span class="nc">ObjectMapper</span> <span class="nf">jacksonObjectMapper</span><span class="o">(</span><span class="nc">Jackson2ObjectMapperBuilder</span> <span class="n">builder</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">return</span> <span class="n">builder</span><span class="o">.</span><span class="na">createXmlMapper</span><span class="o">(</span><span class="kc">false</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
+		<span class="o">}</span>
+
+	<span class="o">}</span>
+
+	<span class="nd">@Configuration</span><span class="o">(</span><span class="n">proxyBeanMethods</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+	<span class="nd">@ConditionalOnClass</span><span class="o">(</span><span class="nc">ParameterNamesModule</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+	<span class="kd">static</span> <span class="kd">class</span> <span class="nc">ParameterNamesModuleConfiguration</span> <span class="o">{</span>
+
+		<span class="nd">@Bean</span>
+		<span class="nd">@ConditionalOnMissingBean</span>
+		<span class="nc">ParameterNamesModule</span> <span class="nf">parameterNamesModule</span><span class="o">()</span> <span class="o">{</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="nf">ParameterNamesModule</span><span class="o">(</span><span class="nc">JsonCreator</span><span class="o">.</span><span class="na">Mode</span><span class="o">.</span><span class="na">DEFAULT</span><span class="o">);</span>
+		<span class="o">}</span>
+
+	<span class="o">}</span>
+
+	<span class="nd">@Configuration</span><span class="o">(</span><span class="n">proxyBeanMethods</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+	<span class="nd">@ConditionalOnClass</span><span class="o">(</span><span class="nc">Jackson2ObjectMapperBuilder</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+	<span class="kd">static</span> <span class="kd">class</span> <span class="nc">JacksonObjectMapperBuilderConfiguration</span> <span class="o">{</span>
+
+		<span class="nd">@Bean</span>
+		<span class="nd">@Scope</span><span class="o">(</span><span class="s">"prototype"</span><span class="o">)</span>
+		<span class="nd">@ConditionalOnMissingBean</span>
+		<span class="nc">Jackson2ObjectMapperBuilder</span> <span class="nf">jacksonObjectMapperBuilder</span><span class="o">(</span><span class="nc">ApplicationContext</span> <span class="n">applicationContext</span><span class="o">,</span>
+				<span class="nc">List</span><span class="o">&lt;</span><span class="nc">Jackson2ObjectMapperBuilderCustomizer</span><span class="o">&gt;</span> <span class="n">customizers</span><span class="o">)</span> <span class="o">{</span>
+			<span class="nc">Jackson2ObjectMapperBuilder</span> <span class="n">builder</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Jackson2ObjectMapperBuilder</span><span class="o">();</span>
+			<span class="n">builder</span><span class="o">.</span><span class="na">applicationContext</span><span class="o">(</span><span class="n">applicationContext</span><span class="o">);</span>
+			<span class="n">customize</span><span class="o">(</span><span class="n">builder</span><span class="o">,</span> <span class="n">customizers</span><span class="o">);</span>
+			<span class="k">return</span> <span class="n">builder</span><span class="o">;</span>
+		<span class="o">}</span>
+
+		<span class="kd">private</span> <span class="kt">void</span> <span class="nf">customize</span><span class="o">(</span><span class="nc">Jackson2ObjectMapperBuilder</span> <span class="n">builder</span><span class="o">,</span>
+				<span class="nc">List</span><span class="o">&lt;</span><span class="nc">Jackson2ObjectMapperBuilderCustomizer</span><span class="o">&gt;</span> <span class="n">customizers</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">for</span> <span class="o">(</span><span class="nc">Jackson2ObjectMapperBuilderCustomizer</span> <span class="n">customizer</span> <span class="o">:</span> <span class="n">customizers</span><span class="o">)</span> <span class="o">{</span>
+				<span class="n">customizer</span><span class="o">.</span><span class="na">customize</span><span class="o">(</span><span class="n">builder</span><span class="o">);</span>
+			<span class="o">}</span>
+		<span class="o">}</span>
+
+	<span class="o">}</span>
+    <span class="nd">@Configuration</span><span class="o">(</span><span class="n">proxyBeanMethods</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+	<span class="nd">@ConditionalOnClass</span><span class="o">(</span><span class="nc">Jackson2ObjectMapperBuilder</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+	<span class="nd">@EnableConfigurationProperties</span><span class="o">(</span><span class="nc">JacksonProperties</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+	<span class="kd">static</span> <span class="kd">class</span> <span class="nc">Jackson2ObjectMapperBuilderCustomizerConfiguration</span> <span class="o">{</span>
+
+		<span class="nd">@Bean</span>
+		<span class="nc">StandardJackson2ObjectMapperBuilderCustomizer</span> <span class="nf">standardJacksonObjectMapperBuilderCustomizer</span><span class="o">(</span>
+				<span class="nc">ApplicationContext</span> <span class="n">applicationContext</span><span class="o">,</span> <span class="nc">JacksonProperties</span> <span class="n">jacksonProperties</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="nf">StandardJackson2ObjectMapperBuilderCustomizer</span><span class="o">(</span><span class="n">applicationContext</span><span class="o">,</span> <span class="n">jacksonProperties</span><span class="o">);</span>
+		<span class="o">}</span>
+
+		<span class="kd">static</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">StandardJackson2ObjectMapperBuilderCustomizer</span>
+				<span class="kd">implements</span> <span class="nc">Jackson2ObjectMapperBuilderCustomizer</span><span class="o">,</span> <span class="nc">Ordered</span> <span class="o">{</span>
+
+			<span class="kd">private</span> <span class="kd">final</span> <span class="nc">ApplicationContext</span> <span class="n">applicationContext</span><span class="o">;</span>
+
+			<span class="kd">private</span> <span class="kd">final</span> <span class="nc">JacksonProperties</span> <span class="n">jacksonProperties</span><span class="o">;</span>
+
+			<span class="nc">StandardJackson2ObjectMapperBuilderCustomizer</span><span class="o">(</span><span class="nc">ApplicationContext</span> <span class="n">applicationContext</span><span class="o">,</span>
+					<span class="nc">JacksonProperties</span> <span class="n">jacksonProperties</span><span class="o">)</span> <span class="o">{</span>
+				<span class="k">this</span><span class="o">.</span><span class="na">applicationContext</span> <span class="o">=</span> <span class="n">applicationContext</span><span class="o">;</span>
+				<span class="k">this</span><span class="o">.</span><span class="na">jacksonProperties</span> <span class="o">=</span> <span class="n">jacksonProperties</span><span class="o">;</span>
+			<span class="o">}</span>
+
+			<span class="nd">@Override</span>
+			<span class="kd">public</span> <span class="kt">int</span> <span class="nf">getOrder</span><span class="o">()</span> <span class="o">{</span>
+				<span class="k">return</span> <span class="mi">0</span><span class="o">;</span>
+			<span class="o">}</span>
+
+			<span class="nd">@Override</span>
+			<span class="kd">public</span> <span class="kt">void</span> <span class="nf">customize</span><span class="o">(</span><span class="nc">Jackson2ObjectMapperBuilder</span> <span class="n">builder</span><span class="o">)</span> <span class="o">{</span>
+
+				<span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">jacksonProperties</span><span class="o">.</span><span class="na">getDefaultPropertyInclusion</span><span class="o">()</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+					<span class="n">builder</span><span class="o">.</span><span class="na">serializationInclusion</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">jacksonProperties</span><span class="o">.</span><span class="na">getDefaultPropertyInclusion</span><span class="o">());</span>
+				<span class="o">}</span>
+				<span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">jacksonProperties</span><span class="o">.</span><span class="na">getTimeZone</span><span class="o">()</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+					<span class="n">builder</span><span class="o">.</span><span class="na">timeZone</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">jacksonProperties</span><span class="o">.</span><span class="na">getTimeZone</span><span class="o">());</span>
+				<span class="o">}</span>
+				<span class="n">configureFeatures</span><span class="o">(</span><span class="n">builder</span><span class="o">,</span> <span class="no">FEATURE_DEFAULTS</span><span class="o">);</span>
+				<span class="n">configureVisibility</span><span class="o">(</span><span class="n">builder</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">jacksonProperties</span><span class="o">.</span><span class="na">getVisibility</span><span class="o">());</span>
+				<span class="n">configureFeatures</span><span class="o">(</span><span class="n">builder</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">jacksonProperties</span><span class="o">.</span><span class="na">getDeserialization</span><span class="o">());</span>
+				<span class="n">configureFeatures</span><span class="o">(</span><span class="n">builder</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">jacksonProperties</span><span class="o">.</span><span class="na">getSerialization</span><span class="o">());</span>
+				<span class="n">configureFeatures</span><span class="o">(</span><span class="n">builder</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">jacksonProperties</span><span class="o">.</span><span class="na">getMapper</span><span class="o">());</span>
+				<span class="n">configureFeatures</span><span class="o">(</span><span class="n">builder</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">jacksonProperties</span><span class="o">.</span><span class="na">getParser</span><span class="o">());</span>
+				<span class="n">configureFeatures</span><span class="o">(</span><span class="n">builder</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">jacksonProperties</span><span class="o">.</span><span class="na">getGenerator</span><span class="o">());</span>
+				<span class="n">configureDateFormat</span><span class="o">(</span><span class="n">builder</span><span class="o">);</span>
+				<span class="n">configurePropertyNamingStrategy</span><span class="o">(</span><span class="n">builder</span><span class="o">);</span>
+				<span class="n">configureModules</span><span class="o">(</span><span class="n">builder</span><span class="o">);</span>
+				<span class="n">configureLocale</span><span class="o">(</span><span class="n">builder</span><span class="o">);</span>
+			<span class="o">}</span>
+
+			<span class="c1">//more configure methods...</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>总结</strong>：通过一系列的方法，最终构造一个生产级别可用的<code class="language-plaintext highlighter-rouge">ObjectMapper</code>对象，供在Spring Boot框架中对Java对象实现序列化与反序列化操作。</p>
+
+<h2 id="5jackson常见注解使用示例">5.Jackson常见注解使用示例</h2>
+
+<blockquote>
+  <p><strong>备注</strong>：本小结内容来源<a href="https://www.baeldung.com/jackson-annotations">https://www.baeldung.com/jackson-annotations</a>,如果工作中对于jackson的注解使用较少的情况下，可以看看该篇文章，是一个非常好的补充。</p>
+</blockquote>
+
+<h3 id="51-序列化">5.1 序列化</h3>
+
+<h4 id="511-jsonanygetter">5.1.1 @JsonAnyGetter</h4>
+
+<p><code class="language-plaintext highlighter-rouge">@JsonAnyGetter</code>注解运行可以灵活的使用<code class="language-plaintext highlighter-rouge">Map</code>类型的作为属性字段</p>
+
+<p>实体类如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ExtendableBean</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">properties</span><span class="o">;</span>
+
+    <span class="nd">@JsonAnyGetter</span>
+    <span class="kd">public</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="nf">getProperties</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">properties</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nf">ExtendableBean</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">properties</span><span class="o">=</span><span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;();</span>
+    <span class="o">}</span>
+
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">add</span><span class="o">(</span><span class="nc">String</span> <span class="n">key</span><span class="o">,</span><span class="nc">String</span> <span class="n">value</span><span class="o">){</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">key</span><span class="o">,</span><span class="n">value</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>通过序列化该实体Bean，我们将会得到<code class="language-plaintext highlighter-rouge">Map</code>属性中的所有<code class="language-plaintext highlighter-rouge">Key</code>作为属性值，测试序列化代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">whenSerializingUsingJsonAnyGetter_thenCorrect</span><span class="o">()</span>
+  <span class="kd">throws</span> <span class="nc">JsonProcessingException</span> <span class="o">{</span>
+ 
+    <span class="nc">ExtendableBean</span> <span class="n">bean</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ExtendableBean</span><span class="o">(</span><span class="s">"My bean"</span><span class="o">);</span>
+    <span class="n">bean</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"attr1"</span><span class="o">,</span> <span class="s">"val1"</span><span class="o">);</span>
+    <span class="n">bean</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"attr2"</span><span class="o">,</span> <span class="s">"val2"</span><span class="o">);</span>
+
+    <span class="nc">String</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ObjectMapper</span><span class="o">().</span><span class="na">writeValueAsString</span><span class="o">(</span><span class="n">bean</span><span class="o">);</span>
+ 
+    <span class="n">assertThat</span><span class="o">(</span><span class="n">result</span><span class="o">,</span> <span class="n">containsString</span><span class="o">(</span><span class="s">"attr1"</span><span class="o">));</span>
+    <span class="n">assertThat</span><span class="o">(</span><span class="n">result</span><span class="o">,</span> <span class="n">containsString</span><span class="o">(</span><span class="s">"val1"</span><span class="o">));</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>最终输出结果如下：</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="s2">"My bean"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"attr2"</span><span class="p">:</span><span class="s2">"val2"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"attr1"</span><span class="p">:</span><span class="s2">"val1"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>如果不使用<code class="language-plaintext highlighter-rouge">@JsonAnyGetter</code>注解，那么最终序列化结果将会在<code class="language-plaintext highlighter-rouge">properties</code>属性下面，结果如下：</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"My bean"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"attr2"</span><span class="p">:</span><span class="w"> </span><span class="s2">"val2"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"attr1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"val1"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h4 id="512-jsongetter">5.1.2 @JsonGetter</h4>
+
+<p><code class="language-plaintext highlighter-rouge">@JsonGetter</code>注解是一个替代<code class="language-plaintext highlighter-rouge">@JsonProperty</code>的注解，可以将一个方法标注为<code class="language-plaintext highlighter-rouge">getter</code>方法</p>
+
+<p>例如下面的示例中，我们通过注解<code class="language-plaintext highlighter-rouge">@JsonGetter</code>将方法<code class="language-plaintext highlighter-rouge">getTheName()</code>作为属性<code class="language-plaintext highlighter-rouge">name</code>的<code class="language-plaintext highlighter-rouge">getter</code>方法</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyBean</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="n">id</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+
+    <span class="nd">@JsonGetter</span><span class="o">(</span><span class="s">"name"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getTheName</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">name</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="513-jsonpropertyorder">5.1.3 @JsonPropertyOrder</h4>
+
+<p>可以通过使用<code class="language-plaintext highlighter-rouge">@JsonPropertyOrder</code>注解来指定属性的序列化顺序</p>
+
+<p>实体bean定义如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@JsonPropertyOrder</span><span class="o">({</span> <span class="s">"name"</span><span class="o">,</span> <span class="s">"id"</span> <span class="o">})</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyBean</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="n">id</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>最终序列化结果为：</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="s2">"My bean"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>也可以通过<code class="language-plaintext highlighter-rouge">@JsonPropertyOrder(alphabetic=true)</code>来指定按照字母排序，那么响应结果将是：</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="s2">"My bean"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h4 id="514-jsonrawvalue">5.1.4 @JsonRawValue</h4>
+
+<p><code class="language-plaintext highlighter-rouge">@JsonRawValue</code>注解可以指定字符串属性类为json，如下代码：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">RawBean</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+
+    <span class="nd">@JsonRawValue</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="n">json</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>创建<code class="language-plaintext highlighter-rouge">RawBean</code>的示例，给属性<code class="language-plaintext highlighter-rouge">json</code>赋值,代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nc">RawBean</span> <span class="n">bean</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">RawBean</span><span class="o">(</span><span class="s">"My bean"</span><span class="o">,</span> <span class="s">"{\"attr\":false}"</span><span class="o">);</span>
+
+<span class="nc">String</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ObjectMapper</span><span class="o">().</span><span class="na">writeValueAsString</span><span class="o">(</span><span class="n">bean</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>最终序列化结果如下：</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="s2">"My bean"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"json"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"attr"</span><span class="p">:</span><span class="kc">false</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h4 id="515-jsonvalue">5.1.5 @JsonValue</h4>
+
+<p><code class="language-plaintext highlighter-rouge">@JsonValue</code>注解主要用于序列化整个实例对象的单个方法，例如，在一个枚举类中，<code class="language-plaintext highlighter-rouge">@JsonValue</code>注解进行标注，代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">enum</span>  <span class="nc">TypeEnumWithValue</span> <span class="o">{</span>
+    <span class="no">TYPE1</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">"Type A"</span><span class="o">),</span> <span class="no">TYPE2</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="s">"Type 2"</span><span class="o">);</span>
+
+    <span class="kd">private</span> <span class="nc">Integer</span> <span class="n">id</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+
+    <span class="nc">TypeEnumWithValue</span><span class="o">(</span><span class="nc">Integer</span> <span class="n">id</span><span class="o">,</span> <span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">id</span> <span class="o">=</span> <span class="n">id</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@JsonValue</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">name</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>测试代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">enumAsString</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ObjectMapper</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">writeValueAsString</span><span class="o">(</span><span class="nc">TypeEnumWithValue</span><span class="o">.</span><span class="na">TYPE1</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">enumAsString</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>最终通过序列化代码得到的结果将是：</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"Type A"
+</code></pre></div></div>
+
+<h4 id="516-jsonrootname">5.1.6 @JsonRootName</h4>
+
+<p><code class="language-plaintext highlighter-rouge">@JsonRootName</code>注解旨在给当前序列化的实体对象加一层包裹对象。</p>
+
+<p>举例如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//RootUser.java</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">RootUser</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">title</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">RootUser</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">,</span> <span class="nc">String</span> <span class="n">title</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">title</span> <span class="o">=</span> <span class="n">title</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+ 	<span class="c1">//getter and setters  </span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>在上面的实体类中，正常情况下，如果要序列号<code class="language-plaintext highlighter-rouge">RootUser</code>对象，其结果格式为：</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"name1"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"title1"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>在<code class="language-plaintext highlighter-rouge">RootUser</code>加上<code class="language-plaintext highlighter-rouge">@JsonRootName</code>注解后，该类改动如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//RootUser.java</span>
+<span class="nd">@JsonRootName</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"root"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">RootUser</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">title</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">RootUser</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">,</span> <span class="nc">String</span> <span class="n">title</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">title</span> <span class="o">=</span> <span class="n">title</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+ 	<span class="c1">//getter and setters  </span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>启用<code class="language-plaintext highlighter-rouge">ObjectMapper</code>对象的<code class="language-plaintext highlighter-rouge">WRAP_ROOT_VALUE</code>特性，测试代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">ObjectMapper</span> <span class="n">objectMapper</span><span class="o">=</span><span class="k">new</span> <span class="nc">ObjectMapper</span><span class="o">();</span>
+<span class="n">objectMapper</span><span class="o">.</span><span class="na">enable</span><span class="o">(</span><span class="nc">SerializationFeature</span><span class="o">.</span><span class="na">WRAP_ROOT_VALUE</span><span class="o">);</span>
+<span class="nc">String</span> <span class="n">result</span><span class="o">=</span><span class="n">objectMapper</span><span class="o">.</span><span class="na">writeValueAsString</span><span class="o">(</span><span class="k">new</span> <span class="nc">RootUser</span><span class="o">(</span><span class="s">"name1"</span><span class="o">,</span><span class="s">"title1"</span><span class="o">));</span>
+</code></pre></div></div>
+
+<p>最终序列化JSON结果如下：</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"root"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"name1"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"title1"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h4 id="517-jsonserialize">5.1.7 @JsonSerialize</h4>
+
+<p><code class="language-plaintext highlighter-rouge">@JsonSerialize</code>注解允许开发者自定义序列化实现,来看代码实现</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">EventWithSerializer</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+
+    <span class="nd">@JsonSerialize</span><span class="o">(</span><span class="n">using</span> <span class="o">=</span> <span class="nc">CustomDateSerializer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">Date</span> <span class="n">eventDate</span><span class="o">;</span>
+    
+    <span class="kd">public</span> <span class="nc">Date</span> <span class="n">publishDate</span><span class="o">;</span>
+    
+    <span class="c1">//getter and setter...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>在上面的代码中，针对<code class="language-plaintext highlighter-rouge">eventDate</code>字段，我们通过使用<code class="language-plaintext highlighter-rouge">@JsonSerialize</code>注解，自定义了一个序列化实现类<code class="language-plaintext highlighter-rouge">CustomDateSerializer</code>,该类实现如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//CustomDateSerializer.java</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">CustomDateSerializer</span> <span class="kd">extends</span> <span class="nc">StdSerializer</span><span class="o">&lt;</span><span class="nc">Date</span><span class="o">&gt;</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="nc">SimpleDateFormat</span> <span class="n">formatter</span> 
+      <span class="o">=</span> <span class="k">new</span> <span class="nc">SimpleDateFormat</span><span class="o">(</span><span class="s">"dd-MM-yyyy hh:mm:ss"</span><span class="o">);</span>
+
+    <span class="kd">public</span> <span class="nf">CustomDateSerializer</span><span class="o">()</span> <span class="o">{</span> 
+        <span class="k">this</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span> 
+    <span class="o">}</span> 
+
+    <span class="kd">public</span> <span class="nf">CustomDateSerializer</span><span class="o">(</span><span class="nc">Class</span><span class="o">&lt;</span><span class="nc">Date</span><span class="o">&gt;</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">super</span><span class="o">(</span><span class="n">t</span><span class="o">);</span> 
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">serialize</span><span class="o">(</span>
+      <span class="nc">Date</span> <span class="n">value</span><span class="o">,</span> <span class="nc">JsonGenerator</span> <span class="n">gen</span><span class="o">,</span> <span class="nc">SerializerProvider</span> <span class="n">arg2</span><span class="o">)</span> 
+      <span class="kd">throws</span> <span class="nc">IOException</span><span class="o">,</span> <span class="nc">JsonProcessingException</span> <span class="o">{</span>
+        <span class="n">gen</span><span class="o">.</span><span class="na">writeString</span><span class="o">(</span><span class="n">formatter</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="n">value</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>最终序列化的结果格式如下：</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"名称"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"eventDate"</span><span class="p">:</span><span class="w"> </span><span class="s2">"24-03-2021 06:14:32"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"publishDate"</span><span class="p">:</span><span class="w"> </span><span class="mi">1616580872574</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>从结果我们可以得知，针对某个特定的字段序列化的方式，我们可以完全自定义，非常的方便。</p>
+
+<h3 id="52-反序列化">5.2 反序列化</h3>
+
+<h4 id="521-jsoncreator">5.2.1 @JsonCreator</h4>
+
+<p><code class="language-plaintext highlighter-rouge">@JsonCreator</code>配合<code class="language-plaintext highlighter-rouge">@JsonProperty</code>注解能到达在反序列化实体对象时，指定不变更属性名称的效果</p>
+
+<p>例如有如下JSON:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"theName"</span><span class="p">:</span><span class="s2">"My bean"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>在实体类中，我们没有属性名称是<code class="language-plaintext highlighter-rouge">theName</code>，但我们想把<code class="language-plaintext highlighter-rouge">theName</code>属性反序列化时赋值给<code class="language-plaintext highlighter-rouge">name</code>，此时实体类对象结构如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">BeanWithCreator</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="n">id</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+
+    <span class="nd">@JsonCreator</span>
+    <span class="kd">public</span> <span class="nf">BeanWithCreator</span><span class="o">(</span>
+      <span class="nd">@JsonProperty</span><span class="o">(</span><span class="s">"id"</span><span class="o">)</span> <span class="kt">int</span> <span class="n">id</span><span class="o">,</span> 
+      <span class="nd">@JsonProperty</span><span class="o">(</span><span class="s">"theName"</span><span class="o">)</span> <span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">id</span> <span class="o">=</span> <span class="n">id</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>在<code class="language-plaintext highlighter-rouge">BeanWithCreator</code>的构造函数中添加<code class="language-plaintext highlighter-rouge">@JsonCreator</code>注解，并且配合<code class="language-plaintext highlighter-rouge">@JsonProperty</code>注解进行属性指向，最终反序列化代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">whenDeserializingUsingJsonCreator_thenCorrect</span><span class="o">()</span>
+  <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+ 
+    <span class="nc">String</span> <span class="n">json</span> <span class="o">=</span> <span class="s">"{\"id\":1,\"theName\":\"My bean\"}"</span><span class="o">;</span>
+
+    <span class="nc">BeanWithCreator</span> <span class="n">bean</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ObjectMapper</span><span class="o">()</span>
+      <span class="o">.</span><span class="na">readerFor</span><span class="o">(</span><span class="nc">BeanWithCreator</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">readValue</span><span class="o">(</span><span class="n">json</span><span class="o">);</span>
+    <span class="n">assertEquals</span><span class="o">(</span><span class="s">"My bean"</span><span class="o">,</span> <span class="n">bean</span><span class="o">.</span><span class="na">name</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="522-jacksoninject">5.2.2 @JacksonInject</h4>
+
+<p><code class="language-plaintext highlighter-rouge">@JacksonInject</code>注解可以指定反序列化对象时，属性值不从来源JSON获取，而从<code class="language-plaintext highlighter-rouge">injection</code>中获取</p>
+
+<p>实体类如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">BeanWithInject</span> <span class="o">{</span>
+    <span class="nd">@JacksonInject</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="n">id</span><span class="o">;</span>
+    
+    <span class="kd">public</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>反序列化代码</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">whenDeserializingUsingJsonInject_thenCorrect</span><span class="o">()</span>
+  <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+ 
+    <span class="nc">String</span> <span class="n">json</span> <span class="o">=</span> <span class="s">"{\"name\":\"My bean\"}"</span><span class="o">;</span>
+    
+    <span class="nc">InjectableValues</span> <span class="n">inject</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">InjectableValues</span><span class="o">.</span><span class="na">Std</span><span class="o">()</span>
+      <span class="o">.</span><span class="na">addValue</span><span class="o">(</span><span class="kt">int</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">1</span><span class="o">);</span>
+    <span class="nc">BeanWithInject</span> <span class="n">bean</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ObjectMapper</span><span class="o">().</span><span class="na">reader</span><span class="o">(</span><span class="n">inject</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">forType</span><span class="o">(</span><span class="nc">BeanWithInject</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">readValue</span><span class="o">(</span><span class="n">json</span><span class="o">);</span>
+    
+    <span class="n">assertEquals</span><span class="o">(</span><span class="s">"My bean"</span><span class="o">,</span> <span class="n">bean</span><span class="o">.</span><span class="na">name</span><span class="o">);</span>
+    <span class="n">assertEquals</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">bean</span><span class="o">.</span><span class="na">id</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="523-jsonanysetter">5.2.3 @JsonAnySetter</h4>
+
+<p><code class="language-plaintext highlighter-rouge">@JsonAnySetter</code>和<code class="language-plaintext highlighter-rouge">@JsonAnyGetter</code>注解意思一致，只不过是针对序列化与反序列化而言，<code class="language-plaintext highlighter-rouge">@JsonAnySetter</code>注解可以将来源JSON最终转化为<code class="language-plaintext highlighter-rouge">Map</code>类型的属性结构</p>
+
+<p>实体代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ExtendableBean</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">properties</span><span class="o">;</span>
+
+    <span class="nd">@JsonAnySetter</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">add</span><span class="o">(</span><span class="nc">String</span> <span class="n">key</span><span class="o">,</span> <span class="nc">String</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">value</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>JSON源如下：</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="s2">"My bean"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"attr2"</span><span class="p">:</span><span class="s2">"val2"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"attr1"</span><span class="p">:</span><span class="s2">"val1"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>通过<code class="language-plaintext highlighter-rouge">@JsonAnySetter</code>的注解标注，最终<code class="language-plaintext highlighter-rouge">attr1</code>及<code class="language-plaintext highlighter-rouge">attr2</code>的值将会添加到<code class="language-plaintext highlighter-rouge">properties</code>的Map对象中</p>
+
+<p>示例代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">whenDeserializingUsingJsonAnySetter_thenCorrect</span><span class="o">()</span>
+  <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+    <span class="nc">String</span> <span class="n">json</span>
+      <span class="o">=</span> <span class="s">"{\"name\":\"My bean\",\"attr2\":\"val2\",\"attr1\":\"val1\"}"</span><span class="o">;</span>
+
+    <span class="nc">ExtendableBean</span> <span class="n">bean</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ObjectMapper</span><span class="o">()</span>
+      <span class="o">.</span><span class="na">readerFor</span><span class="o">(</span><span class="nc">ExtendableBean</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">readValue</span><span class="o">(</span><span class="n">json</span><span class="o">);</span>
+    
+    <span class="n">assertEquals</span><span class="o">(</span><span class="s">"My bean"</span><span class="o">,</span> <span class="n">bean</span><span class="o">.</span><span class="na">name</span><span class="o">);</span>
+    <span class="n">assertEquals</span><span class="o">(</span><span class="s">"val2"</span><span class="o">,</span> <span class="n">bean</span><span class="o">.</span><span class="na">getProperties</span><span class="o">().</span><span class="na">get</span><span class="o">(</span><span class="s">"attr2"</span><span class="o">));</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="524-jsonsetter">5.2.4 @JsonSetter</h4>
+
+<p><code class="language-plaintext highlighter-rouge">@JsonSetter</code>注解是<code class="language-plaintext highlighter-rouge">@JsonProperty</code>的替代注解，用于标注该方法为<code class="language-plaintext highlighter-rouge">setter</code>方法</p>
+
+<p>当我们需要读取一些JSON数据时，但是目标实体类与该数据不完全匹配是，该注解是非常有用的。</p>
+
+<p>示例代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyBean</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="n">id</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+
+    <span class="nd">@JsonSetter</span><span class="o">(</span><span class="s">"name"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setTheName</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>通过指定<code class="language-plaintext highlighter-rouge">setTheName</code>作为属性<code class="language-plaintext highlighter-rouge">name</code>的<code class="language-plaintext highlighter-rouge">setter</code>方法，反序列化时可以达到最终效果</p>
+
+<p>示例如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">whenDeserializingUsingJsonSetter_thenCorrect</span><span class="o">()</span>
+  <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+ 
+    <span class="nc">String</span> <span class="n">json</span> <span class="o">=</span> <span class="s">"{\"id\":1,\"name\":\"My bean\"}"</span><span class="o">;</span>
+
+    <span class="nc">MyBean</span> <span class="n">bean</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ObjectMapper</span><span class="o">()</span>
+      <span class="o">.</span><span class="na">readerFor</span><span class="o">(</span><span class="nc">MyBean</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">readValue</span><span class="o">(</span><span class="n">json</span><span class="o">);</span>
+    <span class="n">assertEquals</span><span class="o">(</span><span class="s">"My bean"</span><span class="o">,</span> <span class="n">bean</span><span class="o">.</span><span class="na">getTheName</span><span class="o">());</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="525-jsondeserialize">5.2.5 @JsonDeserialize</h4>
+
+<p><code class="language-plaintext highlighter-rouge">@JsonDeserialize</code>注解和序列化注解<code class="language-plaintext highlighter-rouge">@JsonSerialize</code>的效果是一致的，作用与反序列化时，针对特定的字段，存在差异化的发序列化效果</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">EventWithSerializer</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+
+    <span class="nd">@JsonDeserialize</span><span class="o">(</span><span class="n">using</span> <span class="o">=</span> <span class="nc">CustomDateDeserializer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">Date</span> <span class="n">eventDate</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">CustomDateDeserializer</code>代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CustomDateDeserializer</span>
+  <span class="kd">extends</span> <span class="nc">StdDeserializer</span><span class="o">&lt;</span><span class="nc">Date</span><span class="o">&gt;</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="nc">SimpleDateFormat</span> <span class="n">formatter</span>
+      <span class="o">=</span> <span class="k">new</span> <span class="nc">SimpleDateFormat</span><span class="o">(</span><span class="s">"dd-MM-yyyy hh:mm:ss"</span><span class="o">);</span>
+
+    <span class="kd">public</span> <span class="nf">CustomDateDeserializer</span><span class="o">()</span> <span class="o">{</span> 
+        <span class="k">this</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span> 
+    <span class="o">}</span> 
+
+    <span class="kd">public</span> <span class="nf">CustomDateDeserializer</span><span class="o">(</span><span class="nc">Class</span><span class="o">&lt;?&gt;</span> <span class="n">vc</span><span class="o">)</span> <span class="o">{</span> 
+        <span class="kd">super</span><span class="o">(</span><span class="n">vc</span><span class="o">);</span> 
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Date</span> <span class="nf">deserialize</span><span class="o">(</span>
+      <span class="nc">JsonParser</span> <span class="n">jsonparser</span><span class="o">,</span> <span class="nc">DeserializationContext</span> <span class="n">context</span><span class="o">)</span> 
+      <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+        
+        <span class="nc">String</span> <span class="n">date</span> <span class="o">=</span> <span class="n">jsonparser</span><span class="o">.</span><span class="na">getText</span><span class="o">();</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">formatter</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">date</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">ParseException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>最终，反序列化JSON，时，得到<code class="language-plaintext highlighter-rouge">eventDate</code>字段，测试代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">whenDeserializingUsingJsonDeserialize_thenCorrect</span><span class="o">()</span>
+  <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+ 
+    <span class="nc">String</span> <span class="n">json</span>
+      <span class="o">=</span> <span class="s">"{"</span><span class="n">name</span><span class="s">":"</span><span class="n">party</span><span class="s">","</span><span class="n">eventDate</span><span class="s">":"</span><span class="mi">20</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">2014</span> <span class="mo">02</span><span class="o">:</span><span class="mi">30</span><span class="o">:</span><span class="mo">00</span><span class="s">"}"</span><span class="o">;</span>
+
+    <span class="nc">SimpleDateFormat</span> <span class="n">df</span>
+      <span class="o">=</span> <span class="k">new</span> <span class="nc">SimpleDateFormat</span><span class="o">(</span><span class="s">"dd-MM-yyyy hh:mm:ss"</span><span class="o">);</span>
+    <span class="nc">EventWithSerializer</span> <span class="n">event</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ObjectMapper</span><span class="o">()</span>
+      <span class="o">.</span><span class="na">readerFor</span><span class="o">(</span><span class="nc">EventWithSerializer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">readValue</span><span class="o">(</span><span class="n">json</span><span class="o">);</span>
+    
+    <span class="n">assertEquals</span><span class="o">(</span>
+      <span class="s">"20-12-2014 02:30:00"</span><span class="o">,</span> <span class="n">df</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="n">event</span><span class="o">.</span><span class="na">eventDate</span><span class="o">));</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="526-jsonalias">5.2.6 @JsonAlias</h4>
+
+<p><code class="language-plaintext highlighter-rouge">@JsonAlias</code>注解作用于可以指定一个别名与JSON数据中的字段进行对于，最终反序列化时，能将该值最终反序列化时赋值给对象</p>
+
+<p>实体如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">AliasBean</span> <span class="o">{</span>
+    <span class="nd">@JsonAlias</span><span class="o">({</span> <span class="s">"fName"</span><span class="o">,</span> <span class="s">"f_name"</span> <span class="o">})</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">firstName</span><span class="o">;</span>   
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">lastName</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>上面的代码中，<code class="language-plaintext highlighter-rouge">firstName</code>字段通过<code class="language-plaintext highlighter-rouge">@JsonAlias</code>注解指定了两个别名字段，意思是反序列化时可以从JSON中读取<code class="language-plaintext highlighter-rouge">fName</code>或者<code class="language-plaintext highlighter-rouge">f_name</code>的值赋值到<code class="language-plaintext highlighter-rouge">firstName</code>中</p>
+
+<p>测试代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">whenDeserializingUsingJsonAlias_thenCorrect</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+    <span class="nc">String</span> <span class="n">json</span> <span class="o">=</span> <span class="s">"{\"fName\": \"John\", \"lastName\": \"Green\"}"</span><span class="o">;</span>
+    <span class="nc">AliasBean</span> <span class="n">aliasBean</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ObjectMapper</span><span class="o">().</span><span class="na">readerFor</span><span class="o">(</span><span class="nc">AliasBean</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">readValue</span><span class="o">(</span><span class="n">json</span><span class="o">);</span>
+    <span class="n">assertEquals</span><span class="o">(</span><span class="s">"John"</span><span class="o">,</span> <span class="n">aliasBean</span><span class="o">.</span><span class="na">getFirstName</span><span class="o">());</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="53-属性注解">5.3 属性注解</h3>
+
+<h4 id="531-jsonignoreproperties">5.3.1 @JsonIgnoreProperties</h4>
+
+<p>使用<code class="language-plaintext highlighter-rouge">@JsonIgnoreProperties</code>注解作用于class级别中可以达到在序列化时忽略一个或多个字段的效果</p>
+
+<p>实体代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@JsonIgnoreProperties</span><span class="o">({</span> <span class="s">"id"</span> <span class="o">})</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">BeanWithIgnore</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="n">id</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>最终在序列化<code class="language-plaintext highlighter-rouge">BeanWithIgnore</code>实体对象时，字段<code class="language-plaintext highlighter-rouge">id</code>将会被忽略</p>
+
+<h4 id="532-jsonignore">5.3.2 @JsonIgnore</h4>
+
+<p><code class="language-plaintext highlighter-rouge">@JsonIgnore</code>注解作用与属性级别中，在序列化时可以忽略该字段</p>
+
+<p>实体代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">BeanWithIgnore</span> <span class="o">{</span>
+    <span class="nd">@JsonIgnore</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="n">id</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>最终在序列化<code class="language-plaintext highlighter-rouge">BeanWithIgnore</code>实体对象时，字段<code class="language-plaintext highlighter-rouge">id</code>将会被忽略</p>
+
+<h4 id="533-jsonignoretype">5.3.3 @JsonIgnoreType</h4>
+
+<p><code class="language-plaintext highlighter-rouge">@JsonIgnoreType</code>指定忽略类型属性</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">User</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="n">id</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nc">Name</span> <span class="n">name</span><span class="o">;</span>
+
+    <span class="nd">@JsonIgnoreType</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Name</span> <span class="o">{</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="n">firstName</span><span class="o">;</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="n">lastName</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>在上面的示例中，类型<code class="language-plaintext highlighter-rouge">Name</code>将会被忽略</p>
+
+<h4 id="534-jsoninclude">5.3.4 @JsonInclude</h4>
+
+<p>使用<code class="language-plaintext highlighter-rouge">@JsonInclude</code>注解可以排除属性值中包含<code class="language-plaintext highlighter-rouge">empty/null/default</code>的属性</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@JsonInclude</span><span class="o">(</span><span class="nc">Include</span><span class="o">.</span><span class="na">NON_NULL</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyBean</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="n">id</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>在<code class="language-plaintext highlighter-rouge">MyBean</code>中使用了<code class="language-plaintext highlighter-rouge">Include.NON_NULL</code>则代表该实体对象序列化时不会包含空值</p>
+
+<h4 id="535-jsonautodetect">5.3.5 @JsonAutoDetect</h4>
+
+<p><code class="language-plaintext highlighter-rouge">@JsonAutoDetect</code>可以覆盖实体对象属性中的默认可见级别，比如私有属性可见与不可见</p>
+
+<p>实体对象如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">PrivateBean</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">id</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">PrivateBean</span><span class="o">(</span><span class="kt">int</span> <span class="n">id</span><span class="o">,</span> <span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">id</span> <span class="o">=</span> <span class="n">id</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>在<code class="language-plaintext highlighter-rouge">PrivateBean</code>中，没有给属性字段<code class="language-plaintext highlighter-rouge">id</code>、<code class="language-plaintext highlighter-rouge">name</code>设置公共的<code class="language-plaintext highlighter-rouge">getter</code>方法，此时，如果我们如果直接对该实体对象进行序列化时，jackson会提示错误</p>
+
+<pre><code class="language-log">Exception in thread "main" com.fasterxml.jackson.databind.exc.InvalidDefinitionException: No serializer found for class com.xiaoymin.boot.action.jackson.model.PrivateBean and no properties discovered to create BeanSerializer (to avoid exception, disable SerializationFeature.FAIL_ON_EMPTY_BEANS)
+</code></pre>
+
+<p>我们修改<code class="language-plaintext highlighter-rouge">PrivateBean</code>中的代码，增加<code class="language-plaintext highlighter-rouge">@JsonAutoDetect</code>注解，代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@JsonAutoDetect</span><span class="o">(</span><span class="n">fieldVisibility</span> <span class="o">=</span> <span class="nc">JsonAutoDetect</span><span class="o">.</span><span class="na">Visibility</span><span class="o">.</span><span class="na">ANY</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">PrivateBean</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">id</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">PrivateBean</span><span class="o">(</span><span class="kt">int</span> <span class="n">id</span><span class="o">,</span> <span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">id</span> <span class="o">=</span> <span class="n">id</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>此时，在序列化该实体对象，将会得到响应结果</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">PrivateBean</span> <span class="n">bean</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PrivateBean</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">"My bean"</span><span class="o">);</span>
+<span class="nc">String</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ObjectMapper</span><span class="o">().</span><span class="na">writeValueAsString</span><span class="o">(</span><span class="n">bean</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">result</span><span class="o">);</span>
+</code></pre></div></div>
+
+<h3 id="54-常规注解">5.4 常规注解</h3>
+
+<h4 id="541-jsonproperty">5.4.1 @JsonProperty</h4>
+
+<p>我们可以添加<code class="language-plaintext highlighter-rouge">@JsonProperty</code>批注以在JSON中指示属性名称。</p>
+
+<p>当实体对象中没有标准的<code class="language-plaintext highlighter-rouge">getter/setter</code>方法时，我们可以使用该注解进行指定属性名称已方便jackson框架进行序列化/反序列化</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyBean</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="n">id</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+
+    <span class="nd">@JsonProperty</span><span class="o">(</span><span class="s">"name"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setTheName</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@JsonProperty</span><span class="o">(</span><span class="s">"name"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getTheName</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">name</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="542-jsonformat">5.4.2 @JsonFormat</h4>
+
+<p>针对日期字段可以通过使用<code class="language-plaintext highlighter-rouge">@JsonFormat</code>注解进行格式化输出</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">EventWithFormat</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+
+    <span class="nd">@JsonFormat</span><span class="o">(</span>
+      <span class="n">shape</span> <span class="o">=</span> <span class="nc">JsonFormat</span><span class="o">.</span><span class="na">Shape</span><span class="o">.</span><span class="na">STRING</span><span class="o">,</span>
+      <span class="n">pattern</span> <span class="o">=</span> <span class="s">"dd-MM-yyyy hh:mm:ss"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">Date</span> <span class="n">eventDate</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="543-jsonunwrapped">5.4.3 @JsonUnwrapped</h4>
+
+<p><code class="language-plaintext highlighter-rouge">@JsonUnwrapped</code>注解可以指定jackson框架在序列化/反序列化时是否需要对该字段进行<code class="language-plaintext highlighter-rouge">wrapped</code>操作</p>
+
+<p>示例代码：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">UnwrappedUser</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="n">id</span><span class="o">;</span>
+
+    <span class="nd">@JsonUnwrapped</span>
+    <span class="kd">public</span> <span class="nc">Name</span> <span class="n">name</span><span class="o">;</span>
+    
+    <span class="c1">//getter and setter...</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Name</span> <span class="o">{</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="n">firstName</span><span class="o">;</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="n">lastName</span><span class="o">;</span>
+        <span class="c1">//getter and setter</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>通过注解<code class="language-plaintext highlighter-rouge">@JsonUnwrapped</code>标注<code class="language-plaintext highlighter-rouge">name</code>属性，最终序列化该对象时，会和正常情况下有所区别</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">UnwrappedUser</span><span class="o">.</span><span class="na">Name</span> <span class="n">name</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">UnwrappedUser</span><span class="o">.</span><span class="na">Name</span><span class="o">(</span><span class="s">"John"</span><span class="o">,</span> <span class="s">"Doe"</span><span class="o">);</span>
+<span class="nc">UnwrappedUser</span> <span class="n">user</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">UnwrappedUser</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">name</span><span class="o">);</span>
+
+<span class="nc">String</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ObjectMapper</span><span class="o">().</span><span class="na">writeValueAsString</span><span class="o">(</span><span class="n">user</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>我们得到的结果如下：</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"firstName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"John"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"lastName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Doe"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h4 id="544-jsonview">5.4.4 @JsonView</h4>
+
+<p>通过<code class="language-plaintext highlighter-rouge">View</code>的方式来指定序列化/反序列化时是否包含属性</p>
+
+<p>示例代码如下：</p>
+
+<p><code class="language-plaintext highlighter-rouge">View</code>定义</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Views</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Public</span> <span class="o">{}</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Internal</span> <span class="kd">extends</span> <span class="nc">Public</span> <span class="o">{}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>实体代码：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Item</span> <span class="o">{</span>
+    <span class="nd">@JsonView</span><span class="o">(</span><span class="nc">Views</span><span class="o">.</span><span class="na">Public</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="n">id</span><span class="o">;</span>
+
+    <span class="nd">@JsonView</span><span class="o">(</span><span class="nc">Views</span><span class="o">.</span><span class="na">Public</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="n">itemName</span><span class="o">;</span>
+
+    <span class="nd">@JsonView</span><span class="o">(</span><span class="nc">Views</span><span class="o">.</span><span class="na">Internal</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="n">ownerName</span><span class="o">;</span>
+    <span class="c1">//getter and setter..</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>最终序列化代码示例：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Item</span> <span class="n">item</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Item</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="s">"book"</span><span class="o">,</span> <span class="s">"John"</span><span class="o">);</span>
+
+<span class="nc">String</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ObjectMapper</span><span class="o">().</span><span class="na">writerWithView</span><span class="o">(</span><span class="nc">Views</span><span class="o">.</span><span class="na">Public</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">writeValueAsString</span><span class="o">(</span><span class="n">item</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">result</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>最终序列化结果输出：</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="nl">"id"</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="nl">"itemName"</span><span class="p">:</span><span class="s2">"book"</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>##</p>
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2021/03/26/spring-boot-code-action-jackson/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div style="text-align: center;">
+  <h2>微信公众号</h2>
+</div>
+<div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

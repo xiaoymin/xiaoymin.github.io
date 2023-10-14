@@ -1,0 +1,112 @@
+# ---------------- #
+#   Main Configs   #
+# ---------------- #
+baseurl:
+url: https://www.xiaominfo.com
+date_format: "ordinal"
+title: 八一菜刀
+subtitle: "一直写下去。"
+description: "八一菜刀的个人博客"
+keywords: Knife4j,RAG实战,LLM大模型,swagger中文社区,swagger中文,swaggerCenter,八一菜刀, 萧明, xiaoymin,swagger,swagger-bootstrap-ui,oss-server,swagger-bootstrap-ui 1.7.5
+timezone: Asia/Shanghai
+encoding: "utf-8"
+side_bar_repo_limit: 5
+
+# ---------------- #
+#      Author      #
+# ---------------- #
+author: 肖玉民
+organization: xiaoym.github.io
+organization_url: https://xiaoymin.github.io/
+github_username: xiaoymin
+location: HangZhou, China
+email: xiaoymin@foxmail.com
+
+# ---------------- #
+#    Navigation    #
+# ---------------- #
+navs:
+  -
+    href: /
+    label: 首页
+
+  -
+    href: /categories/
+    label: 分类
+
+  -
+    href: /archives/
+    label: 归档
+
+  -
+    href: /about/
+    label: 关于
+
+# ---------------- #
+#       RSS        #
+# ---------------- #
+subscribe_rss: /feed.xml
+
+# ---------------- #
+#      Jekyll      #
+# ---------------- #
+markdown: kramdown
+kramdown:
+    input: GFM
+highlighter: rouge
+paginate: 8
+lsi: false
+quiet: false
+excerpt_separator: "\n\n"
+permalink: /:year/:month/:day/:title/
+plugins:
+    - jekyll-github-metadata
+    - rouge
+#     - jekyll-html-pipeline
+    - jekyll-paginate
+    - jekyll-sitemap
+    - jekyll-feed
+    - jemoji
+#     - jekyll-mentions
+collections:
+    wiki:
+        output: true
+        permalink: /wiki/:path/
+
+repository: xiaoymin/xiaoymin.github.io
+
+# ---------------- #
+#      Comments    #
+# ---------------- #
+# support provider: disqus, gitment, gitalk
+comments_provider: gitalk
+# !!!重要!!! 请修改下面这些信息为你自己申请的
+# !!!Important!!! Please modify infos below to yours
+# https://disqus.com
+disqus:
+    username: 
+# https://imsun.net/posts/gitment-introduction/
+gitment:
+    owner: xiaoymin
+    repo: blog-comments
+    oauth:
+        client_id: af23e0d8d5f41c7b3719
+        client_secret: 822f4fcf8e75da6193bd6f26bab3111ecce89142
+# https://github.com/gitalk/gitalk#install
+gitalk:
+    owner: xiaoymin
+    repo: blog-comments
+    clientID: af23e0d8d5f41c7b3719
+    clientSecret: 822f4fcf8e75da6193bd6f26bab3111ecce89142
+# 在使用其它评论组件时可点击显示 Disqus
+lazy_load_disqus : false
+
+# ---------------- #
+#      Search      #
+# ---------------- #
+simple_jekyll_search:
+    # 是否支持全文搜索
+    fulltext: false
+    # 最多显示多少条搜索结果
+    limit: 10
+
