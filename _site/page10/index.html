@@ -97,14 +97,14 @@
                 
                 <li class="repo-list-item">
                     <h3 class="repo-list-name">
-                      <a href="http://localhost:4000/2019/05/21/springfox-1/">springfox 源码分析(一) 程序入口</a>
+                      <a href="http://localhost:4000/2019/05/26/springfox-10/">springfox 源码分析(十) 遍历接口获取Model对象</a>
                     </h3>
                     <p class="repo-list-description">
-                        日期：2019-5-21 21:05:15
+                        在上一篇中,我们了解到了springfox通过groupName的过滤,拿到了所有的接口,并且通过guava库的ArrayListMultimap对接口的Controller进一步进行了分组,接下来就是解析每个接口的操作了
                     </p>
                     <p class="repo-list-meta">
                         <span class="meta-info">
-                          <span class="octicon octicon-calendar"></span> 2019/05/21
+                          <span class="octicon octicon-calendar"></span> 2019/05/26
                         </span>
                         
                         <span class="meta-info">
@@ -117,14 +117,14 @@
                 
                 <li class="repo-list-item">
                     <h3 class="repo-list-name">
-                      <a href="http://localhost:4000/2019/05/20/springfox-0/">springfox 源码系列</a>
+                      <a href="http://localhost:4000/2019/05/25/springfox-9/">springfox 源码分析(九) 文档初始化-分组</a>
                     </h3>
                     <p class="repo-list-description">
-                        最近闲来无事,之前在开发过程中一直在用到springfox来生成swagger的文档,但一直对springfox的源码尚未研究,所以决定对源码进行探究一番.
+                        在前面我们了解了DocumennationContext的初始化过程,包括一系列的默认属性的赋值,接下来,开始真正的文档解析操作
                     </p>
                     <p class="repo-list-meta">
                         <span class="meta-info">
-                          <span class="octicon octicon-calendar"></span> 2019/05/20
+                          <span class="octicon octicon-calendar"></span> 2019/05/25
                         </span>
                         
                         <span class="meta-info">
@@ -137,19 +137,19 @@
                 
                 <li class="repo-list-item">
                     <h3 class="repo-list-name">
-                      <a href="http://localhost:4000/2019/05/19/mybatis-8/">mybatis 源码系列(八) Java基础之wait()、notify()、notifyAll()方法</a>
+                      <a href="http://localhost:4000/2019/05/24/springfox-8/">springfox 源码分析(八) 遍历接口获取Model对象</a>
                     </h3>
                     <p class="repo-list-description">
-                        在研究mybatis的连接池数据源源码时,我们看到了wait()、notifyAll()方法的使用,工作中因为很少使用到这类方法的调用,所以，其中概念也有些模糊了,写一遍博客记录一下.
+                        我们通过读DocumentationPluginsBootstrapper代码中的start方法,了解到springfox根据我们外部提供的Docket对象进行初始化时,会通过Docket对象构建DocumentationContext对象来进行初始化操作
                     </p>
                     <p class="repo-list-meta">
                         <span class="meta-info">
-                          <span class="octicon octicon-calendar"></span> 2019/05/19
+                          <span class="octicon octicon-calendar"></span> 2019/05/24
                         </span>
                         
                         <span class="meta-info">
                           <span class="octicon octicon-file-directory"></span>
-                          <a href="http://localhost:4000/categories/#mybatis" title="mybatis">mybatis</a>
+                          <a href="http://localhost:4000/categories/#springfox" title="springfox">springfox</a>
                         </span>
                         
                     </p>
@@ -157,19 +157,19 @@
                 
                 <li class="repo-list-item">
                     <h3 class="repo-list-name">
-                      <a href="http://localhost:4000/2019/05/18/mybatis-7/">mybatis 源码系列(七) Java基础之数据库事务隔离级别</a>
+                      <a href="http://localhost:4000/2019/05/23/springfox-7/">springfox 源码分析(七) 文档初始化</a>
                     </h3>
                     <p class="repo-list-description">
-                        正确设置数据库的事务访问级别,有助于我们的应用程序达到预期的效果
+                        时间：2019-5-23 20:12:04
                     </p>
                     <p class="repo-list-meta">
                         <span class="meta-info">
-                          <span class="octicon octicon-calendar"></span> 2019/05/18
+                          <span class="octicon octicon-calendar"></span> 2019/05/23
                         </span>
                         
                         <span class="meta-info">
                           <span class="octicon octicon-file-directory"></span>
-                          <a href="http://localhost:4000/categories/#mybatis" title="mybatis">mybatis</a>
+                          <a href="http://localhost:4000/categories/#springfox" title="springfox">springfox</a>
                         </span>
                         
                     </p>
@@ -177,19 +177,19 @@
                 
                 <li class="repo-list-item">
                     <h3 class="repo-list-name">
-                      <a href="http://localhost:4000/2019/05/17/mybatis-6/">mybatis 源码系列(六) 设计模式</a>
+                      <a href="http://localhost:4000/2019/05/23/springfox-6/">springfox 源码分析(六) web配置类扫描包作用探索</a>
                     </h3>
                     <p class="repo-list-description">
-                        以前我们在学习Java的时候,都会将Java中的设计模式,记忆中用的比较多的好像有23种吧,但是这些设计模式其实自己在工作中除了那么几种几乎很少用到.
+                        时间：2019-5-23 18:46:50
                     </p>
                     <p class="repo-list-meta">
                         <span class="meta-info">
-                          <span class="octicon octicon-calendar"></span> 2019/05/17
+                          <span class="octicon octicon-calendar"></span> 2019/05/23
                         </span>
                         
                         <span class="meta-info">
                           <span class="octicon octicon-file-directory"></span>
-                          <a href="http://localhost:4000/categories/#mybatis" title="mybatis">mybatis</a>
+                          <a href="http://localhost:4000/categories/#springfox" title="springfox">springfox</a>
                         </span>
                         
                     </p>
@@ -197,19 +197,19 @@
                 
                 <li class="repo-list-item">
                     <h3 class="repo-list-name">
-                      <a href="http://localhost:4000/2019/05/16/mybatis-5/">mybatis 源码系列(五) 数据源DataSource</a>
+                      <a href="http://localhost:4000/2019/05/23/springfox-5/">springfox 源码分析(五) web配置类Plugin插件的使用</a>
                     </h3>
                     <p class="repo-list-description">
-                        在第四章节中,我们分析里数据库驱动Driver的加载方式,其中有提到mybatis的数据源，我们都知道,Java中的SQL规范java.sql.DataSource是一个接口,而我们在生产环境中一般都是基于数据库的连接池技术来获取数据库连接以操作数据库的.
+                        时间：2019-5-23 14:46:50
                     </p>
                     <p class="repo-list-meta">
                         <span class="meta-info">
-                          <span class="octicon octicon-calendar"></span> 2019/05/16
+                          <span class="octicon octicon-calendar"></span> 2019/05/23
                         </span>
                         
                         <span class="meta-info">
                           <span class="octicon octicon-file-directory"></span>
-                          <a href="http://localhost:4000/categories/#mybatis" title="mybatis">mybatis</a>
+                          <a href="http://localhost:4000/categories/#springfox" title="springfox">springfox</a>
                         </span>
                         
                     </p>
@@ -217,19 +217,19 @@
                 
                 <li class="repo-list-item">
                     <h3 class="repo-list-name">
-                      <a href="http://localhost:4000/2019/05/14/mybatis-4/">mybatis 源码系列(四) 数据库驱动Driver加载方式</a>
+                      <a href="http://localhost:4000/2019/05/23/springfox-4/">springfox 源码分析(四) 配置类初始化</a>
                     </h3>
                     <p class="repo-list-description">
-                        不管是mysql或者oracle等等数据库的连接,在我们Java程序中,都需要将相应的数据库驱动jar包加入到Java应用程序中
+                        时间：2019-5-23 12:46:50
                     </p>
                     <p class="repo-list-meta">
                         <span class="meta-info">
-                          <span class="octicon octicon-calendar"></span> 2019/05/14
+                          <span class="octicon octicon-calendar"></span> 2019/05/23
                         </span>
                         
                         <span class="meta-info">
                           <span class="octicon octicon-file-directory"></span>
-                          <a href="http://localhost:4000/categories/#mybatis" title="mybatis">mybatis</a>
+                          <a href="http://localhost:4000/categories/#springfox" title="springfox">springfox</a>
                         </span>
                         
                     </p>
@@ -237,19 +237,19 @@
                 
                 <li class="repo-list-item">
                     <h3 class="repo-list-name">
-                      <a href="http://localhost:4000/2019/05/13/mybatis-3/">mybatis 源码系列(三) 配置之环境变量Environment</a>
+                      <a href="http://localhost:4000/2019/05/22/springfox-3/">springfox 源码分析(三) 初探Spring Plugin插件系统</a>
                     </h3>
                     <p class="repo-list-description">
-                        通过初始化的章节,我们知道了mybatis的核心配置类Configuration，那么,接下来我们逐一查看该配置的属性
+                        时间：2019-5-22 12:46:50
                     </p>
                     <p class="repo-list-meta">
                         <span class="meta-info">
-                          <span class="octicon octicon-calendar"></span> 2019/05/13
+                          <span class="octicon octicon-calendar"></span> 2019/05/22
                         </span>
                         
                         <span class="meta-info">
                           <span class="octicon octicon-file-directory"></span>
-                          <a href="http://localhost:4000/categories/#mybatis" title="mybatis">mybatis</a>
+                          <a href="http://localhost:4000/categories/#springfox" title="springfox">springfox</a>
                         </span>
                         
                     </p>
@@ -314,6 +314,14 @@ SimpleJekyllSearch({
 
     
 
+    <a href="/categories/#Knife4j" class="xiaoym-cloud-tag">Knife4j(6)</a>
+
+    
+
+    <a href="/categories/#Knife4jInsight" class="xiaoym-cloud-tag">Knife4jInsight(3)</a>
+
+    
+
     <a href="/categories/#Linux" class="xiaoym-cloud-tag">Linux(3)</a>
 
     
@@ -363,11 +371,12 @@ SimpleJekyllSearch({
     
 
 </div>
-<div style="text-align: center;">
-    <h2>微信公众号</h2>
+<div class="xiaoym-qrcode">
+    <div class="xiaoym-qrcode-title">
+        <h2>微信公众号(八一菜刀)</h2>
+    </div>
+    <div style="text-align: center;"><img src="/images/website/mp/qrcode.jpg" /> </div>
 </div>
-<div style="text-align: center;"><img src="/images/website/mp/qrcode.jpg" /> </div>
-
 <script>
     // 实现词云效果
     document.addEventListener('DOMContentLoaded', function () {
@@ -468,6 +477,10 @@ SimpleJekyllSearch({
         
           
               <a href="http://localhost:4000/page19"  class="btn btn-outline">19</a>
+          
+        
+          
+              <a href="http://localhost:4000/page20"  class="btn btn-outline">20</a>
           
         
         

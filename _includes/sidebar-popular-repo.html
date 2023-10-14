@@ -13,16 +13,18 @@
     {% assign sorted_categories = site.categories | sort %}
     {% for category in sorted_categories %}
 
-    <a href="/categories/#{{ category[0] }}" class="xiaoym-cloud-tag">{{ category | first }}({{ category[1].size }})</a>
+    <a href="/categories/#{{ category[0] }}" class="xiaoym-cloud-tag">{{ category | first }}({{ category[1].size
+        }})</a>
 
     {% endfor %}
 
 </div>
-<div style="text-align: center;">
-    <h2>微信公众号</h2>
+<div class="xiaoym-qrcode">
+    <div class="xiaoym-qrcode-title">
+        <h2>微信公众号(八一菜刀)</h2>
+    </div>
+    <div style="text-align: center;"><img src="/images/website/mp/qrcode.jpg" /> </div>
 </div>
-<div style="text-align: center;"><img src="/images/website/mp/qrcode.jpg" /> </div>
-
 <script>
     // 实现词云效果
     document.addEventListener('DOMContentLoaded', function () {

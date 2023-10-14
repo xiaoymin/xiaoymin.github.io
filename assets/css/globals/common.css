@@ -833,12 +833,12 @@ pre {
 }
 
 .xiaoym-cloud-tag {
-    padding: 5px 10px;
+    padding: 4px 4px;
     /* background-color: #f0f5ff; */
     color: red;
     /* border: 1px solid #91d5ff; */
     border-radius: 4px;
-    margin: 5px;
+    /* margin: 5px; */
     text-decoration: none;
     transition: transform 0.3s;
     display: inline-block;
@@ -850,7 +850,7 @@ pre {
 }
 
 .xiaoym-cloud-tag-small {
-    font-size: 10px;
+    font-size: 12px;
 }
 
 .xiaoym-cloud-tag-medium {
@@ -896,4 +896,26 @@ pre {
 
 .bg-color6 {
     color: #9400D3;
+}
+
+.xiaoym-board {
+    background-color: #fff;
+    /* 设置背景颜色 */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    /* 添加立体感的阴影效果 */
+}
+
+.xiaoym-qrcode {
+    text-align: center;
+    /* border: 1px solid red; */
+    background-color: #fff;
+    /* 设置背景颜色 */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    /* 添加立体感的阴影效果 */
+    padding: 4px 4px;
+}
+
+.xiaoym-qrcode-title {
+    margin-top: 10px;
+    text-align: center;
 }

@@ -97,14 +97,14 @@
                 
                 <li class="repo-list-item">
                     <h3 class="repo-list-name">
-                      <a href="http://localhost:4000/2019/05/25/springfox-9/">springfox 源码分析(九) 文档初始化-分组</a>
+                      <a href="http://localhost:4000/2019/06/02/springfox-18/">springfox 源码分析(十八) 自定义扩展实现分组的排序</a>
                     </h3>
                     <p class="repo-list-description">
-                        在前面我们了解了DocumennationContext的初始化过程,包括一系列的默认属性的赋值,接下来,开始真正的文档解析操作
+                        既然我们对springfox提供的接口已经有了一个初步的了解,那么针对我们在分组接口文章中提的需求,如果自定义扩展实现分组的排序如何做呢？
                     </p>
                     <p class="repo-list-meta">
                         <span class="meta-info">
-                          <span class="octicon octicon-calendar"></span> 2019/05/25
+                          <span class="octicon octicon-calendar"></span> 2019/06/02
                         </span>
                         
                         <span class="meta-info">
@@ -117,14 +117,14 @@
                 
                 <li class="repo-list-item">
                     <h3 class="repo-list-name">
-                      <a href="http://localhost:4000/2019/05/24/springfox-8/">springfox 源码分析(八) 遍历接口获取Model对象</a>
+                      <a href="http://localhost:4000/2019/06/01/springfox-17/">springfox 源码分析(十七) Swagger2接口文档示例接口api-docs</a>
                     </h3>
                     <p class="repo-list-description">
-                        我们通过读DocumentationPluginsBootstrapper代码中的start方法,了解到springfox根据我们外部提供的Docket对象进行初始化时,会通过Docket对象构建DocumentationContext对象来进行初始化操作
+                        前面已经获取得到了swagger的分组接口信息了,接下来就是根据分组名称获取每个分组的Swagger资源详细信息,在springfox中提供了/v2/api-docs接口来进行获取
                     </p>
                     <p class="repo-list-meta">
                         <span class="meta-info">
-                          <span class="octicon octicon-calendar"></span> 2019/05/24
+                          <span class="octicon octicon-calendar"></span> 2019/06/01
                         </span>
                         
                         <span class="meta-info">
@@ -137,14 +137,14 @@
                 
                 <li class="repo-list-item">
                     <h3 class="repo-list-name">
-                      <a href="http://localhost:4000/2019/05/23/springfox-7/">springfox 源码分析(七) 文档初始化</a>
+                      <a href="http://localhost:4000/2019/06/01/springfox-16/">springfox 源码分析(十六) 分组接口swagger-resouces</a>
                     </h3>
                     <p class="repo-list-description">
-                        时间：2019-5-23 20:12:04
+                        通过前面的分析,我们最终得到了springfox的Documentation文档对象,将我们的RESTful接口最终转换为了文档对象,文档对象是包含了接口列表、分组信息等属性的
                     </p>
                     <p class="repo-list-meta">
                         <span class="meta-info">
-                          <span class="octicon octicon-calendar"></span> 2019/05/23
+                          <span class="octicon octicon-calendar"></span> 2019/06/01
                         </span>
                         
                         <span class="meta-info">
@@ -157,14 +157,14 @@
                 
                 <li class="repo-list-item">
                     <h3 class="repo-list-name">
-                      <a href="http://localhost:4000/2019/05/23/springfox-6/">springfox 源码分析(六) web配置类扫描包作用探索</a>
+                      <a href="http://localhost:4000/2019/05/31/springfox-15/">springfox 源码分析(十五) 归档得到Documentation文档对象</a>
                     </h3>
                     <p class="repo-list-description">
-                        时间：2019-5-23 18:46:50
+                        通过上篇的分析,我们已经得到了ApiListing的map集合，接下来最终做文档归档,得到Documentation对象
                     </p>
                     <p class="repo-list-meta">
                         <span class="meta-info">
-                          <span class="octicon octicon-calendar"></span> 2019/05/23
+                          <span class="octicon octicon-calendar"></span> 2019/05/31
                         </span>
                         
                         <span class="meta-info">
@@ -177,14 +177,14 @@
                 
                 <li class="repo-list-item">
                     <h3 class="repo-list-name">
-                      <a href="http://localhost:4000/2019/05/23/springfox-5/">springfox 源码分析(五) web配置类Plugin插件的使用</a>
+                      <a href="http://localhost:4000/2019/05/30/springfox-14/">springfox 源码分析(十四) 归档得到ApiListing接口集合</a>
                     </h3>
                     <p class="repo-list-description">
-                        时间：2019-5-23 14:46:50
+                        在前面我们拿到了接口的Model类型集合,然后还获取到了该接口的ApiDescription描述信息
                     </p>
                     <p class="repo-list-meta">
                         <span class="meta-info">
-                          <span class="octicon octicon-calendar"></span> 2019/05/23
+                          <span class="octicon octicon-calendar"></span> 2019/05/30
                         </span>
                         
                         <span class="meta-info">
@@ -197,14 +197,14 @@
                 
                 <li class="repo-list-item">
                     <h3 class="repo-list-name">
-                      <a href="http://localhost:4000/2019/05/23/springfox-4/">springfox 源码分析(四) 配置类初始化</a>
+                      <a href="http://localhost:4000/2019/05/29/springfox-13/">springfox 源码分析(十三) 自定义扩展实现接口的排序</a>
                     </h3>
                     <p class="repo-list-description">
-                        时间：2019-5-23 12:46:50
+                        很多时候,Swagger定义的标准并不能满足我们实际的需求,比如拿分组后的接口来说,有适合我们希望我们的接口能够排序,假如我们当前有一个注册的需求实现,那么他的接口可能是这样的：
                     </p>
                     <p class="repo-list-meta">
                         <span class="meta-info">
-                          <span class="octicon octicon-calendar"></span> 2019/05/23
+                          <span class="octicon octicon-calendar"></span> 2019/05/29
                         </span>
                         
                         <span class="meta-info">
@@ -217,14 +217,14 @@
                 
                 <li class="repo-list-item">
                     <h3 class="repo-list-name">
-                      <a href="http://localhost:4000/2019/05/22/springfox-3/">springfox 源码分析(三) 初探Spring Plugin插件系统</a>
+                      <a href="http://localhost:4000/2019/05/28/springfox-12/">springfox 源码分析(十二) 遍历接口获取ApiDescription集合</a>
                     </h3>
                     <p class="repo-list-description">
-                        时间：2019-5-22 12:46:50
+                        ApiDescription是springfox提供的接口描述信息类,在springfox 源码分析(十) 遍历接口获取Model对象中我们拿到了接口的类型Model集合信息，但除了Model信息,接口还有更多的信息
                     </p>
                     <p class="repo-list-meta">
                         <span class="meta-info">
-                          <span class="octicon octicon-calendar"></span> 2019/05/22
+                          <span class="octicon octicon-calendar"></span> 2019/05/28
                         </span>
                         
                         <span class="meta-info">
@@ -237,14 +237,14 @@
                 
                 <li class="repo-list-item">
                     <h3 class="repo-list-name">
-                      <a href="http://localhost:4000/2019/05/22/springfox-2/">springfox 源码分析(二) 初探mapstruct</a>
+                      <a href="http://localhost:4000/2019/05/27/springfox-11/">springfox 源码分析(十一) 自定义添加Swagger Models功能实现</a>
                     </h3>
                     <p class="repo-list-description">
-                        时间：2019-5-22 12:40:21
+                        在springfox 源码分析(十) 遍历接口获取Model对象这一篇中,我们其实已经大致了解了Springfox针对接口中涉及到的Model类进行解析初始化的过程
                     </p>
                     <p class="repo-list-meta">
                         <span class="meta-info">
-                          <span class="octicon octicon-calendar"></span> 2019/05/22
+                          <span class="octicon octicon-calendar"></span> 2019/05/27
                         </span>
                         
                         <span class="meta-info">
@@ -314,6 +314,14 @@ SimpleJekyllSearch({
 
     
 
+    <a href="/categories/#Knife4j" class="xiaoym-cloud-tag">Knife4j(6)</a>
+
+    
+
+    <a href="/categories/#Knife4jInsight" class="xiaoym-cloud-tag">Knife4jInsight(3)</a>
+
+    
+
     <a href="/categories/#Linux" class="xiaoym-cloud-tag">Linux(3)</a>
 
     
@@ -363,11 +371,12 @@ SimpleJekyllSearch({
     
 
 </div>
-<div style="text-align: center;">
-    <h2>微信公众号</h2>
+<div class="xiaoym-qrcode">
+    <div class="xiaoym-qrcode-title">
+        <h2>微信公众号(八一菜刀)</h2>
+    </div>
+    <div style="text-align: center;"><img src="/images/website/mp/qrcode.jpg" /> </div>
 </div>
-<div style="text-align: center;"><img src="/images/website/mp/qrcode.jpg" /> </div>
-
 <script>
     // 实现词云效果
     document.addEventListener('DOMContentLoaded', function () {
@@ -468,6 +477,10 @@ SimpleJekyllSearch({
         
           
               <a href="http://localhost:4000/page19"  class="btn btn-outline">19</a>
+          
+        
+          
+              <a href="http://localhost:4000/page20"  class="btn btn-outline">20</a>
           
         
         

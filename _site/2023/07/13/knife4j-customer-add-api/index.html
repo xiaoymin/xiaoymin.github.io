@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>自定义API接口在Knife4j的Ui界面中显示 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2023/07/13/knife4j-customer-add-api/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="自定义API接口在Knife4j的Ui界面中显示">
+      
+    <meta name="keywords" content="["springfox自定义接口", "springdoc自定义接口", "knife4j自定义接口"]">
+    <meta name="og:keywords" content="["springfox自定义接口", "springdoc自定义接口", "knife4j自定义接口"]">
+      
+    <meta name="description" content="本文主要介绍在 Spring Boot 应用中,如何使用 springfox 和 springdoc 框架自定义添加外部 API 接口,并在 Knife4j 的 UI 界面中展示。">
+    <meta name="og:description" content="本文主要介绍在 Spring Boot 应用中,如何使用 springfox 和 springdoc 框架自定义添加外部 API 接口,并在 Knife4j 的 UI 界面中展示。">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2023/07/13/knife4j-customer-add-api/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2023-07-13">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="自定义API接口在Knife4">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">自定义API接口在Knife4j的Ui界面中显示</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2023/07/13
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#Knife4j" title="Knife4j">Knife4j</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <p>本文主要介绍在 Spring Boot 应用中,如何使用 springfox 和 springdoc 框架自定义添加外部 API 接口,并在 Knife4j 的 UI 界面中展示。</p>
+
+<p>关联Issues：</p>
+
+<ul>
+  <li>✅ <a href="https://gitee.com/xiaoym/knife4j/issues/I640E8">添加SpringSecurity登录接口到knife4j中</a></li>
+</ul>
+
+<p>🏖️ 本文仓库：<a href="https://github.com/xiaoymin/knife4j-demo/tree/master/knife4j-customer-api">knife4j-customer-api</a></p>
+
+<p>📹 视频地址：<a href="https://www.bilibili.com/video/BV19h4y1j7y9/?vd_source=ef34098d916a578698508a43063099ac">https://www.bilibili.com/video/BV19h4y1j7y9/?vd_source=ef34098d916a578698508a43063099ac</a></p>
+
+<iframe src="//player.bilibili.com/player.html?aid=615960537&amp;bvid=BV19h4y1j7y9&amp;cid=1196531434&amp;page=1&amp;high_quality=1&amp;danmaku=0" allowfullscreen="allowfullscreen" width="100%" height="500" scrolling="no" frameborder="0" sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts"></iframe>
+
+<h2 id="-本质">🌱 本质</h2>
+
+<p>我们要实现将自定义的API接口添加到Ui界面中显示，其实最简单的就是在我们接口渲染的Swagger或者OpenAPI对象中，添加相应的新对象(PS:用于在OpenAPI规范中描述接口定义的<code class="language-plaintext highlighter-rouge">Operation</code>对象)属性就好了</p>
+
+<p>这需要借助于底层解析框架对外是否提供了开放接口，允许我们这么做，还好目前不管是springfox或者springdoc，其实都支持开发者自定义。</p>
+
+<p>主要的区别是：</p>
+
+<ul>
+  <li>✅ <strong>springfox</strong>提供的是<a href="/docs/action/springfox/springfox3">spring-plugin</a>体系，在解析时添加<code class="language-plaintext highlighter-rouge">Operation</code>对象，这是进行中的处理行为</li>
+  <li>✅ <strong>springdoc</strong>提供的全局Customer接口，springdoc已经完成了所有接口的对象解析，但开发者实现Customer接口可以自定义更改，这是后置行为</li>
+</ul>
+
+<h2 id="-springfox">📜 springfox</h2>
+
+<p>在springfox的框架中，提供了基于spring-plugin体系的解析接口，开发者如果阅读过springfox的源码后，应该很轻松就能实现</p>
+
+<p>主要的动作包括：</p>
+
+<ul>
+  <li>🎠 自定义plugin接口，实现<code class="language-plaintext highlighter-rouge">ApiListingScannerPlugin.java</code>类，并且通过<code class="language-plaintext highlighter-rouge">@Component</code>或者Java Config得<code class="language-plaintext highlighter-rouge">@Bean</code>注解注入到Spring的容器中</li>
+  <li>🎢 创建<code class="language-plaintext highlighter-rouge">Operation</code>对象，该对象是一个接口的描述，包括：说明、参数、响应、请求类型等等，并且返回<code class="language-plaintext highlighter-rouge">ApiListingScannerPlugin.java</code>接口约束的方法类型</li>
+  <li>🏎️ springfox这种方式只能提供简单的form表单类型的接口，如果是类似<code class="language-plaintext highlighter-rouge">@RequestBody</code>类型的JSON、XML请求，那么<strong>建议放弃~</strong></li>
+</ul>
+
+<p>示例:添加一个简单的login登录接口，代码如下：</p>
+
+<p>```javascript title=”com.xiaominfo.springfox.customer.CustomerApiPlugin.java”
+@Slf4j
+@Component
+public class CustomerApiPlugin implements ApiListingScannerPlugin {</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Override
+public List&lt;ApiDescription&gt; apply(DocumentationContext context) {
+    // consumers、produces
+    Set&lt;String&gt; mediaSet = new HashSet&lt;&gt;();
+    mediaSet.add(MediaType.APPLICATION_JSON_VALUE);
+    // 设定参数
+    List&lt;Parameter&gt; parameters = new ArrayList&lt;&gt;();
+    parameters.add(new ParameterBuilder().name("username").required(true).modelRef(new ModelRef("String")).defaultValue("test").description("用户名").build());
+    parameters.add(new ParameterBuilder().name("password").required(true).modelRef(new ModelRef("String")).defaultValue("123").description("密码").build());
+    // 接口的Tag
+    Set&lt;String&gt; tags = new HashSet&lt;&gt;();
+    tags.add("首页");
+    // 构建Operation对象
+    Operation usernamePasswordOperation = new OperationBuilder(new CachingOperationNameGenerator())
+            .method(HttpMethod.POST)
+            .tags(tags)
+            .summary("用户名密码登录")
+            .notes("用户登陆获取token")
+            .parameters(parameters)
+            .consumes(mediaSet)
+            .produces(mediaSet)
+            .build();
+    
+    // 需要注意的是groupName需要和开发者创建的Docket对象赋值的groupName保持一致
+    ApiDescription loginApiDescription = new ApiDescription("hello", "/login", "登录接口描述", Collections.singletonList(usernamePasswordOperation), false);
+    return Collections.singletonList(loginApiDescription);
+}
+
+@Override
+public boolean supports(DocumentationType documentationType) {
+    return documentationType == DocumentationType.SWAGGER_2;
+} } ```
+</code></pre></div></div>
+
+<h2 id="-springdoc">📚 springdoc</h2>
+
+<p>在springdoc中，其实和springdoc的思想是完全一致的,springdoc也开放了两种级别的customizer接口：</p>
+
+<ul>
+  <li>🏜️ <code class="language-plaintext highlighter-rouge">GlobalOperationCustomizer</code>：针对Operation级别的全局自定义扩展钩子函数，开发者可以对接口中每一个Operation进行扩展自定义实现，或调整，或修改，或增加扩展都行，Knife4j的部分增强特性就是基于此函数实现，可以参考代码<a href="https://gitee.com/xiaoym/knife4j/blob/dev/knife4j/knife4j-openapi3-jakarta-spring-boot-starter/src/main/java/com/github/xiaoymin/knife4j/spring/extension/Knife4jJakartaOperationCustomizer.java">Knife4jJakartaOperationCustomizer.java</a></li>
+  <li>🏝️ <code class="language-plaintext highlighter-rouge">GlobalOpenApiCustomizer</code>：是针对整个OpenAPI级别的,开发者在分组或者分包后，得到的单个OpenAPI实例，开发者可以操纵全局的OpenAPI实例，该OpenAPI对象已经是springdoc解析过的实例对象，例如该issues中的需求，开发者只需要自定义创建新Operation对象，然后通过OpenAPI实例对象进行add添加即可完成此需求，部分扩展可以参考代码：<a href="https://gitee.com/xiaoym/knife4j/blob/dev/knife4j/knife4j-openapi3-jakarta-spring-boot-starter/src/main/java/com/github/xiaoymin/knife4j/spring/extension/Knife4jOpenApiCustomizer.java">Knife4jOpenApiCustomizer.java</a></li>
+  <li>🎠 扩展实现类接口后，注入Spring的容器中即可</li>
+</ul>
+
+<p>考虑到我们是新增自定义的API接口，因此，可以实现<code class="language-plaintext highlighter-rouge">GlobalOpenApiCustomizer</code>类进行扩展</p>
+
+<p>代码示例如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// com.xiaominfo.springdoc.customer.CustomerOperation.java</span>
+<span class="p">@</span><span class="nd">Slf4j</span>
+<span class="p">@</span><span class="nd">Component</span>
+<span class="kr">public</span> <span class="kd">class</span> <span class="nx">CustomerOperation</span> <span class="kr">implements</span> <span class="nx">GlobalOpenApiCustomizer</span> <span class="p">{</span>
+    
+    <span class="p">@</span><span class="nd">Override</span>
+    <span class="kr">public</span> <span class="k">void</span> <span class="nx">customise</span><span class="p">(</span><span class="nx">OpenAPI</span> <span class="nx">openApi</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">log</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="dl">"</span><span class="s2">customer.</span><span class="dl">"</span><span class="p">);</span>
+        <span class="c1">// 因为要新增自定义的接口，直接这里add</span>
+        <span class="nx">PathItem</span> <span class="nx">pathItem</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">PathItem</span><span class="p">();</span>
+        <span class="c1">// 基础信息 构建Operation</span>
+        <span class="nx">Operation</span> <span class="nx">operation</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Operation</span><span class="p">();</span>
+        <span class="nx">operation</span><span class="p">.</span><span class="nx">operationId</span><span class="p">(</span><span class="dl">"</span><span class="s2">login</span><span class="dl">"</span><span class="p">);</span>
+        <span class="nx">operation</span><span class="p">.</span><span class="nx">summary</span><span class="p">(</span><span class="dl">"</span><span class="s2">登录接口</span><span class="dl">"</span><span class="p">);</span>
+        <span class="nx">operation</span><span class="p">.</span><span class="nx">description</span><span class="p">(</span><span class="dl">"</span><span class="s2">根据用户名和密码登录获取token</span><span class="dl">"</span><span class="p">);</span>
+        <span class="nx">operation</span><span class="p">.</span><span class="nx">tags</span><span class="p">(</span><span class="nx">Collections</span><span class="p">.</span><span class="nx">singletonList</span><span class="p">(</span><span class="dl">"</span><span class="s2">登录</span><span class="dl">"</span><span class="p">));</span>
+        <span class="c1">// 构建参数</span>
+        <span class="nx">List</span><span class="o">&lt;</span><span class="nx">Parameter</span><span class="o">&gt;</span> <span class="nx">parameters</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+        <span class="nx">parameters</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">new</span> <span class="nx">Parameter</span><span class="p">().</span><span class="nx">name</span><span class="p">(</span><span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">).</span><span class="nx">example</span><span class="p">(</span><span class="dl">"</span><span class="s2">zhangFei</span><span class="dl">"</span><span class="p">).</span><span class="nx">description</span><span class="p">(</span><span class="dl">"</span><span class="s2">用户名</span><span class="dl">"</span><span class="p">).</span><span class="nx">required</span><span class="p">(</span><span class="kc">true</span><span class="p">).</span><span class="nx">schema</span><span class="p">(</span><span class="k">new</span> <span class="nx">StringSchema</span><span class="p">()).</span><span class="k">in</span><span class="p">(</span><span class="dl">"</span><span class="s2">query</span><span class="dl">"</span><span class="p">));</span>
+        <span class="nx">parameters</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">new</span> <span class="nx">Parameter</span><span class="p">().</span><span class="nx">name</span><span class="p">(</span><span class="dl">"</span><span class="s2">password</span><span class="dl">"</span><span class="p">).</span><span class="nx">example</span><span class="p">(</span><span class="dl">"</span><span class="s2">123456</span><span class="dl">"</span><span class="p">).</span><span class="nx">description</span><span class="p">(</span><span class="dl">"</span><span class="s2">密码</span><span class="dl">"</span><span class="p">).</span><span class="nx">required</span><span class="p">(</span><span class="kc">true</span><span class="p">).</span><span class="nx">schema</span><span class="p">(</span><span class="k">new</span> <span class="nx">StringSchema</span><span class="p">()).</span><span class="k">in</span><span class="p">(</span><span class="dl">"</span><span class="s2">query</span><span class="dl">"</span><span class="p">));</span>
+        <span class="nx">operation</span><span class="p">.</span><span class="nx">parameters</span><span class="p">(</span><span class="nx">parameters</span><span class="p">);</span>
+        <span class="c1">// 构建响应body</span>
+        <span class="nx">ApiResponses</span> <span class="nx">apiResponses</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ApiResponses</span><span class="p">();</span>
+        <span class="nx">ApiResponse</span> <span class="nx">apiResponse</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ApiResponse</span><span class="p">();</span>
+        <span class="nx">apiResponse</span><span class="p">.</span><span class="nx">description</span><span class="p">(</span><span class="dl">"</span><span class="s2">ok</span><span class="dl">"</span><span class="p">).</span><span class="nx">content</span><span class="p">(</span><span class="k">new</span> <span class="nx">Content</span><span class="p">().</span><span class="nx">addMediaType</span><span class="p">(</span><span class="dl">"</span><span class="s2">*/*</span><span class="dl">"</span><span class="p">,</span> <span class="k">new</span> <span class="nx">MediaType</span><span class="p">().</span><span class="nx">schema</span><span class="p">(</span><span class="k">new</span> <span class="nx">StringSchema</span><span class="p">())));</span>
+        <span class="nx">apiResponses</span><span class="p">.</span><span class="nx">addApiResponse</span><span class="p">(</span><span class="dl">"</span><span class="s2">200</span><span class="dl">"</span><span class="p">,</span><span class="nx">apiResponse</span><span class="p">);</span>
+        <span class="nx">operation</span><span class="p">.</span><span class="nx">responses</span><span class="p">(</span><span class="nx">apiResponses</span><span class="p">);</span>
+        <span class="c1">// 该自定义接口为post</span>
+        <span class="nx">pathItem</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="nx">operation</span><span class="p">);</span>
+        <span class="nx">openApi</span><span class="p">.</span><span class="nx">path</span><span class="p">(</span><span class="dl">"</span><span class="s2">/login</span><span class="dl">"</span><span class="p">,</span> <span class="nx">pathItem</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>此时，我们可以在界面中查看，已经存在了我们自定义新增的接口，如下图：</p>
+
+<p><img src="/images/blog/customer-api/customer-api-preview.jpg" alt="图1.自定义API接口在Knife4j的Ui界面中显示" /></p>
+
+<h2 id="-总结">📖 总结</h2>
+
+<p>本文主要介绍了基于springfox或者springdoc框架，添加自定义API接口的示例，开发者可以根据其中的思想自行扩展，达到自己的业务需求。</p>
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2023/07/13/knife4j-customer-add-api/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div style="text-align: center;">
+  <h2>微信公众号</h2>
+</div>
+<div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>
