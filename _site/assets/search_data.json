@@ -1254,6 +1254,13 @@
     } ,
   
     {
+      "title"    : "用好大模型?这5种实用的Prompt框架你一定要看看!",
+      "category" : "大模型",
+      
+      "url"      : "http://localhost:4000/2023/10/15/use-prompt-framework/"
+    } ,
+  
+    {
       "title"    : "Android Studio",
       "category" : "Android",
       
