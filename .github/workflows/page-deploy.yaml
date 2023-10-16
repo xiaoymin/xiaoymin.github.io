@@ -3,7 +3,7 @@ name: Pages Build Deployment-deploy
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build-and-deploy:
