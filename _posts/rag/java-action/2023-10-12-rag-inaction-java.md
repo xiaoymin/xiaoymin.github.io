@@ -14,6 +14,7 @@ categories:
 sidebar_position: 4
 author: 八一菜刀
 data: 2023年10月12日
+pin: true
 ---
 
 
@@ -142,7 +143,7 @@ services:
 
 > data目录下的文本，开发者在调试时可以自己随意添加,网上随便找的文章都可以
 
-![图5-知识文本内容](/assets/image-20231011223914297.png)
+![图5-知识文本内容](/assets/images/llm/rag-java-action/image-20231011223914297.png)
 
 文章内容是一篇非常具有代表性的时政人物介绍新闻，那么我们就根据该文章的内容进行问答！
 

@@ -1,580 +1,2116 @@
-<!DOCTYPE html>
-<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<!doctype html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- `site.alt_lang` can specify a language different from the UI -->
+<html lang="zh-CN" >
+  <!-- The Head -->
+
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <title>八一菜刀</title>
-    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
-    <!-- Latest compiled and minified CSS -->
-    
-    <link rel="stylesheet" href="http://localhost:4000/assets/css/pages/index.css">
-    
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7f7f7">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1b1b1e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="stylesheet" href="http://localhost:4000/assets/css/custom.css">
+  <meta name="viewport"
+    content="width=device-width, user-scalable=no initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
 
-    
-    <link rel="canonical" href="http://localhost:4000/">
-    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
-    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
-    
-    <meta name="keywords" content="Knife4j,RAG实战,LLM大模型,swagger中文社区,swagger中文,swaggerCenter,八一菜刀, 萧明, xiaoymin,swagger,swagger-bootstrap-ui,oss-server,swagger-bootstrap-ui 1.7.5">
-    <meta name="description" content="八一菜刀的个人博客">
-    
-    
-        
-    
-    <meta property="og:url" content="http://localhost:4000/">
-    <meta property="og:site_name" content="八一菜刀">
-    <meta property="og:type" content="article">
-    <meta property="og:locale" content="zh_CN" />
-    
-    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
-    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
-    <script src="http://localhost:4000/assets/js/main.js"></script>
-</head>
-<body class="home" data-mz="home">
-    <header class="site-header">
-        <div class="container">
-            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
-            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <nav class="site-header-nav" role="navigation">
-                
-                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
-                
-                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
-                
-                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
-                
-                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
-                
-            </nav>
-        </div>
-    </header>
-    <!-- / header -->
+  
 
-    <section class="banner">
-    <div class="collection-head">
-        <div class="container">
-            <div class="collection-title">
-              <h1 class="collection-header" id="sub-title"><span>一直坚持写下去才是最重要的</span></h1>
-                <div class="collection-info">
-                    <span class="meta-info mobile-hidden">
-                        <span class="octicon octicon-location"></span>
-                        HangZhou, China
-                    </span>
-                    <span class="meta-info">
-                        <span class="octicon octicon-organization"></span>
-                        <a href="https://xiaoymin.github.io/" target="_blank">xiaoym.github.io</a>
-                    </span>
-                     <span class="meta-info">
-                        <span class="octicon octicon-mark-github"></span>
-                        <a href="https://github.com/xiaoymin" target="_blank">xiaoymin</a>
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- /.banner -->
-<section class="container content">
-    <div class="columns">
-        <div class="column two-thirds" >
-            <ol class="repo-list">
-                
-                <li class="repo-list-item">
-                    <h3 class="repo-list-name">
-                      <a href="http://localhost:4000/2023/10/15/use-prompt-framework/">用好大模型?这5种实用的Prompt框架你一定要看看!</a>
-                    </h3>
-                    <p class="repo-list-description">
-                        前言
-                    </p>
-                    <p class="repo-list-meta">
-                        <span class="meta-info">
-                          <span class="octicon octicon-calendar"></span> 2023/10/15
-                        </span>
-                        
-                        <span class="meta-info">
-                          <span class="octicon octicon-file-directory"></span>
-                          <a href="http://localhost:4000/categories/#大模型" title="大模型">大模型</a>
-                        </span>
-                        
-                    </p>
-                </li>
-                
-                <li class="repo-list-item">
-                    <h3 class="repo-list-name">
-                      <a href="http://localhost:4000/2023/10/12/rag-inaction-java/">实战0-1,Java开发者也能看懂的大模型应用RAG开发实践</a>
-                    </h3>
-                    <p class="repo-list-description">
-                        前言
-                    </p>
-                    <p class="repo-list-meta">
-                        <span class="meta-info">
-                          <span class="octicon octicon-calendar"></span> 2023/10/12
-                        </span>
-                        
-                        <span class="meta-info">
-                          <span class="octicon octicon-file-directory"></span>
-                          <a href="http://localhost:4000/categories/#大模型" title="大模型">大模型</a>
-                        </span>
-                        
-                        <span class="meta-info">
-                          <span class="octicon octicon-file-directory"></span>
-                          <a href="http://localhost:4000/categories/#Java" title="Java">Java</a>
-                        </span>
-                        
-                    </p>
-                </li>
-                
-                <li class="repo-list-item">
-                    <h3 class="repo-list-name">
-                      <a href="http://localhost:4000/2023/10/10/llm-start/">全面进击AI大模型、RAG领域</a>
-                    </h3>
-                    <p class="repo-list-description">
-                        写在前面
-                    </p>
-                    <p class="repo-list-meta">
-                        <span class="meta-info">
-                          <span class="octicon octicon-calendar"></span> 2023/10/10
-                        </span>
-                        
-                        <span class="meta-info">
-                          <span class="octicon octicon-file-directory"></span>
-                          <a href="http://localhost:4000/categories/#大模型" title="大模型">大模型</a>
-                        </span>
-                        
-                    </p>
-                </li>
-                
-                <li class="repo-list-item">
-                    <h3 class="repo-list-name">
-                      <a href="http://localhost:4000/2023/09/18/knife4j-insight-mvp/">Knife4jInsight平台版-MVP版本v1.0.0发布</a>
-                    </h3>
-                    <p class="repo-list-description">
-                        在之前发布的《Knife4j新产品的想法》一文中，我提到想给Knife4j的生态做一些扩展，区别于目前市面上不一样的功能或者工具产品。
-                    </p>
-                    <p class="repo-list-meta">
-                        <span class="meta-info">
-                          <span class="octicon octicon-calendar"></span> 2023/09/18
-                        </span>
-                        
-                        <span class="meta-info">
-                          <span class="octicon octicon-file-directory"></span>
-                          <a href="http://localhost:4000/categories/#Knife4jInsight" title="Knife4jInsight">Knife4jInsight</a>
-                        </span>
-                        
-                    </p>
-                </li>
-                
-                <li class="repo-list-item">
-                    <h3 class="repo-list-name">
-                      <a href="http://localhost:4000/2023/09/17/knife4j-insight-dev/">Knife4jInsight的产品开发历程</a>
-                    </h3>
-                    <p class="repo-list-description">
-                        前言
-                    </p>
-                    <p class="repo-list-meta">
-                        <span class="meta-info">
-                          <span class="octicon octicon-calendar"></span> 2023/09/17
-                        </span>
-                        
-                        <span class="meta-info">
-                          <span class="octicon octicon-file-directory"></span>
-                          <a href="http://localhost:4000/categories/#Knife4jInsight" title="Knife4jInsight">Knife4jInsight</a>
-                        </span>
-                        
-                    </p>
-                </li>
-                
-                <li class="repo-list-item">
-                    <h3 class="repo-list-name">
-                      <a href="http://localhost:4000/2023/09/15/knife4j-new-product/">Knife4j新产品的想法</a>
-                    </h3>
-                    <p class="repo-list-description">
-                        写在开头
-                    </p>
-                    <p class="repo-list-meta">
-                        <span class="meta-info">
-                          <span class="octicon octicon-calendar"></span> 2023/09/15
-                        </span>
-                        
-                        <span class="meta-info">
-                          <span class="octicon octicon-file-directory"></span>
-                          <a href="http://localhost:4000/categories/#Knife4jInsight" title="Knife4jInsight">Knife4jInsight</a>
-                        </span>
-                        
-                    </p>
-                </li>
-                
-                <li class="repo-list-item">
-                    <h3 class="repo-list-name">
-                      <a href="http://localhost:4000/2023/08/13/knife4j-gateway-introduce/">Spring Cloud Gateway网关下的文档聚合?就用它了</a>
-                    </h3>
-                    <p class="repo-list-description">
-                        大家好，这篇文章主要是介绍分享Knife4j-gateway网关聚合文档组件,自4.0版本发布该组件后，得到了大家的积极响应，我们也是积极响应用户的需求，持续迭代优化
-                    </p>
-                    <p class="repo-list-meta">
-                        <span class="meta-info">
-                          <span class="octicon octicon-calendar"></span> 2023/08/13
-                        </span>
-                        
-                        <span class="meta-info">
-                          <span class="octicon octicon-file-directory"></span>
-                          <a href="http://localhost:4000/categories/#Knife4j" title="Knife4j">Knife4j</a>
-                        </span>
-                        
-                    </p>
-                </li>
-                
-                <li class="repo-list-item">
-                    <h3 class="repo-list-name">
-                      <a href="http://localhost:4000/2023/08/07/knife4j-handler-enum/">枚举烦恼终结!在Knife4j文档中如何优雅的处理枚举类型的展示及调试问题</a>
-                    </h3>
-                    <p class="repo-list-description">
-                        本文主要介绍在Knife4j中如何处理枚举，主要包含两个方面：
-                    </p>
-                    <p class="repo-list-meta">
-                        <span class="meta-info">
-                          <span class="octicon octicon-calendar"></span> 2023/08/07
-                        </span>
-                        
-                        <span class="meta-info">
-                          <span class="octicon octicon-file-directory"></span>
-                          <a href="http://localhost:4000/categories/#Knife4j" title="Knife4j">Knife4j</a>
-                        </span>
-                        
-                    </p>
-                </li>
-                
-            </ol>
-        </div>
-        <div class="column one-third">
-            
-<h3>站内搜索</h3>
-<div id="site_search">
-    <input type="text" id="search_box" placeholder="搜索">
-</div>
+  
 
-<ul id="search_results"></ul>
+  
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<meta name="generator" content="Jekyll v4.3.2" />
+<meta property="og:title" content="八一菜刀" />
+<meta property="og:locale" content="zh_CN" />
+<meta name="description" content="八一菜刀的学习笔记." />
+<meta property="og:description" content="八一菜刀的学习笔记." />
+<link rel="canonical" href="http://localhost:4000/" />
+<meta property="og:url" content="http://localhost:4000/" />
+<meta property="og:site_name" content="八一菜刀" />
+<meta property="og:type" content="website" />
+<link rel="next" href="http://localhost:4000/page2" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="八一菜刀" />
+<meta name="twitter:site" content="@xiaoymin" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","description":"八一菜刀的学习笔记.","headline":"八一菜刀","name":"xiaoymin","sameAs":["https://twitter.com/xiaoymin","https://github.com/xiaoymin"],"url":"http://localhost:4000/"}</script>
+<!-- End Jekyll SEO tag -->
 
-<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
-<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
-<script src="http://localhost:4000/assets/js/search.js"></script>
+  
+
+  <title>八一菜刀
+  </title>
+
+  <!--
+  The Favicons for Web, Android, Microsoft, and iOS (iPhone and iPad) Apps
+  Generated by: https://realfavicongenerator.net/
+-->
+
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png">
+<link rel="manifest" href="/assets/img/favicons/site.webmanifest">
+<link rel="shortcut icon" href="/assets/img/favicons/favicon.ico">
+<meta name="apple-mobile-web-app-title" content="八一菜刀">
+<meta name="application-name" content="八一菜刀">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="msapplication-config" content="/assets/img/favicons/browserconfig.xml">
+<meta name="theme-color" content="#ffffff">
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" >
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" >
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com" crossorigin>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" >
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" >
+  
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" >
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" >
+  
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato&family=Source+Sans+Pro:wght@400;600;700;900&display=swap">
+  
+
+  <!-- GA -->
+  
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/all.min.css">
+
+  <link rel="stylesheet" href="/assets/css/jekyll-theme-chirpy.css">
+
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/loading-attribute-polyfill@2.1.1/dist/loading-attribute-polyfill.min.css">
+  
+
+  
+
+  <!-- JavaScript -->
+
+  
+  <!-- Switch the mode between dark and light. -->
 
 <script type="text/javascript">
-SimpleJekyllSearch({
-    searchInput: document.getElementById('search_box'),
-    resultsContainer: document.getElementById('search_results'),
-    json: 'http://localhost:4000/assets/search_data.json',
-    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
-    noResultsText: 'No results found',
-    limit: 10,
-    fuzzy: false,
-    exclude: ['Welcome']
-})
+  class ModeToggle {
+    static get MODE_KEY() {
+      return 'mode';
+    }
+    static get MODE_ATTR() {
+      return 'data-mode';
+    }
+    static get DARK_MODE() {
+      return 'dark';
+    }
+    static get LIGHT_MODE() {
+      return 'light';
+    }
+    static get ID() {
+      return 'mode-toggle';
+    }
+
+    constructor() {
+      if (this.hasMode) {
+        if (this.isDarkMode) {
+          if (!this.isSysDarkPrefer) {
+            this.setDark();
+          }
+        } else {
+          if (this.isSysDarkPrefer) {
+            this.setLight();
+          }
+        }
+      }
+
+      let self = this;
+
+      /* always follow the system prefers */
+      this.sysDarkPrefers.addEventListener('change', () => {
+        if (self.hasMode) {
+          if (self.isDarkMode) {
+            if (!self.isSysDarkPrefer) {
+              self.setDark();
+            }
+          } else {
+            if (self.isSysDarkPrefer) {
+              self.setLight();
+            }
+          }
+
+          self.clearMode();
+        }
+
+        self.notify();
+      });
+    } /* constructor() */
+
+    get sysDarkPrefers() {
+      return window.matchMedia('(prefers-color-scheme: dark)');
+    }
+
+    get isSysDarkPrefer() {
+      return this.sysDarkPrefers.matches;
+    }
+
+    get isDarkMode() {
+      return this.mode === ModeToggle.DARK_MODE;
+    }
+
+    get isLightMode() {
+      return this.mode === ModeToggle.LIGHT_MODE;
+    }
+
+    get hasMode() {
+      return this.mode != null;
+    }
+
+    get mode() {
+      return sessionStorage.getItem(ModeToggle.MODE_KEY);
+    }
+
+    /* get the current mode on screen */
+    get modeStatus() {
+      if (this.isDarkMode || (!this.hasMode && this.isSysDarkPrefer)) {
+        return ModeToggle.DARK_MODE;
+      } else {
+        return ModeToggle.LIGHT_MODE;
+      }
+    }
+
+    setDark() {
+      document.documentElement.setAttribute(ModeToggle.MODE_ATTR, ModeToggle.DARK_MODE);
+      sessionStorage.setItem(ModeToggle.MODE_KEY, ModeToggle.DARK_MODE);
+    }
+
+    setLight() {
+      document.documentElement.setAttribute(ModeToggle.MODE_ATTR, ModeToggle.LIGHT_MODE);
+      sessionStorage.setItem(ModeToggle.MODE_KEY, ModeToggle.LIGHT_MODE);
+    }
+
+    clearMode() {
+      document.documentElement.removeAttribute(ModeToggle.MODE_ATTR);
+      sessionStorage.removeItem(ModeToggle.MODE_KEY);
+    }
+
+    /* Notify another plugins that the theme mode has changed */
+    notify() {
+      window.postMessage(
+        {
+          direction: ModeToggle.ID,
+          message: this.modeStatus
+        },
+        '*'
+      );
+    }
+
+    flipMode() {
+      if (this.hasMode) {
+        if (this.isSysDarkPrefer) {
+          if (this.isLightMode) {
+            this.clearMode();
+          } else {
+            this.setLight();
+          }
+        } else {
+          if (this.isDarkMode) {
+            this.clearMode();
+          } else {
+            this.setDark();
+          }
+        }
+      } else {
+        if (this.isSysDarkPrefer) {
+          this.setLight();
+        } else {
+          this.setDark();
+        }
+      }
+
+      this.notify();
+    } /* flipMode() */
+  } /* ModeToggle */
+
+  const modeToggle = new ModeToggle();
 </script>
 
-            <div style="text-align: center;">
-    <h2>FRIENDS</h2>
-</div>
-<div>
-    <a href="https://www.luxiangdong.com/" target="_blank" class="xiaoym-tag">土猛的员外</a>
-    <a href="https://doc.xiaominfo.com/" target="_blank" class="xiaoym-tag">Knife4j</a>
-    <a href="http://knife4j.net/" target="_blank" class="xiaoym-tag">Knife4jInsight</a>
-</div>
-<div style="text-align: center;">
-    <h2>标签</h2>
-</div>
-<div class="xiaoym-cloud-xiaoym-cloud-tag-cloud">
+  
+
+  <!-- A placeholder to allow defining custom metadata -->
+
+</head>
+
+  <body>
+    <!-- The Side Bar -->
+
+<aside aria-label="Sidebar" id="sidebar" class="d-flex flex-column align-items-end">
+  <header class="profile-wrapper">
+    <a href="/" id="avatar" class="rounded-circle">
+      
+        
+        <img src="/images/common/avatar.jpeg" width="112" height="112" alt="avatar" onerror="this.style.display='none'">
+      
+    </a>
+
+    <h1 class="site-title">
+      <a href="/">八一菜刀</a>
+    </h1>
+    <p class="site-subtitle fst-italic mb-0">Speak less,Do more</p>
+  </header>
+  <!-- .profile-wrapper -->
+
+  <nav class="flex-column flex-grow-1 w-100 ps-0">
+    <ul class="nav">
+      <!-- home -->
+      <li class="nav-item active">
+        <a href="/" class="nav-link">
+          <i class="fa-fw fas fa-home"></i>
+          <span>首页</span>
+        </a>
+      </li>
+      <!-- the real tabs -->
+      
+        <li class="nav-item">
+          <a href="/categories/" class="nav-link">
+            <i class="fa-fw fas fa-stream"></i>
+            
+
+            <span>分类</span>
+          </a>
+        </li>
+        <!-- .nav-item -->
+      
+        <li class="nav-item">
+          <a href="/tags/" class="nav-link">
+            <i class="fa-fw fas fa-tags"></i>
+            
+
+            <span>标签</span>
+          </a>
+        </li>
+        <!-- .nav-item -->
+      
+        <li class="nav-item">
+          <a href="/archives/" class="nav-link">
+            <i class="fa-fw fas fa-archive"></i>
+            
+
+            <span>归档</span>
+          </a>
+        </li>
+        <!-- .nav-item -->
+      
+        <li class="nav-item">
+          <a href="/about/" class="nav-link">
+            <i class="fa-fw fas fa-info-circle"></i>
+            
+
+            <span>关于</span>
+          </a>
+        </li>
+        <!-- .nav-item -->
+      
+    </ul>
+  </nav>
+
+  <div class="sidebar-bottom d-flex flex-wrap  align-items-center w-100">
     
+      <button type="button" class="mode-toggle btn" aria-label="Switch Mode">
+        <i class="fas fa-adjust"></i>
+      </button>
+
+      
+        <span class="icon-border"></span>
+      
     
 
-    <a href="/categories/#Blog" class="xiaoym-cloud-tag">Blog(13)</a>
-
     
+      
 
-    <a href="/categories/#Java" class="xiaoym-cloud-tag">Java(5)</a>
+      
+        <a
+          href="https://github.com/xiaoymin"
+          aria-label="github"
+          
 
+          
+            target="_blank"
+            
+          
+
+          
+
+          
+            rel="noopener noreferrer"
+          
+        >
+          <i class="fab fa-github"></i>
+        </a>
+      
     
+      
 
-    <a href="/categories/#JavaScript" class="xiaoym-cloud-tag">JavaScript(1)</a>
+      
+        <a
+          href="https://twitter.com/xiaoymin"
+          aria-label="twitter"
+          
 
+          
+            target="_blank"
+            
+          
+
+          
+
+          
+            rel="noopener noreferrer"
+          
+        >
+          <i class="fa-brands fa-x-twitter"></i>
+        </a>
+      
     
+      
 
-    <a href="/categories/#Kettle实战" class="xiaoym-cloud-tag">Kettle实战(29)</a>
+      
+        <a
+          href="javascript:location.href = 'mailto:' + ['xiaoymin','foxmail.com'].join('@')"
+          aria-label="email"
+          
 
+          
+
+          
+
+          
+        >
+          <i class="fas fa-envelope"></i>
+        </a>
+      
     
+      
 
-    <a href="/categories/#Knife4j" class="xiaoym-cloud-tag">Knife4j(7)</a>
+      
+        <a
+          href="/feed.xml"
+          aria-label="rss"
+          
 
+          
+
+          
+
+          
+        >
+          <i class="fas fa-rss"></i>
+        </a>
+      
     
+  </div>
+  <!-- .sidebar-bottom -->
+</aside>
+<!-- #sidebar -->
 
-    <a href="/categories/#Knife4jInsight" class="xiaoym-cloud-tag">Knife4jInsight(3)</a>
 
-    
+    <div id="main-wrapper" class="d-flex justify-content-center">
+      <div class="container d-flex flex-column px-xxl-5">
+        <!-- The Top Bar -->
 
-    <a href="/categories/#Linux" class="xiaoym-cloud-tag">Linux(3)</a>
+<header id="topbar-wrapper" aria-label="Top Bar">
+  <div
+    id="topbar"
+    class="d-flex align-items-center justify-content-between px-lg-3 h-100"
+  >
+    <nav id="breadcrumb" aria-label="Breadcrumb">
+      
 
-    
+      
+        <!-- index page -->
+        <span>首页</span>
 
-    <a href="/categories/#NodeJs" class="xiaoym-cloud-tag">NodeJs(1)</a>
+      
+    </nav>
+    <!-- endof #breadcrumb -->
 
-    
+    <button type="button" id="sidebar-trigger" class="btn btn-link">
+      <i class="fas fa-bars fa-fw"></i>
+    </button>
 
-    <a href="/categories/#Redis" class="xiaoym-cloud-tag">Redis(1)</a>
-
-    
-
-    <a href="/categories/#Spring" class="xiaoym-cloud-tag">Spring(2)</a>
-
-    
-
-    <a href="/categories/#SpringBoot" class="xiaoym-cloud-tag">SpringBoot(6)</a>
-
-    
-
-    <a href="/categories/#mybatis" class="xiaoym-cloud-tag">mybatis(9)</a>
-
-    
-
-    <a href="/categories/#springfox" class="xiaoym-cloud-tag">springfox(23)</a>
-
-    
-
-    <a href="/categories/#大模型" class="xiaoym-cloud-tag">大模型(4)</a>
-
-    
-
-    <a href="/categories/#工作流" class="xiaoym-cloud-tag">工作流(1)</a>
-
-    
-
-    <a href="/categories/#开源" class="xiaoym-cloud-tag">开源(7)</a>
-
-    
-
-    <a href="/categories/#开源资讯" class="xiaoym-cloud-tag">开源资讯(43)</a>
-
-    
-
-    <a href="/categories/#数据库" class="xiaoym-cloud-tag">数据库(6)</a>
-
-    
-
-</div>
-<div class="xiaoym-qrcode">
-    <div class="xiaoym-qrcode-title">
-        <h2>微信公众号(八一菜刀)</h2>
+    <div id="topbar-title">
+      八一菜刀
     </div>
-    <div style="text-align: center;"><img src="/images/website/mp/qrcode.jpg" /> </div>
-</div>
-<script>
-    // 实现词云效果
-    document.addEventListener('DOMContentLoaded', function () {
-        var tags = document.querySelectorAll('.xiaoym-cloud-tag');
-        tags.forEach(function (tag) {
-            var sizes = ['xiaoym-cloud-tag-small', 'xiaoym-cloud-tag-medium', 'xiaoym-cloud-tag-large', 'xiaoym-cloud-tag-xlarge', 'xiaoym-cloud-tag-xxlarge', 'xiaoym-cloud-tag-xxxlarge'];
-            var randomSize = sizes[Math.floor(Math.random() * sizes.length)];
-            tag.classList.add(randomSize);
 
-            var colors = ['bg-color1', 'bg-color2', 'bg-color3', 'bg-color4', 'bg-color5', 'bg-color6'];
-            var randomColor = colors[Math.floor(Math.random() * colors.length)];
-            tag.classList.add(randomColor);
-        });
+    <button type="button" id="search-trigger" class="btn btn-link">
+      <i class="fas fa-search fa-fw"></i>
+    </button>
+
+    <search class="align-items-center ms-3 ms-lg-0">
+      <i class="fas fa-search fa-fw"></i>
+      <input
+        class="form-control"
+        id="search-input"
+        type="search"
+        aria-label="search"
+        autocomplete="off"
+        placeholder="搜索..."
+      >
+    </search>
+    <button type="button" class="btn btn-link text-decoration-none" id="search-cancel">取消</button>
+  </div>
+</header>
 
 
-    });
-</script>
-        </div>
-    </div>
-    <div class="pagination text-align">
-      <div class="btn-group">
-        
-            <button disabled="disabled" href="javascript:;" class="btn btn-outline">&laquo;</button>
-        
-        
-            <a href="javascript:;" class="active btn btn-outline">1</a>
-        
-        
-          
-              <a href="http://localhost:4000/page2"  class="btn btn-outline">2</a>
-          
-        
-          
-              <a href="http://localhost:4000/page3"  class="btn btn-outline">3</a>
-          
-        
-          
-              <a href="http://localhost:4000/page4"  class="btn btn-outline">4</a>
-          
-        
-          
-              <a href="http://localhost:4000/page5"  class="btn btn-outline">5</a>
-          
-        
-          
-              <a href="http://localhost:4000/page6"  class="btn btn-outline">6</a>
-          
-        
-          
-              <a href="http://localhost:4000/page7"  class="btn btn-outline">7</a>
-          
-        
-          
-              <a href="http://localhost:4000/page8"  class="btn btn-outline">8</a>
-          
-        
-          
-              <a href="http://localhost:4000/page9"  class="btn btn-outline">9</a>
-          
-        
-          
-              <a href="http://localhost:4000/page10"  class="btn btn-outline">10</a>
-          
-        
-          
-              <a href="http://localhost:4000/page11"  class="btn btn-outline">11</a>
-          
-        
-          
-              <a href="http://localhost:4000/page12"  class="btn btn-outline">12</a>
-          
-        
-          
-              <a href="http://localhost:4000/page13"  class="btn btn-outline">13</a>
-          
-        
-          
-              <a href="http://localhost:4000/page14"  class="btn btn-outline">14</a>
-          
-        
-          
-              <a href="http://localhost:4000/page15"  class="btn btn-outline">15</a>
-          
-        
-          
-              <a href="http://localhost:4000/page16"  class="btn btn-outline">16</a>
-          
-        
-          
-              <a href="http://localhost:4000/page17"  class="btn btn-outline">17</a>
-          
-        
-          
-              <a href="http://localhost:4000/page18"  class="btn btn-outline">18</a>
-          
-        
-          
-              <a href="http://localhost:4000/page19"  class="btn btn-outline">19</a>
-          
-        
-          
-              <a href="http://localhost:4000/page20"  class="btn btn-outline">20</a>
-          
-        
-          
-              <a href="http://localhost:4000/page21"  class="btn btn-outline">21</a>
-          
-        
-        
-            <a href="http://localhost:4000/page2"  class="btn btn-outline">&raquo;</a>
-        
-        </div>
-    </div>
-    <!-- /pagination -->
-</section>
-<!-- /section.content -->
+        <div class="row flex-grow-1">
+          <main aria-label="Main Content" class="col-12 col-lg-11 col-xl-9 px-md-4">
+            
+              <!-- Refactor the HTML structure -->
 
-    <footer class="container">
-        <div class="site-footer" role="contentinfo">
-            <div class="copyright left mobile-block">
-                    © 2015
-                    <span title="肖玉民">肖玉民</span>
-                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+
+
+<!--
+  In order to allow a wide table to scroll horizontally,
+  we suround the markdown table with `<div class="table-wrapper">` and `</div>`
+-->
+
+
+
+<!--
+  Fixed kramdown code highlight rendering:
+  https://github.com/penibelst/jekyll-compress-html/issues/101
+  https://github.com/penibelst/jekyll-compress-html/issues/71#issuecomment-188144901
+-->
+
+
+
+<!-- Change the icon of checkbox -->
+
+
+
+<!-- Handle images -->
+
+
+
+
+
+<!-- Add header for code snippets -->
+
+
+
+<!-- Create heading anchors -->
+
+
+
+
+
+  
+  
+
+  
+
+  
+  
+
+  
+
+  
+  
+
+  
+
+  
+  
+
+  
+
+
+
+
+<!-- return -->
+
+
+
+
+
+
+
+
+
+<!-- Get pinned posts -->
+
+
+
+
+
+
+<!-- Get default posts -->
+
+
+
+
+
+
+
+
+
+
+<div id="post-list" class="flex-grow-1 px-xl-1">
+  
+    <article class="card-wrapper card">
+      <a href="/posts/rag-inaction-java/" class="post-preview row g-0 flex-md-row-reverse">
+        
+
+        
+
+        <div class="col-md-12">
+          <div class="card-body d-flex flex-column">
+            <h1 class="card-title my-2 mt-md-0">实战0-1,Java开发者也能看懂的大模型应用RAG开发实践</h1>
+
+            <div class="card-text content mt-0 mb-3">
+              <p>
+                
+
+
+
+
+
+                前言
+
+在前几天的文章中，我分享说在RAG领域，很多都是工程上的实践，做AI大模型应用的开发其实Java也能写，那么本文就一个Java开发者的立场，构建实现一个最基础的大模型应用系统。
+
+而大模型应用系统其实在目前阶段，可能应用最广的还是RAG领域，因此，本文也是通过在RAG领域的基础架构下，来实现应用的开发，主要需求点：让大模型理解文本(知识库)内容，基于知识库范围内的内容进行回答对话
+
+...
+              </p>
             </div>
 
-            <ul class="site-footer-links right mobile-hidden">
-                <li>
-                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
-                </li>
-            </ul>
-            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
-                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
-            </a>
-            <ul class="site-footer-links mobile-hidden">
-                
-                <li>
-                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
-                </li>
-                
-                <li>
-                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
-                </li>
-                
-                <li>
-                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
-                </li>
-                
-                <li>
-                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
-                </li>
-                
-                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
-            </ul>
+            <div class="post-meta flex-grow-1 d-flex align-items-end">
+              <div class="me-auto">
+                <!-- posted date -->
+                <i class="far fa-calendar fa-fw me-1"></i>
+                <!--
+  Date format snippet
+  See: ${JS_ROOT}/utils/locale-dateime.js
+-->
 
+
+
+
+<time
+  
+  data-ts="1697040000"
+  data-df="YYYY/MM/DD"
+  
+>
+  2023/10/12
+</time>
+
+
+                <!-- categories -->
+                
+                  <i class="far fa-folder-open fa-fw me-1"></i>
+                  <span class="categories">
+                    
+                      大模型,
+                      Java
+                  </span>
+                
+              </div>
+
+              
+                <div class="pin ms-1">
+                  <i class="fas fa-thumbtack fa-fw"></i>
+                  <span></span>
+                </div>
+              
+            </div>
+            <!-- .post-meta -->
+          </div>
+          <!-- .card-body -->
         </div>
-        <div style="padding-bottom: 40px;
-    font-size: 14px;
-    height: 14px;
-    vertical-align: middle;
-    text-align: center;
-    color: #999999;
-    border-top: 1px solid #eee;">
-            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
-            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+      </a>
+    </article>
+  
+    <article class="card-wrapper card">
+      <a href="/posts/use-prompt-framework/" class="post-preview row g-0 flex-md-row-reverse">
+        
+
+        
+
+        <div class="col-md-12">
+          <div class="card-body d-flex flex-column">
+            <h1 class="card-title my-2 mt-md-0">用好大模型?这5种实用的Prompt框架你一定要看看!</h1>
+
+            <div class="card-text content mt-0 mb-3">
+              <p>
+                
+
+
+
+
+
+                前言
+
+大模型正为我们带来前所未有的技术革新，而用好大模型也是有一定技巧的。
+
+本文主要分享5种实用的Prompt对话提示框架，结合自己的实际需求，让你能够灵活使用大模型!
+
+1.RTF框架
+
+RTF(Role-Task-Format)框架是一个非常简单通用的Prompt提示框架，我们和任意大模型对话场景下都可以使用该规范进行改进输出
+
+
+  R-Role(角色)：指定大模型担当固定角色(程...
+              </p>
+            </div>
+
+            <div class="post-meta flex-grow-1 d-flex align-items-end">
+              <div class="me-auto">
+                <!-- posted date -->
+                <i class="far fa-calendar fa-fw me-1"></i>
+                <!--
+  Date format snippet
+  See: ${JS_ROOT}/utils/locale-dateime.js
+-->
+
+
+
+
+<time
+  
+  data-ts="1697299200"
+  data-df="YYYY/MM/DD"
+  
+>
+  2023/10/15
+</time>
+
+
+                <!-- categories -->
+                
+                  <i class="far fa-folder-open fa-fw me-1"></i>
+                  <span class="categories">
+                    
+                      大模型
+                  </span>
+                
+              </div>
+
+              
+            </div>
+            <!-- .post-meta -->
+          </div>
+          <!-- .card-body -->
         </div>
-    </footer>
-    <div class="tools-wrapper">
-      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+      </a>
+    </article>
+  
+    <article class="card-wrapper card">
+      <a href="/posts/llm-start/" class="post-preview row g-0 flex-md-row-reverse">
+        
+
+        
+
+        <div class="col-md-12">
+          <div class="card-body d-flex flex-column">
+            <h1 class="card-title my-2 mt-md-0">全面进击AI大模型、RAG领域</h1>
+
+            <div class="card-text content mt-0 mb-3">
+              <p>
+                
+
+
+
+
+
+                写在前面
+
+首先，非常感谢关注Knife4j项目的朋友，该公众号应该是今年开始，对于开源项目Knife4j的更新都在此公众号进行了第一时间的发布更新，包括该项目的迭代、想法、实践等等内容，包括最近Knife4j的付费产品Knife4jInsight的推出，虽然更新的不是很频繁，但对于还是要给自己一直坚持的事情做输出点赞的(感动了自己😹)。对于写公众号而言，对于文章的发表，如果有人持续关注的话...
+              </p>
+            </div>
+
+            <div class="post-meta flex-grow-1 d-flex align-items-end">
+              <div class="me-auto">
+                <!-- posted date -->
+                <i class="far fa-calendar fa-fw me-1"></i>
+                <!--
+  Date format snippet
+  See: ${JS_ROOT}/utils/locale-dateime.js
+-->
+
+
+
+
+<time
+  
+  data-ts="1696867200"
+  data-df="YYYY/MM/DD"
+  
+>
+  2023/10/10
+</time>
+
+
+                <!-- categories -->
+                
+                  <i class="far fa-folder-open fa-fw me-1"></i>
+                  <span class="categories">
+                    
+                      大模型
+                  </span>
+                
+              </div>
+
+              
+            </div>
+            <!-- .post-meta -->
+          </div>
+          <!-- .card-body -->
+        </div>
+      </a>
+    </article>
+  
+    <article class="card-wrapper card">
+      <a href="/posts/knife4j-insight-mvp/" class="post-preview row g-0 flex-md-row-reverse">
+        
+
+        
+
+        <div class="col-md-12">
+          <div class="card-body d-flex flex-column">
+            <h1 class="card-title my-2 mt-md-0">Knife4jInsight平台版-MVP版本v1.0.0发布</h1>
+
+            <div class="card-text content mt-0 mb-3">
+              <p>
+                
+
+
+
+
+
+                在之前发布的《Knife4j新产品的想法》一文中，我提到想给Knife4j的生态做一些扩展，区别于目前市面上不一样的功能或者工具产品。
+
+主要还是聚焦在Knife4j这个开源项目上，然后将自己的一些想法进行输出,并将一些在单体工具组件中无法解决落地的需求场景，共同灌注在这个新的产品中。
+
+今天,Knife4jInsight平台版-MVP(Minimum Viable Product)最小可行...
+              </p>
+            </div>
+
+            <div class="post-meta flex-grow-1 d-flex align-items-end">
+              <div class="me-auto">
+                <!-- posted date -->
+                <i class="far fa-calendar fa-fw me-1"></i>
+                <!--
+  Date format snippet
+  See: ${JS_ROOT}/utils/locale-dateime.js
+-->
+
+
+
+
+<time
+  
+  data-ts="1694966400"
+  data-df="YYYY/MM/DD"
+  
+>
+  2023/09/18
+</time>
+
+
+                <!-- categories -->
+                
+                  <i class="far fa-folder-open fa-fw me-1"></i>
+                  <span class="categories">
+                    
+                      Knife4jInsight
+                  </span>
+                
+              </div>
+
+              
+            </div>
+            <!-- .post-meta -->
+          </div>
+          <!-- .card-body -->
+        </div>
+      </a>
+    </article>
+  
+    <article class="card-wrapper card">
+      <a href="/posts/knife4j-insight-dev/" class="post-preview row g-0 flex-md-row-reverse">
+        
+
+        
+
+        <div class="col-md-12">
+          <div class="card-body d-flex flex-column">
+            <h1 class="card-title my-2 mt-md-0">Knife4jInsight的产品开发历程</h1>
+
+            <div class="card-text content mt-0 mb-3">
+              <p>
+                
+
+
+
+
+
+                前言
+
+大家好，在昨天Knife4jInsight的1.0.0MVP版本发布之后，在Knife4j的交流群分享说，希望Knife4j后面的版本，不管是开源版本还是商业版本，希望以：开源项目生态+付费产品闭源+Build On Public的模式一直走下去！！！
+
+今天这篇则是践行Build On Public策略，分享在开发Knife4jInsight过程中的一些感悟及想法！
+
+在很早之前分...
+              </p>
+            </div>
+
+            <div class="post-meta flex-grow-1 d-flex align-items-end">
+              <div class="me-auto">
+                <!-- posted date -->
+                <i class="far fa-calendar fa-fw me-1"></i>
+                <!--
+  Date format snippet
+  See: ${JS_ROOT}/utils/locale-dateime.js
+-->
+
+
+
+
+<time
+  
+  data-ts="1694880000"
+  data-df="YYYY/MM/DD"
+  
+>
+  2023/09/17
+</time>
+
+
+                <!-- categories -->
+                
+                  <i class="far fa-folder-open fa-fw me-1"></i>
+                  <span class="categories">
+                    
+                      Knife4jInsight
+                  </span>
+                
+              </div>
+
+              
+            </div>
+            <!-- .post-meta -->
+          </div>
+          <!-- .card-body -->
+        </div>
+      </a>
+    </article>
+  
+    <article class="card-wrapper card">
+      <a href="/posts/knife4j-new-product/" class="post-preview row g-0 flex-md-row-reverse">
+        
+
+        
+
+        <div class="col-md-12">
+          <div class="card-body d-flex flex-column">
+            <h1 class="card-title my-2 mt-md-0">Knife4j新产品的想法</h1>
+
+            <div class="card-text content mt-0 mb-3">
+              <p>
+                
+
+
+
+
+
+                写在开头
+
+Knife4j的发展已经有好几个年头了，最近想来，虽然这个小组件不太稳定，但有每天依然收到很多小伙伴的积极反馈，这让我又不由自主的对这个项目产生了羁绊。一直以来，总想把一些工作中的想法，以及和Knife4j周边生态相关的内容结合起来，做一些不一样的事情。
+
+在Knife4j目前的生态中，我主要为Knife4j写了一些技术的组件，主要包括：
+
+
+  Knife4j-ui：前端组件部...
+              </p>
+            </div>
+
+            <div class="post-meta flex-grow-1 d-flex align-items-end">
+              <div class="me-auto">
+                <!-- posted date -->
+                <i class="far fa-calendar fa-fw me-1"></i>
+                <!--
+  Date format snippet
+  See: ${JS_ROOT}/utils/locale-dateime.js
+-->
+
+
+
+
+<time
+  
+  data-ts="1694707200"
+  data-df="YYYY/MM/DD"
+  
+>
+  2023/09/15
+</time>
+
+
+                <!-- categories -->
+                
+                  <i class="far fa-folder-open fa-fw me-1"></i>
+                  <span class="categories">
+                    
+                      Knife4jInsight
+                  </span>
+                
+              </div>
+
+              
+            </div>
+            <!-- .post-meta -->
+          </div>
+          <!-- .card-body -->
+        </div>
+      </a>
+    </article>
+  
+    <article class="card-wrapper card">
+      <a href="/posts/knife4j-gateway-introduce/" class="post-preview row g-0 flex-md-row-reverse">
+        
+
+        
+
+        <div class="col-md-12">
+          <div class="card-body d-flex flex-column">
+            <h1 class="card-title my-2 mt-md-0">Spring Cloud Gateway网关下的文档聚合?就用它了</h1>
+
+            <div class="card-text content mt-0 mb-3">
+              <p>
+                
+
+
+
+
+
+                大家好，这篇文章主要是介绍分享Knife4j-gateway网关聚合文档组件,自4.0版本发布该组件后，得到了大家的积极响应，我们也是积极响应用户的需求，持续迭代优化
+
+该组件是一个非常轻量级的网关聚合组件，适用于开发者使用Spring Cloud Gateway网关组件进行Swagger2、OpenAPI3规范的文档聚合
+
+🌾 1.前言
+
+在考虑写这个组件之前，开发者在Spring Clo...
+              </p>
+            </div>
+
+            <div class="post-meta flex-grow-1 d-flex align-items-end">
+              <div class="me-auto">
+                <!-- posted date -->
+                <i class="far fa-calendar fa-fw me-1"></i>
+                <!--
+  Date format snippet
+  See: ${JS_ROOT}/utils/locale-dateime.js
+-->
+
+
+
+
+<time
+  
+  data-ts="1691856000"
+  data-df="YYYY/MM/DD"
+  
+>
+  2023/08/13
+</time>
+
+
+                <!-- categories -->
+                
+                  <i class="far fa-folder-open fa-fw me-1"></i>
+                  <span class="categories">
+                    
+                      Knife4j
+                  </span>
+                
+              </div>
+
+              
+            </div>
+            <!-- .post-meta -->
+          </div>
+          <!-- .card-body -->
+        </div>
+      </a>
+    </article>
+  
+    <article class="card-wrapper card">
+      <a href="/posts/knife4j-handler-enum/" class="post-preview row g-0 flex-md-row-reverse">
+        
+
+        
+
+        <div class="col-md-12">
+          <div class="card-body d-flex flex-column">
+            <h1 class="card-title my-2 mt-md-0">枚举烦恼终结!在Knife4j文档中如何优雅的处理枚举类型的展示及调试问题</h1>
+
+            <div class="card-text content mt-0 mb-3">
+              <p>
+                
+
+
+
+
+
+                本文主要介绍在Knife4j中如何处理枚举，主要包含两个方面：
+
+
+  通过技术手段，将枚举的value值以及描述在文档界面进行呈现，完善接口信息展示
+  能通过Knife4j的调试功能针对枚举参数快速调试。
+
+
+关联Issues：
+
+
+  ✅ 枚举类参数value和desc的注释
+  ✅ 4.1.0版本下，枚举类@ToString方法自定义可用值和@JsonValue注解不兼容
+  ……
+...
+              </p>
+            </div>
+
+            <div class="post-meta flex-grow-1 d-flex align-items-end">
+              <div class="me-auto">
+                <!-- posted date -->
+                <i class="far fa-calendar fa-fw me-1"></i>
+                <!--
+  Date format snippet
+  See: ${JS_ROOT}/utils/locale-dateime.js
+-->
+
+
+
+
+<time
+  
+  data-ts="1691337600"
+  data-df="YYYY/MM/DD"
+  
+>
+  2023/08/07
+</time>
+
+
+                <!-- categories -->
+                
+                  <i class="far fa-folder-open fa-fw me-1"></i>
+                  <span class="categories">
+                    
+                      Knife4j
+                  </span>
+                
+              </div>
+
+              
+            </div>
+            <!-- .post-meta -->
+          </div>
+          <!-- .card-body -->
+        </div>
+      </a>
+    </article>
+  
+    <article class="card-wrapper card">
+      <a href="/posts/knife4j-production-forbidden-ui/" class="post-preview row g-0 flex-md-row-reverse">
+        
+
+        
+
+        <div class="col-md-12">
+          <div class="card-body d-flex flex-column">
+            <h1 class="card-title my-2 mt-md-0">生产环境如何屏蔽Knife4j、Swagger等Ui资源和接口</h1>
+
+            <div class="card-text content mt-0 mb-3">
+              <p>
+                
+
+
+
+
+
+                本文主要介绍在 Spring Boot 应用中,如何在生产环境屏蔽Knife4j及相关Swagger资源
+
+关联Issues：
+
+
+  ✅ 开启生产环境,屏蔽所有资源接口
+  ✅ 生产环境屏蔽bug
+  ✅ 3.0.2 配置生产环境屏蔽后，依然可以访问部分接口
+  ✅ yml格式 屏蔽Swagger所有资源，不生效
+  ✅ 生产环境swagger-ui屏蔽
+  ✅ 开启生产环境,屏蔽Swag...
+              </p>
+            </div>
+
+            <div class="post-meta flex-grow-1 d-flex align-items-end">
+              <div class="me-auto">
+                <!-- posted date -->
+                <i class="far fa-calendar fa-fw me-1"></i>
+                <!--
+  Date format snippet
+  See: ${JS_ROOT}/utils/locale-dateime.js
+-->
+
+
+
+
+<time
+  
+  data-ts="1689696000"
+  data-df="YYYY/MM/DD"
+  
+>
+  2023/07/19
+</time>
+
+
+                <!-- categories -->
+                
+                  <i class="far fa-folder-open fa-fw me-1"></i>
+                  <span class="categories">
+                    
+                      Knife4j
+                  </span>
+                
+              </div>
+
+              
+            </div>
+            <!-- .post-meta -->
+          </div>
+          <!-- .card-body -->
+        </div>
+      </a>
+    </article>
+  
+    <article class="card-wrapper card">
+      <a href="/posts/knife4j-use-claude-fixed-issue/" class="post-preview row g-0 flex-md-row-reverse">
+        
+
+        
+
+        <div class="col-md-12">
+          <div class="card-body d-flex flex-column">
+            <h1 class="card-title my-2 mt-md-0">使用Claude修改Knife4j中的issues</h1>
+
+            <div class="card-text content mt-0 mb-3">
+              <p>
+                
+
+
+
+
+
+                本文和Knife4j使用无关，主要分享作者在解决Knife4j的issues过程中如何通过Claude.Ai快速解决问题
+
+关联Issues：
+
+  ✅ 能否出个swagger转ts的插件,在文档管理中多一个,导出ts,想帮我的下游减轻工作量
+  ✅ https://github.com/xiaoymin/knife4j/issues/568
+
+
+📹 视频地址：https://www.bil...
+              </p>
+            </div>
+
+            <div class="post-meta flex-grow-1 d-flex align-items-end">
+              <div class="me-auto">
+                <!-- posted date -->
+                <i class="far fa-calendar fa-fw me-1"></i>
+                <!--
+  Date format snippet
+  See: ${JS_ROOT}/utils/locale-dateime.js
+-->
+
+
+
+
+<time
+  
+  data-ts="1689350400"
+  data-df="YYYY/MM/DD"
+  
+>
+  2023/07/15
+</time>
+
+
+                <!-- categories -->
+                
+                  <i class="far fa-folder-open fa-fw me-1"></i>
+                  <span class="categories">
+                    
+                      Knife4j
+                  </span>
+                
+              </div>
+
+              
+            </div>
+            <!-- .post-meta -->
+          </div>
+          <!-- .card-body -->
+        </div>
+      </a>
+    </article>
+  
+</div>
+<!-- #post-list -->
+
+
+  <!-- The paginator for post list on HomgPage. -->
+
+<nav aria-label="Page Navigation">
+  <ul class="pagination align-items-center mt-4 mb-0">
+    <!-- left arrow -->
+    
+
+    <li class="page-item disabled">
+      <a class="page-link" href="#" aria-label="previous-page">
+        <i class="fas fa-angle-left"></i>
+      </a>
+    </li>
+
+    <!-- page numbers -->
+    
+    
+
+    
+      
+      
+      
+      
+      
+
+      
+
+      
+        <!-- show number -->
+        <li class="page-item  active">
+          <a
+            class="page-link"
+            href="/"
+          >1</a>
+        </li>
+      
+    
+      
+      
+      
+      
+      
+
+      
+
+      
+        <!-- show number -->
+        <li class="page-item ">
+          <a
+            class="page-link"
+            href="/page2"
+          >2</a>
+        </li>
+      
+    
+      
+      
+      
+      
+      
+
+      
+
+      
+        <!-- show number -->
+        <li class="page-item ">
+          <a
+            class="page-link"
+            href="/page3"
+          >3</a>
+        </li>
+      
+    
+      
+      
+      
+      
+      
+
+      
+
+      
+        <!-- hide number -->
+        
+          <li class="page-item disabled">
+            <span class="page-link">...</span>
+          </li>
+          
+        
+      
+    
+      
+      
+      
+      
+      
+
+      
+
+      
+        <!-- hide number -->
+        
+      
+    
+      
+      
+      
+      
+      
+
+      
+
+      
+        <!-- hide number -->
+        
+      
+    
+      
+      
+      
+      
+      
+
+      
+
+      
+        <!-- hide number -->
+        
+      
+    
+      
+      
+      
+      
+      
+
+      
+
+      
+        <!-- hide number -->
+        
+      
+    
+      
+      
+      
+      
+      
+
+      
+
+      
+        <!-- hide number -->
+        
+      
+    
+      
+      
+      
+      
+      
+
+      
+
+      
+        <!-- hide number -->
+        
+      
+    
+      
+      
+      
+      
+      
+
+      
+
+      
+        <!-- hide number -->
+        
+      
+    
+      
+      
+      
+      
+      
+
+      
+
+      
+        <!-- hide number -->
+        
+      
+    
+      
+      
+      
+      
+      
+
+      
+
+      
+        <!-- hide number -->
+        
+      
+    
+      
+      
+      
+      
+      
+
+      
+
+      
+        <!-- hide number -->
+        
+      
+    
+      
+      
+      
+      
+      
+
+      
+
+      
+        <!-- hide number -->
+        
+      
+    
+      
+      
+      
+      
+      
+
+      
+
+      
+        <!-- hide number -->
+        
+      
+    
+      
+      
+      
+      
+      
+
+      
+
+      
+        <!-- show number -->
+        <li class="page-item ">
+          <a
+            class="page-link"
+            href="/page17"
+          >17</a>
+        </li>
+      
+    
+
+    <!-- mobile pagination -->
+    <li class="page-index align-middle">
+      <span>1</span>
+      <span class="text-muted">/ 17</span>
+    </li>
+
+    <!-- right arrow -->
+    
+
+    <li class="page-item ">
+      <a class="page-link" href="/page2" aria-label="next-page">
+        <i class="fas fa-angle-right"></i>
+      </a>
+    </li>
+  </ul>
+</nav>
+<!-- .pagination -->
+
+
+
+
+            
+          </main>
+
+          <!-- panel -->
+          <aside aria-label="Panel" id="panel-wrapper" class="col-xl-3 ps-2 mb-5 text-muted">
+            <div class="access">
+              <!-- Get the last 5 posts from lastmod list. -->
+
+<div class="xiaoym-qrcode">
+  <div class="xiaoym-qrcode-title">
+    <h2>微信公众号(八一菜刀)</h2>
+  </div>
+  <div style="text-align: center;"><img src="/images/website/mp/qrcode.jpg" /> </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section id="access-lastmod">
+  <h2 class="panel-heading">最近更新</h2>
+  <ul class="content list-unstyled ps-0 pb-1 ms-1 mt-2">
+    
+    
+    
+    
+    <li class="text-truncate lh-lg">
+      <a href="/posts/knife4j-insight-mvp/">Knife4jInsight平台版-MVP版本v1.0.0发布</a>
+    </li>
+    
+    
+    
+    
+    <li class="text-truncate lh-lg">
+      <a href="/posts/spring-boot-conditional/">Spring Boot框架中如何优雅的注入实体Bean</a>
+    </li>
+    
+    
+    
+    
+    <li class="text-truncate lh-lg">
+      <a href="/posts/spring-boot-self-starter/">Spring Boot自定义starter必知必会条件</a>
+    </li>
+    
+    
+    
+    
+    <li class="text-truncate lh-lg">
+      <a href="/posts/spring-boot-servlet-gateway-compoents/">基于Servlet体系的HTTP请求代理转发Spring Boot组件</a>
+    </li>
+    
+    
+    
+    
+    <li class="text-truncate lh-lg">
+      <a href="/posts/spring-boot-common-file-download/">Spring Boot框架中针对数据文件模板的下载总结</a>
+    </li>
+    
+  </ul>
+</section>
+<!-- #access-lastmod -->
+
+              <!-- The trending tags list -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+
+
+  <section>
+    <h2 class="panel-heading">热门标签</h2>
+    <div class="d-flex flex-wrap mt-3 mb-1 me-3">
+      
+        
+        <a class="post-tag btn btn-outline-primary" href="/tags/llm/">LLM</a>
+      
+        
+        <a class="post-tag btn btn-outline-primary" href="/tags/rag/">RAG</a>
+      
+        
+        <a class="post-tag btn btn-outline-primary" href="/tags/rag%E5%AE%9E%E6%88%98/">RAG实战</a>
+      
+        
+        <a class="post-tag btn btn-outline-primary" href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%AE%9E%E6%88%98/">大模型实战</a>
+      
     </div>
-    <!-- / footer -->
-    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
-    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
-    <script src="http://localhost:4000/assets/js/prism.js"></script>
-    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
-    <script>
-      jQuery(document).ready(function($) {
-        // geopattern
-        $('.geopattern').each(function(){
-          $(this).geopattern($(this).data('pattern-id'));
-        });
-       // hljs.initHighlightingOnLoad();
-      });
-    </script>
+  </section>
 
+
+            </div>
+
+            
+          </aside>
+        </div>
+
+        <div class="row">
+          <!-- tail -->
+          <div id="tail-wrapper" class="col-12 col-lg-11 col-xl-9 px-md-4">
+            
+
+            <!-- The Footer -->
+
+<footer
+  aria-label="Site Info"
+  class="
+    d-flex flex-column justify-content-center text-muted
+    flex-lg-row justify-content-lg-between align-items-lg-center pb-lg-3
+  "
+>
+  <p>
+    ©
+    <time>2023</time>
+    <a href="https://twitter.com/xiaoymin">xiaoymin</a>.
+    
+      <span
+        data-bs-toggle="tooltip"
+        data-bs-placement="top"
+        title="除非另有说明，本网站上的博客文章均由作者按照知识共享署名 4.0 国际 (CC BY 4.0) 许可协议进行授权。"
+      >保留部分权利。</span>
+    
+  </p>
+
+  <p>本站采用 <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a> 主题 <a href="https://github.com/cotes2020/jekyll-theme-chirpy" target="_blank" rel="noopener">Chirpy</a>
+  </p>
+</footer>
+
+          </div>
+        </div>
+
+        <!-- The Search results -->
+
+<div id="search-result-wrapper" class="d-flex justify-content-center unloaded">
+  <div class="col-11 content">
+    <div id="search-hints">
+      <!-- The trending tags list -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+
+
+  <section>
+    <h2 class="panel-heading">热门标签</h2>
+    <div class="d-flex flex-wrap mt-3 mb-1 me-3">
+      
+        
+        <a class="post-tag btn btn-outline-primary" href="/tags/llm/">LLM</a>
+      
+        
+        <a class="post-tag btn btn-outline-primary" href="/tags/rag/">RAG</a>
+      
+        
+        <a class="post-tag btn btn-outline-primary" href="/tags/rag%E5%AE%9E%E6%88%98/">RAG实战</a>
+      
+        
+        <a class="post-tag btn btn-outline-primary" href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%AE%9E%E6%88%98/">大模型实战</a>
+      
+    </div>
+  </section>
+
+
+    </div>
+    <div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div>
+  </div>
+</div>
+
+      </div>
+
+      <aside aria-label="Scroll to Top">
+        <button id="back-to-top" type="button" class="btn btn-lg btn-box-shadow">
+          <i class="fas fa-angle-up"></i>
+        </button>
+      </aside>
+    </div>
+
+    <div id="mask"></div>
+
+    
+      <aside
+  id="notification"
+  class="toast"
+  role="alert"
+  aria-live="assertive"
+  aria-atomic="true"
+  data-bs-animation="true"
+  data-bs-autohide="false"
+>
+  <div class="toast-header">
+    <button
+      type="button"
+      class="btn-close ms-auto"
+      data-bs-dismiss="toast"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="toast-body text-center pt-0">
+    <p class="px-2 mb-3">发现新版本的内容。</p>
+    <button type="button" class="btn btn-primary" aria-label="Update">
+      更新
+    </button>
+  </div>
+</aside>
+
+    
+
+    <!-- JavaScripts -->
+
+    <!-- JS selector for site. -->
+
+<!-- commons -->
+
+
+
+<!-- layout specified -->
+
+
+  
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
     
 
     
 
+  
+
+  
     
 
     
 
+  
+
+  
     
-</body>
+
+    
+
+  
+
+  
+    
+
+    
+
+  
+
+  
+    
+
+    
+
+  
+
+  
+    
+
+    
+
+  
+
+  
+    
+
+    
+
+  
+
+  
+    
+
+    
+
+  
+
+
+
+  <script src="https://cdn.jsdelivr.net/combine/npm/jquery@3.7.1/dist/jquery.min.js,npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js,npm/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js,npm/loading-attribute-polyfill@2.1.1/dist/loading-attribute-polyfill.umd.min.js,npm/dayjs@1.11.10/dayjs.min.js,npm/dayjs@1.11.10/locale/zh.min.js,npm/dayjs@1.11.10/plugin/relativeTime.min.js,npm/dayjs@1.11.10/plugin/localizedFormat.min.js"></script>
+
+
+
+
+
+
+<script defer src="/assets/js/dist/home.min.js"></script>
+
+
+
+
+
+
+    
+
+    <!--
+  Jekyll Simple Search loader
+  See: <https://github.com/christian-fei/Simple-Jekyll-Search>
+-->
+
+
+
+
+
+<script>
+  /* Note: dependent library will be loaded in `js-selector.html` */
+  SimpleJekyllSearch({
+    searchInput: document.getElementById('search-input'),
+    resultsContainer: document.getElementById('search-results'),
+    json: '/assets/js/data/search.json',
+    searchResultTemplate: '  <article class="px-1 px-sm-2 px-lg-4 px-xl-0">    <header>      <h2><a href="{url}">{title}</a></h2>      <div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1">        {categories}        {tags}      </div>    </header>    <p>{snippet}</p>  </article>',
+    noResultsText: '<p class="mt-5"></p>',
+    templateMiddleware: function(prop, value, template) {
+      if (prop === 'categories') {
+        if (value === '') {
+          return `${value}`;
+        } else {
+          return `<div class="me-sm-4"><i class="far fa-folder fa-fw"></i>${value}</div>`;
+        }
+      }
+
+      if (prop === 'tags') {
+        if (value === '') {
+          return `${value}`;
+        } else {
+          return `<div><i class="fa fa-tag fa-fw"></i>${value}</div>`;
+        }
+      }
+    }
+  });
+</script>
+
+  </body>
 </html>
+
