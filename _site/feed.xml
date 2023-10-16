@@ -1,0 +1,253 @@
+
+
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>/</id>
+  <title>八一菜刀</title>
+  <subtitle>八一菜刀的学习笔记.</subtitle>
+  <updated>2023-10-16T18:47:01+08:00</updated>
+  <author>
+    <name>xiaoymin</name>
+    <uri>/</uri>
+  </author>
+  <link rel="self" type="application/atom+xml" href="/feed.xml"/>
+  <link rel="alternate" type="text/html" hreflang="zh-CN"
+    href="/"/>
+  <generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator>
+  <rights> © 2023 xiaoymin </rights>
+  <icon>/assets/img/favicons/favicon.ico</icon>
+  <logo>/assets/img/favicons/favicon-96x96.png</logo>
+
+
+  
+  <entry>
+    <title>用好大模型?这5种实用的Prompt框架你一定要看看!</title>
+    <link href="/posts/use-prompt-framework/" rel="alternate" type="text/html" title="用好大模型?这5种实用的Prompt框架你一定要看看!" />
+    <published>2023-10-15T00:00:00+08:00</published>
+  
+    <updated>2023-10-16T16:00:49+08:00</updated>
+  
+    <id>/posts/use-prompt-framework/</id>
+    <content src="/posts/use-prompt-framework/" />
+    <author>
+      <name>八一菜刀</name>
+    </author>
+
+  
+    
+    <category term="大模型" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      前言
+
+大模型正为我们带来前所未有的技术革新，而用好大模型也是有一定技巧的。
+
+本文主要分享5种实用的Prompt对话提示框架，结合自己的实际需求，让你能够灵活使用大模型!
+
+1.RTF框架
+
+RTF(Role-Task-Format)框架是一个非常简单通用的Prompt提示框架，我们和任意大模型对话场景下都可以使用该规范进行改进输出
+
+
+  R-Role(角色)：指定大模型担当固定角色(程序员、数据分析师、讲解员、记者等等)
+  T-Task(任务): 任务，告诉大模型需要为我们做的事情
+  F-Format(格式)：大模型最终结果的返回格式(比如：表格、Markdown、英文等等)
+
+
+主要优点：
+
+
+  简单、方便
+  指定Role角色，可以让大模型在当前的角色范围内回答知识，这在一些特定的领域中非常有效
+  指定Role角色也能让工程上检索知识能够确定边界范围，配合元数据所发...
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>实战0-1,Java开发者也能看懂的大模型应用RAG开发实践</title>
+    <link href="/posts/rag-inaction-java/" rel="alternate" type="text/html" title="实战0-1,Java开发者也能看懂的大模型应用RAG开发实践" />
+    <published>2023-10-12T00:00:00+08:00</published>
+  
+    <updated>2023-10-16T16:00:49+08:00</updated>
+  
+    <id>/posts/rag-inaction-java/</id>
+    <content src="/posts/rag-inaction-java/" />
+    <author>
+      <name>八一菜刀</name>
+    </author>
+
+  
+    
+    <category term="大模型" />
+    
+    <category term="Java" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      前言
+
+在前几天的文章中，我分享说在RAG领域，很多都是工程上的实践，做AI大模型应用的开发其实Java也能写，那么本文就一个Java开发者的立场，构建实现一个最基础的大模型应用系统。
+
+而大模型应用系统其实在目前阶段，可能应用最广的还是RAG领域，因此，本文也是通过在RAG领域的基础架构下，来实现应用的开发，主要需求点：让大模型理解文本(知识库)内容，基于知识库范围内的内容进行回答对话
+
+而基于知识库的回答会帮助我们解决哪些问题呢？
+
+
+  ✅ 节省大模型训练成本：我们知道ChatGPT的知识内容停留在2021年，最新的知识它并不知道，而检索增强生成则可以解决大模型无法快速学习的问题，训练大模型代价是非常昂贵的，不仅仅只是金钱，还包括时间，随着模型的参数大小成本成正相关。
+  ✅ 让大模型更聪明：很多企业内部的私有数据大模型并没有学习，而通过RAG的方式可以让大模型在知识库范围的领...
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>全面进击AI大模型、RAG领域</title>
+    <link href="/posts/llm-start/" rel="alternate" type="text/html" title="全面进击AI大模型、RAG领域" />
+    <published>2023-10-10T00:00:00+08:00</published>
+  
+    <updated>2023-10-16T16:00:49+08:00</updated>
+  
+    <id>/posts/llm-start/</id>
+    <content src="/posts/llm-start/" />
+    <author>
+      <name>八一菜刀</name>
+    </author>
+
+  
+    
+    <category term="大模型" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      写在前面
+
+首先，非常感谢关注Knife4j项目的朋友，该公众号应该是今年开始，对于开源项目Knife4j的更新都在此公众号进行了第一时间的发布更新，包括该项目的迭代、想法、实践等等内容，包括最近Knife4j的付费产品Knife4jInsight的推出，虽然更新的不是很频繁，但对于还是要给自己一直坚持的事情做输出点赞的(感动了自己😹)。对于写公众号而言，对于文章的发表，如果有人持续关注的话，会是一种正向的鼓励～！
+
+而现在，考虑到我实际工作中的内容，目前工作核心是在做大模型RAG(检索增强生成)方面的开发工作，主要还是以Java技术栈进行产品的功能迭代开发，Python语言则更多的偏向底层大模型方面，包括大模型(LLM)的训练、微调、数据标注、向量Embedding等领域，工程上，业务产品测的逻辑实现、编排，接口开发等等功能还是以Java语言实现为主，并非使用当下最火的LangCh...
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>Knife4jInsight平台版-MVP版本v1.0.0发布</title>
+    <link href="/posts/knife4j-insight-mvp/" rel="alternate" type="text/html" title="Knife4jInsight平台版-MVP版本v1.0.0发布" />
+    <published>2023-09-18T00:00:00+08:00</published>
+  
+    <updated>2023-10-14T19:59:56+08:00</updated>
+  
+    <id>/posts/knife4j-insight-mvp/</id>
+    <content src="/posts/knife4j-insight-mvp/" />
+    <author>
+      <name>八一菜刀</name>
+    </author>
+
+  
+    
+    <category term="Knife4jInsight" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      在之前发布的《Knife4j新产品的想法》一文中，我提到想给Knife4j的生态做一些扩展，区别于目前市面上不一样的功能或者工具产品。
+
+主要还是聚焦在Knife4j这个开源项目上，然后将自己的一些想法进行输出,并将一些在单体工具组件中无法解决落地的需求场景，共同灌注在这个新的产品中。
+
+今天,Knife4jInsight平台版-MVP(Minimum Viable Product)最小可行性版本v1.0.0终于来了
+
+Knife4jInsight是简单、方便的OpenAPI接口规范文档聚合开放平台！
+
+产品地址：http://knife4j.net
+
+写在前面
+
+在很多年前，我的工作中的老大哥卢员外(微信公众号:土猛的员外)，那时候我们经常讨论如何创造产品、一个公司的产品及商业模式要如何保持市场竞争力，多年过去了,令我印象最深刻的就是三级火箭理论
+
+
+  第一级火箭:提供基本产品或...
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>Knife4jInsight的产品开发历程</title>
+    <link href="/posts/knife4j-insight-dev/" rel="alternate" type="text/html" title="Knife4jInsight的产品开发历程" />
+    <published>2023-09-17T00:00:00+08:00</published>
+  
+    <updated>2023-09-17T00:00:00+08:00</updated>
+  
+    <id>/posts/knife4j-insight-dev/</id>
+    <content src="/posts/knife4j-insight-dev/" />
+    <author>
+      <name>八一菜刀</name>
+    </author>
+
+  
+    
+    <category term="Knife4jInsight" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      前言
+
+大家好，在昨天Knife4jInsight的1.0.0MVP版本发布之后，在Knife4j的交流群分享说，希望Knife4j后面的版本，不管是开源版本还是商业版本，希望以：开源项目生态+付费产品闭源+Build On Public的模式一直走下去！！！
+
+今天这篇则是践行Build On Public策略，分享在开发Knife4jInsight过程中的一些感悟及想法！
+
+在很早之前分享的Knife4j5.0规划里面，我提到希望重写Knife4j的前端实现，并且能够将工具事项一直发展先去，把Knife4j始终定为一个工具组件，提供一些让开发者在日常文档开发过程中方便使用的功能为先。
+
+而在大概2个月前，我在交流群时常会碰到很多人在问Knife4jInsight开源版本的问题，在之前Knife4jInsight开源版本中，我主要实现了讲各个注册中心进行集成，所有的数据源存储在本地...
+    </summary>
+  
+
+  </entry>
+
+</feed>
+
+
