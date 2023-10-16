@@ -1,17 +1,17 @@
 
 
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <id>http://localhost:4000/</id>
+  <id>/</id>
   <title>八一菜刀</title>
   <subtitle>八一菜刀的学习笔记.</subtitle>
-  <updated>2023-10-16T15:58:10+08:00</updated>
+  <updated>2023-10-16T17:18:37+08:00</updated>
   <author>
     <name>xiaoymin</name>
-    <uri>http://localhost:4000/</uri>
+    <uri>/</uri>
   </author>
-  <link rel="self" type="application/atom+xml" href="http://localhost:4000/feed.xml"/>
+  <link rel="self" type="application/atom+xml" href="/feed.xml"/>
   <link rel="alternate" type="text/html" hreflang="zh-CN"
-    href="http://localhost:4000/"/>
+    href="/"/>
   <generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator>
   <rights> © 2023 xiaoymin </rights>
   <icon>/assets/img/favicons/favicon.ico</icon>
@@ -21,13 +21,13 @@
   
   <entry>
     <title>用好大模型?这5种实用的Prompt框架你一定要看看!</title>
-    <link href="http://localhost:4000/posts/use-prompt-framework/" rel="alternate" type="text/html" title="用好大模型?这5种实用的Prompt框架你一定要看看!" />
+    <link href="/posts/use-prompt-framework/" rel="alternate" type="text/html" title="用好大模型?这5种实用的Prompt框架你一定要看看!" />
     <published>2023-10-15T00:00:00+08:00</published>
   
-    <updated>2023-10-15T00:00:00+08:00</updated>
+    <updated>2023-10-16T16:00:49+08:00</updated>
   
-    <id>http://localhost:4000/posts/use-prompt-framework/</id>
-    <content src="http://localhost:4000/posts/use-prompt-framework/" />
+    <id>/posts/use-prompt-framework/</id>
+    <content src="/posts/use-prompt-framework/" />
     <author>
       <name>八一菜刀</name>
     </author>
@@ -76,13 +76,13 @@ RTF(Role-Task-Format)框架是一个非常简单通用的Prompt提示框架，�
   
   <entry>
     <title>实战0-1,Java开发者也能看懂的大模型应用RAG开发实践</title>
-    <link href="http://localhost:4000/posts/rag-inaction-java/" rel="alternate" type="text/html" title="实战0-1,Java开发者也能看懂的大模型应用RAG开发实践" />
+    <link href="/posts/rag-inaction-java/" rel="alternate" type="text/html" title="实战0-1,Java开发者也能看懂的大模型应用RAG开发实践" />
     <published>2023-10-12T00:00:00+08:00</published>
   
-    <updated>2023-10-12T00:00:00+08:00</updated>
+    <updated>2023-10-16T16:00:49+08:00</updated>
   
-    <id>http://localhost:4000/posts/rag-inaction-java/</id>
-    <content src="http://localhost:4000/posts/rag-inaction-java/" />
+    <id>/posts/rag-inaction-java/</id>
+    <content src="/posts/rag-inaction-java/" />
     <author>
       <name>八一菜刀</name>
     </author>
@@ -122,13 +122,13 @@ RTF(Role-Task-Format)框架是一个非常简单通用的Prompt提示框架，�
   
   <entry>
     <title>全面进击AI大模型、RAG领域</title>
-    <link href="http://localhost:4000/posts/llm-start/" rel="alternate" type="text/html" title="全面进击AI大模型、RAG领域" />
+    <link href="/posts/llm-start/" rel="alternate" type="text/html" title="全面进击AI大模型、RAG领域" />
     <published>2023-10-10T00:00:00+08:00</published>
   
-    <updated>2023-10-10T00:00:00+08:00</updated>
+    <updated>2023-10-16T16:00:49+08:00</updated>
   
-    <id>http://localhost:4000/posts/llm-start/</id>
-    <content src="http://localhost:4000/posts/llm-start/" />
+    <id>/posts/llm-start/</id>
+    <content src="/posts/llm-start/" />
     <author>
       <name>八一菜刀</name>
     </author>
@@ -160,13 +160,13 @@ RTF(Role-Task-Format)框架是一个非常简单通用的Prompt提示框架，�
   
   <entry>
     <title>Knife4jInsight平台版-MVP版本v1.0.0发布</title>
-    <link href="http://localhost:4000/posts/knife4j-insight-mvp/" rel="alternate" type="text/html" title="Knife4jInsight平台版-MVP版本v1.0.0发布" />
+    <link href="/posts/knife4j-insight-mvp/" rel="alternate" type="text/html" title="Knife4jInsight平台版-MVP版本v1.0.0发布" />
     <published>2023-09-18T00:00:00+08:00</published>
   
     <updated>2023-10-14T19:59:56+08:00</updated>
   
-    <id>http://localhost:4000/posts/knife4j-insight-mvp/</id>
-    <content src="http://localhost:4000/posts/knife4j-insight-mvp/" />
+    <id>/posts/knife4j-insight-mvp/</id>
+    <content src="/posts/knife4j-insight-mvp/" />
     <author>
       <name>八一菜刀</name>
     </author>
@@ -209,13 +209,13 @@ Knife4jInsight是简单、方便的OpenAPI接口规范文档聚合开放平台�
   
   <entry>
     <title>Knife4jInsight的产品开发历程</title>
-    <link href="http://localhost:4000/posts/knife4j-insight-dev/" rel="alternate" type="text/html" title="Knife4jInsight的产品开发历程" />
+    <link href="/posts/knife4j-insight-dev/" rel="alternate" type="text/html" title="Knife4jInsight的产品开发历程" />
     <published>2023-09-17T00:00:00+08:00</published>
   
     <updated>2023-09-17T00:00:00+08:00</updated>
   
-    <id>http://localhost:4000/posts/knife4j-insight-dev/</id>
-    <content src="http://localhost:4000/posts/knife4j-insight-dev/" />
+    <id>/posts/knife4j-insight-dev/</id>
+    <content src="/posts/knife4j-insight-dev/" />
     <author>
       <name>八一菜刀</name>
     </author>
