@@ -2,6 +2,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
   <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7f7f7">
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1b1b1e">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -9,6 +10,10 @@
   <link rel="stylesheet" href="{{ site.url }}/assets/css/custom.css">
   <meta name="viewport"
     content="width=device-width, user-scalable=no initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
+  {% if page.keywords %}
+  <meta name="keywords" content="{{ page.keywords | join: ', ' }}">
+  {% endif %}
+  <meta name="description" content="{{ page.description }}">
 
   {% capture seo_tags %}
   {% seo title=false %}
