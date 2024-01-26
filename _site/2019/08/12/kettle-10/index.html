@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>Kettle实战100篇 第10篇 JavaScript脚本中日志输出 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2019/08/12/kettle-10/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="Kettle实战100篇 第10篇 JavaScript脚本中日志输出">
+      
+    <meta name="keywords" content="Kettle实战,Kettle in Action,Kettle,Kettle JSON使用">
+    <meta name="og:keywords" content="Kettle实战,Kettle in Action,Kettle,Kettle JSON使用">
+      
+    <meta name="description" content="我们在编写作业或者转换的时候,运行时,尽管将Kettle的日志级别调整到最大,但是依然无法帮助我们定位到问题所在,此时我们就需要通过日志来输出我们的相关变量,以编程的思维来帮助我们快速定位到问题,以解决问题">
+    <meta name="og:description" content="我们在编写作业或者转换的时候,运行时,尽管将Kettle的日志级别调整到最大,但是依然无法帮助我们定位到问题所在,此时我们就需要通过日志来输出我们的相关变量,以编程的思维来帮助我们快速定位到问题,以解决问题">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2019/08/12/kettle-10/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2019-08-12">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="Kettle实战100篇 第1">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">Kettle实战100篇 第10篇 JavaScript脚本中日志输出</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2019/08/12
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#Kettle实战" title="Kettle实战">Kettle实战</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <p>我们在编写作业或者转换的时候,运行时,尽管将Kettle的日志级别调整到最大,但是依然无法帮助我们定位到问题所在,此时我们就需要通过日志来输出我们的相关变量,以编程的思维来帮助我们快速定位到问题,以解决问题</p>
+
+<h2 id="旧版本kettle">旧版本Kettle</h2>
+
+<p>借助于搜索引擎,如果你是使用的较旧的Kettle版本,可以使用如下方法进行日志输出：</p>
+
+<p>首先,得到日志输出实例</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">var</span> <span class="n">log</span> <span class="o">=</span> <span class="n">org</span><span class="o">.</span><span class="na">pentaho</span><span class="o">.</span><span class="na">di</span><span class="o">.</span><span class="na">core</span><span class="o">.</span><span class="na">logging</span><span class="o">.</span><span class="na">LogWriter</span><span class="o">.</span><span class="na">getInstance</span><span class="o">();</span>
+</code></pre></div></div>
+
+<p>按照日志的输出基本分别进行输出：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">void</span> <span class="nf">logMinimal</span><span class="o">(</span><span class="nc">String</span> <span class="n">subject</span><span class="o">,</span> <span class="nc">String</span> <span class="n">message</span><span class="o">,</span> <span class="nc">Object</span><span class="o">...</span> <span class="n">args</span><span class="o">)</span>
+<span class="o">{</span> 
+    <span class="n">println</span><span class="o">(</span><span class="no">LOG_LEVEL_MINIMAL</span><span class="o">,</span> <span class="n">subject</span><span class="o">,</span> <span class="n">message</span><span class="o">,</span> <span class="n">args</span><span class="o">)</span> <span class="o">;</span> 
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">logBasic</span><span class="o">(</span><span class="nc">String</span> <span class="n">subject</span><span class="o">,</span> <span class="nc">String</span> <span class="n">message</span><span class="o">,</span> <span class="nc">Object</span><span class="o">...</span> <span class="n">args</span><span class="o">)</span>
+<span class="o">{</span> 
+    <span class="n">println</span><span class="o">(</span><span class="no">LOG_LEVEL_BASIC</span><span class="o">,</span> <span class="n">subject</span><span class="o">,</span> <span class="n">message</span><span class="o">,</span> <span class="n">args</span><span class="o">)</span> <span class="o">;</span> 
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">logDetailed</span><span class="o">(</span><span class="nc">String</span> <span class="n">subject</span><span class="o">,</span> <span class="nc">String</span> <span class="n">message</span><span class="o">,</span> <span class="nc">Object</span><span class="o">...</span> <span class="n">args</span><span class="o">)</span>
+<span class="o">{</span> 
+    <span class="n">println</span><span class="o">(</span><span class="no">LOG_LEVEL_DETAILED</span><span class="o">,</span> <span class="n">subject</span><span class="o">,</span> <span class="n">message</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span> 
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">logDebug</span><span class="o">(</span><span class="nc">String</span> <span class="n">subject</span><span class="o">,</span> <span class="nc">String</span> <span class="n">message</span><span class="o">,</span> <span class="nc">Object</span><span class="o">...</span> <span class="n">args</span><span class="o">)</span>
+<span class="o">{</span> 
+    <span class="n">println</span><span class="o">(</span><span class="no">LOG_LEVEL_DEBUG</span><span class="o">,</span> <span class="n">subject</span><span class="o">,</span> <span class="n">message</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span> 
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">logRowlevel</span><span class="o">(</span><span class="nc">String</span> <span class="n">subject</span><span class="o">,</span> <span class="nc">String</span> <span class="n">message</span><span class="o">,</span> <span class="nc">Object</span><span class="o">...</span> <span class="n">args</span><span class="o">)</span>
+<span class="o">{</span> 
+    <span class="n">println</span><span class="o">(</span><span class="no">LOG_LEVEL_ROWLEVEL</span><span class="o">,</span> <span class="n">subject</span><span class="o">,</span> <span class="n">message</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span> 
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">logError</span><span class="o">(</span><span class="nc">String</span> <span class="n">subject</span><span class="o">,</span> <span class="nc">String</span> <span class="n">message</span><span class="o">,</span> <span class="nc">Object</span><span class="o">...</span> <span class="n">args</span><span class="o">)</span>
+<span class="o">{</span> 
+    <span class="n">println</span><span class="o">(</span><span class="no">LOG_LEVEL_ERROR</span><span class="o">,</span> <span class="n">subject</span><span class="o">,</span> <span class="n">message</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span> 
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>我们只需要在我们的JavaScript脚本中按照编写Java代码的方式,定义日志变量,然后调用相关的方法即可进行日志输出</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">var</span> <span class="n">log</span> <span class="o">=</span> <span class="n">org</span><span class="o">.</span><span class="na">pentaho</span><span class="o">.</span><span class="na">di</span><span class="o">.</span><span class="na">core</span><span class="o">.</span><span class="na">logging</span><span class="o">.</span><span class="na">LogWriter</span><span class="o">.</span><span class="na">getInstance</span><span class="o">();</span>
+<span class="n">log</span><span class="o">.</span><span class="na">logDebug</span><span class="o">(</span><span class="s">"Debug日志输出"</span><span class="o">,</span><span class="s">"日志信息Details..."</span><span class="o">)</span>
+</code></pre></div></div>
+
+<h2 id="新版本kettle">新版本Kettle</h2>
+
+<p>由于在《Kettle实战100篇》博客系列中,我使用的是当前最新的Kettle版本8.3版</p>
+
+<p>上面的LogWriter已经被Kettle废弃不可用了,通过查询Kettle的javaApi我们得到新的方式主要是<a href="https://javadoc.pentaho.com/kettle830/kettle-core-8.3.0.1-377-javadoc/index.html"><code class="language-plaintext highlighter-rouge">LogChannelFactory.java</code></a>和<a href="https://javadoc.pentaho.com/kettle830/kettle-core-8.3.0.1-377-javadoc/index.html"><code class="language-plaintext highlighter-rouge">LogChannel.java</code></a></p>
+
+<p>Kettle的JavaApi地址：https://javadoc.pentaho.com/</p>
+
+<p>可以选择查看不同版本的API Doc</p>
+
+<h3 id="构造结构">构造结构</h3>
+
+<p>来看<code class="language-plaintext highlighter-rouge">LogChannelFactory.java</code>的主要方法构造</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">org.pentaho.di.core.logging</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">LogChannelFactory</span> <span class="kd">implements</span> <span class="nc">LogChannelInterfaceFactory</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="nc">LogChannel</span> <span class="nf">create</span><span class="o">(</span> <span class="nc">Object</span> <span class="n">subject</span> <span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">LogChannel</span><span class="o">(</span> <span class="n">subject</span> <span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="nc">LogChannel</span> <span class="nf">create</span><span class="o">(</span> <span class="nc">Object</span> <span class="n">subject</span><span class="o">,</span> <span class="kt">boolean</span> <span class="n">gatheringMetrics</span> <span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">LogChannel</span><span class="o">(</span> <span class="n">subject</span><span class="o">,</span> <span class="n">gatheringMetrics</span> <span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="nc">LogChannel</span> <span class="nf">create</span><span class="o">(</span> <span class="nc">Object</span> <span class="n">subject</span><span class="o">,</span> <span class="nc">LoggingObjectInterface</span> <span class="n">parentObject</span> <span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">LogChannel</span><span class="o">(</span> <span class="n">subject</span><span class="o">,</span> <span class="n">parentObject</span> <span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="nc">LogChannel</span> <span class="nf">create</span><span class="o">(</span> <span class="nc">Object</span> <span class="n">subject</span><span class="o">,</span> <span class="nc">LoggingObjectInterface</span> <span class="n">parentObject</span><span class="o">,</span> <span class="kt">boolean</span> <span class="n">gatheringMetrics</span> <span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">LogChannel</span><span class="o">(</span> <span class="n">subject</span><span class="o">,</span> <span class="n">parentObject</span><span class="o">,</span> <span class="n">gatheringMetrics</span> <span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>通过create方法我们可以得到LogChannel对象</p>
+
+<p><code class="language-plaintext highlighter-rouge">LogChannel.java</code>代码</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nf">LogChannel</span><span class="o">(</span> <span class="nc">Object</span> <span class="n">subject</span> <span class="o">)</span> <span class="o">{</span>
+    <span class="n">logLevel</span> <span class="o">=</span> <span class="nc">DefaultLogLevel</span><span class="o">.</span><span class="na">getLogLevel</span><span class="o">();</span>
+    <span class="n">logChannelId</span> <span class="o">=</span> <span class="nc">LoggingRegistry</span><span class="o">.</span><span class="na">getInstance</span><span class="o">().</span><span class="na">registerLoggingSource</span><span class="o">(</span> <span class="n">subject</span> <span class="o">);</span>
+<span class="o">}</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">logMinimal</span><span class="o">(</span> <span class="nc">String</span> <span class="n">s</span> <span class="o">)</span> <span class="o">{</span>
+    <span class="n">println</span><span class="o">(</span> <span class="k">new</span> <span class="nc">LogMessage</span><span class="o">(</span> <span class="n">s</span><span class="o">,</span> <span class="n">logChannelId</span><span class="o">,</span> <span class="nc">LogLevel</span><span class="o">.</span><span class="na">MINIMAL</span> <span class="o">),</span> <span class="n">logLevel</span> <span class="o">);</span>
+<span class="o">}</span>
+
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">logBasic</span><span class="o">(</span> <span class="nc">String</span> <span class="n">s</span> <span class="o">)</span> <span class="o">{</span>
+    <span class="n">println</span><span class="o">(</span> <span class="k">new</span> <span class="nc">LogMessage</span><span class="o">(</span> <span class="n">s</span><span class="o">,</span> <span class="n">logChannelId</span><span class="o">,</span> <span class="nc">LogLevel</span><span class="o">.</span><span class="na">BASIC</span> <span class="o">),</span> <span class="n">logLevel</span> <span class="o">);</span>
+<span class="o">}</span>
+
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">logError</span><span class="o">(</span> <span class="nc">String</span> <span class="n">s</span> <span class="o">)</span> <span class="o">{</span>
+    <span class="n">println</span><span class="o">(</span> <span class="k">new</span> <span class="nc">LogMessage</span><span class="o">(</span> <span class="n">s</span><span class="o">,</span> <span class="n">logChannelId</span><span class="o">,</span> <span class="nc">LogLevel</span><span class="o">.</span><span class="na">ERROR</span> <span class="o">),</span> <span class="n">logLevel</span> <span class="o">);</span>
+<span class="o">}</span>
+
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">logError</span><span class="o">(</span> <span class="nc">String</span> <span class="n">s</span><span class="o">,</span> <span class="nc">Throwable</span> <span class="n">e</span> <span class="o">)</span> <span class="o">{</span>
+    <span class="n">println</span><span class="o">(</span> <span class="k">new</span> <span class="nc">LogMessage</span><span class="o">(</span> <span class="n">s</span><span class="o">,</span> <span class="n">logChannelId</span><span class="o">,</span> <span class="nc">LogLevel</span><span class="o">.</span><span class="na">ERROR</span> <span class="o">),</span> <span class="n">e</span><span class="o">,</span> <span class="n">logLevel</span> <span class="o">);</span>
+<span class="o">}</span>
+
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">logBasic</span><span class="o">(</span> <span class="nc">String</span> <span class="n">s</span><span class="o">,</span> <span class="nc">Object</span><span class="o">...</span> <span class="n">arguments</span> <span class="o">)</span> <span class="o">{</span>
+    <span class="n">println</span><span class="o">(</span> <span class="k">new</span> <span class="nc">LogMessage</span><span class="o">(</span> <span class="n">s</span><span class="o">,</span> <span class="n">logChannelId</span><span class="o">,</span> <span class="n">arguments</span><span class="o">,</span> <span class="nc">LogLevel</span><span class="o">.</span><span class="na">BASIC</span> <span class="o">),</span> <span class="n">logLevel</span> <span class="o">);</span>
+<span class="o">}</span>
+
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">logDetailed</span><span class="o">(</span> <span class="nc">String</span> <span class="n">s</span><span class="o">,</span> <span class="nc">Object</span><span class="o">...</span> <span class="n">arguments</span> <span class="o">)</span> <span class="o">{</span>
+    <span class="n">println</span><span class="o">(</span> <span class="k">new</span> <span class="nc">LogMessage</span><span class="o">(</span> <span class="n">s</span><span class="o">,</span> <span class="n">logChannelId</span><span class="o">,</span> <span class="n">arguments</span><span class="o">,</span> <span class="nc">LogLevel</span><span class="o">.</span><span class="na">DETAILED</span> <span class="o">),</span> <span class="n">logLevel</span> <span class="o">);</span>
+<span class="o">}</span>
+
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">logError</span><span class="o">(</span> <span class="nc">String</span> <span class="n">s</span><span class="o">,</span> <span class="nc">Object</span><span class="o">...</span> <span class="n">arguments</span> <span class="o">)</span> <span class="o">{</span>
+    <span class="n">println</span><span class="o">(</span> <span class="k">new</span> <span class="nc">LogMessage</span><span class="o">(</span> <span class="n">s</span><span class="o">,</span> <span class="n">logChannelId</span><span class="o">,</span> <span class="n">arguments</span><span class="o">,</span> <span class="nc">LogLevel</span><span class="o">.</span><span class="na">ERROR</span> <span class="o">),</span> <span class="n">logLevel</span> <span class="o">);</span>
+<span class="o">}</span>
+
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">logDetailed</span><span class="o">(</span> <span class="nc">String</span> <span class="n">s</span> <span class="o">)</span> <span class="o">{</span>
+    <span class="n">println</span><span class="o">(</span> <span class="k">new</span> <span class="nc">LogMessage</span><span class="o">(</span> <span class="n">s</span><span class="o">,</span> <span class="n">logChannelId</span><span class="o">,</span> <span class="nc">LogLevel</span><span class="o">.</span><span class="na">DETAILED</span> <span class="o">),</span> <span class="n">logLevel</span> <span class="o">);</span>
+<span class="o">}</span>
+
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">logDebug</span><span class="o">(</span> <span class="nc">String</span> <span class="n">s</span> <span class="o">)</span> <span class="o">{</span>
+    <span class="n">println</span><span class="o">(</span> <span class="k">new</span> <span class="nc">LogMessage</span><span class="o">(</span> <span class="n">s</span><span class="o">,</span> <span class="n">logChannelId</span><span class="o">,</span> <span class="nc">LogLevel</span><span class="o">.</span><span class="na">DEBUG</span> <span class="o">),</span> <span class="n">logLevel</span> <span class="o">);</span>
+<span class="o">}</span>
+
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">logDebug</span><span class="o">(</span> <span class="nc">String</span> <span class="n">message</span><span class="o">,</span> <span class="nc">Object</span><span class="o">...</span> <span class="n">arguments</span> <span class="o">)</span> <span class="o">{</span>
+    <span class="n">println</span><span class="o">(</span> <span class="k">new</span> <span class="nc">LogMessage</span><span class="o">(</span> <span class="n">message</span><span class="o">,</span> <span class="n">logChannelId</span><span class="o">,</span> <span class="n">arguments</span><span class="o">,</span> <span class="nc">LogLevel</span><span class="o">.</span><span class="na">DEBUG</span> <span class="o">),</span> <span class="n">logLevel</span> <span class="o">);</span>
+<span class="o">}</span>
+
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">logRowlevel</span><span class="o">(</span> <span class="nc">String</span> <span class="n">s</span> <span class="o">)</span> <span class="o">{</span>
+    <span class="n">println</span><span class="o">(</span> <span class="k">new</span> <span class="nc">LogMessage</span><span class="o">(</span> <span class="n">s</span><span class="o">,</span> <span class="n">logChannelId</span><span class="o">,</span> <span class="nc">LogLevel</span><span class="o">.</span><span class="na">ROWLEVEL</span> <span class="o">),</span> <span class="n">logLevel</span> <span class="o">);</span>
+<span class="o">}</span>
+
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">logMinimal</span><span class="o">(</span> <span class="nc">String</span> <span class="n">message</span><span class="o">,</span> <span class="nc">Object</span><span class="o">...</span> <span class="n">arguments</span> <span class="o">)</span> <span class="o">{</span>
+    <span class="n">println</span><span class="o">(</span> <span class="k">new</span> <span class="nc">LogMessage</span><span class="o">(</span> <span class="n">message</span><span class="o">,</span> <span class="n">logChannelId</span><span class="o">,</span> <span class="n">arguments</span><span class="o">,</span> <span class="nc">LogLevel</span><span class="o">.</span><span class="na">MINIMAL</span> <span class="o">),</span> <span class="n">logLevel</span> <span class="o">);</span>
+<span class="o">}</span>
+
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">logRowlevel</span><span class="o">(</span> <span class="nc">String</span> <span class="n">message</span><span class="o">,</span> <span class="nc">Object</span><span class="o">...</span> <span class="n">arguments</span> <span class="o">)</span> <span class="o">{</span>
+    <span class="n">println</span><span class="o">(</span> <span class="k">new</span> <span class="nc">LogMessage</span><span class="o">(</span> <span class="n">message</span><span class="o">,</span> <span class="n">logChannelId</span><span class="o">,</span> <span class="n">arguments</span><span class="o">,</span> <span class="nc">LogLevel</span><span class="o">.</span><span class="na">ROWLEVEL</span> <span class="o">),</span> <span class="n">logLevel</span> <span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>通过代码 我们其实可以发现,新版本的Kettle在Api设计方便比就版本方便了很多</p>
+
+<h3 id="使用方法">使用方法</h3>
+
+<p>通过查看Api,我们已经知道了具体的方法,主要有两种方式</p>
+
+<ul>
+  <li>通过LogChannelFactory工厂构造LogChannel对象,然后调用相应的日志方法进行输出</li>
+  <li>直接构造LogChannel方法,调用方法日志输出</li>
+</ul>
+
+<p>两种方式都可以，先来看第一种</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">var</span> <span class="n">subject</span><span class="o">=</span><span class="s">"自定义日志输出"</span><span class="o">;</span>
+<span class="c1">//实例化工厂类</span>
+<span class="kt">var</span> <span class="n">logFactory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">org</span><span class="o">.</span><span class="na">pentaho</span><span class="o">.</span><span class="na">di</span><span class="o">.</span><span class="na">core</span><span class="o">.</span><span class="na">logging</span><span class="o">.</span><span class="na">LogChannelFactory</span><span class="o">();</span>
+<span class="c1">//实例化日志channel对象</span>
+<span class="kt">var</span> <span class="n">log</span><span class="o">=</span> <span class="n">logFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">subject</span><span class="o">);</span>
+<span class="c1">//日志输出</span>
+<span class="n">log</span><span class="o">.</span><span class="na">logMinimal</span><span class="o">(</span><span class="s">"XXXXXXXXXXXXXXXXXXXXXXXX-preRows:"</span><span class="o">+</span><span class="n">preRows</span><span class="o">.</span><span class="na">size</span><span class="o">());</span>
+</code></pre></div></div>
+
+<p>第二种也是类似</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">var</span> <span class="n">subject</span><span class="o">=</span><span class="s">"自定义日志输出"</span><span class="o">;</span>
+<span class="c1">//实例化日志channel对象</span>
+<span class="kt">var</span> <span class="n">log</span><span class="o">=</span> <span class="k">new</span> <span class="n">org</span><span class="o">.</span><span class="na">pentaho</span><span class="o">.</span><span class="na">di</span><span class="o">.</span><span class="na">core</span><span class="o">.</span><span class="na">logging</span><span class="o">.</span><span class="na">LogChannel</span><span class="o">(</span><span class="n">subject</span><span class="o">);</span>
+<span class="c1">//日志输出</span>
+<span class="n">log</span><span class="o">.</span><span class="na">logMinimal</span><span class="o">(</span><span class="s">"XXXXXXXXXXXXXXXXXXXXXXXX-preRows:"</span><span class="o">+</span><span class="n">preRows</span><span class="o">.</span><span class="na">size</span><span class="o">());</span>
+</code></pre></div></div>
+
+<p>最终我们运行时,可以在控制台看见我们的日志输出,方便我们调试,定位解决问题：</p>
+
+<p><img src="/images/kettle/kettle10/kia-jsLog-1.png" alt="" /></p>
+
+<h2 id="简单方法">简单方法</h2>
+
+<p>在转换中的JavaScript脚本组件中,我们还可以使用内置函数进行日志输出,日志函数主要有2个：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">writeToLog(msg)</code>:写入日志,传入msg要打印的信息</li>
+  <li><code class="language-plaintext highlighter-rouge">writeToLog(level,msg)</code>：第一个是日志级别的简称,第二个是要输出的日志参数</li>
+</ul>
+
+<p>介绍说明：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Usage:</span>
+<span class="c1">// writeToLog(var);</span>
+<span class="c1">// 1: String - The Message which should be written to</span>
+<span class="c1">// the Kettle Debug Log</span>
+<span class="c1">//</span>
+<span class="c1">// writeToLog(var,var);</span>
+<span class="c1">// 1: String - The Type of the Log</span>
+<span class="c1">// d - Debug</span>
+<span class="c1">// l - Detailed</span>
+<span class="c1">// e - Error</span>
+<span class="c1">// m - Minimal</span>
+<span class="c1">// r - RowLevel</span>
+</code></pre></div></div>
+
+<p>代码如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">test</span><span class="o">=</span><span class="dl">"</span><span class="s2">测试日志</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">test</span><span class="p">)</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="dl">'</span><span class="s1">d</span><span class="dl">'</span><span class="p">,</span><span class="nx">test</span><span class="p">)</span><span class="c1">// Debug级别输出</span>
+</code></pre></div></div>
+
+<p>另外需要注意的是,该函数只能在转换中的JavaScript脚本组件中使用,不能在作业的脚本组件中使用.</p>
+
+<h2 id="日志级别">日志级别</h2>
+
+<p>我们在运行Kettle转换或者作业时,可以设置当前Kettle的日志级别,如下图：</p>
+
+<p><img src="/images/kettle/kettle10/kia-jsLog-2.png" alt="" /></p>
+
+<p>日志级别主要包括以下：</p>
+
+<ul>
+  <li><strong>无日志</strong>：不打印任何日志,即使发生错误也不输出日志</li>
+  <li><strong>错误日志(Error)</strong>: 只打印输出错误日志,如果没有错误则不打印日志</li>
+  <li><strong>最小日志(Minimal)</strong>：只打印出执行到那个转换和作业的日志信息</li>
+  <li><strong>基本日志(Basic)</strong>：默认的日志级别,只打印出执行到那个步骤和作业项的日志信息</li>
+  <li><strong>详细日志(Detailed)</strong>: 比基本日志多输出一些内容,比如SQL查询语句和DDL语句等</li>
+  <li><strong>调试日志(Debug)</strong>:打印调试日志信息,但没有打印出所有的日志</li>
+  <li><strong>行级日志(Rowlevel)</strong>: 打印出Kettle里所有可用的日志信息,包括一些较复杂的步骤信息,最高级别</li>
+</ul>
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2019/08/12/kettle-10/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div class="xiaoym-qrcode">
+  <div class="xiaoym-qrcode-title">
+    <h2>微信公众号(八一菜刀)</h2>
+  </div>
+  <div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+</div>
+
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

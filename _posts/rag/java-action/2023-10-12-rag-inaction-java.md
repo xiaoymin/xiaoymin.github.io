@@ -2,19 +2,13 @@
 layout: post
 title: 实战0-1,Java开发者也能看懂的大模型应用RAG开发实践
 description: 实战0-1,Java开发者也能看懂的大模型应用RAG开发实践
-keywords:
-- RAG实战
-- RAG
-- 大模型实战
-- LLM
-- Java开发AI应用
+keywords: RAG实战,RAG,大模型实战,LLM,Java开发AI应用
 categories:
 - 大模型
 - Java
 sidebar_position: 4
 author: 八一菜刀
 data: 2023年10月12日
-pin: true
 ---
 
 
@@ -143,7 +137,7 @@ services:
 
 > data目录下的文本，开发者在调试时可以自己随意添加,网上随便找的文章都可以
 
-![图5-知识文本内容](/assets/images/llm/rag-java-action/image-20231011223914297.png)
+![图5-知识文本内容](/assets/image-20231011223914297.png)
 
 文章内容是一篇非常具有代表性的时政人物介绍新闻，那么我们就根据该文章的内容进行问答！
 

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>Kettle实战100篇 第8篇 Excel导入到Mysql数据库 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2019/08/11/kettle-8/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="Kettle实战100篇 第8篇 Excel导入到Mysql数据库">
+      
+    <meta name="keywords" content="Kettle实战,Kettle in Action,Kettle,Kettle JSON使用">
+    <meta name="og:keywords" content="Kettle实战,Kettle in Action,Kettle,Kettle JSON使用">
+      
+    <meta name="description" content="操作步骤是：选择表格类型(引擎) -&gt; 浏览Excel文件 -&gt; 增加">
+    <meta name="og:description" content="操作步骤是：选择表格类型(引擎) -&gt; 浏览Excel文件 -&gt; 增加">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2019/08/11/kettle-8/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2019-08-11">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="Kettle实战100篇 第8">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">Kettle实战100篇 第8篇 Excel导入到Mysql数据库</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2019/08/11
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#Kettle实战" title="Kettle实战">Kettle实战</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <p>操作步骤是：选择表格类型(引擎) -&gt; 浏览Excel文件 -&gt; 增加</p>
+
+<p><img src="/images/kettle/kettle8/2-3.png" alt="" /></p>
+
+<p>此时,切换到工作表选项卡</p>
+
+<p>可以点击获取工作表名称,然后设置读取的起始行、列</p>
+
+<p><img src="/images/kettle/kettle8/2-4.png" alt="" /></p>
+
+<p>第三步选择字段选项卡</p>
+
+<p>点击获取来自头部数据的字段,可以自动获取Excel表格中的字段header信息,编辑响应的字段类型、长度、精度等信息</p>
+
+<p><img src="/images/kettle/kettle8/2-5.png" alt="" /></p>
+
+<h2 id="输出">输出</h2>
+
+<p>编辑好Excel输入后,此时我们编辑输出,因为我们目标是将Excel的数据导入到数据库中,因此我们的输出目标是数据库表</p>
+
+<p>左侧核心对象树中选择 输出 -&gt; <strong>表输出</strong></p>
+
+<p><img src="/images/kettle/kettle8/2-6.png" alt="" /></p>
+
+<p>中间步骤使用Hops连接起来,表示一个数据的流转方向</p>
+
+<p>双击表输出,编辑属性</p>
+
+<p><img src="/images/kettle/kettle8/2-7.png" alt="" /></p>
+
+<p>在表输出的步骤中,我们需要建立目标数据库连接，然后选择目标表,最后勾选指定数据库字段</p>
+
+<p>在数据库字段选项卡中,选择相应的字段映射规则</p>
+
+<p><img src="/images/kettle/kettle8/2-8.png" alt="" /></p>
+
+<p>可以点击获取字段以从前一个步骤流中获取输出字段,然后编辑映射关系，保存</p>
+
+<h2 id="运行">运行</h2>
+
+<p>通过以上步骤,我们即完成了这个简单的ETL过程，点击工具栏中的运行,查看结果</p>
+
+<p><img src="/images/kettle/kettle8/2-9.png" alt="" /></p>
+
+<p>弹出执行对话框</p>
+
+<p><img src="/images/kettle/kettle8/2-10.png" alt="" /></p>
+
+<p>我们选择本机执行,最终执行成功时,打印日志如下：</p>
+
+<p><img src="/images/kettle/kettle8/2-11.png" alt="" /></p>
+
+<p>最终导入入库效果：</p>
+
+<p><img src="/images/kettle/kettle8/2-12.png" alt="" /></p>
+
+<h2 id="命令行运行转换">命令行运行转换</h2>
+
+<p>以上过程保存完成后,Kettle会将我们的转换生成一个文件存储在本地文件系统中,一般转换以后缀<code class="language-plaintext highlighter-rouge">.ker</code>结尾</p>
+
+<p>此时,我们也可使用Spoon为我们提供的命令行工具<code class="language-plaintext highlighter-rouge">Pan</code>以执行转换，如下：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>D:<span class="se">\U</span>sers<span class="se">\x</span>iaoymin<span class="se">\B</span><span class="k">in</span><span class="se">\d</span>ata-integration<span class="se">\d</span>ata-integration&gt;Pan.bat <span class="nt">-file</span><span class="o">=</span>F:<span class="se">\k</span>ettle<span class="se">\p</span>ractic<span class="se">\e</span>xcel-mysql.ktr <span class="nt">-logfile</span><span class="o">=</span>F:<span class="se">\k</span>ettle<span class="se">\p</span>ractic<span class="se">\l</span>og.log
+DEBUG: Using JAVA_HOME
+DEBUG: <span class="nv">_PENTAHO_JAVA_HOME</span><span class="o">=</span>C:<span class="se">\P</span>rogram Files<span class="se">\J</span>ava<span class="se">\j</span>dk1.8.0_111
+DEBUG: <span class="nv">_PENTAHO_JAVA</span><span class="o">=</span>C:<span class="se">\P</span>rogram Files<span class="se">\J</span>ava<span class="se">\j</span>dk1.8.0_111<span class="se">\b</span><span class="k">in</span><span class="se">\j</span>ava.exe
+
+D:<span class="se">\U</span>sers<span class="se">\x</span>iaoymin<span class="se">\B</span><span class="k">in</span><span class="se">\d</span>ata-integration<span class="se">\d</span>ata-integration&gt;<span class="s2">"C:</span><span class="se">\P</span><span class="s2">rogram Files</span><span class="se">\J</span><span class="s2">ava</span><span class="se">\j</span><span class="s2">dk1.8.0_111</span><span class="se">\b</span><span class="s2">in</span><span class="se">\j</span><span class="s2">ava.exe"</span>  <span class="s2">"-Xmx2048m"</span> <span class="s2">"-XX:MaxPermSize=1024m"</span> <span class="s2">"-Djava.library.path=libswt</span><span class="se">\w</span><span class="s2">in64"</span> <span class="s2">"-DKETTLE_HOME="</span> <span class="s2">"-DKETTLE_REPOSITORY="</span> <span class="s2">"-DKETTLE_USER="</span> <span class="s2">"-DKETTLE_PASSWORD="</span> <span class="s2">"-DKETTLE_PLUGIN_PACKAGES="</span> <span class="s2">"-DKETTLE_LOG_SIZE_LIMIT="</span> <span class="s2">"-DKETTLE_JNDI_ROOT="</span> <span class="nt">-jar</span> launcher<span class="se">\p</span>entaho-application-launcher-5.4.0.1-130.jar <span class="nt">-lib</span> ..<span class="se">\l</span>ibswt<span class="se">\w</span>in64  <span class="nt">-main</span> org.pentaho.di.pan.Pan <span class="nt">-file</span> F:<span class="se">\k</span>ettle<span class="se">\p</span>ractic<span class="se">\e</span>xcel-mysql.ktr <span class="nt">-logfile</span> F:<span class="se">\k</span>ettle<span class="se">\p</span>ractic<span class="se">\l</span>og.log
+Java HotSpot<span class="o">(</span>TM<span class="o">)</span> 64-Bit Server VM warning: ignoring option <span class="nv">MaxPermSize</span><span class="o">=</span>1024m<span class="p">;</span> support was removed <span class="k">in </span>8.0
+2019/07/16 22:34:17 - Pan - 开始运行.
+2019/07/16 22:34:17 - excel-mysql - 为了转换解除补丁开始  <span class="o">[</span>excel-mysql]
+2019/07/16 22:34:18 - 表输出.0 - Connected to database <span class="o">[</span><span class="nb">local</span><span class="o">]</span> <span class="o">(</span><span class="nv">commit</span><span class="o">=</span>1000<span class="o">)</span>
+2019/07/16 22:34:24 - 外部Excel数据导入.0 - 完成处理 <span class="o">(</span><span class="nv">I</span><span class="o">=</span>146, <span class="nv">O</span><span class="o">=</span>0, <span class="nv">R</span><span class="o">=</span>0, <span class="nv">W</span><span class="o">=</span>146, <span class="nv">U</span><span class="o">=</span>0, <span class="nv">E</span><span class="o">=</span>0
+2019/07/16 22:34:24 - 表输出.0 - 完成处理 <span class="o">(</span><span class="nv">I</span><span class="o">=</span>0, <span class="nv">O</span><span class="o">=</span>146, <span class="nv">R</span><span class="o">=</span>146, <span class="nv">W</span><span class="o">=</span>146, <span class="nv">U</span><span class="o">=</span>0, <span class="nv">E</span><span class="o">=</span>0
+2019/07/16 22:34:24 - Pan - 完成!
+2019/07/16 22:34:24 - Pan - 开始<span class="o">=</span>2019/07/16 22:34:17.718, 停止<span class="o">=</span>2019/07/16 22:34:24.995
+2019/07/16 22:34:24 - Pan - 7 秒后处理结束.
+2019/07/16 22:34:24 - excel-mysql -
+2019/07/16 22:34:25 - excel-mysql - 进程 外部Excel数据导入.0 成功结束, 处理了 146 行. <span class="o">(</span> 20 行/秒<span class="o">)</span>
+2019/07/16 22:34:25 - excel-mysql - 进程 表输出.0 成功结束, 处理了 146 行. <span class="o">(</span> 20 行/秒<span class="o">)</span>
+
+D:<span class="se">\U</span>sers<span class="se">\x</span>iaoymin<span class="se">\B</span><span class="k">in</span><span class="se">\d</span>ata-integration<span class="se">\d</span>ata-integration&gt;
+</code></pre></div></div>
+
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2019/08/11/kettle-8/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div class="xiaoym-qrcode">
+  <div class="xiaoym-qrcode-title">
+    <h2>微信公众号(八一菜刀)</h2>
+  </div>
+  <div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+</div>
+
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

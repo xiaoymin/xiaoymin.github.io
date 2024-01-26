@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>mybatis 源码系列(二) 配置类Configuration &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2019/05/12/mybatis-2/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="mybatis 源码系列(二) 配置类Configuration">
+      
+    <meta name="keywords" content="mybatis 源码系列,mybatis">
+    <meta name="og:keywords" content="mybatis 源码系列,mybatis">
+      
+    <meta name="description" content="我们在第一章初始化中知道了mybatis的核心配置类为org.apache.ibatis.session.Configuration.java">
+    <meta name="og:description" content="我们在第一章初始化中知道了mybatis的核心配置类为org.apache.ibatis.session.Configuration.java">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2019/05/12/mybatis-2/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2019-05-12">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="mybatis 源码系列(二)">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">mybatis 源码系列(二) 配置类Configuration</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2019/05/12
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#mybatis" title="mybatis">mybatis</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <p>我们在第一章初始化中知道了mybatis的核心配置类为<code class="language-plaintext highlighter-rouge">org.apache.ibatis.session.Configuration.java</code></p>
+
+<p>先来看Configuration.java的类图</p>
+
+<p><img src="/images/mybatis/Configuration.png" alt="" /></p>
+
+<p>看到类图,瞬间就懵逼了,这属性也太多了吧…..</p>
+
+<p>不过想到mybatis的功能如此强大,那如此多的属性也是可以理解的，我会逐一探索.</p>
+
+<h2 id="构造函数">构造函数</h2>
+
+<p>通过类图我们发现,Configuration主要提供了两个构造函数：</p>
+
+<ul>
+  <li>空构造,不传任意参数</li>
+  <li>根据Environment环境变量来构造</li>
+</ul>
+
+<h3 id="空构造">空构造</h3>
+
+<p>先来看空构造的代码</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/***
+   * 空构造,初始化mybatis的相关处理类方法
+   */</span>
+  <span class="kd">public</span> <span class="nf">Configuration</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">typeAliasRegistry</span><span class="o">.</span><span class="na">registerAlias</span><span class="o">(</span><span class="s">"JDBC"</span><span class="o">,</span> <span class="nc">JdbcTransactionFactory</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">typeAliasRegistry</span><span class="o">.</span><span class="na">registerAlias</span><span class="o">(</span><span class="s">"MANAGED"</span><span class="o">,</span> <span class="nc">ManagedTransactionFactory</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+    <span class="n">typeAliasRegistry</span><span class="o">.</span><span class="na">registerAlias</span><span class="o">(</span><span class="s">"JNDI"</span><span class="o">,</span> <span class="nc">JndiDataSourceFactory</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">typeAliasRegistry</span><span class="o">.</span><span class="na">registerAlias</span><span class="o">(</span><span class="s">"POOLED"</span><span class="o">,</span> <span class="nc">PooledDataSourceFactory</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">typeAliasRegistry</span><span class="o">.</span><span class="na">registerAlias</span><span class="o">(</span><span class="s">"UNPOOLED"</span><span class="o">,</span> <span class="nc">UnpooledDataSourceFactory</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+    <span class="n">typeAliasRegistry</span><span class="o">.</span><span class="na">registerAlias</span><span class="o">(</span><span class="s">"PERPETUAL"</span><span class="o">,</span> <span class="nc">PerpetualCache</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">typeAliasRegistry</span><span class="o">.</span><span class="na">registerAlias</span><span class="o">(</span><span class="s">"FIFO"</span><span class="o">,</span> <span class="nc">FifoCache</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">typeAliasRegistry</span><span class="o">.</span><span class="na">registerAlias</span><span class="o">(</span><span class="s">"LRU"</span><span class="o">,</span> <span class="nc">LruCache</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">typeAliasRegistry</span><span class="o">.</span><span class="na">registerAlias</span><span class="o">(</span><span class="s">"SOFT"</span><span class="o">,</span> <span class="nc">SoftCache</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">typeAliasRegistry</span><span class="o">.</span><span class="na">registerAlias</span><span class="o">(</span><span class="s">"WEAK"</span><span class="o">,</span> <span class="nc">WeakCache</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+    <span class="n">typeAliasRegistry</span><span class="o">.</span><span class="na">registerAlias</span><span class="o">(</span><span class="s">"DB_VENDOR"</span><span class="o">,</span> <span class="nc">VendorDatabaseIdProvider</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+    <span class="n">typeAliasRegistry</span><span class="o">.</span><span class="na">registerAlias</span><span class="o">(</span><span class="s">"XML"</span><span class="o">,</span> <span class="nc">XMLLanguageDriver</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">typeAliasRegistry</span><span class="o">.</span><span class="na">registerAlias</span><span class="o">(</span><span class="s">"RAW"</span><span class="o">,</span> <span class="nc">RawLanguageDriver</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+    <span class="n">typeAliasRegistry</span><span class="o">.</span><span class="na">registerAlias</span><span class="o">(</span><span class="s">"SLF4J"</span><span class="o">,</span> <span class="nc">Slf4jImpl</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">typeAliasRegistry</span><span class="o">.</span><span class="na">registerAlias</span><span class="o">(</span><span class="s">"COMMONS_LOGGING"</span><span class="o">,</span> <span class="nc">JakartaCommonsLoggingImpl</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">typeAliasRegistry</span><span class="o">.</span><span class="na">registerAlias</span><span class="o">(</span><span class="s">"LOG4J"</span><span class="o">,</span> <span class="nc">Log4jImpl</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">typeAliasRegistry</span><span class="o">.</span><span class="na">registerAlias</span><span class="o">(</span><span class="s">"LOG4J2"</span><span class="o">,</span> <span class="nc">Log4j2Impl</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">typeAliasRegistry</span><span class="o">.</span><span class="na">registerAlias</span><span class="o">(</span><span class="s">"JDK_LOGGING"</span><span class="o">,</span> <span class="nc">Jdk14LoggingImpl</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">typeAliasRegistry</span><span class="o">.</span><span class="na">registerAlias</span><span class="o">(</span><span class="s">"STDOUT_LOGGING"</span><span class="o">,</span> <span class="nc">StdOutImpl</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">typeAliasRegistry</span><span class="o">.</span><span class="na">registerAlias</span><span class="o">(</span><span class="s">"NO_LOGGING"</span><span class="o">,</span> <span class="nc">NoLoggingImpl</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+    <span class="n">typeAliasRegistry</span><span class="o">.</span><span class="na">registerAlias</span><span class="o">(</span><span class="s">"CGLIB"</span><span class="o">,</span> <span class="nc">CglibProxyFactory</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">typeAliasRegistry</span><span class="o">.</span><span class="na">registerAlias</span><span class="o">(</span><span class="s">"JAVASSIST"</span><span class="o">,</span> <span class="nc">JavassistProxyFactory</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+    <span class="n">languageRegistry</span><span class="o">.</span><span class="na">setDefaultDriverClass</span><span class="o">(</span><span class="nc">XMLLanguageDriver</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">languageRegistry</span><span class="o">.</span><span class="na">register</span><span class="o">(</span><span class="nc">RawLanguageDriver</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>空构造中注册了大量内置的mybatis核心逻辑处理类，这些类的作用我们会在后面章节逐一研究,这里不做说明</p>
+
+<h3 id="根据environment">根据Environment</h3>
+
+<p>来看构造函数</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/***
+   * 根据环境参数构造
+   * @param environment
+   */</span>
+  <span class="kd">public</span> <span class="nf">Configuration</span><span class="o">(</span><span class="nc">Environment</span> <span class="n">environment</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">();</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">environment</span> <span class="o">=</span> <span class="n">environment</span><span class="o">;</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>首先调用空构造,其次,赋值Environment属性</p>
+
+<p>如果不看其中具体的属性，从目标两个构造函数来看,Configuration配置类似乎也是很简单的.</p>
+
+<p>关于Configuration的属性,我们会在后面逐一研究攻破.</p>
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2019/05/12/mybatis-2/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div class="xiaoym-qrcode">
+  <div class="xiaoym-qrcode-title">
+    <h2>微信公众号(八一菜刀)</h2>
+  </div>
+  <div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+</div>
+
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

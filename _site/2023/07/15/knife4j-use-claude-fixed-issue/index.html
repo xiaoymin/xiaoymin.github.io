@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>使用Claude修改Knife4j中的issues &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2023/07/15/knife4j-use-claude-fixed-issue/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="使用Claude修改Knife4j中的issues">
+      
+    <meta name="keywords" content="["claude修改代码"]">
+    <meta name="og:keywords" content="["claude修改代码"]">
+      
+    <meta name="description" content="本文和Knife4j使用无关，主要分享作者在解决Knife4j的issues过程中如何通过Claude.Ai快速解决问题">
+    <meta name="og:description" content="本文和Knife4j使用无关，主要分享作者在解决Knife4j的issues过程中如何通过Claude.Ai快速解决问题">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2023/07/15/knife4j-use-claude-fixed-issue/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2023-07-15">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="使用Claude修改Knife">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">使用Claude修改Knife4j中的issues</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2023/07/15
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#Knife4j" title="Knife4j">Knife4j</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <p>本文和Knife4j使用无关，主要分享作者在解决Knife4j的issues过程中如何通过Claude.Ai快速解决问题</p>
+
+<p>关联Issues：</p>
+<ul>
+  <li>✅ <a href="https://gitee.com/xiaoym/knife4j/issues/I6T78E">能否出个swagger转ts的插件,在文档管理中多一个,导出ts,想帮我的下游减轻工作量</a></li>
+  <li>✅ <a href="https://github.com/xiaoymin/knife4j/issues/568">https://github.com/xiaoymin/knife4j/issues/568</a></li>
+</ul>
+
+<p>📹 视频地址：<a href="https://www.bilibili.com/video/BV1mm4y1E7iV/?vd_source=ef34098d916a578698508a43063099ac">https://www.bilibili.com/video/BV1mm4y1E7iV/?vd_source=ef34098d916a578698508a43063099ac</a></p>
+<iframe src="//player.bilibili.com/player.html?aid=700889944&amp;bvid=BV19h4y1j7y9&amp;cid=1197294840&amp;page=1&amp;high_quality=1&amp;danmaku=0" allowfullscreen="allowfullscreen" width="100%" height="500" scrolling="no" frameborder="0" sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts"></iframe>
+
+<h2 id="-背景">🌋 背景</h2>
+
+<p>在上面的issues中，有用户提到在目前的Knife4j的界面中，对于生成的Script代码(主要是TypeScript)，对于实体类部分，缺失属性定义，于是需要解决</p>
+
+<p>主要的问题点：</p>
+
+<ul>
+  <li>❓ Knife4j的Script功能来源于<a href="https://github.com/xiaoymin/knife4j/pull/489">PR</a></li>
+  <li>❓ 代码中使用了<a href="https://babel.dev/docs/babel-generator">babel/generator</a>,而我对该组件并不熟悉</li>
+</ul>
+
+<h2 id="-解决过程">🔥 解决过程</h2>
+
+<h3 id="传统方案">传统方案</h3>
+
+<p>1、首先，我直接定位到函数的源码，查看源码，看是否有属性直接能够使用，部分源码：</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kr">interface</span> <span class="nx">TSPropertySignatureBuilder</span> <span class="p">{</span>
+    <span class="p">(</span><span class="nx">key</span><span class="p">:</span> <span class="nx">K</span><span class="p">.</span><span class="nx">ExpressionKind</span><span class="p">,</span> <span class="nx">typeAnnotation</span><span class="p">?:</span> <span class="nx">K</span><span class="p">.</span><span class="nx">TSTypeAnnotationKind</span> <span class="o">|</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">optional</span><span class="p">?:</span> <span class="nx">boolean</span><span class="p">):</span> <span class="nx">namedTypes</span><span class="p">.</span><span class="nx">TSPropertySignature</span><span class="p">;</span>
+    <span class="k">from</span><span class="p">(</span><span class="nx">params</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nl">comments</span><span class="p">?:</span> <span class="nx">K</span><span class="p">.</span><span class="nx">CommentKind</span><span class="p">[]</span> <span class="o">|</span> <span class="kc">null</span><span class="p">;</span>
+        <span class="nl">computed</span><span class="p">?:</span> <span class="nx">boolean</span><span class="p">;</span>
+        <span class="nl">initializer</span><span class="p">?:</span> <span class="nx">K</span><span class="p">.</span><span class="nx">ExpressionKind</span> <span class="o">|</span> <span class="kc">null</span><span class="p">;</span>
+        <span class="nl">key</span><span class="p">:</span> <span class="nx">K</span><span class="p">.</span><span class="nx">ExpressionKind</span><span class="p">;</span>
+        <span class="nl">loc</span><span class="p">?:</span> <span class="nx">K</span><span class="p">.</span><span class="nx">SourceLocationKind</span> <span class="o">|</span> <span class="kc">null</span><span class="p">;</span>
+        <span class="nl">optional</span><span class="p">?:</span> <span class="nx">boolean</span><span class="p">;</span>
+        <span class="nl">readonly</span><span class="p">?:</span> <span class="nx">boolean</span><span class="p">;</span>
+        <span class="nl">typeAnnotation</span><span class="p">?:</span> <span class="nx">K</span><span class="p">.</span><span class="nx">TSTypeAnnotationKind</span> <span class="o">|</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="p">}):</span> <span class="nx">namedTypes</span><span class="p">.</span><span class="nx">TSPropertySignature</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p><img src="/images/blog/use-claude-fixed-issues/source-property.jpg" alt="图1.t.tsPropertySignature函数源码" /></p>
+
+<p>在源码中，有<code class="language-plaintext highlighter-rouge">comments</code>属性，在没有查看官网文档的情况下，我姑且一试,直接给<code class="language-plaintext highlighter-rouge">comments</code>赋值，看直接传递是否奏效,结果并未不满意。</p>
+
+<p>2、这种情况下只能去去看了<a href="https://babel.dev/docs/babel-generator">babel/generator</a>的官方文档了，去翻看部分函数的doc文档参数，希望能够快速找到能够为生成的interface的属性标注comment的方法</p>
+
+<p>但我并没有找到我所需要的，能够为生成的properties增加注释的方法</p>
+
+<h2 id="-求助ai">💯 求助AI</h2>
+
+<p>想到之前在网上看到<a href="https://claude.ai/">Claude2</a>已经发布，支持100k的上下文并且免费，因此决定试试看</p>
+
+<p>1、首先我将Knife4j中整段js函数作为附件进行了上传，并且构建了Prompt，如下图：</p>
+
+<p><img src="/images/blog/use-claude-fixed-issues/js-fun.jpg" alt="图2.Claude2中的Prompt" /></p>
+
+<p>Claude2也给出了答案，但好像并不是我想要的，如下图：</p>
+
+<p><img src="/images/blog/use-claude-fixed-issues/Claude-a1.png" alt="图3.Claude2中回答" /></p>
+
+<p>2、于是我在继续追问，因为知道具体的函数所执行的位置，所以直接问函数中的某一个方法，看看Claude2是否能够定位问题</p>
+
+<p><img src="/images/blog/use-claude-fixed-issues/Claude-a2.png" alt="图4.Claude2中回答" /></p>
+
+<p>这一次，Claude2好像理解了我的意图，并定位出了问题所在，我根据提示，在代码中进行了修改，代码修改如下：</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">function</span> <span class="nx">getInterfaceBody</span><span class="p">(</span><span class="nx">props</span><span class="p">,</span> <span class="nx">openOptional</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">props</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">p</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">ta</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">tsTypeAnnotation</span><span class="p">(</span><span class="nx">getTsType</span><span class="p">(</span><span class="nx">p</span><span class="p">,</span> <span class="nx">getBaseType</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="kd">type</span><span class="p">),</span> <span class="nx">openOptional</span><span class="p">),</span> <span class="nx">p</span><span class="p">.</span><span class="nx">description</span><span class="p">);</span>
+    <span class="kd">let</span> <span class="nx">key</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">identifier</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
+    <span class="kd">let</span> <span class="nx">pro</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">tsPropertySignature</span><span class="p">(</span>
+      <span class="nx">key</span><span class="p">,</span>
+      <span class="nx">ta</span><span class="p">,</span>
+      <span class="nx">openOptional</span> <span class="p">?</span> <span class="o">!</span><span class="nx">p</span><span class="p">.</span><span class="nx">require</span> <span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="c1">// 增加注释</span>
+    <span class="nx">pro</span><span class="p">.</span><span class="nx">leadingComments</span> <span class="o">=</span> <span class="p">[{</span>
+      <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">CommentBlock</span><span class="dl">"</span><span class="p">,</span>
+      <span class="na">value</span><span class="p">:</span> <span class="s2">`</span><span class="p">${</span><span class="nx">p</span><span class="p">.</span><span class="nx">description</span><span class="p">}</span><span class="s2"> `</span>
+    <span class="p">}]</span>
+    <span class="k">return</span> <span class="nx">pro</span><span class="p">;</span>
+  <span class="p">})</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>此时在界面中，再次刷新界面，Knife4j的Scirpt中，每一个定义的interface都有了comment，如下图：</p>
+
+<p><img src="/images/blog/use-claude-fixed-issues/show.jpg" alt="图5.Knife4j中Script功能" /></p>
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2023/07/15/knife4j-use-claude-fixed-issue/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div class="xiaoym-qrcode">
+  <div class="xiaoym-qrcode-title">
+    <h2>微信公众号(八一菜刀)</h2>
+  </div>
+  <div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+</div>
+
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

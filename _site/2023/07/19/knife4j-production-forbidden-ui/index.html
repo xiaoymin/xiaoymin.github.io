@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>生产环境如何屏蔽Knife4j、Swagger等Ui资源和接口 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2023/07/19/knife4j-production-forbidden-ui/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="生产环境如何屏蔽Knife4j、Swagger等Ui资源和接口">
+      
+    <meta name="keywords" content="["knife4j", "屏蔽swagger", "屏蔽knife4j"]">
+    <meta name="og:keywords" content="["knife4j", "屏蔽swagger", "屏蔽knife4j"]">
+      
+    <meta name="description" content="本文主要介绍在 Spring Boot 应用中,如何在生产环境屏蔽Knife4j及相关Swagger资源">
+    <meta name="og:description" content="本文主要介绍在 Spring Boot 应用中,如何在生产环境屏蔽Knife4j及相关Swagger资源">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2023/07/19/knife4j-production-forbidden-ui/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2023-07-19">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="生产环境如何屏蔽Knife4j">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">生产环境如何屏蔽Knife4j、Swagger等Ui资源和接口</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2023/07/19
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#Knife4j" title="Knife4j">Knife4j</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <p>本文主要介绍在 Spring Boot 应用中,如何在生产环境屏蔽Knife4j及相关Swagger资源</p>
+
+<p>关联Issues：</p>
+
+<ul>
+  <li>✅ <a href="https://gitee.com/xiaoym/knife4j/issues/I67JDM">开启生产环境,屏蔽所有资源接口</a></li>
+  <li>✅ <a href="https://gitee.com/xiaoym/knife4j/issues/I4XDYE">生产环境屏蔽bug</a></li>
+  <li>✅ <a href="https://gitee.com/xiaoym/knife4j/issues/I2810R">3.0.2 配置生产环境屏蔽后，依然可以访问部分接口</a></li>
+  <li>✅ <a href="https://gitee.com/xiaoym/knife4j/issues/IYSZE">yml格式 屏蔽Swagger所有资源，不生效</a></li>
+  <li>✅ <a href="https://gitee.com/xiaoym/knife4j/issues/IP1HK">生产环境swagger-ui屏蔽</a></li>
+  <li>✅ <a href="https://gitee.com/xiaoym/knife4j/issues/ISBVR">开启生产环境,屏蔽Swagger所有资源接口 建议</a></li>
+  <li>✅ <a href="https://gitee.com/xiaoym/knife4j/issues/I4Z2Z6">生产环境屏蔽配置&amp;2.0.9版本问题</a></li>
+  <li>✅ <a href="https://github.com/xiaoymin/knife4j/issues/578">4.1.0 basic 验证， 任意请求都会导致请求通过，从而导致doc.html 不提示验证</a></li>
+  <li>✅ <a href="https://github.com/xiaoymin/knife4j/issues/338">springcloud 生产环境无法关闭</a></li>
+  <li>……</li>
+</ul>
+
+<p>🏖️ 本文仓库：<a href="https://github.com/xiaoymin/knife4j-demo/tree/master/knife4j-forbidden-api">knife4j-forbidden-api</a></p>
+
+<p>从仓库的issues中不难发现，该需求确确实实存在，虽然在Knife4j之前的版本，并没有提供屏蔽资源相关的配置，但也有很多开发者提了建议</p>
+
+<p>这在之后的版本迭代中,Knife4j主要提供了<a href="/docs/features/accessControl#352-访问页面加权控制">Basic验证</a>和<a href="/docs/features/accessControl">Production暴力屏蔽</a>的手段，这些都是基于实际需求场景出发来做的,生产环境屏蔽接口描述也是为了保护应用程序安全的一种手段。</p>
+
+<p>本文主要站在实际需求以及业务场景的角度，去分析如何在生产环境进行屏蔽接口</p>
+
+<p>从issues中，我们屏蔽的场景主要发生在：</p>
+
+<ul>
+  <li>✅ 单体Spring Boot应用屏蔽接口和静态ui资源</li>
+  <li>✅ 微服务Spring Cloud、Spring Cloud Gateway网关场景下屏蔽接口和静态资源</li>
+</ul>
+
+<p>屏蔽的手段主要包括以下几种(欢迎补充):</p>
+
+<ul>
+  <li>🌱 基于Spring Boot框架提供的<code class="language-plaintext highlighter-rouge">@Conditional</code>条件控制相关<code class="language-plaintext highlighter-rouge">@Bean</code>的生效</li>
+  <li>⛔ 基于Servlet体系下的Filter过滤器进行拦截屏蔽</li>
+  <li>⛰️ 基于Gateway网关体系下的Filter过滤器进行拦截屏蔽</li>
+  <li>💀 基于Maven项目的jar排除机制从根源解决问题</li>
+  <li>💣 基于生产环境Nginx、Ingress等控制请求路径处理</li>
+</ul>
+
+<h2 id="1目的">1.目的</h2>
+
+<p>通过开发者提出的issues，屏蔽的目的及提供Basic验证的方案来分析，我觉得主要有以下几点：</p>
+
+<ul>
+  <li>🔐 生产环境上线的系统，屏蔽接口描述性规范，对于生产系统是一种<strong>安全保护机制</strong></li>
+  <li>🔐 Basic方案更希望的是能够上线后也保留接口，解决生产环境出问题时便于调试定位问题，当Basic能起到一定的安全防护作用</li>
+</ul>
+
+<h2 id="2解决方案">2.解决方案</h2>
+
+<h3 id="21--基于spring-boot框架提供的conditional条件控制相关bean的生效">2.1 🌱 基于Spring Boot框架提供的<code class="language-plaintext highlighter-rouge">@Conditional</code>条件控制相关<code class="language-plaintext highlighter-rouge">@Bean</code>的生效</h3>
+
+<p>在Spring Boot开发框架中，提供了一种条件注入的机制注解<code class="language-plaintext highlighter-rouge">@Conditional</code>,顾名思义就是可以指定我们的代码在特定环境才生效。</p>
+
+<p>开发者在写第三方的starter的包时，是一种经常使用的手段。有关<code class="language-plaintext highlighter-rouge">@Conditional</code>注解等条件注入的说明，可以参考我之前分享的一篇Blog<a href="https://www.xiaominfo.com/blog/springboot/2020-09-23-spring-boot-conditional">《Spring Boot框架中如何优雅的注入实体Bean》</a></p>
+
+<p>我们的需求场景是：在生产环境中能够屏蔽部分接口以及Ui资源，那么我们是否可以结合<code class="language-plaintext highlighter-rouge">@Conditional</code>注解以及<code class="language-plaintext highlighter-rouge">@Profile</code>注解来实现不同环境的<code class="language-plaintext highlighter-rouge">@Bean</code>加载机制呢？</p>
+
+<p>答案当然是可以的,考虑到在Spring Boot环境中大部分的中间件都提供了配置化,类似<code class="language-plaintext highlighter-rouge">enable</code>属性来开启加载配置，这里可以使用<code class="language-plaintext highlighter-rouge">spring.profiles</code>通过配置进行区分</p>
+
+<p>简单的例子：我们对于Knife4j的配置文件有两个，分别对应dev环境和prod环境</p>
+
+<p>配置文件如下：</p>
+
+<ul>
+  <li>开发环境(dev)</li>
+</ul>
+
+<p>```yml title=”application-dev.yml”
+knife4j:
+  enable: true
+  ## other properties…….</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+- 生产环境(prod)
+
+```yml title="application-prod.yml"
+knife4j:
+  enable: false
+  ## other properties.......
+
+</code></pre></div></div>
+
+<p>在这种情况下，我们程序在启动时，只需要通过设定Spring Boot应用的<code class="language-plaintext highlighter-rouge">Profiles</code>，就可以实现我们的接口无法访问，如果我们指定<code class="language-plaintext highlighter-rouge">prod</code>环境，那么访问文档时，会出现接口404的情况~</p>
+
+<p><strong>总结：</strong>这种情况是对于Java后端应用的<code class="language-plaintext highlighter-rouge">Configuration</code>类级别的控制，通过Spring Boot框架提供的<code class="language-plaintext highlighter-rouge">@Conditional</code>注解来达到条件注入及部分代码可配置生效的目的</p>
+
+<p>虽然界面可访问，但是对于接口的规范描述并没有作用。</p>
+
+<h3 id="22--基于servlet体系下的filter过滤器进行拦截屏蔽">2.2 ⛔ 基于Servlet体系下的Filter过滤器进行拦截屏蔽</h3>
+
+<p>基于Servlet体系下的Filter过滤器进行拦截屏蔽是一种拦截机制，主要利用了Servlet规范下的Filter机制，对所有的请求资源进行拦截，开发者可以对所有涉及到Knife4j、Swagger资源的请求都进行拦截屏蔽</p>
+
+<p>场景的资源拦截地址可以参考文档<a href="/docs/features/accessControl">《访问权限控制》</a></p>
+
+<p>我们知道了要屏蔽的资源，以及Filter机制，此时，开发者即可以自己实现Filter代码，并将其注入到Spring Boot的应用框架中接口</p>
+
+<p>在Knife4j提供的<a href="https://gitee.com/xiaoym/knife4j/blob/dev/knife4j/knife4j-openapi2-spring-boot-starter/src/main/java/com/github/xiaoymin/knife4j/spring/filter/ProductionSecurityFilter.java"><code class="language-plaintext highlighter-rouge">ProductionSecurityFilter.java</code></a> 如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">public</span> <span class="k">void</span> <span class="nx">doFilter</span><span class="p">(</span><span class="nx">ServletRequest</span> <span class="nx">request</span><span class="p">,</span> <span class="nx">ServletResponse</span> <span class="nx">response</span><span class="p">,</span> <span class="nx">FilterChain</span> <span class="nx">chain</span><span class="p">)</span> <span class="nx">throws</span> <span class="nx">IOException</span><span class="p">,</span> <span class="nx">ServletException</span> <span class="p">{</span>
+    <span class="nx">HttpServletRequest</span> <span class="nx">httpServletRequest</span> <span class="o">=</span> <span class="p">(</span><span class="nx">HttpServletRequest</span><span class="p">)</span> <span class="nx">request</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">production</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">String</span> <span class="nx">uri</span> <span class="o">=</span> <span class="nx">httpServletRequest</span><span class="p">.</span><span class="nx">getRequestURI</span><span class="p">();</span>
+        <span class="c1">// 匹配判断uri地址是否我们需要屏蔽的资源</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">match</span><span class="p">(</span><span class="nx">uri</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nx">chain</span><span class="p">.</span><span class="nx">doFilter</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">HttpServletResponse</span> <span class="nx">resp</span> <span class="o">=</span> <span class="p">(</span><span class="nx">HttpServletResponse</span><span class="p">)</span> <span class="nx">response</span><span class="p">;</span>
+            <span class="nx">resp</span><span class="p">.</span><span class="nx">setStatus</span><span class="p">(</span><span class="nx">customCode</span><span class="p">);</span>
+            <span class="nx">resp</span><span class="p">.</span><span class="nx">sendError</span><span class="p">(</span><span class="nx">customCode</span><span class="p">,</span> <span class="dl">"</span><span class="s2">You do not have permission to access this page</span><span class="dl">"</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">chain</span><span class="p">.</span><span class="nx">doFilter</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>   
+</code></pre></div></div>
+
+<h3 id="23-️-基于gateway网关体系下的filter过滤器进行拦截屏蔽">2.3 ⛰️ 基于Gateway网关体系下的Filter过滤器进行拦截屏蔽</h3>
+
+<p>基于Gateway网关体系下的Filter过滤器进行拦截屏蔽和Servlet体系下的Filter进行拦截是同一种思想，因为Spring Cloud Gateway是基于Netty驱动设计实现，但思想方法是同一种</p>
+
+<p>无非是使用Spring Cloud Gateway提供的Filter接口，自定义实现match后屏蔽过滤</p>
+
+<p>可以参考Knife4j代码中的<a href="https://gitee.com/xiaoym/knife4j/blob/dev/knife4j/knife4j-gateway-spring-boot-starter/src/main/java/com/github/xiaoymin/knife4j/spring/gateway/filter/basic/WebFluxSecurityBasicAuthFilter.java"><code class="language-plaintext highlighter-rouge">WebFluxSecurityBasicAuthFilter.java</code></a></p>
+
+<h3 id="24--基于maven项目的jar排除机制从根源解决问题">2.4 💀 基于Maven项目的jar排除机制从根源解决问题</h3>
+
+<p>该方法也是利用Maven项目提供的Profiles机制，我们在项目打包构建的时候，可以对一些不需要的jar包进行exclusion排除，比如Knife4j的ui包或者swagger官方ui包，这种jar包都是webjar类型，里面全部是静态资源</p>
+
+<p><code class="language-plaintext highlighter-rouge">Maven</code>的<code class="language-plaintext highlighter-rouge">Profiles</code>是一种配置管理机制，允许你根据不同的环境或条件设置和激活不同的构建配置。可以使用Profiles来定义一组插件、依赖项和构建选项，这些选项在特定的构建环境中生效</p>
+
+<p>如果我们想在生产环境无需访问提供外部入口，那么我们在打包构建的时候可以直接排除即可</p>
+
+<p>基于这种思想，我们可以考虑在项目的<code class="language-plaintext highlighter-rouge">pom.xml</code>中配置Maven的Profiles，配置如下：</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;profiles&gt;</span>
+    <span class="nt">&lt;profile&gt;</span>
+        <span class="nt">&lt;id&gt;</span>dev<span class="nt">&lt;/id&gt;</span>
+        <span class="nt">&lt;activation&gt;</span>
+            <span class="c">&lt;!-- 激活条件为"dev"系统属性存在 --&gt;</span>
+            <span class="nt">&lt;property&gt;</span>
+                <span class="nt">&lt;name&gt;</span>env<span class="nt">&lt;/name&gt;</span>
+                <span class="nt">&lt;value&gt;</span>dev<span class="nt">&lt;/value&gt;</span>
+            <span class="nt">&lt;/property&gt;</span>
+        <span class="nt">&lt;/activation&gt;</span>
+    <span class="nt">&lt;/profile&gt;</span>
+    <span class="nt">&lt;profile&gt;</span>
+        <span class="nt">&lt;id&gt;</span>prod<span class="nt">&lt;/id&gt;</span>
+        <span class="nt">&lt;activation&gt;</span>
+            <span class="c">&lt;!-- 激活条件为"prod"环境变量存在 --&gt;</span>
+            <span class="nt">&lt;property&gt;</span>
+                <span class="nt">&lt;name&gt;</span>env<span class="nt">&lt;/name&gt;</span>
+                <span class="nt">&lt;value&gt;</span>prod<span class="nt">&lt;/value&gt;</span>
+            <span class="nt">&lt;/property&gt;</span>
+        <span class="nt">&lt;/activation&gt;</span>
+        <span class="nt">&lt;dependencies&gt;</span>
+            <span class="nt">&lt;dependency&gt;</span>
+                <span class="nt">&lt;groupId&gt;</span>com.github.xiaoymin<span class="nt">&lt;/groupId&gt;</span>
+                <span class="nt">&lt;artifactId&gt;</span>knife4j-openapi3-spring-boot-starter<span class="nt">&lt;/artifactId&gt;</span>
+                <span class="nt">&lt;exclusions&gt;</span>
+                    <span class="nt">&lt;exclusion&gt;</span>
+                        <span class="nt">&lt;groupId&gt;</span>com.github.xiaoymin<span class="nt">&lt;/groupId&gt;</span>
+                        <span class="nt">&lt;artifactId&gt;</span>knife4j-openapi3-ui<span class="nt">&lt;/artifactId&gt;</span>
+                    <span class="nt">&lt;/exclusion&gt;</span>
+                    <span class="nt">&lt;exclusion&gt;</span>
+                        <span class="nt">&lt;groupId&gt;</span>org.webjars<span class="nt">&lt;/groupId&gt;</span>
+                        <span class="nt">&lt;artifactId&gt;</span>swagger-ui<span class="nt">&lt;/artifactId&gt;</span>
+                    <span class="nt">&lt;/exclusion&gt;</span>
+                <span class="nt">&lt;/exclusions&gt;</span>
+
+            <span class="nt">&lt;/dependency&gt;</span>
+        <span class="nt">&lt;/dependencies&gt;</span>
+    <span class="nt">&lt;/profile&gt;</span>
+<span class="nt">&lt;/profiles&gt;</span>
+
+</code></pre></div></div>
+
+<p>在上面的配置中，主要作用如下：</p>
+
+<ul>
+  <li>✅ 声明了两个Profile类型，id分别为<code class="language-plaintext highlighter-rouge">dev</code>、<code class="language-plaintext highlighter-rouge">prod</code></li>
+  <li>✅ 配置了两种Profile类型的激活条件，通过环境变量名称来进行区分</li>
+  <li>✅ 在<code class="language-plaintext highlighter-rouge">prod</code>类型下面，我们配置的引用jar的<code class="language-plaintext highlighter-rouge">exclusions</code>规则，该Profile类型下会排除<code class="language-plaintext highlighter-rouge">knife4j-openapi3-ui</code>、<code class="language-plaintext highlighter-rouge">swagger-ui</code>这两个jar包，而这两个包分别是Knife4j和swagger官网提供的Ui资源包</li>
+</ul>
+
+<p>此时，当我们在项目构建打包时，我们就可以通过传入变量，进行构建，排除相关的jar包，命令如下：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn clean package <span class="nt">-Pprod</span>
+</code></pre></div></div>
+
+<h3 id="25--基于生产环境nginxingress等控制请求路径处理">2.5 💣 基于生产环境Nginx、Ingress等控制请求路径处理</h3>
+
+<p>上面2.1~2.4提供的方案都是通过代码或者工程上进行配置以达到目的，如果我们的服务已经上线，不管是Nginx或者在Kubernetes集群环境中，都可以通过Nginx、Ingress等代理服务器进行配置拦截处理</p>
+
+<p>也不失为一种处理方式。</p>
+
+<p>在Nginx中，我们只需要配置拦截资源接口，配置如下：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+location /doc.html <span class="o">{</span>
+    <span class="k">return </span>403<span class="p">;</span>  <span class="c"># 返回 403 状态码表示禁止访问</span>
+<span class="o">}</span>
+
+location /swagger-ui.html <span class="o">{</span>
+    <span class="k">return </span>403<span class="p">;</span>  <span class="c"># 返回 403 状态码表示禁止访问</span>
+<span class="o">}</span>
+
+// 其他路由接口及资源
+
+</code></pre></div></div>
+
+<p>而在Kubernetes集群环境中，可以通过使用Ingress控制请求,配置示例如下：</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">my-ingress</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">rules</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">http</span><span class="pi">:</span>
+        <span class="na">paths</span><span class="pi">:</span>
+        <span class="c1"># 转发doc.html到error-service,可以在该服务中定义一个错误页面或返回适当的错误码</span>
+          <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/doc.html</span>
+            <span class="na">pathType</span><span class="pi">:</span> <span class="s">Prefix</span>
+            <span class="na">backend</span><span class="pi">:</span>
+              <span class="na">service</span><span class="pi">:</span>
+                <span class="na">name</span><span class="pi">:</span> <span class="s">error-service</span>
+                <span class="na">port</span><span class="pi">:</span>
+                  <span class="na">number</span><span class="pi">:</span> <span class="m">80</span>
+</code></pre></div></div>
+
+<h2 id="3总结">3.总结</h2>
+
+<p>本文从工程、代码等多方角度给大家提供了一种解决思路方案，希望能对大家有所帮助。</p>
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2023/07/19/knife4j-production-forbidden-ui/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div class="xiaoym-qrcode">
+  <div class="xiaoym-qrcode-title">
+    <h2>微信公众号(八一菜刀)</h2>
+  </div>
+  <div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+</div>
+
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

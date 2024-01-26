@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>记录解决微信amr文件转mp3格式的过程 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2018/06/26/wechat-amr-mp3-convert/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="记录解决微信amr文件转mp3格式的过程">
+      
+    <meta name="keywords" content="amr,mp3,微信">
+    <meta name="og:keywords" content="amr,mp3,微信">
+      
+    <meta name="description" content="我们在做微信语音上传功能开发时,因为微信的原因，音频文件在微信服务端只能存储3天,所以,我们需要根据微信的serverId，使用微信公众平台的接口将音频文件下载下来,存储到我们本地的服务器">
+    <meta name="og:description" content="我们在做微信语音上传功能开发时,因为微信的原因，音频文件在微信服务端只能存储3天,所以,我们需要根据微信的serverId，使用微信公众平台的接口将音频文件下载下来,存储到我们本地的服务器">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2018/06/26/wechat-amr-mp3-convert/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2018-06-26">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="记录解决微信amr文件转mp3">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">记录解决微信amr文件转mp3格式的过程</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2018/06/26
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#Blog" title="Blog">Blog</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <p>我们在做微信语音上传功能开发时,因为微信的原因，音频文件在微信服务端只能存储3天,所以,我们需要根据微信的serverId，使用微信公众平台的接口将音频文件下载下来,存储到我们本地的服务器</p>
+
+<p>由于微信的音频文件格式是amr格式，该格式在HTML5页面是不支持播放的,此时,我们需要将amr格式装换为mp3格式</p>
+
+<p>利用jave的工具包可以实现次目的，由于jave并未上传中央仓库,官网下载地址：http://www.sauronsoftware.it/projects/jave/download.php</p>
+
+<p>此次使用jave的工具包主要碰到两个问题：</p>
+
+<blockquote>
+  <p>抛异常 it.sauronsoftware.jave.EncoderException:   Duration: N/A, bitrate: N/A</p>
+
+  <p>抛异常it.sauronsoftware.jave.EncoderException:   <strong>Stream mapping:</strong></p>
+</blockquote>
+
+<p>使用搜索帮助，主要发现两篇有价值的博文：</p>
+
+<ul>
+  <li>
+    <p><a href="https://blog.csdn.net/z313731418/article/details/50218341">java amr格式转mp3格式(完美解决Linux下转换0K问题)</a></p>
+  </li>
+  <li>
+    <p><a href="https://hk.saowen.com/a/2ec2a73ec73091967c3ebdb5697832006cb255a7183377b6e8fae1c13f5e54bc">解決linux AMR轉MP3出現轉碼成功卻無法播放的問題</a></p>
+  </li>
+</ul>
+
+<p>结合以上两篇博客的解决方案,主要做如下步骤：</p>
+
+<p>1.下载jave的最新src代码(该库09年已停止维护)，导入maven工程</p>
+
+<p>2.下载最新的ffmpeg程序,<a href="http://ffmpeg.org/download.html">ffmpeg下载地址</a>,替换jave中默认的ffmpeg程序</p>
+
+<p>3.重新打包,<code class="language-plaintext highlighter-rouge">mavn install</code></p>
+
+<p>最终控制台调试 打印log如下：</p>
+
+<p><img src="/images/blog/wechat-amr-mp3-convert/log.png" alt="" /></p>
+
+<p>Java代码使用示例：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">TemplateDownloadMaterial</span> <span class="n">tm</span><span class="o">=</span><span class="n">weixinService</span><span class="o">.</span><span class="na">downloadTempMaterial</span><span class="o">(</span><span class="n">media</span><span class="o">,</span><span class="n">file</span><span class="o">.</span><span class="na">getAbsolutePath</span><span class="o">());</span>
+<span class="k">if</span> <span class="o">(</span><span class="n">tm</span><span class="o">!=</span><span class="kc">null</span><span class="o">&amp;&amp;</span><span class="n">tm</span><span class="o">.</span><span class="na">getFile</span><span class="o">()!=</span><span class="kc">null</span><span class="o">){</span>
+	<span class="c1">//判断是否是amr格式</span>
+    <span class="c1">//tm.getFile 文件为微信下载下来的amr格式文件</span>
+	<span class="k">if</span> <span class="o">(</span><span class="n">tm</span><span class="o">.</span><span class="na">getFile</span><span class="o">().</span><span class="na">getName</span><span class="o">().</span><span class="na">endsWith</span><span class="o">(</span><span class="s">"amr"</span><span class="o">)){</span>
+		<span class="nc">String</span> <span class="n">fileName</span><span class="o">=</span><span class="n">tm</span><span class="o">.</span><span class="na">getFile</span><span class="o">().</span><span class="na">getName</span><span class="o">();</span>
+		<span class="nc">String</span> <span class="n">newName</span><span class="o">=</span><span class="n">fileName</span><span class="o">.</span><span class="na">substring</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="n">fileName</span><span class="o">.</span><span class="na">lastIndexOf</span><span class="o">(</span><span class="s">"."</span><span class="o">));</span>
+		<span class="nc">File</span> <span class="n">dest</span><span class="o">=</span><span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="n">tm</span><span class="o">.</span><span class="na">getFile</span><span class="o">().</span><span class="na">getParent</span><span class="o">()+</span><span class="nc">File</span><span class="o">.</span><span class="na">separator</span><span class="o">+</span><span class="n">newName</span><span class="o">+</span><span class="s">".mp3"</span><span class="o">);</span>
+		<span class="nc">AudioUtils</span><span class="o">.</span><span class="na">getAmrConversionMp3</span><span class="o">(</span><span class="n">tm</span><span class="o">.</span><span class="na">getFile</span><span class="o">().</span><span class="na">getAbsolutePath</span><span class="o">(),</span><span class="n">dest</span><span class="o">.</span><span class="na">getAbsolutePath</span><span class="o">());</span>
+		<span class="n">log</span><span class="o">(</span><span class="s">"转换音频mp3成功"</span><span class="o">);</span>
+		<span class="n">tm</span><span class="o">.</span><span class="na">getFile</span><span class="o">().</span><span class="na">deleteOnExit</span><span class="o">();</span>
+		<span class="n">tm</span><span class="o">.</span><span class="na">setFile</span><span class="o">(</span><span class="n">dest</span><span class="o">);</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>修改后的jave源码地址：https://github.com/xiaoymin/jave</p>
+
+<p>下载后 ，<code class="language-plaintext highlighter-rouge">mvn install</code>后可以执行使用</p>
+
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2018/06/26/wechat-amr-mp3-convert/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div class="xiaoym-qrcode">
+  <div class="xiaoym-qrcode-title">
+    <h2>微信公众号(八一菜刀)</h2>
+  </div>
+  <div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+</div>
+
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>TorchV的RAG实践分享(三):解析llama_index的数据存储结构和召回策略过程 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2024/01/14/torchv-rag-3/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="TorchV的RAG实践分享(三):解析llama_index的数据存储结构和召回策略过程">
+      
+    <meta name="keywords" content="TorchV实践,RAG概述,RAG,LlamaIndex源码分析">
+    <meta name="og:keywords" content="TorchV实践,RAG概述,RAG,LlamaIndex源码分析">
+      
+    <meta name="description" content="1.前言">
+    <meta name="og:description" content="1.前言">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2024/01/14/torchv-rag-3/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2024-01-14">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="TorchV的RAG实践分享(">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">TorchV的RAG实践分享(三):解析llama_index的数据存储结构和召回策略过程</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2024/01/14
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#大模型" title="大模型">大模型</a>
+          </span>
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#RAG实践" title="RAG实践">RAG实践</a>
+          </span>
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#TorchV" title="TorchV">TorchV</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <h1 id="1前言">1.前言</h1>
+
+<p>LlamaIndex是一个基于LLM的数据处理框架，在RAG领域非常流行，简单的几行代码就能实现本地的文件的对话功能，对开发者提供了极致的封装，开箱即用。</p>
+
+<p>本文以官方提供的最简单的代理示例为例，分析LlamaIndex在数据解析、向量Embedding、数据存储及召回的整个源码过程。</p>
+
+<p>通过学习框架的源码也能让开发者们在实际的企业大模型应用开发中，对RAG有一个更清晰的了解和认知。</p>
+
+<p>本次选用的技术组件：</p>
+
+<ul>
+  <li><strong>llm</strong>：OpenAI</li>
+  <li><strong>Embedding</strong>：OpenAI</li>
+  <li><strong>VectorDB</strong>：ElasticSearch</li>
+</ul>
+
+<p>官方代码示例如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c1"># 1.构建向量数据库存储对象实例
+</span><span class="n">vector_store</span> <span class="o">=</span> <span class="n">ElasticsearchStore</span><span class="p">(</span>
+    <span class="n">index_name</span><span class="o">=</span><span class="s">"my_index"</span><span class="p">,</span>
+    <span class="n">es_url</span><span class="o">=</span><span class="s">"http://localhost:9200"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">storage_context</span> <span class="o">=</span> <span class="n">StorageContext</span><span class="p">.</span><span class="n">from_defaults</span><span class="p">(</span><span class="n">vector_store</span><span class="o">=</span><span class="n">vector_store</span><span class="p">)</span>
+<span class="c1"># 加载本地的数据集
+</span><span class="n">documents</span> <span class="o">=</span> <span class="n">SimpleDirectoryReader</span><span class="p">(</span><span class="s">'data'</span><span class="p">).</span><span class="n">load_data</span><span class="p">()</span>
+<span class="c1"># 构建索引
+</span><span class="n">index</span> <span class="o">=</span> <span class="n">VectorStoreIndex</span><span class="p">.</span><span class="n">from_documents</span><span class="p">(</span><span class="n">documents</span><span class="p">,</span><span class="n">storage_context</span><span class="o">=</span><span class="n">storage_context</span><span class="p">)</span>
+<span class="c1"># 服务对象，构建query引擎
+</span><span class="n">service_context</span> <span class="o">=</span> <span class="n">ServiceContext</span><span class="p">.</span><span class="n">from_defaults</span><span class="p">(</span><span class="n">llm</span><span class="o">=</span><span class="n">OpenAI</span><span class="p">())</span>
+<span class="n">query_engine</span> <span class="o">=</span> <span class="n">index</span><span class="p">.</span><span class="n">as_query_engine</span><span class="p">(</span><span class="n">service_context</span><span class="o">=</span><span class="n">service_context</span><span class="p">)</span>
+<span class="c1"># 问问题
+</span><span class="n">resp</span><span class="o">=</span><span class="n">query_engine</span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="s">"住院起付线多少钱?"</span><span class="p">)</span>
+<span class="c1"># 响应答案
+</span><span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h1 id="2处理过程">2.处理过程</h1>
+
+<h2 id="21-数据处理过程">2.1 数据处理过程</h2>
+
+<p>在数据处理的过程中，主要包含几个核心的步骤：</p>
+
+<ul>
+  <li>初始化向量存储引擎，目前向量数据库类型非常多，笔者本机跑了一个es的docker镜像，这里就选择es了</li>
+  <li>读取数据，数据格式包括：PDF、WORD、TXT等等文本数据</li>
+  <li>在数据读取完成后，会对文档内容进行分割，然后Embedding(调用embedding模型)存储入库</li>
+</ul>
+
+<h3 id="211-处理加载不同的文件类型构建document">2.1.1 处理加载不同的文件类型(构建Document)</h3>
+
+<p><code class="language-plaintext highlighter-rouge">SimpleDirectoryReader</code>是llamaindex提供的一个基于文件夹的读取器类，会根据文件夹中的文件扩展后缀类型自动加载数据</p>
+
+<p>主要支持的文件数据类型如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">DEFAULT_FILE_READER_CLS</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseReader</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">".hwp"</span><span class="p">:</span> <span class="n">HWPReader</span><span class="p">,</span>
+    <span class="s">".pdf"</span><span class="p">:</span> <span class="n">PDFReader</span><span class="p">,</span>
+    <span class="s">".docx"</span><span class="p">:</span> <span class="n">DocxReader</span><span class="p">,</span>
+    <span class="s">".pptx"</span><span class="p">:</span> <span class="n">PptxReader</span><span class="p">,</span>
+    <span class="s">".ppt"</span><span class="p">:</span> <span class="n">PptxReader</span><span class="p">,</span>
+    <span class="s">".pptm"</span><span class="p">:</span> <span class="n">PptxReader</span><span class="p">,</span>
+    <span class="s">".jpg"</span><span class="p">:</span> <span class="n">ImageReader</span><span class="p">,</span>
+    <span class="s">".png"</span><span class="p">:</span> <span class="n">ImageReader</span><span class="p">,</span>
+    <span class="s">".jpeg"</span><span class="p">:</span> <span class="n">ImageReader</span><span class="p">,</span>
+    <span class="s">".mp3"</span><span class="p">:</span> <span class="n">VideoAudioReader</span><span class="p">,</span>
+    <span class="s">".mp4"</span><span class="p">:</span> <span class="n">VideoAudioReader</span><span class="p">,</span>
+    <span class="s">".csv"</span><span class="p">:</span> <span class="n">PandasCSVReader</span><span class="p">,</span>
+    <span class="s">".epub"</span><span class="p">:</span> <span class="n">EpubReader</span><span class="p">,</span>
+    <span class="s">".md"</span><span class="p">:</span> <span class="n">MarkdownReader</span><span class="p">,</span>
+    <span class="s">".mbox"</span><span class="p">:</span> <span class="n">MboxReader</span><span class="p">,</span>
+    <span class="s">".ipynb"</span><span class="p">:</span> <span class="n">IPYNBReader</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="k">class</span> <span class="nc">SimpleDirectoryReader</span><span class="p">(</span><span class="n">BaseReader</span><span class="p">):</span>
+    <span class="s">"""Simple directory reader.
+
+    Load files from file directory.
+    Automatically select the best file reader given file extensions.
+
+    Args:
+        input_dir (str): Path to the directory.
+        input_files (List): List of file paths to read
+            (Optional; overrides input_dir, exclude)
+        exclude (List): glob of python file paths to exclude (Optional)
+        exclude_hidden (bool): Whether to exclude hidden files (dotfiles).
+        encoding (str): Encoding of the files.
+            Default is utf-8.
+        errors (str): how encoding and decoding errors are to be handled,
+              see https://docs.python.org/3/library/functions.html#open
+        recursive (bool): Whether to recursively search in subdirectories.
+            False by default.
+        filename_as_id (bool): Whether to use the filename as the document id.
+            False by default.
+        required_exts (Optional[List[str]]): List of required extensions.
+            Default is None.
+        file_extractor (Optional[Dict[str, BaseReader]]): A mapping of file
+            extension to a BaseReader class that specifies how to convert that file
+            to text. If not specified, use default from DEFAULT_FILE_READER_CLS.
+        num_files_limit (Optional[int]): Maximum number of files to read.
+            Default is None.
+        file_metadata (Optional[Callable[str, Dict]]): A function that takes
+            in a filename and returns a Dict of metadata for the Document.
+            Default is None.
+    """</span>
+
+    <span class="n">supported_suffix</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">DEFAULT_FILE_READER_CLS</span><span class="p">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="o">//</span><span class="p">....</span>
+</code></pre></div></div>
+
+<p>总共支持了16个文件数据类型，整理到表格如下：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>文件类型</th>
+      <th>依赖组件</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>hwp</td>
+      <td>olefile</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>pdf</td>
+      <td>pypdf</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>docx</td>
+      <td>docx2txt</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>pptx、pptm、ppt</td>
+      <td>python-pptx、transformers、torch</td>
+      <td>用到一些模型，对数据进行理解、提取</td>
+    </tr>
+    <tr>
+      <td>jpg、png、jpeg、</td>
+      <td>sentencepiece、transformers、torch</td>
+      <td>用到一些模型，对数据进行理解、提取</td>
+    </tr>
+    <tr>
+      <td>mp3、mp4</td>
+      <td>whisper</td>
+      <td>用到一些模型，对数据进行理解、提取</td>
+    </tr>
+    <tr>
+      <td>csv</td>
+      <td>pandas</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>epub</td>
+      <td>EbookLib、html2text</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>md</td>
+      <td>无</td>
+      <td>本地流直接open，读取文本</td>
+    </tr>
+    <tr>
+      <td>mbox</td>
+      <td>bs4、mailbox</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>ipynb</td>
+      <td>nbconvert</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>整个Reader类的UML类图设计如下：</p>
+
+<p><img src="/assets/images/rag/torchv/rag-3/llamaindex-reader-uml.png" alt="" /></p>
+
+<p>所有文件数据类型的Reader，通过<code class="language-plaintext highlighter-rouge">load_data</code>方法，最终得到该文档的<code class="language-plaintext highlighter-rouge">Document</code>对象集合，<code class="language-plaintext highlighter-rouge">Document</code>类是LlamaIndex框架的处理文档的核心类对象,从该类的结构设计来看，我们可以总结一下：</p>
+
+<ul>
+  <li><strong>核心字段</strong>：<strong>id(文档唯一id)</strong>、<strong>text(文本内容)</strong>、<strong>embedding(向量float浮点型集合)</strong>、<strong>metadata(元数据)</strong></li>
+  <li>BaseNode提供了一个<strong>树结构</strong>的设计，对于一篇文档而言，从多级标题划分来看，树结构能更好的描述一篇文档的基础结构</li>
+  <li>Document提供了一些外部应用框架适配的方法，比如：LangChain、EmbedChain等等</li>
+</ul>
+
+<p><img src="/assets/images/rag/torchv/rag-3/document.png" alt="" /></p>
+
+<p>最终构建完成所有的Document信息后，我们可以看到下面一个结构信息</p>
+
+<blockquote>
+  <p>本示例程序，使用的是一个PDF文件，由于我们并未指定分割等策略，LlamaIndex对于PDF文件是以Page为单位，进行切割，最终将所有的Document对象存储进入向量数据库</p>
+</blockquote>
+
+<p><img src="/assets/images/rag/torchv/rag-3/image-20240114153311229.png" alt="image-20240114153311229" /></p>
+
+<h3 id="212-构建向量数据库索引index">2.1.2 构建向量数据库索引(Index)</h3>
+
+<p>当本地数据集处理完成，得到一个<code class="language-plaintext highlighter-rouge">Document</code>集合的时候，此时，这需要构建向量数据库的索引，主要是包含几个过程：</p>
+
+<ul>
+  <li>调用不同的向量数据库中间件，构建集合索引，对于ES来说，则是创建Index</li>
+  <li>调用Embedding模型(基于OpenAI提供的<code class="language-plaintext highlighter-rouge">text-embedding-ada-002</code>模型)，将Document对象集合中的text文本，进行向量化处理并赋值</li>
+  <li>将<code class="language-plaintext highlighter-rouge">Document</code>集合的对象值(text、embedding、metadata)存储进入向量数据库</li>
+</ul>
+
+<p>在LlamaIndex创建ES的向量索引结构中，初始情况下，核心字段也是前面我们提到的<code class="language-plaintext highlighter-rouge">Document</code>类中的几个核心字段(id、embedding、content、metadata)，如下图：</p>
+
+<p><img src="/assets/images/rag/torchv/rag-3/image-20240114164439411.png" alt="image-20240114164439411" /></p>
+
+<p>但是在Document对象遍历结束后，在数据存储阶段，考虑到元数据的信息，LlamaIndex会扩充metadata元数据的字段，如下图：</p>
+
+<p><img src="/assets/images/rag/torchv/rag-3/image-20240114164647308.png" alt="image-20240114164647308" /></p>
+
+<p>元数据信息会将文档的信息提取出来，包括页码、文件大小、文件名称、创建日期等等信息</p>
+
+<p>最终在本地数据集的情况下，LlamaIndex创建的ES数据索引结构最终就会变成下面这种结构形式：</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"mappings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"content"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="nl">"embedding"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dense_vector"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"dims"</span><span class="p">:</span><span class="w"> </span><span class="mi">1536</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"index"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"similarity"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cosine"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="nl">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"_node_content"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="p">,</span><span class="w">
+                        </span><span class="nl">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                            </span><span class="nl">"keyword"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                                </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"keyword"</span><span class="p">,</span><span class="w">
+                                </span><span class="nl">"ignore_above"</span><span class="p">:</span><span class="w"> </span><span class="mi">256</span><span class="w">
+                            </span><span class="p">}</span><span class="w">
+                        </span><span class="p">}</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nl">"_node_type"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="p">,</span><span class="w">
+                        </span><span class="nl">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                            </span><span class="nl">"keyword"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                                </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"keyword"</span><span class="p">,</span><span class="w">
+                                </span><span class="nl">"ignore_above"</span><span class="p">:</span><span class="w"> </span><span class="mi">256</span><span class="w">
+                            </span><span class="p">}</span><span class="w">
+                        </span><span class="p">}</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nl">"creation_date"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"date"</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nl">"doc_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"keyword"</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nl">"document_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"keyword"</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nl">"file_name"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="p">,</span><span class="w">
+                        </span><span class="nl">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                            </span><span class="nl">"keyword"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                                </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"keyword"</span><span class="p">,</span><span class="w">
+                                </span><span class="nl">"ignore_above"</span><span class="p">:</span><span class="w"> </span><span class="mi">256</span><span class="w">
+                            </span><span class="p">}</span><span class="w">
+                        </span><span class="p">}</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nl">"file_path"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="p">,</span><span class="w">
+                        </span><span class="nl">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                            </span><span class="nl">"keyword"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                                </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"keyword"</span><span class="p">,</span><span class="w">
+                                </span><span class="nl">"ignore_above"</span><span class="p">:</span><span class="w"> </span><span class="mi">256</span><span class="w">
+                            </span><span class="p">}</span><span class="w">
+                        </span><span class="p">}</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nl">"file_size"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"long"</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nl">"file_type"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="p">,</span><span class="w">
+                        </span><span class="nl">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                            </span><span class="nl">"keyword"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                                </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"keyword"</span><span class="p">,</span><span class="w">
+                                </span><span class="nl">"ignore_above"</span><span class="p">:</span><span class="w"> </span><span class="mi">256</span><span class="w">
+                            </span><span class="p">}</span><span class="w">
+                        </span><span class="p">}</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nl">"last_accessed_date"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"date"</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nl">"last_modified_date"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"date"</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nl">"page_label"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="p">,</span><span class="w">
+                        </span><span class="nl">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                            </span><span class="nl">"keyword"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                                </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"keyword"</span><span class="p">,</span><span class="w">
+                                </span><span class="nl">"ignore_above"</span><span class="p">:</span><span class="w"> </span><span class="mi">256</span><span class="w">
+                            </span><span class="p">}</span><span class="w">
+                        </span><span class="p">}</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nl">"ref_doc_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"keyword"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>数据Index定义完成，Document对象存储进入向量数据库，此时，我们的数据集结构如下：</p>
+
+<p><img src="/assets/images/rag/torchv/rag-3/image-20240114173127581.png" alt="image-20240114173127581" /></p>
+
+<h2 id="22-问答获取答案">2.2 问答获取答案</h2>
+
+<p>在获取答案的过程中，主要包含几个核心的步骤：</p>
+
+<ul>
+  <li>构建用户查询Query，对query进行Embedding处理，召回Topk的相似片段内容。</li>
+  <li>组装Prompt工程内容，发送大模型获取答案</li>
+</ul>
+
+<h3 id="221-召回查询获取topk">2.2.1 召回查询获取TopK</h3>
+
+<p>首先，在RAG的查询阶段，不管是使用那个向量数据库，根据数据库的类型，将用户的query语句进行Embedding后，再构建数据库的查询条件，如下图：</p>
+
+<p><img src="/assets/images/rag/torchv/rag-3/image-20240114155247333.png" alt="image-20240114155247333" /></p>
+
+<p>这里面会包含几个核心的参数：</p>
+
+<ul>
+  <li>embedding：knn查询的浮点型向量数组值</li>
+  <li>top_k:根据knn相似度查询获取得到的topk值数量，在这个例子中，LlamaIndex默认值是2</li>
+  <li>filters：过滤条件</li>
+  <li>alpha：语义&amp;关键词混合检索的权重，0代表bm25算法检索，1则代表knn</li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">VectorStoreQuery</code>类结构定义如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">dataclass</span>
+<span class="k">class</span> <span class="nc">VectorStoreQuery</span><span class="p">:</span>
+    <span class="s">"""Vector store query."""</span>
+    <span class="c1"># knn搜索的查询Embedding浮点型数组
+</span>    <span class="n">query_embedding</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="c1"># knn搜索的top k取值
+</span>    <span class="n">similarity_top_k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">doc_ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">node_ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">query_str</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">output_fields</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">embedding_field</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="n">mode</span><span class="p">:</span> <span class="n">VectorStoreQueryMode</span> <span class="o">=</span> <span class="n">VectorStoreQueryMode</span><span class="p">.</span><span class="n">DEFAULT</span>
+
+    <span class="c1"># NOTE: only for hybrid search (0 for bm25, 1 for vector search)
+</span>    <span class="n">alpha</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="c1"># metadata filters
+</span>    <span class="n">filters</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">MetadataFilters</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="c1"># only for mmr
+</span>    <span class="n">mmr_threshold</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="c1"># NOTE: currently only used by postgres hybrid search
+</span>    <span class="n">sparse_top_k</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="c1"># NOTE: return top k results from hybrid search. similarity_top_k is used for dense search top k
+</span>    <span class="n">hybrid_top_k</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+
+
+</code></pre></div></div>
+
+<p>根据query的条件，会从向量数据库中召回获取得到topk的TextNode数组，如下：</p>
+
+<p><img src="/assets/images/rag/torchv/rag-3/image-20240114175533596.png" alt="image-20240114175533596" /></p>
+
+<h3 id="222-构建prompt发送大模型获取答案">2.2.2 构建Prompt发送大模型获取答案</h3>
+
+<p>最终召回到引用文档内容后，剩下的就是构建整个大模型对话的Prompt工程，来看看LlamaIndex的基础Prompt是如何构建的</p>
+
+<p><img src="/assets/images/rag/torchv/rag-3/image-20240114160925472.png" alt="image-20240114160925472" /></p>
+
+<p><img src="/assets/images/rag/torchv/rag-3/image-20240114180819057.png" alt="image-20240114180819057" /></p>
+
+<p><code class="language-plaintext highlighter-rouge">partial_format</code>方法获取得到一个基础的Prompt模版信息，内容如下：</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>'Context information is below.
+---------------------
+{context_str}
+---------------------
+Given the context information and not prior knowledge, answer the query.
+Query: {query_str}
+Answer: '
+</code></pre></div></div>
+
+<p>这里有两个核心的参数：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">context_str</code>: 从向量数据库召回查询的知识库引用文本数据上下文信息，从模版的设定也是告诉大模型基于知识信息进行回答</li>
+  <li><code class="language-plaintext highlighter-rouge">query_str</code>：用户提问的问题</li>
+</ul>
+
+<p>而最终的context_str信息，我们可以看到，如下图：</p>
+
+<p><img src="/assets/images/rag/torchv/rag-3/image-20240114181236770.png" alt="image-20240114181236770" /></p>
+
+<p>我们的问题是：<code class="language-plaintext highlighter-rouge">住院起付线多少钱?</code></p>
+
+<p>从最终knn检索召回的文档片段来看，精准的找到了知识库的引用内容，此时，交给大模型进行回答，获取我们想要的答案结果。</p>
+
+<p><img src="/assets/images/rag/torchv/rag-3/image-20240114181429648.png" alt="image-20240114181429648" /></p>
+
+<h2 id="3总结">3.总结</h2>
+
+<p>好了，本文从LlamaIndex给我们提供的基础的示例程序，基于Basic RAG的基础架构来分析数据的处理、召回响应等过程，我们可以看到LlamaIndex框架给了我们一个很好的处理流程，从这里我们可以总结如下：</p>
+
+<ul>
+  <li>对于基础的RAG架构，有一个很好的认知，让开发者知道RAG是一个怎样的处理过程</li>
+  <li>底层的向量数据库存储结构设计和中间程序的结构设计，能够给做RAG应用的开发人员一些启发，流行的RAG框架在数据结构设计上是如何做的，这对于企业开发人员来说，架构&amp;数据结构设计是有很重要的参考意义。</li>
+</ul>
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2024/01/14/torchv-rag-3/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div class="xiaoym-qrcode">
+  <div class="xiaoym-qrcode-title">
+    <h2>微信公众号(八一菜刀)</h2>
+  </div>
+  <div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+</div>
+
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

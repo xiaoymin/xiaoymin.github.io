@@ -1,36 +1,98 @@
-<!-- The Footer -->
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="{{ site.author}}">{{ site.author }}</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
 
-<footer
-  aria-label="Site Info"
-  class="
-    d-flex flex-column justify-content-center text-muted
-    flex-lg-row justify-content-lg-between align-items-lg-center pb-lg-3
-  "
->
-  <p>
-    {{ '©' }}
-    <time>{{ 'now' | date: '%Y' }}</time>
-    <a href="{{ site.social.links[0] }}">{{ site.social.name }}</a>.
-    {% if site.data.locales[include.lang].copyright.brief %}
-      <span
-        data-bs-toggle="tooltip"
-        data-bs-placement="top"
-        title="{{ site.data.locales[include.lang].copyright.verbose }}"
-      >
-        {{- site.data.locales[include.lang].copyright.brief -}}
-      </span>
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="{{ site.github.repository_url }}" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                {% for nav in site.navs %}
+                <li>
+                    <a href="{{ site.url }}{{ nav.href }}" title="{{ nav.label }}" target="{{ nav.target | default: _self }}">{{ nav.label }}</a>
+                </li>
+                {% endfor %}
+                <li><a href="{{ site.url }}{{ site.subscribe_rss }}"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="{{ site.url }}/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="{{ site.url }}/assets/js/geopattern.js"></script>
+    <script src="{{ site.url }}/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="{{ site.url }}/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    {% if page.mermaid %}
+    <script src="{{ site.url }}/assets/js/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
     {% endif %}
-  </p>
 
-  <p>
-    {%- capture _platform -%}
-      <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a>
-    {%- endcapture -%}
+    {% if page.sequence %}
+    <script src="{{ site.url }}/assets/js/webfont.js"></script>
+    <script src="{{ site.url }}/assets/js/snap.svg-min.js"></script>
+    <script src="{{ site.url }}/assets/js/underscore-min.js"></script>
+    <script src="{{ site.url }}/assets/vendor/js-sequence-diagrams/dist/sequence-diagram-min.js"></script>
+    <link rel="stylesheet" href="{{ site.url }}/assets/vendor/js-sequence-diagrams/dist/sequence-diagram-min.css">
+    <script>
+      $(".language-sequence").sequenceDiagram({theme: 'simple'});
+    </script>
+    {% endif %}
 
-    {%- capture _theme -%}
-      <a href="https://github.com/cotes2020/jekyll-theme-chirpy" target="_blank" rel="noopener">Chirpy</a>
-    {%- endcapture -%}
+    {% if page.flow %}
+    <script src="{{ site.url }}/assets/js/raphael.min.js"></script>
+    <script src="{{ site.url }}/assets/vendor/flowchart.js/dist/flowchart.min.js"></script>
+    <script src="{{ site.url }}/assets/js/flow.js"></script>
+    {% endif %}
 
-    {{ site.data.locales[include.lang].meta | replace: ':PLATFORM', _platform | replace: ':THEME', _theme }}
-  </p>
-</footer>
+    {% if page.mathjax %}
+    <script type="text/javascript" src="https://basis-learning.github.io/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    {% endif %}
+
+    {% if site.google.analytics_id %}
+    <div style="display:none">
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', '{{ site.google.analytics_id }}', 'auto');
+        ga('send', 'pageview');
+
+      </script>
+    </div>
+    {% endif %}
+</body>
+</html>

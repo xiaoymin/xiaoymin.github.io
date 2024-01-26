@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>技术架构整理 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2017/05/08/company-platform/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="技术架构整理">
+      
+    <meta name="keywords" content="SpringBoot">
+    <meta name="og:keywords" content="SpringBoot">
+      
+    <meta name="description" content="简介">
+    <meta name="og:description" content="简介">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2017/05/08/company-platform/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2017-05-08">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="技术架构整理">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">技术架构整理</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2017/05/08
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#Java" title="Java">Java</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <h2 id="简介">简介</h2>
+
+<p>基于Spring Boot+Cloud-SDK分布式敏捷开发系统架构，提供整套公共微服务服务模块：内容管理、支付中心、UC认证中心、用户管理、微信平台、存储系统、配置中心、日志分析、任务和通知等，打造全方位J2EE企业级开发解决方案</p>
+
+<h2 id="开发语言">开发语言</h2>
+
+<p>Java</p>
+
+<p>JDK 1.7+</p>
+
+<h2 id="数据库">数据库</h2>
+
+<p>云数据中心</p>
+
+<h2 id="后端技术">后端技术</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>技术</strong></th>
+      <th><strong>名称</strong></th>
+      <th><strong>官网</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Spring  Framework</td>
+      <td>容器</td>
+      <td><a href="http://projects.spring.io/spring-framework/">http://projects.spring.io/spring-framework/</a></td>
+    </tr>
+    <tr>
+      <td>SpringMVC</td>
+      <td>MVC框架</td>
+      <td><a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/htmlsingle/#mvc">http://docs.spring.io/spring/docs/current/spring-framework-reference/htmlsingle/#mvc</a></td>
+    </tr>
+    <tr>
+      <td>Spring Boot</td>
+      <td>微服务框架</td>
+      <td>http://projects.spring.io/spring-boot/</td>
+    </tr>
+    <tr>
+      <td>Apache Shiro</td>
+      <td>安全框架</td>
+      <td><a href="http://shiro.apache.org/">http://shiro.apache.org/</a></td>
+    </tr>
+    <tr>
+      <td>Spring session</td>
+      <td>分布式Session管理</td>
+      <td><a href="http://projects.spring.io/spring-session/">http://projects.spring.io/spring-session/</a></td>
+    </tr>
+    <tr>
+      <td>Cloud-sdk</td>
+      <td>云数据中心sdk工具包</td>
+      <td><a href="http://www.lishiots.com/">http://www.lishiots.com/</a></td>
+    </tr>
+    <tr>
+      <td>Cloud-wx-kernel</td>
+      <td>微信核心工具包</td>
+      <td><a href="http://www.lishiots.com/">http://www.lishiots.com/</a></td>
+    </tr>
+    <tr>
+      <td>Thymeleaf</td>
+      <td>模板引擎</td>
+      <td><a href="http://www.thymeleaf.org/">http://www.thymeleaf.org/</a></td>
+    </tr>
+    <tr>
+      <td>Redis</td>
+      <td>分布式缓存数据库</td>
+      <td><a href="https://redis.io/">https://redis.io/</a></td>
+    </tr>
+    <tr>
+      <td>Quartz</td>
+      <td>作业调度框架</td>
+      <td><a href="http://www.quartz-scheduler.org/">http://www.quartz-scheduler.org/</a></td>
+    </tr>
+    <tr>
+      <td>Ehcache</td>
+      <td>进程内缓存框架</td>
+      <td><a href="http://www.ehcache.org/">http://www.ehcache.org/</a></td>
+    </tr>
+    <tr>
+      <td>Log4J</td>
+      <td>日志组件</td>
+      <td><a href="http://logging.apache.org/log4j/1.2/">http://logging.apache.org/log4j/1.2/</a></td>
+    </tr>
+    <tr>
+      <td>Swagger2</td>
+      <td>接口测试框架</td>
+      <td><a href="http://swagger.io/">http://swagger.io/</a></td>
+    </tr>
+    <tr>
+      <td>Maven</td>
+      <td>项目构建管理</td>
+      <td><a href="http://maven.apache.org/">http://maven.apache.org/</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="前端技术">前端技术</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>技术</strong></th>
+      <th><strong>名称</strong></th>
+      <th><strong>官网</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>jQuery</td>
+      <td>函式库</td>
+      <td><a href="http://jquery.com/">http://jquery.com/</a></td>
+    </tr>
+    <tr>
+      <td>Bootstrap</td>
+      <td>前端框架</td>
+      <td><a href="http://getbootstrap.com/">http://getbootstrap.com/</a></td>
+    </tr>
+    <tr>
+      <td>Bootstrap-table</td>
+      <td>Bootstrap数据表格</td>
+      <td><a href="http://bootstrap-table.wenzhixin.net.cn/">http://bootstrap-table.wenzhixin.net.cn/</a></td>
+    </tr>
+    <tr>
+      <td>Font-awesome</td>
+      <td>字体图标</td>
+      <td><a href="http://fontawesome.io/">http://fontawesome.io/</a></td>
+    </tr>
+    <tr>
+      <td>Waves</td>
+      <td>点击效果插件</td>
+      <td><a href="https://github.com/fians/Waves">https://github.com/fians/Waves</a></td>
+    </tr>
+    <tr>
+      <td>zTree</td>
+      <td>树插件</td>
+      <td><a href="http://www.treejs.cn/v3/">http://www.treejs.cn/v3/</a></td>
+    </tr>
+    <tr>
+      <td>Select2</td>
+      <td>选择框插件</td>
+      <td><a href="https://github.com/select2/select2">https://github.com/select2/select2</a></td>
+    </tr>
+    <tr>
+      <td>Layer</td>
+      <td>弹出窗口插件</td>
+      <td>http://layer.layui.com/</td>
+    </tr>
+    <tr>
+      <td>Editor.md</td>
+      <td>Markdown编辑器</td>
+      <td><a href="https://github.com/pandao/editor.md">https://github.com/pandao/editor.md</a></td>
+    </tr>
+    <tr>
+      <td>Express</td>
+      <td>基于Node.js 平台,快速、开放、极简的 web 开发框架</td>
+      <td>http://www.expressjs.com.cn/</td>
+    </tr>
+  </tbody>
+</table>
+
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2017/05/08/company-platform/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div class="xiaoym-qrcode">
+  <div class="xiaoym-qrcode-title">
+    <h2>微信公众号(八一菜刀)</h2>
+  </div>
+  <div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+</div>
+
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

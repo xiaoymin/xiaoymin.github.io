@@ -1,0 +1,2290 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>Jformparser 开发指南 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2017/04/29/jformparser-guide/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="Jformparser 开发指南">
+      
+    <meta name="keywords" content="Jformparser">
+    <meta name="og:keywords" content="Jformparser">
+      
+    <meta name="description" content="简介">
+    <meta name="og:description" content="简介">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2017/04/29/jformparser-guide/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2017-04-29">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="Jformparser 开发指">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">Jformparser 开发指南</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2017/04/29
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#开源" title="开源">开源</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <h2 id="简介">简介</h2>
+
+<p>根据json结构,生成页面,达到解放后端开发人员的目的,降低后端对前端开发要求,后端专心开发后台接口等服务程序, 前期以表单元素为主,后期会增加更多页面元素的支持,敬请期待</p>
+
+<p><strong>JFormParser依赖</strong>:目前主要依赖bootstrap css框架、jQuery两大流行核心组件,设计之初想法是降低对各个插件的依赖耦合度,构造的 页面元素使用其他插件也能达到多样化可替换,使得页面效果更加丰富</p>
+
+<p>码云地址：<a href="https://gitee.com/xiaoym/JFormParser">JFormParser</a></p>
+
+<p>JFormParser元素</p>
+
+<ul>
+  <li>editor(富文本插件),富文本插件原打算使用百度的ueditor插件,因公司购买富文本插件强制需要使用,所以这里 使用ewebeditor插件,使用该插件需要依赖服务器环境,并且部署上线需要授权,否则无法使用.</li>
+  <li>text(基本文本框):文本域,文本域是很强大的一种表单元素,JFormParser目前只要支持以下几种数据类型的文本域
+    <ul>
+      <li>normal:常规文本域,无任务效果</li>
+      <li>email:只支持邮件形式的文本输入,会自检非其他格式数据</li>
+      <li>number:整数文本域,只支持输入整数,会自检非其他格式数据</li>
+      <li>decimal:小数文本域</li>
+      <li>datetime:日期类型,目前使用的插件是My97DatePicker日期插件,所以依赖WdatePicker.js文件</li>
+    </ul>
+  </li>
+  <li>textarea(多行文本域):多行文本域</li>
+  <li>select(下拉框):下拉框元素,下拉框涉及数据初始化的原因,所以插件提供了remote_url属性通过后台加载数据初始化</li>
+  <li>panel(面板):面板组件,是一个容器组件</li>
+  <li>grid(表格):表格组件,这里的表格无任何特殊意义,仅仅只是为了页面布局,同panel一样,也是容器组件</li>
+  <li>checkboxGroup:复选框组组件</li>
+  <li>radioGroup:单选框组组件</li>
+  <li>button:按钮(普通按钮、提交按钮、返回按钮、、、、等)</li>
+  <li>buttonGroup:按钮组,是一个容器组件,包含按钮的组合,</li>
+  <li>datagrid:表格展示组件,依赖元数据查询组件</li>
+  <li>fileupload:文件上传</li>
+  <li>images:图集上传组件</li>
+  <li>bMap：地图拾取经纬度坐标组件，依赖于百度js地图(http://lbsyun.baidu.com/index.php?title=jspopular)</li>
+</ul>
+
+<h2 id="页面template">页面template</h2>
+
+<p>页面template主要是模板页，更多的是提供布局功能,现在主要包含两个模板</p>
+
+<h3 id="列表页模板list">列表页模板list</h3>
+
+<p>list模板页面主要是用于展现数据列表页</p>
+
+<p><img src="/images/blog/jformparser-guide/list.jpg" alt="列表页" /></p>
+
+<h4 id="模板结构">模板结构</h4>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+  <span class="dl">"</span><span class="s2">component_name</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">scenic_form</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">component_title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">景区form</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">template_type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">list</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">navs_title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">景区标准化管理 &gt; 景区管理 &gt; 景区列表</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">navs</span><span class="dl">"</span><span class="p">:[{</span><span class="dl">"</span><span class="s2">title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">景区标准化管理</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">icon</span><span class="dl">"</span><span class="p">:</span><span class="dl">""</span><span class="p">,</span><span class="dl">"</span><span class="s2">url</span><span class="dl">"</span><span class="p">:</span><span class="dl">""</span><span class="p">},{</span><span class="dl">"</span><span class="s2">title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">景区管理</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">icon</span><span class="dl">"</span><span class="p">:</span><span class="dl">""</span><span class="p">},{</span><span class="dl">"</span><span class="s2">title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">景区列表</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">icon</span><span class="dl">"</span><span class="p">:</span><span class="dl">""</span><span class="p">}],</span>
+  <span class="dl">"</span><span class="s2">resource_name</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">scenic_info</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">submit_url</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">/cms/template/submit.htm</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">childrens</span><span class="dl">"</span><span class="p">:[{</span>
+    <span class="dl">"</span><span class="s2">element_type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">panel</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">element_title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">景区查询</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">whether_header</span><span class="dl">"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">whether_border</span><span class="dl">"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">container</span><span class="dl">"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">childrens</span><span class="dl">"</span><span class="p">:[</span>
+      <span class="p">{</span>
+        <span class="dl">"</span><span class="s2">element_type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">datagrid</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">element_title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">景区查询</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">is_remote</span><span class="dl">"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">is_operate</span><span class="dl">"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">operate_title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">操作</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">operate_buttons</span><span class="dl">"</span><span class="p">:[</span>
+          <span class="p">{</span><span class="dl">"</span><span class="s2">element_type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">button</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">edit</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">element_title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">编辑</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">remote_url</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">/cms/template/template_form.htm</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">params</span><span class="dl">"</span><span class="p">:{</span><span class="dl">"</span><span class="s2">url</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">/json/baotou/scenic/scenic_form.json</span><span class="dl">"</span><span class="p">}},</span>
+          <span class="p">{</span><span class="dl">"</span><span class="s2">element_type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">button</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">delete</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">element_title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">图片</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">remote_url</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">/cms/template/delete.htm</span><span class="dl">"</span><span class="p">},</span>
+          <span class="p">{</span><span class="dl">"</span><span class="s2">element_type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">button</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">delete</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">element_title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">视频</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">remote_url</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">/cms/template/delete.htm</span><span class="dl">"</span><span class="p">},</span>
+          <span class="p">{</span><span class="dl">"</span><span class="s2">element_type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">button</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">delete</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">element_title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">音频</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">remote_url</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">/cms/template/delete.htm</span><span class="dl">"</span><span class="p">},</span>
+          <span class="p">{</span><span class="dl">"</span><span class="s2">element_type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">button</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">delete</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">element_title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">删除</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">remote_url</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">/cms/template/delete.htm</span><span class="dl">"</span><span class="p">}],</span>
+        <span class="dl">"</span><span class="s2">pagination</span><span class="dl">"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">remote_url</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">/cms/template/get_remote_list.htm</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">columns</span><span class="dl">"</span><span class="p">:[</span>
+		<span class="p">{</span><span class="dl">"</span><span class="s2">field</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">title</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">景区名称</span><span class="dl">"</span><span class="p">},</span>
+		<span class="p">{</span><span class="dl">"</span><span class="s2">field</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">level</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">景区等级</span><span class="dl">"</span><span class="p">},</span>
+		<span class="p">{</span><span class="dl">"</span><span class="s2">field</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">lawyer</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">法人代表</span><span class="dl">"</span><span class="p">},</span>
+		<span class="p">{</span><span class="dl">"</span><span class="s2">field</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">person_liable</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">负责人</span><span class="dl">"</span><span class="p">},</span>
+		<span class="p">{</span><span class="dl">"</span><span class="s2">field</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">phone</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">手机号码</span><span class="dl">"</span><span class="p">},</span>
+		<span class="p">{</span><span class="dl">"</span><span class="s2">field</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">tel</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">电话</span><span class="dl">"</span><span class="p">},</span>
+		<span class="p">{</span><span class="dl">"</span><span class="s2">field</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">fax</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">传真</span><span class="dl">"</span><span class="p">},</span>
+		<span class="p">{</span><span class="dl">"</span><span class="s2">field</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">approve_date</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">批准时间</span><span class="dl">"</span><span class="p">},</span>
+		<span class="p">{</span><span class="dl">"</span><span class="s2">field</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">approve_date</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">地理位置</span><span class="dl">"</span><span class="p">}],</span>
+        <span class="dl">"</span><span class="s2">childrens</span><span class="dl">"</span><span class="p">:[</span>
+          <span class="p">{</span>
+            <span class="dl">"</span><span class="s2">element_type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">text</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">element_title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">景区名称</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">meta_column</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">title</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">is_query</span><span class="dl">"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">direction</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">left</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">width</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">100%</span><span class="dl">"</span>
+          <span class="p">},{</span>
+            <span class="dl">"</span><span class="s2">element_type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">text</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">element_title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">景区等级</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">meta_column</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">level</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">is_query</span><span class="dl">"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">direction</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">left</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">width</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">100%</span><span class="dl">"</span>
+          <span class="p">},{</span>
+            <span class="dl">"</span><span class="s2">element_type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">button</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">element_title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">查询</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">query</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">remote_url</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">/cms/template/get_remote_list.htm</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">params</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+              <span class="dl">"</span><span class="s2">params</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">{resource_name: scenic_info}</span><span class="dl">"</span>
+            <span class="p">}</span>
+          <span class="p">},{</span>
+            <span class="dl">"</span><span class="s2">element_type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">buttonGroup</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">element_title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">操作按钮组</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">align</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">left</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">childrens</span><span class="dl">"</span><span class="p">:[</span>
+              <span class="p">{</span><span class="dl">"</span><span class="s2">element_type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">button</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">link</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">element_title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">新增景区</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">remote_url</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">/cms/template/template_form.htm</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">params</span><span class="dl">"</span><span class="p">:{</span><span class="dl">"</span><span class="s2">url</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">/json/baotou/scenic/scenic_form.json</span><span class="dl">"</span><span class="p">}},</span>
+              <span class="p">{</span><span class="dl">"</span><span class="s2">element_type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">button</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">link</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">element_title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">删除</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">remote_url</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">/cms/template/template_form.htm</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">params</span><span class="dl">"</span><span class="p">:{</span><span class="dl">"</span><span class="s2">url</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">/json/baotou/scenic/scenic_form.json</span><span class="dl">"</span><span class="p">}},</span>
+              <span class="p">{</span><span class="dl">"</span><span class="s2">element_type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">button</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">link</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">element_title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">导入</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">remote_url</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">/cms/template/template_form.htm</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">params</span><span class="dl">"</span><span class="p">:{</span><span class="dl">"</span><span class="s2">url</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">/json/baotou/scenic/scenic_form.json</span><span class="dl">"</span><span class="p">}},</span>
+              <span class="p">{</span><span class="dl">"</span><span class="s2">element_type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">button</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">link</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">element_title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">导出</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">remote_url</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">/cms/template/template_form.htm</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">params</span><span class="dl">"</span><span class="p">:{</span><span class="dl">"</span><span class="s2">url</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">/json/baotou/scenic/scenic_form.json</span><span class="dl">"</span><span class="p">}}</span>
+            <span class="p">]</span>
+          <span class="p">}</span>
+        <span class="p">]</span>
+      <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="属性">属性</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段</th>
+      <th>类型</th>
+      <th>说明</th>
+      <th>是否必填</th>
+      <th>默认值</th>
+      <th>其他</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>component_name</td>
+      <td>string</td>
+      <td>temp页面组件名称</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>component_title</td>
+      <td>string</td>
+      <td>temp页面组件title</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>template_type</td>
+      <td>string</td>
+      <td>temp页面类型，目前2中，分别为：list、form</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>navs_title</td>
+      <td>string</td>
+      <td>导航栏</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>navs</td>
+      <td>Array</td>
+      <td>导航栏,属性见<a href="https://xiaoymin.github.io/JFormParser-doc/plugins/navs">导航栏</a></td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>resource_name</td>
+      <td>string</td>
+      <td>展示元数据数据表名</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>submit_url</td>
+      <td>string</td>
+      <td>根据template_type类型不同有不同的意义，list为获取数据地址，form为提交表单地址</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>container</td>
+      <td>boolean</td>
+      <td>是否容器组件</td>
+      <td>否</td>
+      <td>true</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>childrens</td>
+      <td>Array</td>
+      <td>地图子组件，这里必包含2个经纬度文本域组件</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>导航栏属性</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段</th>
+      <th>类型</th>
+      <th>说明</th>
+      <th>是否必填</th>
+      <th>默认值</th>
+      <th>其他</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>title</td>
+      <td>string</td>
+      <td>导航栏名称</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>icon</td>
+      <td>string</td>
+      <td>图标</td>
+      <td>否</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>url</td>
+      <td>string</td>
+      <td>导航栏url</td>
+      <td>否</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="表单页模板form">表单页模板form</h3>
+
+<p>form模板页面主要是构建表单页面</p>
+
+<p><img src="/images/blog/jformparser-guide/form.jpg" alt="" /></p>
+
+<h4 id="结构"><em>结构</em></h4>
+
+<pre><code class="language-javas">{
+  "component_name":"trips_form",
+  "component_title":"行程form",
+  "template_type":"form",
+  "navs_title":"信息管理 &gt; 行程管理 &gt; 行程维护",
+  "navs":[{"title":"信息管理","icon":"","url":""},{"title":"行程管理","icon":""},{"title":"行程维护","icon":""}],
+  "resource_name":"trips_info",
+  "submit_url":"/cms/template/submit.htm",
+  "init_url":"/cms/template/get_form_data.htm",
+  "childrens":[
+    {
+      "element_type":"panel",
+      "element_title":"基础信息",
+      "container":true,
+      "childrens":[
+        {
+          "element_type":"grid",
+          "cols":3,
+          "rows":"3",
+          "childrens":[{
+            "element_type":"text",
+            "element_title":"行程名称",
+            "meta_column":"title",
+            "is_required":true
+          },{
+            "element_type":"select",
+            "element_title":"行程类型",
+            "is_required":true,
+            "meta_column":"type",
+            "is_fk":true,
+            "fk_resource_name":"scenic_spot_info",
+            "fk_meta_column":"id",
+            "fk_meta_column_show":"title",
+            "data":[
+              {"text":"交通","value":"jt"},
+              {"text":"会议","value":"hy"},
+              {"text":"入住","value":"rz"},
+              {"text":"用餐","value":"yc"},
+              {"text":"考察","value":"kc"}
+            ],
+            "is_remote":false,
+            "remote_url":""
+          },{
+            "element_type":"text",
+            "element_title":"开始时间",
+            "meta_column":"start_time",
+            "is_required":true
+          },{
+            "element_type":"checkboxGroup",
+            "element_title":"参与小组",
+            "is_required":true,
+            "meta_column":"team_infos",
+            "fk_resource_name":"team_info",
+            "fk_meta_column":"id",
+            "fk_meta_column_show":"name",
+            "is_remote":true,
+            "width":"100%",
+            "remote_url":"/cms/template/get_remote_data.htm"
+          }]
+        }
+      ]
+    },{
+      "element_type":"panel",
+      "element_title":"详情",
+      "container":true,
+      "childrens":[
+        {
+          "element_type":"editor",
+          "meta_column":"intro",
+          "width":"400px",
+          "height":"300px"
+        }
+      ]
+    },{
+      "element_type":"buttonGroup",
+      "element_title":"",
+      "align":"center",
+      "childrens":[
+        {"element_type":"button","type":"submit","element_title":"提交","remote_url":"/cms/template/submit.htm","width":"80px","action_url":"/cms/template/template_list.htm","params":{"url":"/json/shengsi/trips/trips_list.json"}},
+        {"element_type":"button","type":"link","element_title":"返回","remote_url":"/cms/template/template_list.htm","params":{"url":"/json/shengsi/trips/trips_list.json"},"width":"80px"}
+      ]
+    }
+  ]
+}
+</code></pre>
+
+<h4 id="属性-1">属性</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段</th>
+      <th>类型</th>
+      <th>说明</th>
+      <th>是否必填</th>
+      <th>默认值</th>
+      <th>其他</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>component_name</td>
+      <td>string</td>
+      <td>temp页面组件名称</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>component_title</td>
+      <td>string</td>
+      <td>temp页面组件title</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>template_type</td>
+      <td>string</td>
+      <td>temp页面类型，目前2中，分别为：list、form</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>navs_title</td>
+      <td>string</td>
+      <td>导航栏</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>navs</td>
+      <td>Array</td>
+      <td>导航栏,属性见<a href="https://xiaoymin.github.io/JFormParser-doc/plugins/navs">导航栏</a></td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>resource_name</td>
+      <td>string</td>
+      <td>展示元数据数据表名</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>submit_url</td>
+      <td>string</td>
+      <td>根据template_type类型不同有不同的意义，list为获取数据地址，form为提交表单地址</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>container</td>
+      <td>boolean</td>
+      <td>是否容器组件</td>
+      <td>否</td>
+      <td>true</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>childrens</td>
+      <td>Array</td>
+      <td>地图子组件，这里必包含2个经纬度文本域组件</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>导航栏属性</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段</th>
+      <th>类型</th>
+      <th>说明</th>
+      <th>是否必填</th>
+      <th>默认值</th>
+      <th>其他</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>title</td>
+      <td>string</td>
+      <td>导航栏名称</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>icon</td>
+      <td>string</td>
+      <td>图标</td>
+      <td>否</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>url</td>
+      <td>string</td>
+      <td>导航栏url</td>
+      <td>否</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="容器组件">容器组件</h2>
+
+<p>容器组件，顾名思义</p>
+
+<h3 id="面板panel">面板panel</h3>
+
+<p>Panel组件是一个bootstrap风格的panel容器组件,使用该插件主要是为了表单页面布局，页面看上去更像一个整体，有整体性，页面美观</p>
+
+<p><img src="/images/blog/jformparser-guide/panel.jpg" alt="" /></p>
+
+<h4 id="结构-1">结构</h4>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+	<span class="dl">"</span><span class="s2">element_type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">panel</span><span class="dl">"</span><span class="p">,</span>
+	<span class="dl">"</span><span class="s2">element_title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">资源信息</span><span class="dl">"</span><span class="p">,</span>
+	<span class="dl">"</span><span class="s2">container</span><span class="dl">"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+	<span class="dl">"</span><span class="s2">childrens</span><span class="dl">"</span><span class="p">:[...]</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="属性-2">属性</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段</th>
+      <th>类型</th>
+      <th>说明</th>
+      <th>是否必填</th>
+      <th>默认值</th>
+      <th>其他</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>element_type</td>
+      <td>string</td>
+      <td>组件类型</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>element_title</td>
+      <td>string</td>
+      <td>组件title</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>whether_header</td>
+      <td>boolean</td>
+      <td>是否有header头</td>
+      <td>否</td>
+      <td>true</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>whether_border</td>
+      <td>boolean</td>
+      <td>面板是否有边框</td>
+      <td>否</td>
+      <td>true</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>width</td>
+      <td>string</td>
+      <td>地图初始宽度,可以是百分比，可以是像素值，例如：100% 或者400px;</td>
+      <td>否</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>height</td>
+      <td>string</td>
+      <td>地图初始高度</td>
+      <td>否</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>container</td>
+      <td>boolean</td>
+      <td>是否容器组件</td>
+      <td>否</td>
+      <td>true</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>childrens</td>
+      <td>Array</td>
+      <td>容器子组件集合，可包含任何其他组件</td>
+      <td>否</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="表格grid">表格grid</h3>
+
+<p>Grid组件是一个类似表格组件，包含几行几列等属性，不过这里不同于表格table，这里只是一个页面展示组件，用于页面布局，没有任何实际作用，同panel一样，是容器组件</p>
+
+<p><img src="/images/blog/jformparser-guide/grid.jpg" alt="" /></p>
+
+<h4 id="结构-2">结构</h4>
+
+<pre><code class="language-javas">{
+	"element_type":"grid",
+	"element_title":"表格组件",
+	"cols":3,
+    "rows":"4",
+	"container":true,
+	"childrens":[...]
+}
+</code></pre>
+
+<h4 id="属性-3">属性</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段</th>
+      <th>类型</th>
+      <th>说明</th>
+      <th>是否必填</th>
+      <th>默认值</th>
+      <th>其他</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>element_type</td>
+      <td>string</td>
+      <td>组件类型</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>element_title</td>
+      <td>string</td>
+      <td>组件title</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>cols</td>
+      <td>number</td>
+      <td>表格列</td>
+      <td>是</td>
+      <td>1</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>rows</td>
+      <td>number</td>
+      <td>表格行</td>
+      <td>是</td>
+      <td>1</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>container</td>
+      <td>boolean</td>
+      <td>是否容器组件</td>
+      <td>否</td>
+      <td>true</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>childrens</td>
+      <td>Array</td>
+      <td>容器子组件集合，可包含任何其他组件</td>
+      <td>否</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="地图组件bmap">地图组件bMap</h3>
+
+<p>bmap组件是百度地图组件，地图组件必有两个子元素,都是文本域组件 经度、纬度两个字段</p>
+
+<p><img src="/images/blog/jformparser-guide/bmap.jpg" alt="" /></p>
+
+<h4 id="结构-3">结构</h4>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+        <span class="dl">"</span><span class="s2">element_type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">bMap</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">id</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">bmap</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">center</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">包头</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">dragging</span><span class="dl">"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">scrollwheelzoom</span><span class="dl">"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">doubleclickzoom</span><span class="dl">"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">width</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">100%</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">height</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">450px</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">element_title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">位置信息</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">container</span><span class="dl">"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">childrens</span><span class="dl">"</span><span class="p">:[{</span>
+          <span class="dl">"</span><span class="s2">element_type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">text</span><span class="dl">"</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">element_title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">经度</span><span class="dl">"</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">meta_column</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">baidu_x</span><span class="dl">"</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">map_element</span><span class="dl">"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">point</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">lng</span><span class="dl">"</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">width</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">40%</span><span class="dl">"</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">float</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">left</span><span class="dl">"</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">marginRight</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">10px</span><span class="dl">"</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">is_required</span><span class="dl">"</span><span class="p">:</span><span class="kc">false</span>
+        <span class="p">},{</span>
+          <span class="dl">"</span><span class="s2">element_type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">text</span><span class="dl">"</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">element_title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">纬度</span><span class="dl">"</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">meta_column</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">baidu_y</span><span class="dl">"</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">map_element</span><span class="dl">"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">point</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">lat</span><span class="dl">"</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">width</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">40%</span><span class="dl">"</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">float</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">left</span><span class="dl">"</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">is_required</span><span class="dl">"</span><span class="p">:</span><span class="kc">false</span>
+        <span class="p">}]</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="属性-4">属性</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段</th>
+      <th>类型</th>
+      <th>说明</th>
+      <th>是否必填</th>
+      <th>默认值</th>
+      <th>其他</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>element_type</td>
+      <td>string</td>
+      <td>组件类型</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>element_title</td>
+      <td>string</td>
+      <td>组件title</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>id</td>
+      <td>string</td>
+      <td>地图组件唯一id编号</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>center</td>
+      <td>string</td>
+      <td>地图初始中央显示位置，eg:包头</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>dragging</td>
+      <td>boolean</td>
+      <td>地图是否允许拖动</td>
+      <td>否</td>
+      <td>false</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>scrollwheelzoom</td>
+      <td>boolean</td>
+      <td>地图是否允许缩放</td>
+      <td>否</td>
+      <td>false</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>doubleclickzoom</td>
+      <td>boolean</td>
+      <td>地图是否允许鼠标双击缩放层级</td>
+      <td>否</td>
+      <td>true</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>width</td>
+      <td>string</td>
+      <td>地图初始宽度,可以是百分比，可以是像素值，例如：100% 或者400px;</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>height</td>
+      <td>string</td>
+      <td>地图初始高度</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>container</td>
+      <td>boolean</td>
+      <td>是否容器组件</td>
+      <td>否</td>
+      <td>true</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>childrens</td>
+      <td>Array</td>
+      <td>地图子组件，这里必包含2个经纬度文本域组件</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="数据表格datagrid">数据表格datagrid</h3>
+
+<p>Datagrid组件是列表table展示数据组件</p>
+
+<p><img src="/images/blog/jformparser-guide/datagrid.jpg" alt="" /></p>
+
+<h4 id="结构-4">结构</h4>
+
+<pre><code class="language-javas">{
+        "element_type":"datagrid",
+        "element_title":"交通查询",
+        "is_remote":true,
+        "is_operate":true,
+        "operate_title":"操作",
+        "operate_buttons":[
+          {"type":"edit","element_type":"button","element_title":"编辑","remote_url":"/cms/template/template_form.htm","params":{"url":"/json/baotou/traffic/traffic_form.json"}},
+          {"type":"delete","element_type":"button","element_title":"删除","remote_url":"/cms/template/delete.htm"}],
+        "pagination":true,
+        "remote_url":"/cms/template/get_remote_list.htm",
+        "columns":[
+          {"field":"start_name","title":"出发城市"},
+          {"field":"end_name","title":"到达城市"},
+          {"field":"name","title":"航班号"},
+          {"field":"first_time","title":"离港"},
+          {"field":"last_time","title":"到港"},
+          {"field":"type","title":"所属交通","rel_column":true,"rel_resource_name":"traffic_type"}],
+        "childrens":[
+          {
+            "element_type":"text",
+            "element_title":"出发城市",
+            "meta_column":"start_name",
+            "is_query":true,
+            "direction":"left",
+            "width":"100%"
+          }, {
+            "element_type":"text",
+            "element_title":"到达城市",
+            "meta_column":"end_name",
+            "is_query":true,
+            "direction":"left",
+            "width":"100%"
+          },{
+            "element_type":"select",
+            "element_title":"所属交通",
+            "is_required":true,
+            "meta_column":"traffic_id",
+            "is_fk":true,
+            "fk_resource_name":"traffic_type",
+            "fk_meta_column":"id",
+            "fk_meta_column_show":"type",
+            "is_remote":true,
+            "rules":"is_email",
+            "message":"",
+            "remote_url":"/cms/template/get_remote_data.htm"
+          },{
+            "element_type":"button",
+            "element_title":"查询",
+            "type":"query"
+          },{
+            "element_type":"buttonGroup",
+            "element_title":"操作按钮组",
+            "align":"left",
+            "childrens":[
+              {"element_type":"button","type":"link","element_title":"添加班次","remote_url":"/cms/template/template_form.htm","params":{"url":"/json/baotou/traffic/traffic_form.json"}}
+            ]
+          }
+        ]
+}
+
+</code></pre>
+
+<h4 id="属性-5">属性</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段</th>
+      <th>类型</th>
+      <th>说明</th>
+      <th>是否必填</th>
+      <th>默认值</th>
+      <th>其他</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>element_type</td>
+      <td>string</td>
+      <td>组件类型</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>element_title</td>
+      <td>string</td>
+      <td>组件title</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>is_remote</td>
+      <td>boolean</td>
+      <td>是否远程ajax加载数据,如果为false，data本地数据源字段必填，否则无数据展示</td>
+      <td>是</td>
+      <td>false</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>remote_url</td>
+      <td>string</td>
+      <td>远程ajax加载数据url地址</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>is_operate</td>
+      <td>boolean</td>
+      <td>是否包含操作栏</td>
+      <td>是</td>
+      <td>true</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>operate_title</td>
+      <td>string</td>
+      <td>操作栏抬头title</td>
+      <td>是</td>
+      <td>true</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>operate_buttons</td>
+      <td>Array</td>
+      <td>操作栏按钮集合，列如编辑、删除等等，具体按钮明细属性请参考<a href="https://xiaoymin.github.io/JFormParser-doc/plugins/button.html">button按钮</a></td>
+      <td>是</td>
+      <td>true</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>pagination</td>
+      <td>boolean</td>
+      <td>是否分页</td>
+      <td>是</td>
+      <td>false</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>data</td>
+      <td>Array</td>
+      <td>local数据源,和column列数据一一格式对应,例如：<code class="language-plaintext highlighter-rouge">[{"start_name":"北京","end_name":"杭州","name":"T2XDD","first_time":"8:00","last_time":"17:00","type":"飞机"}...]</code></td>
+      <td>否</td>
+      <td>true</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>columns</td>
+      <td>Array</td>
+      <td>列集合明细,具体属性请参考<a href="https://xiaoymin.github.io/JFormParser-doc/plugins/datagrid.html#column">column属性</a></td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>container</td>
+      <td>boolean</td>
+      <td>是否容器组件</td>
+      <td>否</td>
+      <td>true</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>childrens</td>
+      <td>Array</td>
+      <td>容器子组件集合，可包含任何其他组件，这里datagrid包含的子组件仅仅是查询框组件</td>
+      <td>否</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="column属性">column属性</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段</th>
+      <th>类型</th>
+      <th>说明</th>
+      <th>是否必填</th>
+      <th>默认值</th>
+      <th>其他</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>field</td>
+      <td>string</td>
+      <td>字段名称</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>title</td>
+      <td>string</td>
+      <td>显示列title</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>rel_column</td>
+      <td>boolean</td>
+      <td>是否多表关联查询，表关联查询情况，且列上需要展示关联表字段的时候，该字段为true，值为关联表字段</td>
+      <td>否</td>
+      <td>false</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>rel_resource_name</td>
+      <td>string</td>
+      <td>外联表资源名称</td>
+      <td>否</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="基础表单组件">基础表单组件</h2>
+
+<h3 id="富文本框editor">富文本框editor</h3>
+
+<p>editor组件是一个富文本组件，这里使用的公司购买的ewebeditor插件，修改了ewebeditor部分源码，后台上传的资源全部上传到云数据中心</p>
+
+<p><img src="/images/blog/jformparser-guide/editor.jpg" alt="" /></p>
+
+<h4 id="结构-5">结构</h4>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+          <span class="dl">"</span><span class="s2">element_type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">editor</span><span class="dl">"</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">element_title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">详情</span><span class="dl">"</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">meta_column</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">detail_intro</span><span class="dl">"</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">width</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">400px</span><span class="dl">"</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">is_required</span><span class="dl">"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">height</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">300px</span><span class="dl">"</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="属性-6">属性</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段</th>
+      <th>类型</th>
+      <th>说明</th>
+      <th>是否必填</th>
+      <th>默认值</th>
+      <th>其他</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>element_type</td>
+      <td>string</td>
+      <td>组件类型</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>element_title</td>
+      <td>string</td>
+      <td>组件title</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>meta_column</td>
+      <td>string</td>
+      <td>表单name字段，元数据字段</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>is_required</td>
+      <td>boolean</td>
+      <td>是否必输项</td>
+      <td>否</td>
+      <td>false</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>width</td>
+      <td>string</td>
+      <td>地图初始宽度,可以是百分比，可以是像素值，例如：100% 或者400px;</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>height</td>
+      <td>string</td>
+      <td>地图初始高度</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="文本域text">文本域text</h3>
+
+<p>text普通文本域组件，提供各种数据格式的支持，包括（整数、小数、身份证、时间）等等</p>
+
+<p><img src="/images/blog/jformparser-guide/text.jpg" alt="" /></p>
+
+<h4 id="结构-6">结构</h4>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+            <span class="dl">"</span><span class="s2">element_type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">text</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">element_title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">资讯时间</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">data_type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">datetime</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">formatter</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">yyyy-MM-dd</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">is_required</span><span class="dl">"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">meta_column</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">scenic_time</span><span class="dl">"</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="属性-7">属性</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段</th>
+      <th>类型</th>
+      <th>说明</th>
+      <th>是否必填</th>
+      <th>默认值</th>
+      <th>其他</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>element_type</td>
+      <td>string</td>
+      <td>组件类型</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>element_title</td>
+      <td>string</td>
+      <td>组件title</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>meta_column</td>
+      <td>string</td>
+      <td>表单name字段，元数据字段</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>is_required</td>
+      <td>boolean</td>
+      <td>是否必输项</td>
+      <td>否</td>
+      <td>false</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>width</td>
+      <td>string</td>
+      <td>地图初始宽度,可以是百分比，可以是像素值，例如：100% 或者400px;</td>
+      <td>否</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>defaultValue</td>
+      <td>string</td>
+      <td>默认值</td>
+      <td>否</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>float</td>
+      <td>string</td>
+      <td>float位置：left、right</td>
+      <td>否</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>marginRight</td>
+      <td>string</td>
+      <td>右间距，例如10px;</td>
+      <td>否</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>data_type</td>
+      <td>string</td>
+      <td>数据类型，分为[“normal”,”email”,”number”,”decimal”,”datetime”,”card”..普通文本、邮箱、整数、小数、身份证]</td>
+      <td>否</td>
+      <td>normal</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>formatter</td>
+      <td>string</td>
+      <td>数据类型为日期时，该值启用</td>
+      <td>否</td>
+      <td>yyyy-MM-dd</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>map_element</td>
+      <td>boolean</td>
+      <td>是否是地图经纬度元素，配合父元素为bmap类型使用</td>
+      <td>否</td>
+      <td>false</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>point</td>
+      <td>string</td>
+      <td>如果为地图经纬度元素，该值必填，值(lng、lat)经度、纬度，配合父元素为bmap类型使用</td>
+      <td>否</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>is_query</td>
+      <td>boolean</td>
+      <td>是否为查询元素</td>
+      <td>否</td>
+      <td>false</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="多行文本textarea">多行文本textarea</h3>
+
+<p>textarea多行文本域组件</p>
+
+<p><img src="/images/blog/jformparser-guide/textarea.jpg" alt="" /></p>
+
+<h4 id="结构-7">结构</h4>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+            <span class="dl">"</span><span class="s2">element_type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">textarea</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">element_title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">简介</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">is_required</span><span class="dl">"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">meta_column</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">intro</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">width</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">100%</span><span class="dl">"</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="属性-8">属性</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段</th>
+      <th>类型</th>
+      <th>说明</th>
+      <th>是否必填</th>
+      <th>默认值</th>
+      <th>其他</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>element_type</td>
+      <td>string</td>
+      <td>组件类型</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>element_title</td>
+      <td>string</td>
+      <td>组件title</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>meta_column</td>
+      <td>string</td>
+      <td>表单name字段，元数据字段</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>is_required</td>
+      <td>boolean</td>
+      <td>是否必输项</td>
+      <td>否</td>
+      <td>false</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>width</td>
+      <td>string</td>
+      <td>地图初始宽度,可以是百分比，可以是像素值，例如：100% 或者400px;</td>
+      <td>否</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>defaultValue</td>
+      <td>string</td>
+      <td>默认值</td>
+      <td>否</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="下拉框select">下拉框select</h3>
+
+<p>select下拉框组件，可以根据url远程加载数据，也可以是local 数据</p>
+
+<p><img src="/images/blog/jformparser-guide/select.jpg" alt="" /></p>
+
+<h4 id="结构-8">结构</h4>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+            <span class="dl">"</span><span class="s2">element_type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">select</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">element_title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">所属景区</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">is_required</span><span class="dl">"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">meta_column</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">scenic_id</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">is_fk</span><span class="dl">"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+			<span class="dl">"</span><span class="s2">width</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">100%</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">fk_resource_name</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">scenic_info</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">fk_meta_column</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">id</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">fk_meta_column_show</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">title</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">is_remote</span><span class="dl">"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">rules</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">is_email</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">message</span><span class="dl">"</span><span class="p">:</span><span class="dl">""</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">remote_url</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">/cms/template/get_remote_data.htm</span><span class="dl">"</span><span class="p">,</span>
+			<span class="dl">"</span><span class="s2">data</span><span class="dl">"</span><span class="p">:[</span>
+            <span class="p">{</span><span class="dl">"</span><span class="s2">text</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">AAAAA</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">value</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">5A</span><span class="dl">"</span><span class="p">},</span>
+            <span class="p">{</span><span class="dl">"</span><span class="s2">text</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">AAAA</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">value</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">4A</span><span class="dl">"</span><span class="p">},</span>
+            <span class="p">{</span><span class="dl">"</span><span class="s2">text</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">AAA</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">value</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">3A</span><span class="dl">"</span><span class="p">},</span>
+            <span class="p">{</span><span class="dl">"</span><span class="s2">text</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">AA</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">value</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">2A</span><span class="dl">"</span><span class="p">}</span>
+          <span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="属性-9">属性</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th> </th>
+      <th> </th>
+      <th> </th>
+      <th> </th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>字段</td>
+      <td>类型</td>
+      <td>说明</td>
+      <td>是否必填</td>
+      <td>默认值</td>
+      <td>其他</td>
+    </tr>
+    <tr>
+      <td>element_type</td>
+      <td>string</td>
+      <td>组件类型</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>element_title</td>
+      <td>string</td>
+      <td>组件title</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>is_remote</td>
+      <td>boolean</td>
+      <td>是否远程ajax加载数据,如果为false，data本地数据源字段必填，否则无数据展示</td>
+      <td>是</td>
+      <td>false</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>remote_url</td>
+      <td>string</td>
+      <td>远程ajax加载数据url地址</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>is_fk</td>
+      <td>boolean</td>
+      <td>是否关联表查询获取数据</td>
+      <td>否</td>
+      <td>false</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>fk_resource_name</td>
+      <td>string</td>
+      <td>关联表名</td>
+      <td>否</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>fk_meta_column</td>
+      <td>string</td>
+      <td>关联列字段</td>
+      <td>否</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>fk_meta_column_show</td>
+      <td>string</td>
+      <td>关联显示列字段</td>
+      <td>否</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>data</td>
+      <td>Array</td>
+      <td>local数据源，text：文本、value：值<code class="language-plaintext highlighter-rouge">[            {"text":"AAAAA","value":"5A"},            {"text":"AAAA","value":"4A"},            {"text":"AAA","value":"3A"},            {"text":"AA","value":"2A"}          ] </code></td>
+      <td>否</td>
+      <td>true</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="复选框checkboxgroup">复选框checkboxGroup</h3>
+
+<p>checkboxGroup复选框组件，这里是复选框组，支持远程获取字典项</p>
+
+<p><img src="/images/blog/jformparser-guide/checkboxGroup.jpg" alt="" /></p>
+
+<h4 id="结构-9">结构</h4>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+            <span class="dl">"</span><span class="s2">element_type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">checkboxGroup</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">element_title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">参与小组</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">is_required</span><span class="dl">"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">meta_column</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">scenic_id</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">is_fk</span><span class="dl">"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+			<span class="dl">"</span><span class="s2">width</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">100%</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">fk_resource_name</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">scenic_info</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">fk_meta_column</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">id</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">fk_meta_column_show</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">title</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">is_remote</span><span class="dl">"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">rules</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">is_email</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">message</span><span class="dl">"</span><span class="p">:</span><span class="dl">""</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">remote_url</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">/cms/template/get_remote_data.htm</span><span class="dl">"</span><span class="p">,</span>
+			<span class="dl">"</span><span class="s2">data</span><span class="dl">"</span><span class="p">:[</span>
+            <span class="p">{</span><span class="dl">"</span><span class="s2">text</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">AAAAA</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">value</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">5A</span><span class="dl">"</span><span class="p">},</span>
+            <span class="p">{</span><span class="dl">"</span><span class="s2">text</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">AAAA</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">value</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">4A</span><span class="dl">"</span><span class="p">},</span>
+            <span class="p">{</span><span class="dl">"</span><span class="s2">text</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">AAA</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">value</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">3A</span><span class="dl">"</span><span class="p">},</span>
+            <span class="p">{</span><span class="dl">"</span><span class="s2">text</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">AA</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">value</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">2A</span><span class="dl">"</span><span class="p">}</span>
+          <span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="属性-10">属性</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段</th>
+      <th>类型</th>
+      <th>说明</th>
+      <th>是否必填</th>
+      <th>默认值</th>
+      <th>其他</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>element_type</td>
+      <td>string</td>
+      <td>组件类型</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>element_title</td>
+      <td>string</td>
+      <td>组件title</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>meta_column</td>
+      <td>string</td>
+      <td>表单name字段，元数据字段</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>is_required</td>
+      <td>boolean</td>
+      <td>是否必输项</td>
+      <td>否</td>
+      <td>false</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>is_remote</td>
+      <td>boolean</td>
+      <td>是否远程ajax加载数据,如果为false，data本地数据源字段必填，否则无数据展示</td>
+      <td>是</td>
+      <td>false</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>remote_url</td>
+      <td>string</td>
+      <td>远程ajax加载数据url地址</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>is_fk</td>
+      <td>boolean</td>
+      <td>是否关联表查询获取数据</td>
+      <td>否</td>
+      <td>false</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>fk_resource_name</td>
+      <td>string</td>
+      <td>关联表名</td>
+      <td>否</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>fk_meta_column</td>
+      <td>string</td>
+      <td>关联列字段</td>
+      <td>否</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>fk_meta_column_show</td>
+      <td>string</td>
+      <td>关联显示列字段</td>
+      <td>否</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>data</td>
+      <td>Array</td>
+      <td>local数据源，text：文本、value：值<code class="language-plaintext highlighter-rouge">[            {"text":"AAAAA","value":"5A"},            {"text":"AAAA","value":"4A"},            {"text":"AAA","value":"3A"},            {"text":"AA","value":"2A"}          ]</code></td>
+      <td>否</td>
+      <td>true</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="单选框radiogroup">单选框radioGroup</h3>
+
+<p>radioGroup下拉框组件，可以根据url远程加载数据，也可以是local 数据</p>
+
+<p><img src="/images/blog/jformparser-guide/radioGroup.jpg" alt="" /></p>
+
+<h4 id="结构-10">结构</h4>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+            <span class="dl">"</span><span class="s2">element_type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">radioGroup</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">element_title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">景区级别</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">is_required</span><span class="dl">"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">meta_column</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">scenic_id</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">is_fk</span><span class="dl">"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+			<span class="dl">"</span><span class="s2">width</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">100%</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">fk_resource_name</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">scenic_info</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">fk_meta_column</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">id</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">fk_meta_column_show</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">title</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">is_remote</span><span class="dl">"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">rules</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">is_email</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">message</span><span class="dl">"</span><span class="p">:</span><span class="dl">""</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">remote_url</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">/cms/template/get_remote_data.htm</span><span class="dl">"</span><span class="p">,</span>
+			<span class="dl">"</span><span class="s2">data</span><span class="dl">"</span><span class="p">:[</span>
+            <span class="p">{</span><span class="dl">"</span><span class="s2">text</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">AAAAA</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">value</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">5A</span><span class="dl">"</span><span class="p">},</span>
+            <span class="p">{</span><span class="dl">"</span><span class="s2">text</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">AAAA</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">value</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">4A</span><span class="dl">"</span><span class="p">},</span>
+            <span class="p">{</span><span class="dl">"</span><span class="s2">text</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">AAA</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">value</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">3A</span><span class="dl">"</span><span class="p">},</span>
+            <span class="p">{</span><span class="dl">"</span><span class="s2">text</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">AA</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">value</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">2A</span><span class="dl">"</span><span class="p">}</span>
+          <span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="属性-11">属性</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段</th>
+      <th>类型</th>
+      <th>说明</th>
+      <th>是否必填</th>
+      <th>默认值</th>
+      <th>其他</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>element_type</td>
+      <td>string</td>
+      <td>组件类型</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>element_title</td>
+      <td>string</td>
+      <td>组件title</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>meta_column</td>
+      <td>string</td>
+      <td>表单name字段，元数据字段</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>is_required</td>
+      <td>boolean</td>
+      <td>是否必输项</td>
+      <td>否</td>
+      <td>false</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>is_remote</td>
+      <td>boolean</td>
+      <td>是否远程ajax加载数据,如果为false，data本地数据源字段必填，否则无数据展示</td>
+      <td>是</td>
+      <td>false</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>remote_url</td>
+      <td>string</td>
+      <td>远程ajax加载数据url地址</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>is_fk</td>
+      <td>boolean</td>
+      <td>是否关联表查询获取数据</td>
+      <td>否</td>
+      <td>false</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>fk_resource_name</td>
+      <td>string</td>
+      <td>关联表名</td>
+      <td>否</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>fk_meta_column</td>
+      <td>string</td>
+      <td>关联列字段</td>
+      <td>否</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>fk_meta_column_show</td>
+      <td>string</td>
+      <td>关联显示列字段</td>
+      <td>否</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>data</td>
+      <td>Array</td>
+      <td>local数据源，text：文本、value：值<code class="language-plaintext highlighter-rouge">[            {"text":"AAAAA","value":"5A"},            {"text":"AAAA","value":"4A"},            {"text":"AAA","value":"3A"},            {"text":"AA","value":"2A"}          ]</code></td>
+      <td>否</td>
+      <td>true</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="自定义组件">自定义组件</h2>
+
+<h3 id="素材上传fileupload">素材上传fileupload</h3>
+
+<p>fileupload上传组件，可以上传图片（可预览）、音频等素材</p>
+
+<p><img src="/images/blog/jformparser-guide/fileupload.jpg" alt="" /></p>
+
+<h4 id="结构-11">结构</h4>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+        <span class="dl">"</span><span class="s2">element_type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">fileupload</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">element_title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">交通主图</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">meta_column</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">logo_image</span><span class="dl">"</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="属性-12">属性</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段</th>
+      <th>类型</th>
+      <th>说明</th>
+      <th>是否必填</th>
+      <th>默认值</th>
+      <th>其他</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>element_type</td>
+      <td>string</td>
+      <td>组件类型</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>element_title</td>
+      <td>string</td>
+      <td>组件title</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>meta_column</td>
+      <td>string</td>
+      <td>表单name字段，元数据字段</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>is_required</td>
+      <td>boolean</td>
+      <td>是否必输项</td>
+      <td>否</td>
+      <td>false</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="图集images">图集images</h3>
+
+<p>Images图集组件，该组件和后台CMS绑定,需要一张素材表cms_material_info</p>
+
+<p><img src="/images/blog/jformparser-guide/images.jpg" alt="" /></p>
+
+<h4 id="结构-12">结构</h4>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+          <span class="dl">"</span><span class="s2">element_type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">images</span><span class="dl">"</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">id</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">scenic_images</span><span class="dl">"</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">is_required</span><span class="dl">"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">is_fk_resource</span><span class="dl">"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">fk_resource_name</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">cms_material_info</span><span class="dl">"</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">service</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">materialService</span><span class="dl">"</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">remote_url</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">/cms/images/get_remote_data.htm</span><span class="dl">"</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">width</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">400px</span><span class="dl">"</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">height</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">300px</span><span class="dl">"</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="属性-13">属性</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段</th>
+      <th>类型</th>
+      <th>说明</th>
+      <th>是否必填</th>
+      <th>默认值</th>
+      <th>其他</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>element_type</td>
+      <td>string</td>
+      <td>组件类型</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>element_title</td>
+      <td>string</td>
+      <td>组件title</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>meta_column</td>
+      <td>string</td>
+      <td>表单name字段，元数据字段</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>id</td>
+      <td>string</td>
+      <td>图集id</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>service</td>
+      <td>string</td>
+      <td>后台service业务名称</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>remote_url</td>
+      <td>string</td>
+      <td>图集初始化url</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>width</td>
+      <td>string</td>
+      <td>地图初始宽度,可以是百分比，可以是像素值，例如：100% 或者400px;</td>
+      <td>否</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>height</td>
+      <td>string</td>
+      <td>图集高度</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>is_required</td>
+      <td>boolean</td>
+      <td>是否必输项</td>
+      <td>否</td>
+      <td>false</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="其他">其他</h2>
+
+<h3 id="按钮button">按钮button</h3>
+
+<p><img src="/images/blog/jformparser-guide/button.jpg" alt="" /></p>
+
+<h4 id="结构-13">结构</h4>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="p">{</span>
+	<span class="dl">"</span><span class="s2">element_type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">button</span><span class="dl">"</span><span class="p">,</span>
+	<span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">submit</span><span class="dl">"</span><span class="p">,</span>
+	<span class="dl">"</span><span class="s2">element_title</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">提交</span><span class="dl">"</span><span class="p">,</span>
+	<span class="dl">"</span><span class="s2">remote_url</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">/cms/template/submit.htm</span><span class="dl">"</span><span class="p">,</span>
+	<span class="dl">"</span><span class="s2">width</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">80px</span><span class="dl">"</span><span class="p">,</span>
+	<span class="dl">"</span><span class="s2">action_url</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">/cms/template/template_list.htm</span><span class="dl">"</span><span class="p">,</span>
+	<span class="dl">"</span><span class="s2">params</span><span class="dl">"</span><span class="p">:{</span><span class="dl">"</span><span class="s2">url</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">/json/shengsi/scenic/scenic_list.json</span><span class="dl">"</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="属性-14">属性</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段</th>
+      <th>类型</th>
+      <th>说明</th>
+      <th>是否必填</th>
+      <th>默认值</th>
+      <th>其他</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>element_type</td>
+      <td>string</td>
+      <td>组件类型</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>element_title</td>
+      <td>string</td>
+      <td>组件title</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>string</td>
+      <td>按钮类型，目前有[submit、link、query、edit、delete]五种类型，提交、连接跳转、查询、编辑、删除</td>
+      <td>是</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>remote_url</td>
+      <td>string</td>
+      <td>根据type类型，有不同的意义，例如是submit，这里则表示提交地址，如未link，这里则为跳转地址</td>
+      <td>否</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>params</td>
+      <td>object</td>
+      <td>event点击事件，remote_url后面参数</td>
+      <td>否</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>action_url</td>
+      <td>string</td>
+      <td>callback后执行地址</td>
+      <td>否</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>width</td>
+      <td>string</td>
+      <td>地图初始宽度,可以是百分比，可以是像素值，例如：100% 或者400px;</td>
+      <td>否</td>
+      <td>无</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2017/04/29/jformparser-guide/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div class="xiaoym-qrcode">
+  <div class="xiaoym-qrcode-title">
+    <h2>微信公众号(八一菜刀)</h2>
+  </div>
+  <div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+</div>
+
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>第一篇 Redis常用数据结构介绍及基本操作 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2020/11/29/redis-1/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="第一篇 Redis常用数据结构介绍及基本操作">
+      
+    <meta name="keywords" content="Redis实战">
+    <meta name="og:keywords" content="Redis实战">
+      
+    <meta name="description" content="目前Redis支持的主要数据结构包含5种,分别是：">
+    <meta name="og:description" content="目前Redis支持的主要数据结构包含5种,分别是：">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2020/11/29/redis-1/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2020-11-29">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="第一篇 Redis常用数据结构">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">第一篇 Redis常用数据结构介绍及基本操作</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2020/11/29
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#Redis" title="Redis">Redis</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <p>目前Redis支持的主要数据结构包含5种,分别是：</p>
+
+<ul>
+  <li>字符串(string)</li>
+  <li>散列(hash)</li>
+  <li>列表(list)</li>
+  <li>集合(set)</li>
+  <li>有序集合(sorted set)</li>
+</ul>
+
+<h3 id="11-常用数据结构介绍">1.1 常用数据结构介绍</h3>
+
+<h4 id="111-字符串string">1.1.1 字符串(String)</h4>
+
+<p>字符串结构是开发人员平常使用最多的结构,同时也是最简单的，它的值不仅仅是字符串,也可以是数值.</p>
+
+<p>常用命令包括：<code class="language-plaintext highlighter-rouge">GET</code>、<code class="language-plaintext highlighter-rouge">SET</code>、<code class="language-plaintext highlighter-rouge">INCR</code>、<code class="language-plaintext highlighter-rouge">DECR</code>、<code class="language-plaintext highlighter-rouge">MGET</code>等等</p>
+
+<p>主要应用场景：字符串是最常见的数据类型之一,普通的键/值存储可以使用该数据结构进行存储.从而可以完全实现当前的Memcached所实现的功能并提高效率。还可以享受Redis的定时持久性，操作日志和复制功能。除了提供GET，SET，INCR，DECR等操作外，Redis还提供以下功能：</p>
+
+<ul>
+  <li>获取字符串的长度</li>
+  <li>字符串的内容进行追加</li>
+  <li>设置并获取一部分字符串</li>
+  <li>设置并获取字符串某一个bit</li>
+  <li>批量设置一系列字符串的内容</li>
+</ul>
+
+<p>常用的方案：使用该数据结构缓存程序计数器，例如：微博数量、粉丝数量等等</p>
+
+<h4 id="112-散列hash">1.1.2 散列(Hash)</h4>
+
+<p>常用命令：<code class="language-plaintext highlighter-rouge">HGET</code>、<code class="language-plaintext highlighter-rouge">HSET</code>、<code class="language-plaintext highlighter-rouge">HGETALL</code>等</p>
+
+<p><code class="language-plaintext highlighter-rouge">Hash</code>和java语言中的<code class="language-plaintext highlighter-rouge">Map</code>集合结构很相似,只不过在<code class="language-plaintext highlighter-rouge">Redis</code>中,一个Hash结构需要一个key进行关联，数据结构有点类似于如下图：</p>
+
+<p><img src="/images/blog/redis/hash.png" alt="" /></p>
+
+<p>上图中黑色加粗的<strong>key1</strong>所代表的是Redis中存储的键值,而虚线框中的<code class="language-plaintext highlighter-rouge">key1</code>所代表的是Hash数据结构中的键值</p>
+
+<p>简单操作如下：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>127.0.0.1:6379&gt; hget tenant tenantId
+<span class="o">(</span>nil<span class="o">)</span>
+127.0.0.1:6379&gt; hset tenant tenantId abc
+<span class="o">(</span>integer<span class="o">)</span> 1
+127.0.0.1:6379&gt; hset tenant title <span class="nb">test</span>
+<span class="o">(</span>integer<span class="o">)</span> 1
+127.0.0.1:6379&gt; hget tenant tenantId
+<span class="s2">"abc"</span>
+127.0.0.1:6379&gt; hgetall tenant
+1<span class="o">)</span> <span class="s2">"tenantId"</span>
+2<span class="o">)</span> <span class="s2">"abc"</span>
+3<span class="o">)</span> <span class="s2">"title"</span>
+4<span class="o">)</span> <span class="s2">"test"</span>
+127.0.0.1:6379&gt;
+</code></pre></div></div>
+
+<p>假设我们需要存储包含以下信息的用户信息对象数据：</p>
+
+<p>用户ID是要查找的键，储值用户对象包含名称，年龄，生日等信息，如果要以普通的键/值结构进行存储，主要有以下两种存储方法：</p>
+
+<ul>
+  <li>
+    <p>第一种方法是将用户的ID作为Redis中的Key,值则是序列号的用户对象，这样做的缺点是在存储和获取时,增加了序列化/反序列化的成本,如果要修改用户的某一个属性时,则需要对整个对象进行操作，在并发条件下,会出现CAS之类的问题.</p>
+  </li>
+  <li>
+    <p>第二种方法是将多少个该用户信息对象的成员保存到键值数目中，其中用户id +相应属性的名称作为唯一标识符来获取相应属性的值，尽管这样做的代价是序列化和并发性被省略，但是用户ID被重复存储，如果存在大量此类数据，则存在内存大量浪费的情况。</p>
+  </li>
+</ul>
+
+<p>因此，Redis提供的哈希是解决此问题的好方法，Redis哈希实际上是内部存储的值作为哈希图，并提供对映射成员接口的直接访问，例如：</p>
+
+<p>也就是说，键仍然是用户ID，值是地图，地图键是属性名称的成员，值是属性值，以便可以通过其内部地图键直接修改和访问数据（Redis称为内部映射键字段），这意味着可以通过键（用户ID）+字段（属性标签）来操纵相应的属性数据，而无需重复存储数据，也没有序列化和并发修改控制的问题。是一个很好的解决方案。</p>
+
+<p>还需要注意的是，Redis提供了一个可以直接获取所有属性数据的接口（Hgetall），但是如果内部映射具有大量成员，则涉及遍历整个内部映射，这可能很耗时由于Redis单线程模型。其他客户端请求根本没有响应，这需要格外注意。</p>
+
+<p>使用情况：存储部分更改数据，例如用户信息。</p>
+
+<h4 id="113-列表list">1.1.3 列表(list)</h4>
+
+<p>Redis的列表结构,存放一个string类型的链表.</p>
+
+<p>常用命令：<code class="language-plaintext highlighter-rouge">lpush</code>、<code class="language-plaintext highlighter-rouge">rpush</code>、<code class="language-plaintext highlighter-rouge">lpop</code>、<code class="language-plaintext highlighter-rouge">rpop</code>、<code class="language-plaintext highlighter-rouge">lrange</code>等</p>
+
+<p>应用场景：例如一个网站上的粉丝列表、监控列表、消息队列、日志收集器</p>
+
+<p>list底层是一个双向链接的数据结构，相信自己具有数据结构知识的人应该能够理解其结构。使用列表结构，我们可以轻松实现最新消息排名和其他功能。也可以用作消息队列，你可以使用列表的推操作将任务放置在列表中，然后工作线程使用弹出操作将任务取出。 Redis还提供了用于操作列表的一部分的API，您可以直接查询以从列表的一部分中删除元素。</p>
+
+<p>简单命令操作：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>127.0.0.1:6379&gt; lpush list-user uid001
+<span class="o">(</span>integer<span class="o">)</span> 1
+127.0.0.1:6379&gt; lpush list-user uid002
+<span class="o">(</span>integer<span class="o">)</span> 2
+127.0.0.1:6379&gt; lrange list-user 0 1
+1<span class="o">)</span> <span class="s2">"uid002"</span>
+2<span class="o">)</span> <span class="s2">"uid001"</span>
+127.0.0.1:6379&gt; rpush list-user uid003
+<span class="o">(</span>integer<span class="o">)</span> 3
+127.0.0.1:6379&gt; lrange list-user 0 2
+1<span class="o">)</span> <span class="s2">"uid002"</span>
+2<span class="o">)</span> <span class="s2">"uid001"</span>
+3<span class="o">)</span> <span class="s2">"uid003"</span>
+127.0.0.1:6379&gt; lpop list-user
+<span class="s2">"uid002"</span>
+127.0.0.1:6379&gt; llen list-user
+<span class="o">(</span>integer<span class="o">)</span> 2
+127.0.0.1:6379&gt; lrange list-user 0 2
+1<span class="o">)</span> <span class="s2">"uid001"</span>
+2<span class="o">)</span> <span class="s2">"uid003"</span>
+127.0.0.1:6379&gt; rpush list-user uid004
+<span class="o">(</span>integer<span class="o">)</span> 3
+127.0.0.1:6379&gt; llen list-user
+<span class="o">(</span>integer<span class="o">)</span> 3
+127.0.0.1:6379&gt; lrange list-user 0 2
+1<span class="o">)</span> <span class="s2">"uid001"</span>
+2<span class="o">)</span> <span class="s2">"uid003"</span>
+3<span class="o">)</span> <span class="s2">"uid004"</span>
+127.0.0.1:6379&gt; rpop list-user
+<span class="s2">"uid004"</span>
+127.0.0.1:6379&gt; lrange list-user 0 2
+1<span class="o">)</span> <span class="s2">"uid001"</span>
+2<span class="o">)</span> <span class="s2">"uid003"</span>
+127.0.0.1:6379&gt;   
+</code></pre></div></div>
+
+<h4 id="114-集合set">1.1.4 集合(Set)</h4>
+
+<p>Set对外提供的功能类似于列表(list)，但是Set更加轻量级(对于内存来说),Set存储的元素是不重复的</p>
+
+<p>也可以根据不同的Set集合取交集、并集等</p>
+
+<p>常用操作命令：<code class="language-plaintext highlighter-rouge">sadd</code>、<code class="language-plaintext highlighter-rouge">smembers</code>、<code class="language-plaintext highlighter-rouge">scard</code>、<code class="language-plaintext highlighter-rouge">sinter</code>、<code class="language-plaintext highlighter-rouge">sdiff</code>、<code class="language-plaintext highlighter-rouge">srem</code>等</p>
+
+<p>常见命令操作：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>127.0.0.1:6379&gt; sadd myset a1 a2 a3 a4 a5 a6 a7
+<span class="o">(</span>integer<span class="o">)</span> 7
+127.0.0.1:6379&gt; smembers myset
+1<span class="o">)</span> <span class="s2">"a6"</span>
+2<span class="o">)</span> <span class="s2">"a1"</span>
+3<span class="o">)</span> <span class="s2">"a2"</span>
+4<span class="o">)</span> <span class="s2">"a3"</span>
+5<span class="o">)</span> <span class="s2">"a5"</span>
+6<span class="o">)</span> <span class="s2">"a7"</span>
+7<span class="o">)</span> <span class="s2">"a4"</span>
+127.0.0.1:6379&gt; 
+</code></pre></div></div>
+
+<p>比如在微博系统中,每一个用户都会有一个关注列表,此时有如下需求：</p>
+
+<ul>
+  <li>如何找出两个用户共同关注的人</li>
+  <li>如何找出用户1与用户2关注的不同的人</li>
+</ul>
+
+<p>假设用户1的关注列表中有：<code class="language-plaintext highlighter-rouge">u1、u2、u3、u4、u5、u6</code></p>
+
+<p>用户2的关注用户列表中有：<code class="language-plaintext highlighter-rouge">u2、u5、u7、u8</code></p>
+
+<p>从上面的结果来看,用户1和用户2共同关注的用户有：<code class="language-plaintext highlighter-rouge">u2\u5</code></p>
+
+<p>用户1关注的不同的人：<code class="language-plaintext highlighter-rouge">u1\u3\u4\u6</code></p>
+
+<p>用户2关注的不同的人：<code class="language-plaintext highlighter-rouge">u7\u8</code></p>
+
+<p>通过Redis的set集合来进行实现,命令如下：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 先集合初始化 u1set \u2set</span>
+127.0.0.1:6379&gt; sadd u1set u1 u2 u3 u4 u5 u6
+<span class="o">(</span>integer<span class="o">)</span> 6
+127.0.0.1:6379&gt; sadd u2set u2 u5 u7 u8
+<span class="o">(</span>integer<span class="o">)</span> 4
+127.0.0.1:6379&gt; smembers u1set
+1<span class="o">)</span> <span class="s2">"u4"</span>
+2<span class="o">)</span> <span class="s2">"u1"</span>
+3<span class="o">)</span> <span class="s2">"u2"</span>
+4<span class="o">)</span> <span class="s2">"u3"</span>
+5<span class="o">)</span> <span class="s2">"u6"</span>
+6<span class="o">)</span> <span class="s2">"u5"</span>
+127.0.0.1:6379&gt; smembers u2set
+1<span class="o">)</span> <span class="s2">"u7"</span>
+2<span class="o">)</span> <span class="s2">"u5"</span>
+3<span class="o">)</span> <span class="s2">"u8"</span>
+4<span class="o">)</span> <span class="s2">"u2"</span>
+<span class="c"># 找出u1与u2用户关注的不同人的集合</span>
+127.0.0.1:6379&gt; sdiff u1set u2set
+1<span class="o">)</span> <span class="s2">"u3"</span>
+2<span class="o">)</span> <span class="s2">"u6"</span>
+3<span class="o">)</span> <span class="s2">"u1"</span>
+4<span class="o">)</span> <span class="s2">"u4"</span>
+<span class="c"># 找出u2与u1用户关注的不同人的集合</span>
+127.0.0.1:6379&gt; sdiff u2set u1set
+1<span class="o">)</span> <span class="s2">"u7"</span>
+2<span class="o">)</span> <span class="s2">"u8"</span>
+<span class="c"># u1\u2共同关注的人</span>
+127.0.0.1:6379&gt; sinter u1set u2set
+1<span class="o">)</span> <span class="s2">"u5"</span>
+2<span class="o">)</span> <span class="s2">"u2"</span>
+127.0.0.1:6379&gt;  
+</code></pre></div></div>
+
+<h4 id="115-有序集合sorted-set">1.1.5 有序集合(Sorted Set)</h4>
+
+<p>有序集合的数据结构类似于集合与哈希之间的混合体,与集合一样,其元素是由唯一非重复的字符串组成.</p>
+
+<p>但是集合(Set)中的元素没有排序,而有序集合排序后,其中的每个元素都与一个浮点数值相关联(这也是为什么说该数据结构与哈希结构类似的原因,因为其每个元素都映射了一个排序值)</p>
+
+<p>排序规则如下：</p>
+
+<ul>
+  <li>如果A和B是两个分数不同的元素,如果A.score&gt;B.store,那么A&gt;B</li>
+  <li>如果A和B的分数完全相同,由于A字符串在字典上大于B字符串,所以A&gt;B。AB不能相等,因为有序集合的元素具有唯一性</li>
+</ul>
+
+<p>常用操作命令：<code class="language-plaintext highlighter-rouge">zadd</code>、<code class="language-plaintext highlighter-rouge">zrange</code>、<code class="language-plaintext highlighter-rouge">zrank</code>、<code class="language-plaintext highlighter-rouge">zrangebyscore</code>、<code class="language-plaintext highlighter-rouge">zcard</code></p>
+
+<p>简单操作命令：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>127.0.0.1:6379&gt; zadd mysort 10 ab 40 cb 60 db
+<span class="o">(</span>integer<span class="o">)</span> 3
+127.0.0.1:6379&gt; zrange mysort 0 2
+1<span class="o">)</span> <span class="s2">"ab"</span>
+2<span class="o">)</span> <span class="s2">"cb"</span>
+3<span class="o">)</span> <span class="s2">"db"</span>
+127.0.0.1:6379&gt; zadd mysort 55 eb
+<span class="o">(</span>integer<span class="o">)</span> 1
+127.0.0.1:6379&gt; zrange mysort 0 3
+1<span class="o">)</span> <span class="s2">"ab"</span>
+2<span class="o">)</span> <span class="s2">"cb"</span>
+3<span class="o">)</span> <span class="s2">"eb"</span>
+4<span class="o">)</span> <span class="s2">"db"</span>
+127.0.0.1:6379&gt; zcard mysort
+<span class="o">(</span>integer<span class="o">)</span> 4
+127.0.0.1:6379&gt;                  
+</code></pre></div></div>
+
+<h3 id="12-java语言redis客户端介绍及操作">1.2 Java语言Redis客户端介绍及操作</h3>
+
+<p>Java语言中使用Redis比较常见的客户端：<a href="https://github.com/xetorthio/jedis">jedis</a>、<a href="https://github.com/redisson/redisson">Redisson</a>、<a href="https://lettuce.io/">lettuce</a></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>客户端</th>
+      <th>GitHub</th>
+      <th>star</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>jedis</td>
+      <td><a href="https://github.com/xetorthio/jedis">https://github.com/xetorthio/jedis</a></td>
+      <td>9.4K</td>
+      <td>轻量级的java客户端</td>
+    </tr>
+    <tr>
+      <td>lettuce</td>
+      <td><a href="https://github.com/lettuce-io/lettuce-core">https://github.com/lettuce-io/lettuce-core</a></td>
+      <td>3.6K</td>
+      <td>高级Redis客户端，用于线程安全的同步，异步和反应式使用。 支持群集，前哨，流水线和编解码器。</td>
+    </tr>
+    <tr>
+      <td>Redisson</td>
+      <td><a href="https://github.com/redisson/redisson">https://github.com/redisson/redisson</a></td>
+      <td>14.6k</td>
+      <td>分布式以及可伸缩性更强</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>目前使用的Spring Boot框架底层主要提供了jedis、lettuce两种支持,开发者通过yml中进行配置,Spring Boot自动选择，Spring Boot框架目前默认使用lettuce作为Redis的客户端。</p>
+
+<p>以下主要是通过以上的客户端java库,对Redis的基本数据类型进行简单的操作</p>
+
+<h4 id="121-使用jedis进行操作">1.2.1 使用Jedis进行操作</h4>
+
+<p>通过Jedis操作Redis,根据Jedis提供的构造函数,主要有三种方式获取Jedis对象的实例</p>
+
+<ul>
+  <li>根据Redis的ip地址、端口简单创建获取实例</li>
+  <li>根据连接池配置获取Redis进行操作(推荐做法)</li>
+  <li>根据集群配置创建Jedis实例获取Redis的操作对象</li>
+</ul>
+
+<p>先来看第一种简单的创建Jedis对象的方式，代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//Redis的ip及端口号</span>
+<span class="nc">Jedis</span> <span class="n">simple</span><span class="o">=</span><span class="k">new</span> <span class="nc">Jedis</span><span class="o">(</span><span class="s">"localhost"</span><span class="o">,</span><span class="mi">6379</span><span class="o">);</span>
+<span class="c1">//如果Redis设置了密码,此处需要设置密码,反之则不用</span>
+<span class="n">simple</span><span class="o">.</span><span class="na">auth</span><span class="o">(</span><span class="s">"123456"</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>创建<code class="language-plaintext highlighter-rouge">JedisPool</code>连接池对象,从连接池获取Jedis实例，代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">GenericObjectPoolConfig</span> <span class="n">poolConfig</span><span class="o">=</span><span class="k">new</span> <span class="nc">GenericObjectPoolConfig</span><span class="o">();</span>
+<span class="c1">//连接池中的最大空闲连接</span>
+<span class="n">poolConfig</span><span class="o">.</span><span class="na">setMaxIdle</span><span class="o">(</span><span class="mi">8</span><span class="o">);</span>
+<span class="c1">//连接池最大连接数（使用负值表示没有限制）</span>
+<span class="n">poolConfig</span><span class="o">.</span><span class="na">setMaxTotal</span><span class="o">(</span><span class="mi">8</span><span class="o">);</span>
+<span class="c1">// 连接池中的最小空闲连接</span>
+<span class="n">poolConfig</span><span class="o">.</span><span class="na">setMinIdle</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+<span class="c1">//连接池最大阻塞等待时间（使用负值表示没有限制）</span>
+<span class="n">poolConfig</span><span class="o">.</span><span class="na">setMaxWaitMillis</span><span class="o">(-</span><span class="mi">1</span><span class="o">);</span>
+<span class="c1">//jedisPool只需要初始化1次即可，每次获取Jedis直接调用getResource方法从连接池中获取</span>
+<span class="nc">JedisPool</span> <span class="n">jedisPool</span><span class="o">=</span><span class="k">new</span> <span class="nc">JedisPool</span><span class="o">(</span><span class="n">poolConfig</span><span class="o">,</span><span class="s">"localhost"</span><span class="o">,</span><span class="mi">6379</span><span class="o">,</span><span class="mi">5000</span><span class="o">,</span><span class="s">"123456"</span><span class="o">);</span>
+<span class="nc">Jedis</span> <span class="n">jedis</span><span class="o">=</span><span class="n">jedisPool</span><span class="o">.</span><span class="na">getResource</span><span class="o">();</span>
+</code></pre></div></div>
+
+<p>如果我们的Redis是集群部署,此时,我们可以通过集群的配置获取Jedis对象以操作Redis，代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//创建连接池对象</span>
+<span class="nc">GenericObjectPoolConfig</span> <span class="n">poolConfig</span><span class="o">=</span><span class="k">new</span> <span class="nc">GenericObjectPoolConfig</span><span class="o">();</span>
+<span class="c1">//连接池中的最大空闲连接</span>
+<span class="n">poolConfig</span><span class="o">.</span><span class="na">setMaxIdle</span><span class="o">(</span><span class="mi">8</span><span class="o">);</span>
+<span class="c1">//连接池最大连接数（使用负值表示没有限制）</span>
+<span class="n">poolConfig</span><span class="o">.</span><span class="na">setMaxTotal</span><span class="o">(</span><span class="mi">8</span><span class="o">);</span>
+<span class="c1">// 连接池中的最小空闲连接</span>
+<span class="n">poolConfig</span><span class="o">.</span><span class="na">setMinIdle</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+<span class="c1">//连接池最大阻塞等待时间（使用负值表示没有限制）</span>
+<span class="n">poolConfig</span><span class="o">.</span><span class="na">setMaxWaitMillis</span><span class="o">(-</span><span class="mi">1</span><span class="o">);</span>
+<span class="c1">//创建集群</span>
+<span class="nc">Set</span><span class="o">&lt;</span><span class="nc">HostAndPort</span><span class="o">&gt;</span> <span class="n">nodes</span><span class="o">=</span><span class="k">new</span> <span class="nc">HashSet</span><span class="o">&lt;&gt;();</span>
+<span class="nc">HostAndPort</span> <span class="n">hostAndPort</span><span class="o">=</span><span class="k">new</span> <span class="nc">HostAndPort</span><span class="o">(</span><span class="s">"192.168.0.11"</span><span class="o">,</span><span class="mi">133</span><span class="o">);</span>
+<span class="nc">HostAndPort</span> <span class="n">hostAndPort1</span><span class="o">=</span><span class="k">new</span> <span class="nc">HostAndPort</span><span class="o">(</span><span class="s">"192.168.0.12"</span><span class="o">,</span><span class="mi">133</span><span class="o">);</span>
+<span class="n">nodes</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">hostAndPort</span><span class="o">);</span>
+<span class="n">nodes</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">hostAndPort1</span><span class="o">);</span>
+<span class="c1">//1、connectionTimeout 连接超时时间</span>
+<span class="c1">//2、soTimeout 读取数据超时时间</span>
+<span class="c1">//3、maxAttempts 错误时最大尝试次数</span>
+<span class="c1">//4、password 密码</span>
+<span class="c1">//创建集群对象</span>
+<span class="nc">JedisCluster</span> <span class="n">jedisCluster</span><span class="o">=</span><span class="k">new</span> <span class="nc">JedisCluster</span><span class="o">(</span><span class="n">nodes</span><span class="o">,</span><span class="mi">2000</span><span class="o">,</span><span class="mi">20000</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="s">"123456"</span><span class="o">,</span><span class="n">poolConfig</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>不管是集群方式或者是连接池等,最终操作Redis的数据结构在客户端都是差不多的,接下来以Jedis为例来操作Redis的五种不同数据结构</p>
+
+<p><strong>字符串(String)</strong></p>
+
+<p>常用命令包括：<code class="language-plaintext highlighter-rouge">GET</code>、<code class="language-plaintext highlighter-rouge">SET</code>、<code class="language-plaintext highlighter-rouge">INCR</code>、<code class="language-plaintext highlighter-rouge">DECR</code>、<code class="language-plaintext highlighter-rouge">MGET</code>等等</p>
+
+<p>字符串操作直接看以下代码：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Jedis</span> <span class="n">jedis</span><span class="o">=</span><span class="n">getSimpleJedis</span><span class="o">();</span>
+<span class="c1">//获取string</span>
+<span class="nc">String</span> <span class="n">value</span><span class="o">=</span><span class="n">jedis</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"answertoken_abc"</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">value</span><span class="o">);</span>
+<span class="c1">//设置string类型的key-value</span>
+<span class="n">jedis</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="s">"mykey"</span><span class="o">,</span><span class="s">"myvalue"</span><span class="o">);</span>
+<span class="c1">//根据SetParams设置，主要包含四种：ex\nx\xx\px</span>
+<span class="c1">//1、ex:设置键key的过期时间，单位时秒</span>
+<span class="c1">//2、px:设置键key的过期时间，单位毫秒</span>
+
+<span class="c1">//3、nx:只有键key不存在的时候才会设置key的值</span>
+<span class="c1">//4、xx:只有键key存在的时候才会设置key的值</span>
+
+<span class="c1">//第一种情况,设置一个key值，同时指定过期时间</span>
+<span class="n">jedis</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="s">"mykey"</span><span class="o">,</span><span class="s">"myvalue1"</span><span class="o">,</span><span class="nc">SetParams</span><span class="o">.</span><span class="na">setParams</span><span class="o">().</span><span class="na">ex</span><span class="o">(</span><span class="mi">10</span><span class="o">));</span>
+<span class="c1">//第二种情况,当key值不存在时进行设置，并且设置过期时间</span>
+<span class="n">jedis</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="s">"mykey"</span><span class="o">,</span><span class="s">"myvalue2"</span><span class="o">,</span><span class="nc">SetParams</span><span class="o">.</span><span class="na">setParams</span><span class="o">().</span><span class="na">nx</span><span class="o">().</span><span class="na">ex</span><span class="o">(</span><span class="mi">10</span><span class="o">));</span>
+<span class="c1">//第三种情况,当key值存在时进行设置,并且设置过期时间(分布式锁场景)</span>
+<span class="n">jedis</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="s">"mykey"</span><span class="o">,</span><span class="s">"myvalue3"</span><span class="o">,</span><span class="nc">SetParams</span><span class="o">.</span><span class="na">setParams</span><span class="o">().</span><span class="na">xx</span><span class="o">().</span><span class="na">ex</span><span class="o">(</span><span class="mi">10</span><span class="o">));</span>
+<span class="c1">//自增操作</span>
+<span class="n">jedis</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="s">"mykey"</span><span class="o">,</span><span class="s">"1"</span><span class="o">);</span>
+<span class="c1">//自增+1</span>
+<span class="n">jedis</span><span class="o">.</span><span class="na">incr</span><span class="o">(</span><span class="s">"mykey"</span><span class="o">);</span>
+<span class="c1">//自增+n</span>
+<span class="n">jedis</span><span class="o">.</span><span class="na">incrBy</span><span class="o">(</span><span class="s">"mykey"</span><span class="o">,</span><span class="mi">10</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">jedis</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"mykey"</span><span class="o">));</span>
+<span class="c1">//自减操作</span>
+<span class="n">jedis</span><span class="o">.</span><span class="na">decr</span><span class="o">(</span><span class="s">"mykey"</span><span class="o">);</span>
+<span class="c1">//自减-N</span>
+<span class="n">jedis</span><span class="o">.</span><span class="na">decrBy</span><span class="o">(</span><span class="s">"mykey"</span><span class="o">,</span><span class="mi">10</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">jedis</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"mykey"</span><span class="o">));</span>
+</code></pre></div></div>
+
+<p>通过上面jedis对象对string结构提供的API方法进行操作还是非常方便的。</p>
+
+<p><strong>散列(hash)</strong></p>
+
+<p>常用命令：<code class="language-plaintext highlighter-rouge">HGET</code>、<code class="language-plaintext highlighter-rouge">HSET</code>、<code class="language-plaintext highlighter-rouge">HGETALL</code>等</p>
+
+<p>在Jedis客户端中操作Redis的hash结构和在命令行中差不多，jedis封装的api命令几乎没有什么区别</p>
+
+<p>java开发者在操作时，一个hash理解为在Java语言中的Map数据结构即可。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//操作hash</span>
+<span class="nc">Jedis</span> <span class="n">jedis</span><span class="o">=</span><span class="n">getSimpleJedis</span><span class="o">();</span>
+<span class="c1">//赋值操作        </span>
+<span class="nc">String</span> <span class="n">hashKey</span><span class="o">=</span><span class="s">"myhashkey"</span><span class="o">;</span>
+<span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">values</span><span class="o">=</span><span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+<span class="n">values</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"name"</span><span class="o">,</span><span class="s">"张三"</span><span class="o">);</span>
+<span class="n">values</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"age"</span><span class="o">,</span><span class="s">"13"</span><span class="o">);</span>
+<span class="c1">//批量一次性设置has的值</span>
+<span class="n">jedis</span><span class="o">.</span><span class="na">hset</span><span class="o">(</span><span class="n">hashKey</span><span class="o">,</span><span class="n">values</span><span class="o">);</span>
+<span class="c1">//单个设置</span>
+<span class="n">jedis</span><span class="o">.</span><span class="na">hset</span><span class="o">(</span><span class="n">hashKey</span><span class="o">,</span><span class="s">"title"</span><span class="o">,</span><span class="s">"Jedis牛逼"</span><span class="o">);</span>
+<span class="c1">//get操作</span>
+<span class="c1">//获取单个</span>
+<span class="nc">String</span> <span class="n">hvalue</span><span class="o">=</span><span class="n">jedis</span><span class="o">.</span><span class="na">hget</span><span class="o">(</span><span class="n">hashKey</span><span class="o">,</span><span class="s">"name"</span><span class="o">);</span>
+<span class="c1">//获取整个</span>
+<span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">hvalues</span><span class="o">=</span><span class="n">jedis</span><span class="o">.</span><span class="na">hgetAll</span><span class="o">(</span><span class="n">hashKey</span><span class="o">);</span>
+<span class="c1">//删除操作</span>
+<span class="c1">//提供可变数组，删除多个hash中的key值</span>
+<span class="nc">String</span><span class="o">[]</span> <span class="n">hdelKeys</span><span class="o">=</span><span class="k">new</span> <span class="nc">String</span><span class="o">[]{</span><span class="s">"age"</span><span class="o">,</span><span class="s">"name"</span><span class="o">};</span>
+<span class="c1">//删除某hash中的key</span>
+<span class="n">jedis</span><span class="o">.</span><span class="na">hdel</span><span class="o">(</span><span class="n">hashKey</span><span class="o">,</span><span class="n">hdelKeys</span><span class="o">);</span>
+<span class="c1">//删除整个hash</span>
+<span class="n">jedis</span><span class="o">.</span><span class="na">del</span><span class="o">(</span><span class="n">hashKey</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>需要注意的是，针对批量设置hash值的操作，需要Redis版本大于等于4.0.0版本</p>
+
+<blockquote>
+  <p>As of Redis 4.0.0, HSET is variadic and allows for multiple <code class="language-plaintext highlighter-rouge">field</code>/<code class="language-plaintext highlighter-rouge">value</code> pairs.</p>
+</blockquote>
+
+<p><strong>列表(list)</strong></p>
+
+<p>列表中常用命令：<code class="language-plaintext highlighter-rouge">lpush</code>、<code class="language-plaintext highlighter-rouge">rpush</code>、<code class="language-plaintext highlighter-rouge">lpop</code>、<code class="language-plaintext highlighter-rouge">rpop</code>、<code class="language-plaintext highlighter-rouge">lrange</code>等</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//操作list</span>
+<span class="nc">Jedis</span> <span class="n">jedis</span><span class="o">=</span><span class="n">getSimpleJedis</span><span class="o">();</span>
+<span class="nc">String</span> <span class="n">listKey</span><span class="o">=</span><span class="s">"mylistkey"</span><span class="o">;</span>
+<span class="nc">String</span><span class="o">[]</span> <span class="n">listValues</span><span class="o">=</span><span class="k">new</span> <span class="nc">String</span><span class="o">[]{</span><span class="s">"a"</span><span class="o">,</span><span class="s">"b"</span><span class="o">,</span><span class="s">"c"</span><span class="o">};</span>
+<span class="c1">//放入集合中</span>
+<span class="n">jedis</span><span class="o">.</span><span class="na">lpush</span><span class="o">(</span><span class="n">listKey</span><span class="o">,</span><span class="n">listValues</span><span class="o">);</span>
+<span class="c1">//根据区间获取集合中的元素集合</span>
+<span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">rangeValues</span><span class="o">=</span><span class="n">jedis</span><span class="o">.</span><span class="na">lrange</span><span class="o">(</span><span class="n">listKey</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">2</span><span class="o">);</span>
+<span class="n">rangeValues</span><span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">s</span> <span class="o">-&gt;</span> <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s</span><span class="o">));</span>
+<span class="c1">//从左侧链表取出一个值</span>
+<span class="nc">String</span> <span class="n">lvalue</span><span class="o">=</span><span class="n">jedis</span><span class="o">.</span><span class="na">lpop</span><span class="o">(</span><span class="n">listKey</span><span class="o">);</span>
+<span class="c1">//此处值应该是c</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"lpopValue:"</span><span class="o">+</span><span class="n">lvalue</span><span class="o">);</span>
+<span class="nc">String</span> <span class="n">rvalue</span><span class="o">=</span><span class="n">jedis</span><span class="o">.</span><span class="na">rpop</span><span class="o">(</span><span class="n">listKey</span><span class="o">);</span>
+<span class="c1">//此处值应该是a</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"rpopValue:"</span><span class="o">+</span><span class="n">rvalue</span><span class="o">);</span>
+<span class="c1">//删除</span>
+<span class="n">jedis</span><span class="o">.</span><span class="na">del</span><span class="o">(</span><span class="n">listKey</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p><strong>集合(Set)</strong></p>
+
+<p>常用操作命令：<code class="language-plaintext highlighter-rouge">sadd</code>、<code class="language-plaintext highlighter-rouge">smembers</code>、<code class="language-plaintext highlighter-rouge">scard</code>、<code class="language-plaintext highlighter-rouge">sinter</code>、<code class="language-plaintext highlighter-rouge">sdiff</code>、<code class="language-plaintext highlighter-rouge">srem</code>等</p>
+
+<p>集合(Set)和列表相比较而言，不会存在重复的值。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//操作Set</span>
+<span class="nc">Jedis</span> <span class="n">jedis</span> <span class="o">=</span> <span class="n">getSimpleJedis</span><span class="o">();</span>
+<span class="nc">String</span> <span class="n">setKey</span><span class="o">=</span><span class="s">"mysetKey"</span><span class="o">;</span>
+<span class="c1">//此操作最终只会添加成功3个元素,因为存在abc重复</span>
+<span class="n">jedis</span><span class="o">.</span><span class="na">sadd</span><span class="o">(</span><span class="n">setKey</span><span class="o">,</span><span class="s">"abc"</span><span class="o">,</span><span class="s">"ddd"</span><span class="o">,</span><span class="s">"aaa"</span><span class="o">,</span><span class="s">"abc"</span><span class="o">);</span>
+<span class="nc">Set</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">stringSet</span><span class="o">=</span><span class="n">jedis</span><span class="o">.</span><span class="na">smembers</span><span class="o">(</span><span class="n">setKey</span><span class="o">);</span>
+<span class="n">stringSet</span><span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">forEach</span><span class="o">(</span><span class="n">s</span> <span class="o">-&gt;</span> <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"SetValue:"</span><span class="o">+</span><span class="n">s</span><span class="o">));</span>
+<span class="nc">String</span> <span class="n">setKey1</span><span class="o">=</span><span class="s">"mysetKey1"</span><span class="o">;</span>
+<span class="c1">//添加第二个集合</span>
+<span class="n">jedis</span><span class="o">.</span><span class="na">sadd</span><span class="o">(</span><span class="n">setKey1</span><span class="o">,</span><span class="s">"ab1c"</span><span class="o">,</span><span class="s">"ddd"</span><span class="o">,</span><span class="s">"aaa"</span><span class="o">,</span><span class="s">"2abc"</span><span class="o">);</span>
+<span class="c1">//数量</span>
+<span class="kt">long</span> <span class="n">set1Number</span><span class="o">=</span><span class="n">jedis</span><span class="o">.</span><span class="na">scard</span><span class="o">(</span><span class="n">setKey1</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"集合2数量:"</span><span class="o">+</span><span class="n">set1Number</span><span class="o">);</span>
+<span class="c1">//比较第1个集合与其它集合的区别元素</span>
+<span class="nc">Set</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">diffSets</span><span class="o">=</span><span class="n">jedis</span><span class="o">.</span><span class="na">sdiff</span><span class="o">(</span><span class="n">setKey</span><span class="o">,</span><span class="n">setKey1</span><span class="o">);</span>
+<span class="n">diffSets</span><span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">forEach</span><span class="o">(</span><span class="n">s</span> <span class="o">-&gt;</span> <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"diffValue:"</span><span class="o">+</span><span class="n">s</span><span class="o">));</span>
+<span class="c1">//取交集</span>
+<span class="nc">Set</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">sinters</span><span class="o">=</span><span class="n">jedis</span><span class="o">.</span><span class="na">sinter</span><span class="o">(</span><span class="n">setKey</span><span class="o">,</span><span class="n">setKey1</span><span class="o">);</span>
+<span class="n">sinters</span><span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">forEach</span><span class="o">(</span><span class="n">s</span> <span class="o">-&gt;</span> <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"sinterValue:"</span><span class="o">+</span><span class="n">s</span><span class="o">));</span>
+<span class="c1">//取并集</span>
+<span class="nc">Set</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">sunions</span><span class="o">=</span><span class="n">jedis</span><span class="o">.</span><span class="na">sunion</span><span class="o">(</span><span class="n">setKey</span><span class="o">,</span><span class="n">setKey1</span><span class="o">);</span>
+<span class="n">sunions</span><span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">forEach</span><span class="o">(</span><span class="n">s</span> <span class="o">-&gt;</span> <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"sunionsValue:"</span><span class="o">+</span><span class="n">s</span><span class="o">));</span>
+<span class="c1">//获取两个集合的并集</span>
+<span class="n">jedis</span><span class="o">.</span><span class="na">del</span><span class="o">(</span><span class="n">setKey</span><span class="o">,</span><span class="n">setKey1</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p><strong>有序集合(Sorted Set)</strong></p>
+
+<p>常用操作命令：<code class="language-plaintext highlighter-rouge">zadd</code>、<code class="language-plaintext highlighter-rouge">zrange</code>、<code class="language-plaintext highlighter-rouge">zrank</code>、<code class="language-plaintext highlighter-rouge">zrangebyscore</code>、<code class="language-plaintext highlighter-rouge">zcard</code></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//操作Set</span>
+<span class="nc">Jedis</span> <span class="n">jedis</span> <span class="o">=</span> <span class="n">getSimpleJedis</span><span class="o">();</span>
+<span class="nc">String</span> <span class="n">zsetKey</span><span class="o">=</span><span class="s">"myzsetKey"</span><span class="o">;</span>
+<span class="n">jedis</span><span class="o">.</span><span class="na">zadd</span><span class="o">(</span><span class="n">zsetKey</span><span class="o">,</span><span class="mi">10</span><span class="o">,</span><span class="s">"abc"</span><span class="o">);</span>
+<span class="c1">//多个一起添加</span>
+<span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span><span class="nc">Double</span><span class="o">&gt;</span> <span class="n">zvalues</span><span class="o">=</span><span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+<span class="n">zvalues</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"c1"</span><span class="o">,</span><span class="mi">230</span><span class="no">D</span><span class="o">);</span>
+<span class="n">zvalues</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"c2"</span><span class="o">,</span><span class="mi">110</span><span class="no">D</span><span class="o">);</span>
+<span class="n">zvalues</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"c3"</span><span class="o">,</span><span class="mi">130</span><span class="no">D</span><span class="o">);</span>
+<span class="n">zvalues</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"c4"</span><span class="o">,</span><span class="mi">21</span><span class="no">D</span><span class="o">);</span>
+<span class="n">jedis</span><span class="o">.</span><span class="na">zadd</span><span class="o">(</span><span class="n">zsetKey</span><span class="o">,</span><span class="n">zvalues</span><span class="o">);</span>
+<span class="c1">//统计数量</span>
+<span class="kt">long</span> <span class="n">size</span><span class="o">=</span><span class="n">jedis</span><span class="o">.</span><span class="na">zcard</span><span class="o">(</span><span class="n">zsetKey</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"数据量："</span><span class="o">+</span><span class="n">size</span><span class="o">);</span>
+<span class="c1">//获取</span>
+<span class="nc">Set</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">stringSet</span><span class="o">=</span><span class="n">jedis</span><span class="o">.</span><span class="na">zrange</span><span class="o">(</span><span class="n">zsetKey</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">2</span><span class="o">);</span>
+<span class="n">stringSet</span><span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">forEach</span><span class="o">(</span><span class="n">s</span> <span class="o">-&gt;</span> <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s</span><span class="o">));</span>
+<span class="c1">//倒序</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"倒序"</span><span class="o">);</span>
+<span class="n">stringSet</span><span class="o">=</span><span class="n">jedis</span><span class="o">.</span><span class="na">zrevrange</span><span class="o">(</span><span class="n">zsetKey</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">2</span><span class="o">);</span>
+<span class="n">stringSet</span><span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">forEach</span><span class="o">(</span><span class="n">s</span> <span class="o">-&gt;</span> <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s</span><span class="o">));</span>
+<span class="n">jedis</span><span class="o">.</span><span class="na">del</span><span class="o">(</span><span class="n">zsetKey</span><span class="o">);</span>
+<span class="n">jedis</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</code></pre></div></div>
+
+<p>以上操作仅仅只是部分api的展示，更多的操作开发者需要自行探索，结合<a href="https://redis.io/commands">Redis的命令介绍</a>，才能更多的加深理解。</p>
+
+<h4 id="122-使用lettuce操作redis">1.2.2 使用Lettuce操作Redis</h4>
+
+<p>lettuce可能大家不常见，但是我们基于Spring Boot来操作的<code class="language-plaintext highlighter-rouge">StringRedisTemplate</code>大家肯定熟悉，如果开发者默认没有选择，那么<code class="language-plaintext highlighter-rouge">StringRedisTemplate</code>底层依赖的就是lettuce来作为默认依赖，最终来操作Redis。</p>
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2020/11/29/redis-1/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div class="xiaoym-qrcode">
+  <div class="xiaoym-qrcode-title">
+    <h2>微信公众号(八一菜刀)</h2>
+  </div>
+  <div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+</div>
+
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

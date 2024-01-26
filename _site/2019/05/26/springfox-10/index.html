@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>springfox 源码分析(十) 遍历接口获取Model对象 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2019/05/26/springfox-10/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="springfox 源码分析(十) 遍历接口获取Model对象">
+      
+    <meta name="keywords" content="springfox 源码系列,springfox-swagger">
+    <meta name="og:keywords" content="springfox 源码系列,springfox-swagger">
+      
+    <meta name="description" content="在上一篇中,我们了解到了springfox通过groupName的过滤,拿到了所有的接口,并且通过guava库的ArrayListMultimap对接口的Controller进一步进行了分组,接下来就是解析每个接口的操作了">
+    <meta name="og:description" content="在上一篇中,我们了解到了springfox通过groupName的过滤,拿到了所有的接口,并且通过guava库的ArrayListMultimap对接口的Controller进一步进行了分组,接下来就是解析每个接口的操作了">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2019/05/26/springfox-10/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2019-05-26">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="springfox 源码分析(">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">springfox 源码分析(十) 遍历接口获取Model对象</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2019/05/26
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#springfox" title="springfox">springfox</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <p>在上一篇中,我们了解到了springfox通过groupName的过滤,拿到了所有的接口,并且通过guava库的<code class="language-plaintext highlighter-rouge">ArrayListMultimap</code>对接口的Controller进一步进行了分组,接下来就是解析每个接口的操作了</p>
+
+<p>这篇主要介绍springfox解析每个接口中涉及的Model类操作,这其中包含：</p>
+
+<ul>
+  <li>参数中是Java Bean的参数类型</li>
+  <li>接口返回非void、基础类型的类型</li>
+  <li>在<code class="language-plaintext highlighter-rouge">@ApiResponse</code>注解中标注返回的class类型</li>
+</ul>
+
+<p>目前主要有以上这三种类型,通过解析拿到接口涉及的Model类型,然后添加到一个Set集合中,该Set集合就对应了Swagger标准属性的definitions属性</p>
+
+<p>先来看遍历接口的代码：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="o">(</span><span class="kd">final</span> <span class="nc">ResourceGroup</span> <span class="n">resourceGroup</span> <span class="o">:</span> <span class="n">sortedByName</span><span class="o">(</span><span class="n">allResourceGroups</span><span class="o">))</span> <span class="o">{</span>
+  <span class="nc">DocumentationContext</span> <span class="n">documentationContext</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">getDocumentationContext</span><span class="o">();</span>
+  <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">produces</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LinkedHashSet</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;(</span><span class="n">documentationContext</span><span class="o">.</span><span class="na">getProduces</span><span class="o">());</span>
+  <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">consumes</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LinkedHashSet</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;(</span><span class="n">documentationContext</span><span class="o">.</span><span class="na">getConsumes</span><span class="o">());</span>
+  <span class="nc">String</span> <span class="n">host</span> <span class="o">=</span> <span class="n">documentationContext</span><span class="o">.</span><span class="na">getHost</span><span class="o">();</span>
+  <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">protocols</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LinkedHashSet</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;(</span><span class="n">documentationContext</span><span class="o">.</span><span class="na">getProtocols</span><span class="o">());</span>
+  <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">ApiDescription</span><span class="o">&gt;</span> <span class="n">apiDescriptions</span> <span class="o">=</span> <span class="n">newHashSet</span><span class="o">();</span>
+
+  <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Model</span><span class="o">&gt;</span> <span class="n">models</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LinkedHashMap</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Model</span><span class="o">&gt;();</span>
+  <span class="c1">//得到该Controller下的所有接口</span>
+  <span class="nc">List</span><span class="o">&lt;</span><span class="nc">RequestMappingContext</span><span class="o">&gt;</span> <span class="n">requestMappings</span> <span class="o">=</span> <span class="n">nullToEmptyList</span><span class="o">(</span><span class="n">requestMappingsByResourceGroup</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">resourceGroup</span><span class="o">));</span>
+  <span class="k">for</span> <span class="o">(</span><span class="nc">RequestMappingContext</span> <span class="n">each</span> <span class="o">:</span> <span class="n">sortedByMethods</span><span class="o">(</span><span class="n">requestMappings</span><span class="o">))</span> <span class="o">{</span>
+    <span class="c1">//拿到该接口的所有Model</span>
+    <span class="n">models</span><span class="o">.</span><span class="na">putAll</span><span class="o">(</span><span class="n">apiModelReader</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">each</span><span class="o">.</span><span class="na">withKnownModels</span><span class="o">(</span><span class="n">models</span><span class="o">)));</span>
+    <span class="n">apiDescriptions</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">apiDescriptionReader</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">each</span><span class="o">));</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>遍历<code class="language-plaintext highlighter-rouge">RequestMappingContext</code>对象,在前面我也已经介绍过,该对象其实就是每个接口实例对象</p>
+
+<p>最主要的是来看<code class="language-plaintext highlighter-rouge">apiModelReader.read</code>方法</p>
+
+<p><code class="language-plaintext highlighter-rouge">each.withKnownModels</code>方法是通过new关键字复制了一个新的<code class="language-plaintext highlighter-rouge">RequestMappingContext</code></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">RequestMappingContext</span> <span class="nf">withKnownModels</span><span class="o">(</span><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Model</span><span class="o">&gt;</span> <span class="n">knownModels</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">RequestMappingContext</span><span class="o">(</span><span class="n">documentationContext</span><span class="o">,</span> <span class="n">handler</span><span class="o">,</span>
+                                     <span class="n">operationModelContextsBuilder</span><span class="o">,</span> <span class="n">requestMappingPattern</span><span class="o">,</span> <span class="n">knownModels</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>来看读取接口Models的源码：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/***
+   * 读取该接口Model信息
+   * @param context
+   * @return
+   */</span>
+<span class="kd">public</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Model</span><span class="o">&gt;</span> <span class="nf">read</span><span class="o">(</span><span class="nc">RequestMappingContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">//忽略的class集合，如果没有额外设置,则得到的是Defaults类中的默认忽略类Class集合</span>
+    <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">Class</span><span class="o">&gt;</span> <span class="n">ignorableTypes</span> <span class="o">=</span> <span class="n">newHashSet</span><span class="o">(</span><span class="n">context</span><span class="o">.</span><span class="na">getIgnorableParameterTypes</span><span class="o">());</span>
+    <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">ModelContext</span><span class="o">&gt;</span> <span class="n">modelContexts</span> <span class="o">=</span> <span class="n">pluginsManager</span><span class="o">.</span><span class="na">modelContexts</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+    <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Model</span><span class="o">&gt;</span> <span class="n">modelMap</span> <span class="o">=</span> <span class="n">newHashMap</span><span class="o">(</span><span class="n">context</span><span class="o">.</span><span class="na">getModelMap</span><span class="o">());</span>
+    <span class="k">for</span> <span class="o">(</span><span class="nc">ModelContext</span> <span class="n">each</span> <span class="o">:</span> <span class="n">modelContexts</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">markIgnorablesAsHasSeen</span><span class="o">(</span><span class="n">typeResolver</span><span class="o">,</span> <span class="n">ignorableTypes</span><span class="o">,</span> <span class="n">each</span><span class="o">);</span>
+        <span class="nc">Optional</span><span class="o">&lt;</span><span class="nc">Model</span><span class="o">&gt;</span> <span class="n">pModel</span> <span class="o">=</span> <span class="n">modelProvider</span><span class="o">.</span><span class="na">modelFor</span><span class="o">(</span><span class="n">each</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">pModel</span><span class="o">.</span><span class="na">isPresent</span><span class="o">())</span> <span class="o">{</span>
+            <span class="no">LOG</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Generated parameter model id: {}, name: {}, schema: {} models"</span><span class="o">,</span>
+                      <span class="n">pModel</span><span class="o">.</span><span class="na">get</span><span class="o">().</span><span class="na">getId</span><span class="o">(),</span>
+                      <span class="n">pModel</span><span class="o">.</span><span class="na">get</span><span class="o">().</span><span class="na">getName</span><span class="o">());</span>
+            <span class="n">mergeModelMap</span><span class="o">(</span><span class="n">modelMap</span><span class="o">,</span> <span class="n">pModel</span><span class="o">.</span><span class="na">get</span><span class="o">());</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="no">LOG</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Did not find any parameter models for {}"</span><span class="o">,</span> <span class="n">each</span><span class="o">.</span><span class="na">getType</span><span class="o">());</span>
+        <span class="o">}</span>
+        <span class="n">populateDependencies</span><span class="o">(</span><span class="n">each</span><span class="o">,</span> <span class="n">modelMap</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">modelMap</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>初步通过源码得知,要想先得到Model,则需要先构造得到ModelContext</p>
+
+<ul>
+  <li>初始化外部涉及到的忽略类型Set集合</li>
+  <li>读取RequestMappingContext，拿到ModelContext的Set集合</li>
+  <li>context中的ModelMap在此处其实是空对象，对应的modelMap也是空对象,这个在上面的<code class="language-plaintext highlighter-rouge">withKnownModels</code>方法中我们可以观察到</li>
+  <li>遍历ModelContext的Set集合,通过modelProvider.modelFor的方法由ModelContext转换构造成目标Model对象</li>
+</ul>
+
+<h2 id="modelcontext">ModelContext</h2>
+
+<p>在初始化ModelContext集合之前,我们先来看看ModelContext的属性</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ModelContext</span> <span class="o">{</span>
+    <span class="c1">//类型</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">Type</span> <span class="n">type</span><span class="o">;</span>
+    <span class="c1">//是否返回类型</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="kt">boolean</span> <span class="n">returnType</span><span class="o">;</span>
+    <span class="c1">//分组名称</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">groupName</span><span class="o">;</span>
+    <span class="c1">//文档类型</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">DocumentationType</span> <span class="n">documentationType</span><span class="o">;</span>
+  <span class="c1">//父级</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">ModelContext</span> <span class="n">parentContext</span><span class="o">;</span>
+    <span class="c1">//ResolvedType</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">ResolvedType</span><span class="o">&gt;</span> <span class="n">seenTypes</span> <span class="o">=</span> <span class="n">newHashSet</span><span class="o">();</span>
+    <span class="c1">//model构造器</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">ModelBuilder</span> <span class="n">modelBuilder</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">AlternateTypeProvider</span> <span class="n">alternateTypeProvider</span><span class="o">;</span>
+    <span class="c1">//名称策略</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">GenericTypeNamingStrategy</span> <span class="n">genericNamingStrategy</span><span class="o">;</span>
+    <span class="c1">//忽略类型</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">ImmutableSet</span><span class="o">&lt;</span><span class="nc">Class</span><span class="o">&gt;</span> <span class="n">ignorableTypes</span><span class="o">;</span>
+
+  <span class="kd">private</span> <span class="nf">ModelContext</span><span class="o">(</span>
+      <span class="nc">String</span> <span class="n">groupName</span><span class="o">,</span>
+      <span class="nc">Type</span> <span class="n">type</span><span class="o">,</span>
+      <span class="kt">boolean</span> <span class="n">returnType</span><span class="o">,</span>
+      <span class="nc">DocumentationType</span> <span class="n">documentationType</span><span class="o">,</span>
+      <span class="nc">AlternateTypeProvider</span> <span class="n">alternateTypeProvider</span><span class="o">,</span>
+      <span class="nc">GenericTypeNamingStrategy</span> <span class="n">genericNamingStrategy</span><span class="o">,</span>
+      <span class="nc">ImmutableSet</span><span class="o">&lt;</span><span class="nc">Class</span><span class="o">&gt;</span> <span class="n">ignorableTypes</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">groupName</span> <span class="o">=</span> <span class="n">groupName</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">documentationType</span> <span class="o">=</span> <span class="n">documentationType</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">alternateTypeProvider</span> <span class="o">=</span> <span class="n">alternateTypeProvider</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">genericNamingStrategy</span> <span class="o">=</span> <span class="n">genericNamingStrategy</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">ignorableTypes</span> <span class="o">=</span> <span class="n">ignorableTypes</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">parentContext</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">type</span> <span class="o">=</span> <span class="n">type</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">returnType</span> <span class="o">=</span> <span class="n">returnType</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">modelBuilder</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ModelBuilder</span><span class="o">();</span>
+  <span class="o">}</span>
+ <span class="c1">//...   </span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>参数对象全部是final关键字修饰</p>
+
+<h2 id="初始化modelcontext-set集合">初始化ModelContext Set集合</h2>
+
+<p>先来看<code class="language-plaintext highlighter-rouge">pluginsManager.modelContexts</code>方法中的初始化操作</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">ModelContext</span><span class="o">&gt;</span> <span class="nf">modelContexts</span><span class="o">(</span><span class="nc">RequestMappingContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">DocumentationType</span> <span class="n">documentationType</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">getDocumentationContext</span><span class="o">().</span><span class="na">getDocumentationType</span><span class="o">();</span>
+    <span class="c1">//构建该接口的ModelContext集合</span>
+    <span class="k">for</span> <span class="o">(</span><span class="nc">OperationModelsProviderPlugin</span> <span class="n">each</span> <span class="o">:</span> <span class="n">operationModelsProviders</span><span class="o">.</span><span class="na">getPluginsFor</span><span class="o">(</span><span class="n">documentationType</span><span class="o">))</span> <span class="o">{</span>
+      <span class="n">each</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">context</span><span class="o">.</span><span class="na">operationModelsBuilder</span><span class="o">().</span><span class="na">build</span><span class="o">();</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>通过文档类型,获取Model的<code class="language-plaintext highlighter-rouge">OperationModelsProviderPlugin</code>插件实现类，然后调用apply方法初始化</p>
+
+<p><code class="language-plaintext highlighter-rouge">OperationModelsProviderPlugin</code>主要有两个实现类，分别是：</p>
+
+<ul>
+  <li><strong>OperationModelsProviderPlugin</strong>：处理返回类型、参数类型等</li>
+  <li><strong>SwaggerOperationModelsProvider</strong>：处理swagger注解提供的值类型,主要包括<code class="language-plaintext highlighter-rouge">@ApiResponse</code>、<code class="language-plaintext highlighter-rouge">@ApiOperation</code></li>
+</ul>
+
+<h3 id="operationmodelsproviderplugin">OperationModelsProviderPlugin</h3>
+
+<p>先来看常规类型</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Component</span>
+<span class="nd">@Order</span><span class="o">(</span><span class="nc">Ordered</span><span class="o">.</span><span class="na">HIGHEST_PRECEDENCE</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">OperationModelsProvider</span> <span class="kd">implements</span> <span class="nc">OperationModelsProviderPlugin</span> <span class="o">{</span>
+
+  <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">Logger</span> <span class="no">LOG</span> <span class="o">=</span> <span class="nc">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="nc">OperationModelsProvider</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">TypeResolver</span> <span class="n">typeResolver</span><span class="o">;</span>
+
+  <span class="nd">@Autowired</span>
+  <span class="kd">public</span> <span class="nf">OperationModelsProvider</span><span class="o">(</span><span class="nc">TypeResolver</span> <span class="n">typeResolver</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">typeResolver</span> <span class="o">=</span> <span class="n">typeResolver</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">apply</span><span class="o">(</span><span class="nc">RequestMappingContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">collectFromReturnType</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+    <span class="n">collectParameters</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+    <span class="n">collectGlobalModels</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+  <span class="o">}</span>
+    
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>常规Model插件的apply方法主要有三个方法</p>
+
+<h4 id="collectfromreturntype">collectFromReturnType</h4>
+
+<p>收集接口返回类型,跟踪源码;</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kt">void</span> <span class="nf">collectFromReturnType</span><span class="o">(</span><span class="nc">RequestMappingContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">ResolvedType</span> <span class="n">modelType</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">getReturnType</span><span class="o">();</span>
+    <span class="n">modelType</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">alternateFor</span><span class="o">(</span><span class="n">modelType</span><span class="o">);</span>
+    <span class="no">LOG</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Adding return parameter of type {}"</span><span class="o">,</span> <span class="n">resolvedTypeSignature</span><span class="o">(</span><span class="n">modelType</span><span class="o">).</span><span class="na">or</span><span class="o">(</span><span class="s">"&lt;null&gt;"</span><span class="o">));</span>
+    <span class="n">context</span><span class="o">.</span><span class="na">operationModelsBuilder</span><span class="o">().</span><span class="na">addReturn</span><span class="o">(</span><span class="n">modelType</span><span class="o">);</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>直接拿到接口的返回类型,这个返回类型在前面接口初始化时,已经初始化，getReturnType方法实际调用的是RequestHandler的方法</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">ResolvedType</span> <span class="nf">getReturnType</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">handler</span><span class="o">.</span><span class="na">getReturnType</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>我们在前面也介绍过，RequestHander因为是接口，在springfox中的实现类是<code class="language-plaintext highlighter-rouge">WebMvcRequestHandler</code></p>
+
+<p>拿到返回类型,最终嗲用addReturn方法添加到context对象中的全局Set<ModelContext>对象中</ModelContext></p>
+
+<h4 id="collectparameters">collectParameters</h4>
+
+<p>收集接口中的参数类型</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kt">void</span> <span class="nf">collectParameters</span><span class="o">(</span><span class="nc">RequestMappingContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+
+
+    <span class="no">LOG</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Reading parameters models for handlerMethod |{}|"</span><span class="o">,</span> <span class="n">context</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">ResolvedMethodParameter</span><span class="o">&gt;</span> <span class="n">parameterTypes</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">getParameters</span><span class="o">();</span>
+    <span class="k">for</span> <span class="o">(</span><span class="nc">ResolvedMethodParameter</span> <span class="n">parameterType</span> <span class="o">:</span> <span class="n">parameterTypes</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">parameterType</span><span class="o">.</span><span class="na">hasParameterAnnotation</span><span class="o">(</span><span class="nc">RequestBody</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+            <span class="o">||</span> <span class="n">parameterType</span><span class="o">.</span><span class="na">hasParameterAnnotation</span><span class="o">(</span><span class="nc">RequestPart</span><span class="o">.</span><span class="na">class</span><span class="o">))</span> <span class="o">{</span>
+          <span class="nc">ResolvedType</span> <span class="n">modelType</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">alternateFor</span><span class="o">(</span><span class="n">parameterType</span><span class="o">.</span><span class="na">getParameterType</span><span class="o">());</span>
+          <span class="no">LOG</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Adding input parameter of type {}"</span><span class="o">,</span> <span class="n">resolvedTypeSignature</span><span class="o">(</span><span class="n">modelType</span><span class="o">).</span><span class="na">or</span><span class="o">(</span><span class="s">"&lt;null&gt;"</span><span class="o">));</span>
+          <span class="n">context</span><span class="o">.</span><span class="na">operationModelsBuilder</span><span class="o">().</span><span class="na">addInputParam</span><span class="o">(</span><span class="n">modelType</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="no">LOG</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Finished reading parameters models for handlerMethod |{}|"</span><span class="o">,</span> <span class="n">context</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>接口参数类型中,springfox目前只解析两种</p>
+
+<ul>
+  <li>一种是实体类通过Spring的<code class="language-plaintext highlighter-rouge">@RequestBody</code>注解标注的,我们在使用Spring开发的时候如果使用该注解通常是使用的JSON作为接口的交互格式</li>
+  <li>通过Spring的<code class="language-plaintext highlighter-rouge">@ReuqestPart</code>注解标注的参数类型，<code class="language-plaintext highlighter-rouge">@RequestPart</code>注解是配合文件上传时附属参数类型使用的注解</li>
+</ul>
+
+<h4 id="collectglobalmodels">collectGlobalModels</h4>
+
+<p>收集接口的全局Model</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kt">void</span> <span class="nf">collectGlobalModels</span><span class="o">(</span><span class="nc">RequestMappingContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">for</span> <span class="o">(</span><span class="nc">ResolvedType</span> <span class="n">each</span> <span class="o">:</span> <span class="n">context</span><span class="o">.</span><span class="na">getAdditionalModels</span><span class="o">())</span> <span class="o">{</span>
+        <span class="n">context</span><span class="o">.</span><span class="na">operationModelsBuilder</span><span class="o">().</span><span class="na">addInputParam</span><span class="o">(</span><span class="n">each</span><span class="o">);</span>
+        <span class="n">context</span><span class="o">.</span><span class="na">operationModelsBuilder</span><span class="o">().</span><span class="na">addReturn</span><span class="o">(</span><span class="n">each</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>收集外部全局添加的Model,添加进入集合中</p>
+
+<h3 id="swaggeroperationmodelsprovider">SwaggerOperationModelsProvider</h3>
+
+<p>基于Swagger相关注解赋值的类型Class解析</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Component</span>
+<span class="nd">@Order</span><span class="o">(</span><span class="nc">SwaggerPluginSupport</span><span class="o">.</span><span class="na">SWAGGER_PLUGIN_ORDER</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SwaggerOperationModelsProvider</span> <span class="kd">implements</span> <span class="nc">OperationModelsProviderPlugin</span> <span class="o">{</span>
+
+  <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">Logger</span> <span class="no">LOG</span> <span class="o">=</span> <span class="nc">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="nc">SwaggerOperationModelsProvider</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">TypeResolver</span> <span class="n">typeResolver</span><span class="o">;</span>
+
+  <span class="nd">@Autowired</span>
+  <span class="kd">public</span> <span class="nf">SwaggerOperationModelsProvider</span><span class="o">(</span><span class="nc">TypeResolver</span> <span class="n">typeResolver</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">typeResolver</span> <span class="o">=</span> <span class="n">typeResolver</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">apply</span><span class="o">(</span><span class="nc">RequestMappingContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">collectFromApiOperation</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+    <span class="n">collectApiResponses</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>主要有两种类型：</p>
+
+<p>收集使用<code class="language-plaintext highlighter-rouge">@ApiOperation</code>注解时,使用主句的属性值</p>
+
+<p>收集<code class="language-plaintext highlighter-rouge">@ApiResponse</code>响应状态码涉及到的Model</p>
+
+<h4 id="collectfromapioperation">collectFromApiOperation</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kt">void</span> <span class="nf">collectFromApiOperation</span><span class="o">(</span><span class="nc">RequestMappingContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">ResolvedType</span> <span class="n">returnType</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">getReturnType</span><span class="o">();</span>
+    <span class="n">returnType</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">alternateFor</span><span class="o">(</span><span class="n">returnType</span><span class="o">);</span>
+    <span class="nc">Optional</span><span class="o">&lt;</span><span class="nc">ResolvedType</span><span class="o">&gt;</span> <span class="n">returnParameter</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">findAnnotation</span><span class="o">(</span><span class="nc">ApiOperation</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">transform</span><span class="o">(</span><span class="n">resolvedTypeFromOperation</span><span class="o">(</span><span class="n">typeResolver</span><span class="o">,</span> <span class="n">returnType</span><span class="o">));</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">returnParameter</span><span class="o">.</span><span class="na">isPresent</span><span class="o">()</span> <span class="o">&amp;&amp;</span> <span class="n">returnParameter</span><span class="o">.</span><span class="na">get</span><span class="o">()</span> <span class="o">!=</span> <span class="n">returnType</span><span class="o">)</span> <span class="o">{</span>
+      <span class="no">LOG</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Adding return parameter of type {}"</span><span class="o">,</span> <span class="n">resolvedTypeSignature</span><span class="o">(</span><span class="n">returnParameter</span><span class="o">.</span><span class="na">get</span><span class="o">()).</span><span class="na">or</span><span class="o">(</span><span class="s">"&lt;null&gt;"</span><span class="o">));</span>
+      <span class="n">context</span><span class="o">.</span><span class="na">operationModelsBuilder</span><span class="o">().</span><span class="na">addReturn</span><span class="o">(</span><span class="n">returnParameter</span><span class="o">.</span><span class="na">get</span><span class="o">());</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>查找注解,获取ResolvedType的值</p>
+
+<p>核心是拿到ApiOeration注解的response-class属性值</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@VisibleForTesting</span>
+<span class="kd">static</span> <span class="nc">ResolvedType</span> <span class="nf">getResolvedType</span><span class="o">(</span>
+    <span class="nc">ApiOperation</span> <span class="n">annotation</span><span class="o">,</span>
+    <span class="nc">TypeResolver</span> <span class="n">resolver</span><span class="o">,</span>
+    <span class="nc">ResolvedType</span> <span class="n">defaultType</span><span class="o">)</span> <span class="o">{</span>
+
+    <span class="k">if</span> <span class="o">(</span><span class="kc">null</span> <span class="o">!=</span> <span class="n">annotation</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Class</span><span class="o">&lt;?&gt;</span> <span class="n">response</span> <span class="o">=</span> <span class="n">annotation</span><span class="o">.</span><span class="na">response</span><span class="o">();</span>
+        <span class="nc">String</span> <span class="n">responseContainer</span> <span class="o">=</span> <span class="n">annotation</span><span class="o">.</span><span class="na">responseContainer</span><span class="o">();</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">resolvedType</span><span class="o">(</span><span class="n">resolver</span><span class="o">,</span> <span class="n">response</span><span class="o">,</span> <span class="n">responseContainer</span><span class="o">).</span><span class="na">isPresent</span><span class="o">())</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="nf">resolvedType</span><span class="o">(</span><span class="n">resolver</span><span class="o">,</span> <span class="n">response</span><span class="o">,</span> <span class="n">responseContainer</span><span class="o">).</span><span class="na">get</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">defaultType</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="collectapiresponses">collectApiResponses</h4>
+
+<p>收集在接口上标注状态码涉及的Class类，ApiResponses是集合，最终遍历得到ApiResponse</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kt">void</span> <span class="nf">collectApiResponses</span><span class="o">(</span><span class="nc">RequestMappingContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+  <span class="nc">List</span><span class="o">&lt;</span><span class="nc">ApiResponses</span><span class="o">&gt;</span> <span class="n">allApiResponses</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">findAnnotations</span><span class="o">(</span><span class="nc">ApiResponses</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+  <span class="no">LOG</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Reading parameters models for handlerMethod |{}|"</span><span class="o">,</span> <span class="n">context</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+  <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">ResolvedType</span><span class="o">&gt;</span> <span class="n">seenTypes</span> <span class="o">=</span> <span class="n">newHashSet</span><span class="o">();</span>
+  <span class="k">for</span> <span class="o">(</span><span class="nc">ApiResponses</span> <span class="n">apiResponses</span> <span class="o">:</span> <span class="n">allApiResponses</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">ResolvedType</span><span class="o">&gt;</span> <span class="n">modelTypes</span> <span class="o">=</span> <span class="n">toResolvedTypes</span><span class="o">(</span><span class="n">context</span><span class="o">).</span><span class="na">apply</span><span class="o">(</span><span class="n">apiResponses</span><span class="o">);</span>
+    <span class="k">for</span> <span class="o">(</span><span class="nc">ResolvedType</span> <span class="n">modelType</span> <span class="o">:</span> <span class="n">modelTypes</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">if</span> <span class="o">(!</span><span class="n">seenTypes</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">modelType</span><span class="o">))</span> <span class="o">{</span>
+        <span class="n">seenTypes</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">modelType</span><span class="o">);</span>
+        <span class="n">context</span><span class="o">.</span><span class="na">operationModelsBuilder</span><span class="o">().</span><span class="na">addReturn</span><span class="o">(</span><span class="n">modelType</span><span class="o">);</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="modelcontext初始化">ModelContext初始化</h2>
+
+<p>我们通过TypeResolved方法将基础的Class转换为ResolvedType</p>
+
+<p>此时ModelContext提供了几个方法将ResolvedType转换为ModelContext类型</p>
+
+<ul>
+  <li>returnValue:提供返回的class</li>
+  <li>inputParam:参数类的方法</li>
+</ul>
+
+<p>通过<code class="language-plaintext highlighter-rouge">OperationModelContextsBuilder</code>提供的默认参数,构造函数默认构造出ModelContext对象</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+   * Convenience method to provide an new context for an input parameter
+   *
+   * @param group                 - group name of the docket
+   * @param type                  - type
+   * @param documentationType     - for documentation type
+   * @param alternateTypeProvider - alternate type provider
+   * @param genericNamingStrategy - how generic types should be named
+   * @param ignorableTypes        - types that can be ignored
+   * @return new context
+   */</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="nc">ModelContext</span> <span class="nf">inputParam</span><span class="o">(</span>
+    <span class="nc">String</span> <span class="n">group</span><span class="o">,</span>
+    <span class="nc">Type</span> <span class="n">type</span><span class="o">,</span>
+    <span class="nc">DocumentationType</span> <span class="n">documentationType</span><span class="o">,</span>
+    <span class="nc">AlternateTypeProvider</span> <span class="n">alternateTypeProvider</span><span class="o">,</span>
+    <span class="nc">GenericTypeNamingStrategy</span> <span class="n">genericNamingStrategy</span><span class="o">,</span>
+    <span class="nc">ImmutableSet</span><span class="o">&lt;</span><span class="nc">Class</span><span class="o">&gt;</span> <span class="n">ignorableTypes</span><span class="o">)</span> <span class="o">{</span>
+
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">ModelContext</span><span class="o">(</span>
+        <span class="n">group</span><span class="o">,</span>
+        <span class="n">type</span><span class="o">,</span>
+        <span class="kc">false</span><span class="o">,</span>
+        <span class="n">documentationType</span><span class="o">,</span>
+        <span class="n">alternateTypeProvider</span><span class="o">,</span>
+        <span class="n">genericNamingStrategy</span><span class="o">,</span>
+        <span class="n">ignorableTypes</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="modelcontext转化为model">ModelContext转化为Model</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Set</span><span class="o">&lt;</span><span class="nc">ModelContext</span><span class="o">&gt;</span> <span class="n">modelContexts</span> <span class="o">=</span> <span class="n">pluginsManager</span><span class="o">.</span><span class="na">modelContexts</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+<span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Model</span><span class="o">&gt;</span> <span class="n">modelMap</span> <span class="o">=</span> <span class="n">newHashMap</span><span class="o">(</span><span class="n">context</span><span class="o">.</span><span class="na">getModelMap</span><span class="o">());</span>
+<span class="k">for</span> <span class="o">(</span><span class="nc">ModelContext</span> <span class="n">each</span> <span class="o">:</span> <span class="n">modelContexts</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">//添加基础忽略类型的ResolvedType类型</span>
+    <span class="n">markIgnorablesAsHasSeen</span><span class="o">(</span><span class="n">typeResolver</span><span class="o">,</span> <span class="n">ignorableTypes</span><span class="o">,</span> <span class="n">each</span><span class="o">);</span>
+    <span class="c1">//通过modelProvider获取到Model类型,modelProvider是接口,有两个实现类</span>
+    <span class="c1">//DefaultModelProvider:默认装换</span>
+    <span class="c1">//CachingModelProvider:缓存</span>
+    <span class="nc">Optional</span><span class="o">&lt;</span><span class="nc">Model</span><span class="o">&gt;</span> <span class="n">pModel</span> <span class="o">=</span> <span class="n">modelProvider</span><span class="o">.</span><span class="na">modelFor</span><span class="o">(</span><span class="n">each</span><span class="o">);</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">pModel</span><span class="o">.</span><span class="na">isPresent</span><span class="o">())</span> <span class="o">{</span>
+        <span class="no">LOG</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Generated parameter model id: {}, name: {}, schema: {} models"</span><span class="o">,</span>
+                  <span class="n">pModel</span><span class="o">.</span><span class="na">get</span><span class="o">().</span><span class="na">getId</span><span class="o">(),</span>
+                  <span class="n">pModel</span><span class="o">.</span><span class="na">get</span><span class="o">().</span><span class="na">getName</span><span class="o">());</span>
+        <span class="n">mergeModelMap</span><span class="o">(</span><span class="n">modelMap</span><span class="o">,</span> <span class="n">pModel</span><span class="o">.</span><span class="na">get</span><span class="o">());</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="no">LOG</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Did not find any parameter models for {}"</span><span class="o">,</span> <span class="n">each</span><span class="o">.</span><span class="na">getType</span><span class="o">());</span>
+    <span class="o">}</span>
+    <span class="n">populateDependencies</span><span class="o">(</span><span class="n">each</span><span class="o">,</span> <span class="n">modelMap</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>通过modelProvider将ModelContext转换为Model类型</p>
+
+<p>modelProvider是接口,有两个实现类：</p>
+
+<ul>
+  <li>DefaultModelProvider:默认装换,每次都会将modelContext转换为model</li>
+  <li>CachingModelProvider:声明了一个guava的缓存池,先从缓存池获取,如果没有，则调用默认的处理器,转换为model，然后放入缓存池中</li>
+</ul>
+
+<p>此处modelProvider使用的是caching缓存配置</p>
+
+<p>初次通过modelFor获取是为空的,所以接下来看<code class="language-plaintext highlighter-rouge">populateDependencies</code>方法</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kt">void</span> <span class="nf">populateDependencies</span><span class="o">(</span><span class="nc">ModelContext</span> <span class="n">modelContext</span><span class="o">,</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Model</span><span class="o">&gt;</span> <span class="n">modelMap</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Model</span><span class="o">&gt;</span> <span class="n">dependencies</span> <span class="o">=</span> <span class="n">modelProvider</span><span class="o">.</span><span class="na">dependencies</span><span class="o">(</span><span class="n">modelContext</span><span class="o">);</span>
+    <span class="k">for</span> <span class="o">(</span><span class="nc">Model</span> <span class="n">each</span> <span class="o">:</span> <span class="n">dependencies</span><span class="o">.</span><span class="na">values</span><span class="o">())</span> <span class="o">{</span>
+        <span class="n">mergeModelMap</span><span class="o">(</span><span class="n">modelMap</span><span class="o">,</span> <span class="n">each</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>caching默认是依赖default的，此处dependencies实际是调用的default的</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Model</span><span class="o">&gt;</span> <span class="nf">dependencies</span><span class="o">(</span><span class="nc">ModelContext</span> <span class="n">modelContext</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Model</span><span class="o">&gt;</span> <span class="n">models</span> <span class="o">=</span> <span class="n">newHashMap</span><span class="o">();</span>
+    <span class="k">for</span> <span class="o">(</span><span class="nc">ResolvedType</span> <span class="n">resolvedType</span> <span class="o">:</span> <span class="n">dependencyProvider</span><span class="o">.</span><span class="na">dependentModels</span><span class="o">(</span><span class="n">modelContext</span><span class="o">))</span> <span class="o">{</span>
+        <span class="nc">ModelContext</span> <span class="n">parentContext</span> <span class="o">=</span> <span class="nc">ModelContext</span><span class="o">.</span><span class="na">fromParent</span><span class="o">(</span><span class="n">modelContext</span><span class="o">,</span> <span class="n">resolvedType</span><span class="o">);</span>
+        <span class="nc">Optional</span><span class="o">&lt;</span><span class="nc">Model</span><span class="o">&gt;</span> <span class="n">model</span> <span class="o">=</span> <span class="n">modelFor</span><span class="o">(</span><span class="n">parentContext</span><span class="o">).</span><span class="na">or</span><span class="o">(</span><span class="n">mapModel</span><span class="o">(</span><span class="n">parentContext</span><span class="o">,</span> <span class="n">resolvedType</span><span class="o">));</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">model</span><span class="o">.</span><span class="na">isPresent</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">models</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">model</span><span class="o">.</span><span class="na">get</span><span class="o">().</span><span class="na">getName</span><span class="o">(),</span> <span class="n">model</span><span class="o">.</span><span class="na">get</span><span class="o">());</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">models</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>dependencyProvider和modelProvider是同一个策略，默认接口，有两个实现类,一个是cache，一个是default</p>
+
+<p>所以我们默认来看default的即可</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">ResolvedType</span><span class="o">&gt;</span> <span class="nf">dependentModels</span><span class="o">(</span><span class="nc">ModelContext</span> <span class="n">modelContext</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nf">concat</span><span class="o">(</span><span class="n">from</span><span class="o">(</span><span class="n">resolvedDependencies</span><span class="o">(</span><span class="n">modelContext</span><span class="o">))</span>
+                  <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">ignorableTypes</span><span class="o">(</span><span class="n">modelContext</span><span class="o">))</span>
+                  <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">not</span><span class="o">(</span><span class="n">baseTypes</span><span class="o">(</span><span class="n">modelContext</span><span class="o">))),</span>
+                  <span class="n">schemaPluginsManager</span><span class="o">.</span><span class="na">dependencies</span><span class="o">(</span><span class="n">modelContext</span><span class="o">))</span>
+        <span class="o">.</span><span class="na">toSet</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>在默认配置中,最终是通过schemaPluginsManager的方法来解决ModelContext的转换</p>
+
+<p>最终是通过<code class="language-plaintext highlighter-rouge">SyntheticModelProviderPlugin</code>来转换,但是springfox中他没有实现类,所以此处的Plugin是空的，不存在</p>
+
+<p>所以此处的dependentModels返回的Set集合是空的</p>
+
+<p>再来看<code class="language-plaintext highlighter-rouge">resolvedDependencies</code>的方法</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">ResolvedType</span><span class="o">&gt;</span> <span class="nf">resolvedDependencies</span><span class="o">(</span><span class="nc">ModelContext</span> <span class="n">modelContext</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">ResolvedType</span> <span class="n">resolvedType</span> <span class="o">=</span> <span class="n">modelContext</span><span class="o">.</span><span class="na">alternateFor</span><span class="o">(</span><span class="n">modelContext</span><span class="o">.</span><span class="na">resolvedType</span><span class="o">(</span><span class="n">typeResolver</span><span class="o">));</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">isBaseType</span><span class="o">(</span><span class="nc">ModelContext</span><span class="o">.</span><span class="na">fromParent</span><span class="o">(</span><span class="n">modelContext</span><span class="o">,</span> <span class="n">resolvedType</span><span class="o">)))</span> <span class="o">{</span>
+      <span class="no">LOG</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Marking base type {} as seen"</span><span class="o">,</span> <span class="n">resolvedType</span><span class="o">.</span><span class="na">getSignature</span><span class="o">());</span>
+      <span class="n">modelContext</span><span class="o">.</span><span class="na">seen</span><span class="o">(</span><span class="n">resolvedType</span><span class="o">);</span>
+      <span class="k">return</span> <span class="nf">newArrayList</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">ResolvedType</span><span class="o">&gt;</span> <span class="n">dependencies</span> <span class="o">=</span> <span class="n">newArrayList</span><span class="o">(</span><span class="n">resolvedTypeParameters</span><span class="o">(</span><span class="n">modelContext</span><span class="o">,</span> <span class="n">resolvedType</span><span class="o">));</span>
+    <span class="n">dependencies</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">resolvedArrayElementType</span><span class="o">(</span><span class="n">modelContext</span><span class="o">,</span> <span class="n">resolvedType</span><span class="o">));</span>
+    <span class="n">dependencies</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">resolvedMapType</span><span class="o">(</span><span class="n">modelContext</span><span class="o">,</span> <span class="n">resolvedType</span><span class="o">));</span>
+    <span class="n">dependencies</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">resolvedPropertiesAndFields</span><span class="o">(</span><span class="n">modelContext</span><span class="o">,</span> <span class="n">resolvedType</span><span class="o">));</span>
+    <span class="n">dependencies</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">resolvedSubclasses</span><span class="o">(</span><span class="n">resolvedType</span><span class="o">));</span>
+    <span class="k">return</span> <span class="n">dependencies</span><span class="o">;</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>从代码中我们能看到：</p>
+
+<ul>
+  <li>首先因为ModelContext中属性是包含type的，所以默认拿到ResolvedType</li>
+  <li>通过拿到参数类型得到ResolvedType集合，如果有父类则递归调用.</li>
+</ul>
+
+<p>最终通过反射的方式拿到Model类型</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="nc">Optional</span><span class="o">&lt;</span><span class="nc">Model</span><span class="o">&gt;</span> <span class="nf">reflectionBasedModel</span><span class="o">(</span><span class="nc">ModelContext</span> <span class="n">modelContext</span><span class="o">,</span> <span class="nc">ResolvedType</span> <span class="n">propertiesHost</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">ImmutableMap</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">ModelProperty</span><span class="o">&gt;</span> <span class="n">propertiesIndex</span>
+        <span class="o">=</span> <span class="n">uniqueIndex</span><span class="o">(</span><span class="n">properties</span><span class="o">(</span><span class="n">modelContext</span><span class="o">,</span> <span class="n">propertiesHost</span><span class="o">),</span> <span class="n">byPropertyName</span><span class="o">());</span>
+    <span class="no">LOG</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Inferred {} properties. Properties found {}"</span><span class="o">,</span> <span class="n">propertiesIndex</span><span class="o">.</span><span class="na">size</span><span class="o">(),</span>
+              <span class="nc">Joiner</span><span class="o">.</span><span class="na">on</span><span class="o">(</span><span class="s">", "</span><span class="o">).</span><span class="na">join</span><span class="o">(</span><span class="n">propertiesIndex</span><span class="o">.</span><span class="na">keySet</span><span class="o">()));</span>
+    <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">ModelProperty</span><span class="o">&gt;</span> <span class="n">properties</span> <span class="o">=</span> <span class="n">newTreeMap</span><span class="o">();</span>
+    <span class="n">properties</span><span class="o">.</span><span class="na">putAll</span><span class="o">(</span><span class="n">propertiesIndex</span><span class="o">);</span>
+    <span class="k">return</span> <span class="nc">Optional</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">modelBuilder</span><span class="o">(</span><span class="n">propertiesHost</span><span class="o">,</span> <span class="n">properties</span><span class="o">,</span> <span class="n">modelContext</span><span class="o">));</span>
+<span class="o">}</span>
+
+<span class="kd">private</span> <span class="nc">Model</span> <span class="nf">modelBuilder</span><span class="o">(</span><span class="nc">ResolvedType</span> <span class="n">propertiesHost</span><span class="o">,</span>
+                           <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">ModelProperty</span><span class="o">&gt;</span> <span class="n">properties</span><span class="o">,</span>
+                           <span class="nc">ModelContext</span> <span class="n">modelContext</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">String</span> <span class="n">typeName</span> <span class="o">=</span> <span class="n">typeNameExtractor</span><span class="o">.</span><span class="na">typeName</span><span class="o">(</span><span class="nc">ModelContext</span><span class="o">.</span><span class="na">fromParent</span><span class="o">(</span><span class="n">modelContext</span><span class="o">,</span> <span class="n">propertiesHost</span><span class="o">));</span>
+    <span class="n">modelContext</span><span class="o">.</span><span class="na">getBuilder</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">id</span><span class="o">(</span><span class="n">typeName</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">type</span><span class="o">(</span><span class="n">propertiesHost</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">name</span><span class="o">(</span><span class="n">typeName</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">qualifiedType</span><span class="o">(</span><span class="n">simpleQualifiedTypeName</span><span class="o">(</span><span class="n">propertiesHost</span><span class="o">))</span>
+        <span class="o">.</span><span class="na">properties</span><span class="o">(</span><span class="n">properties</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">description</span><span class="o">(</span><span class="s">""</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">baseModel</span><span class="o">(</span><span class="s">""</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">discriminator</span><span class="o">(</span><span class="s">""</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">subTypes</span><span class="o">(</span><span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">ModelReference</span><span class="o">&gt;());</span>
+    <span class="k">return</span> <span class="n">schemaPluginsManager</span><span class="o">.</span><span class="na">model</span><span class="o">(</span><span class="n">modelContext</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>构造Model的基础属性，包括类型，名称、描述、属性等信息</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">ModelProperty</span><span class="o">&gt;</span> <span class="nf">propertiesFor</span><span class="o">(</span><span class="nc">ResolvedType</span> <span class="n">type</span><span class="o">,</span> <span class="nc">ModelContext</span> <span class="n">givenContext</span><span class="o">,</span> <span class="nc">String</span> <span class="n">namePrefix</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">ModelProperty</span><span class="o">&gt;</span> <span class="n">properties</span> <span class="o">=</span> <span class="n">newArrayList</span><span class="o">();</span>
+    <span class="nc">BeanDescription</span> <span class="n">beanDescription</span> <span class="o">=</span> <span class="n">beanDescription</span><span class="o">(</span><span class="n">type</span><span class="o">,</span> <span class="n">givenContext</span><span class="o">);</span>
+    <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">BeanPropertyDefinition</span><span class="o">&gt;</span> <span class="n">propertyLookup</span> <span class="o">=</span> <span class="n">uniqueIndex</span><span class="o">(</span><span class="n">beanDescription</span><span class="o">.</span><span class="na">findProperties</span><span class="o">(),</span>
+        <span class="nc">BeanPropertyDefinitions</span><span class="o">.</span><span class="na">beanPropertyByInternalName</span><span class="o">());</span>
+    <span class="k">for</span> <span class="o">(</span><span class="nc">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">BeanPropertyDefinition</span><span class="o">&gt;</span> <span class="n">each</span> <span class="o">:</span> <span class="n">propertyLookup</span><span class="o">.</span><span class="na">entrySet</span><span class="o">())</span> <span class="o">{</span>
+      <span class="no">LOG</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Reading property {}"</span><span class="o">,</span> <span class="n">each</span><span class="o">.</span><span class="na">getKey</span><span class="o">());</span>
+      <span class="nc">BeanPropertyDefinition</span> <span class="n">jacksonProperty</span> <span class="o">=</span> <span class="n">each</span><span class="o">.</span><span class="na">getValue</span><span class="o">();</span>
+      <span class="nc">Optional</span><span class="o">&lt;</span><span class="nc">AnnotatedMember</span><span class="o">&gt;</span> <span class="n">annotatedMember</span>
+          <span class="o">=</span> <span class="nc">Optional</span><span class="o">.</span><span class="na">fromNullable</span><span class="o">(</span><span class="n">safeGetPrimaryMember</span><span class="o">(</span><span class="n">jacksonProperty</span><span class="o">));</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">annotatedMember</span><span class="o">.</span><span class="na">isPresent</span><span class="o">())</span> <span class="o">{</span>
+        <span class="n">properties</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">candidateProperties</span><span class="o">(</span><span class="n">type</span><span class="o">,</span> <span class="n">annotatedMember</span><span class="o">.</span><span class="na">get</span><span class="o">(),</span> <span class="n">jacksonProperty</span><span class="o">,</span> <span class="n">givenContext</span><span class="o">,</span> <span class="n">namePrefix</span><span class="o">));</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="nc">FluentIterable</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">properties</span><span class="o">).</span><span class="na">toSortedSet</span><span class="o">(</span><span class="n">byPropertyName</span><span class="o">()).</span><span class="na">asList</span><span class="o">();</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>获取属性集合配置的代码</p>
+
+<h2 id="总结">总结</h2>
+
+<p>通过源码的一些研究,springfox主要的处理流程：</p>
+
+<ul>
+  <li>收集该接口的参数类型Model</li>
+  <li>收集<code class="language-plaintext highlighter-rouge">@ApiOperation</code>注解的response类型Model</li>
+  <li>收集全局Model</li>
+  <li>收集接口返回类型Model</li>
+  <li>收集接口主键<code class="language-plaintext highlighter-rouge">@ApiResponses</code>状态码涉及的类型Model</li>
+  <li>在收集过程中使用了缓存策略,这样能提高解析效率</li>
+</ul>
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2019/05/26/springfox-10/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div class="xiaoym-qrcode">
+  <div class="xiaoym-qrcode-title">
+    <h2>微信公众号(八一菜刀)</h2>
+  </div>
+  <div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+</div>
+
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

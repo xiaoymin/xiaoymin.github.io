@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>springfox 源码分析(一) 程序入口 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2019/05/21/springfox-1/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="springfox 源码分析(一) 程序入口">
+      
+    <meta name="keywords" content="springfox 源码系列,springfox-swagger">
+    <meta name="og:keywords" content="springfox 源码系列,springfox-swagger">
+      
+    <meta name="description" content="日期：2019-5-21 21:05:15">
+    <meta name="og:description" content="日期：2019-5-21 21:05:15">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2019/05/21/springfox-1/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2019-05-21">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="springfox 源码分析(">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">springfox 源码分析(一) 程序入口</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2019/05/21
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#springfox" title="springfox">springfox</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <p>日期：2019-5-21 21:05:15</p>
+
+<p>地点：家中</p>
+
+<h2 id="前言">前言</h2>
+
+<p>最近也是闲来无事,加上对<a href="https://doc.xiaominfo.com/">swagger-bootstrap-ui</a>也已经发布了将近26个稳定版本了,想到很多以后更有趣的功能,从Java底层扩展插件的方式开发出让国人拥有更棒的文档体验,所以决定研究一下<code class="language-plaintext highlighter-rouge">springfox</code>的源码，看能否对自己有一些启发.开发一些有趣的功能呢.</p>
+
+<p>关于springfox的使用这里不做过多的说明,可以自行搜索查看帮助文档，或者可以参考我提供的<a href="https://gitee.com/xiaoym/swagger-bootstrap-ui-demo">swagger-bootstrap-ui-demo</a>进行swagger的集成示例.</p>
+
+<p>在读springfox的源码之前,我们需要知道他具体的作用是什么？</p>
+
+<p>我觉得有以下几点：</p>
+
+<ul>
+  <li>对Spring的RestController、Controller接口进行包装,封装输出为Swagger规范中的path</li>
+  <li>针对Rest接口涉及到的model进行解析,包括model的属性等</li>
+  <li>满足文档分组的要求,解析tags</li>
+</ul>
+
+<p>总结一句话就是：<strong>输出符合Swagger API规范的JSON格式</strong></p>
+
+<h2 id="swagger-规范">Swagger 规范</h2>
+
+<p>OpenAPI 2.0 规范可以参考官网地址:<a href="https://swagger.io/specification/v2/">https://swagger.io/specification/v2/</a></p>
+
+<p>先来看我们的Swagger规范文件包含哪些元素</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"swagger"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2.0"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"info"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;div style='font-size:14px;color:red;'&gt;swagger-bootstrap-ui-demo RESTful APIs&lt;/div&gt;"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"swagger-bootstrap-ui很棒~~~！！！"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"termsOfService"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.group.com/"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"contact"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"group@qq.com"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"127.0.0.1:8999"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"basePath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"tags"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.8.2版本"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Api 182 Controller"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"paths"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"/2/api/new187/postRequest"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"post"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"tags"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="s2">"api-1871-controller"</span><span class="w">
+                </span><span class="p">],</span><span class="w">
+                </span><span class="nl">"summary"</span><span class="p">:</span><span class="w"> </span><span class="s2">"版本2-post请求参数Hidden属性是否生效"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"operationId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"postRequestUsingPOST_1"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"consumes"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="s2">"application/json"</span><span class="w">
+                </span><span class="p">],</span><span class="w">
+                </span><span class="nl">"produces"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="s2">"*/*"</span><span class="w">
+                </span><span class="p">],</span><span class="w">
+                </span><span class="nl">"parameters"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"in"</span><span class="p">:</span><span class="w"> </span><span class="s2">"body"</span><span class="p">,</span><span class="w">
+                        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"model187"</span><span class="p">,</span><span class="w">
+                        </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"model187"</span><span class="p">,</span><span class="w">
+                        </span><span class="nl">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+                        </span><span class="nl">"schema"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                            </span><span class="nl">"originalRef"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Model187"</span><span class="p">,</span><span class="w">
+                            </span><span class="nl">"$ref"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#/definitions/Model187"</span><span class="w">
+                        </span><span class="p">}</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">],</span><span class="w">
+                </span><span class="nl">"responses"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"200"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"OK"</span><span class="p">,</span><span class="w">
+                        </span><span class="nl">"schema"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                            </span><span class="nl">"originalRef"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Rest«Model187»"</span><span class="p">,</span><span class="w">
+                            </span><span class="nl">"$ref"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#/definitions/Rest«Model187»"</span><span class="w">
+                        </span><span class="p">}</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nl">"201"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Created"</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nl">"401"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Unauthorized"</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nl">"403"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Forbidden"</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nl">"404"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Not Found"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"security"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"BearerToken"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                            </span><span class="s2">"global"</span><span class="w">
+                        </span><span class="p">]</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"BearerToken1"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                            </span><span class="s2">"global"</span><span class="w">
+                        </span><span class="p">]</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">],</span><span class="w">
+                </span><span class="nl">"deprecated"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"securityDefinitions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"BearerToken"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"apiKey"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Authorization"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"in"</span><span class="p">:</span><span class="w"> </span><span class="s2">"header"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"definitions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"AInfoVo"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"object"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"required"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="s2">"aId"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"bList"</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="nl">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"aId"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"A记录主键"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"bList"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"object"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"B信息Map, key为BInfoVo的主键pkId"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"additionalProperties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"originalRef"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BInfoVo"</span><span class="p">,</span><span class="w">
+                        </span><span class="nl">"$ref"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#/definitions/BInfoVo"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="nl">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"AInfoVo"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"A信息"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"ActInteger"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"object"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"doub1"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"number"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"format"</span><span class="p">:</span><span class="w"> </span><span class="s2">"double"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"double类型属性"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"float1"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"number"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"format"</span><span class="p">:</span><span class="w"> </span><span class="s2">"float"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"float类型属性"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"number"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"integer"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"format"</span><span class="p">:</span><span class="w"> </span><span class="s2">"int64"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Long类型"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"price"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"number"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BigDecimal类型属性"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"sort"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"integer"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"format"</span><span class="p">:</span><span class="w"> </span><span class="s2">"int32"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"int类型"</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="nl">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ActInteger"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"Actor"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"object"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"deepOne"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"originalRef"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DeepOne"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"$ref"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#/definitions/DeepOne"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"recipt"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"originalRef"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Recipt"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"$ref"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#/definitions/Recipt"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"sort"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"integer"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"format"</span><span class="p">:</span><span class="w"> </span><span class="s2">"int32"</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="nl">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Actor"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>一个标准的Swagger接口规范可能类似上面的JSON文件,主要有以下属性:</p>
+
+<ul>
+  <li><strong>swagger</strong>:当前swagger的版本号</li>
+  <li><strong>info</strong>:文档的基础信息,包括描述信息,标题、作者、host等</li>
+  <li><strong>tags</strong>：分组tag标志</li>
+  <li><strong>paths</strong>:接口明细集合</li>
+  <li><strong>securityDefinitions</strong>:权限信息</li>
+  <li><strong>definitions</strong>：接口涉及到的Model类型定义</li>
+</ul>
+
+<h2 id="使用">使用</h2>
+
+<p>我们对Swagger的规范定义有了一个初步的了解,所以,接下来,我们来查看springfox是如何来实现的</p>
+
+<p>我们在使用<code class="language-plaintext highlighter-rouge">springfox-swagger</code>的时候主要有两步：</p>
+
+<ul>
+  <li>创建<code class="language-plaintext highlighter-rouge">Docket</code>实例对象,并使用<code class="language-plaintext highlighter-rouge">@Bean</code>注解注入到Spring容器中</li>
+  <li>在Swagger的配置类上添加<code class="language-plaintext highlighter-rouge">@EnableSwagger2</code>注解</li>
+</ul>
+
+<h2 id="开始">开始</h2>
+
+<p>我们从<code class="language-plaintext highlighter-rouge">springfox</code>的使用文档上来看,也仅仅知道告诉我们开发人员,需要从<code class="language-plaintext highlighter-rouge">@EnableSwagger2</code>这个注解入手,来跟踪<code class="language-plaintext highlighter-rouge">springfox</code>的创建流程</p>
+
+<p>但是我在看了该注解后,发现其实并不是这样,<code class="language-plaintext highlighter-rouge">springfox</code>源码中使用了大量的Spring的<code class="language-plaintext highlighter-rouge">@Component</code>注解进行实体bean的注入,所以要想找到各个类的依赖关系可以说是相当复杂,加上使用了Spring项目中并不怎么流行的<code class="language-plaintext highlighter-rouge">spring-plugin</code>组件,这更加增加了的阅读源码的难度，说实话,看过之后,已经留下了眼泪(这乱七八糟的什么玩意儿:( )…..</p>
+
+<h3 id="enableswagger2">@EnableSwagger2</h3>
+
+<p>先来看<code class="language-plaintext highlighter-rouge">EnableSwagger2</code>注解的代码</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">springfox.documentation.swagger2.annotations</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.springframework.context.annotation.Import</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">springfox.documentation.swagger2.configuration.Swagger2DocumentationConfiguration</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.lang.annotation.Documented</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.lang.annotation.Retention</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.lang.annotation.Target</span><span class="o">;</span>
+
+<span class="cm">/**
+ * 配合Java配置注解@Configuration使用,启用Swagger的配置注解,使用@Import注解导入Swagger文档的Configuration配置初始化类
+ * @see springfox.documentation.spring.web.plugins.Docket
+ */</span>
+<span class="nd">@Retention</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">annotation</span><span class="o">.</span><span class="na">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
+<span class="nd">@Target</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="o">{</span> <span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">annotation</span><span class="o">.</span><span class="na">ElementType</span><span class="o">.</span><span class="na">TYPE</span> <span class="o">})</span>
+<span class="nd">@Documented</span>
+<span class="nd">@Import</span><span class="o">({</span><span class="nc">Swagger2DocumentationConfiguration</span><span class="o">.</span><span class="na">class</span><span class="o">})</span>
+<span class="kd">public</span> <span class="nd">@interface</span> <span class="nc">EnableSwagger2</span> <span class="o">{</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">@EnableSwagger2</code>注解只干一件事,导入<code class="language-plaintext highlighter-rouge">Swagger2DocumentationConfiguration</code>配置类</p>
+
+<h3 id="swagger2documentationconfiguration">Swagger2DocumentationConfiguration</h3>
+
+<p>继续看<code class="language-plaintext highlighter-rouge">Swagger2DocumentationConfiguration</code>的代码</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@Import</span><span class="o">({</span> <span class="nc">SpringfoxWebMvcConfiguration</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="nc">SwaggerCommonConfiguration</span><span class="o">.</span><span class="na">class</span> <span class="o">})</span>
+<span class="nd">@ComponentScan</span><span class="o">(</span><span class="n">basePackages</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="s">"springfox.documentation.swagger2.mappers"</span>
+<span class="o">})</span>
+<span class="nd">@ConditionalOnWebApplication</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Swagger2DocumentationConfiguration</span> <span class="o">{</span>
+  <span class="nd">@Bean</span>
+  <span class="kd">public</span> <span class="nc">JacksonModuleRegistrar</span> <span class="nf">swagger2Module</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">Swagger2JacksonModule</span><span class="o">();</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Bean</span>
+  <span class="kd">public</span> <span class="nc">HandlerMapping</span> <span class="nf">swagger2ControllerMapping</span><span class="o">(</span>
+      <span class="nc">Environment</span> <span class="n">environment</span><span class="o">,</span>
+      <span class="nc">DocumentationCache</span> <span class="n">documentationCache</span><span class="o">,</span>
+      <span class="nc">ServiceModelToSwagger2Mapper</span> <span class="n">mapper</span><span class="o">,</span>
+      <span class="nc">JsonSerializer</span> <span class="n">jsonSerializer</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">PropertySourcedRequestMappingHandlerMapping</span><span class="o">(</span>
+        <span class="n">environment</span><span class="o">,</span>
+        <span class="k">new</span> <span class="nf">Swagger2Controller</span><span class="o">(</span><span class="n">environment</span><span class="o">,</span> <span class="n">documentationCache</span><span class="o">,</span> <span class="n">mapper</span><span class="o">,</span> <span class="n">jsonSerializer</span><span class="o">));</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>从代码中,我们可以得知：</p>
+
+<ul>
+  <li>注入<code class="language-plaintext highlighter-rouge">JacksonModuleRegistrar</code>实体bean到Spring容器中</li>
+  <li>注入一个<code class="language-plaintext highlighter-rouge">HandlerMapping</code>实体Bean到Spring容器中,该接口就是我们经常所见的<code class="language-plaintext highlighter-rouge">/v2/api-docs</code>接口</li>
+  <li>扫描<code class="language-plaintext highlighter-rouge">springfox.documentation.swagger2.mappers</code>包路径，进行实体bean的注入工作</li>
+  <li>导入<code class="language-plaintext highlighter-rouge">SpringfoxWebMvcConfiguration</code>和<code class="language-plaintext highlighter-rouge">SwaggerCommonConfiguration</code>配置类</li>
+</ul>
+
+<p>既然知道了swagger提供接口代码所在,那么我就先来看看<code class="language-plaintext highlighter-rouge">Swagger2Controller</code>的风采</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="nd">@Controller</span>
+<span class="nd">@ApiIgnore</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Swagger2Controller</span> <span class="o">{</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">DEFAULT_URL</span> <span class="o">=</span> <span class="s">"/v2/api-docs"</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">Logger</span> <span class="no">LOGGER</span> <span class="o">=</span> <span class="nc">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="nc">Swagger2Controller</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+  <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">HAL_MEDIA_TYPE</span> <span class="o">=</span> <span class="s">"application/hal+json"</span><span class="o">;</span>
+
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">hostNameOverride</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">DocumentationCache</span> <span class="n">documentationCache</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">ServiceModelToSwagger2Mapper</span> <span class="n">mapper</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">JsonSerializer</span> <span class="n">jsonSerializer</span><span class="o">;</span>
+
+  <span class="nd">@Autowired</span>
+  <span class="kd">public</span> <span class="nf">Swagger2Controller</span><span class="o">(</span>
+      <span class="nc">Environment</span> <span class="n">environment</span><span class="o">,</span>
+      <span class="nc">DocumentationCache</span> <span class="n">documentationCache</span><span class="o">,</span>
+      <span class="nc">ServiceModelToSwagger2Mapper</span> <span class="n">mapper</span><span class="o">,</span>
+      <span class="nc">JsonSerializer</span> <span class="n">jsonSerializer</span><span class="o">)</span> <span class="o">{</span>
+
+    <span class="k">this</span><span class="o">.</span><span class="na">hostNameOverride</span> <span class="o">=</span>
+        <span class="n">environment</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span>
+            <span class="s">"springfox.documentation.swagger.v2.host"</span><span class="o">,</span>
+            <span class="s">"DEFAULT"</span><span class="o">);</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">documentationCache</span> <span class="o">=</span> <span class="n">documentationCache</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">mapper</span> <span class="o">=</span> <span class="n">mapper</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">jsonSerializer</span> <span class="o">=</span> <span class="n">jsonSerializer</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="nd">@RequestMapping</span><span class="o">(</span>
+      <span class="n">value</span> <span class="o">=</span> <span class="no">DEFAULT_URL</span><span class="o">,</span>
+      <span class="n">method</span> <span class="o">=</span> <span class="nc">RequestMethod</span><span class="o">.</span><span class="na">GET</span><span class="o">,</span>
+      <span class="n">produces</span> <span class="o">=</span> <span class="o">{</span> <span class="no">APPLICATION_JSON_VALUE</span><span class="o">,</span> <span class="no">HAL_MEDIA_TYPE</span> <span class="o">})</span>
+  <span class="nd">@PropertySourcedMapping</span><span class="o">(</span>
+      <span class="n">value</span> <span class="o">=</span> <span class="s">"${springfox.documentation.swagger.v2.path}"</span><span class="o">,</span>
+      <span class="n">propertyKey</span> <span class="o">=</span> <span class="s">"springfox.documentation.swagger.v2.path"</span><span class="o">)</span>
+  <span class="nd">@ResponseBody</span>
+  <span class="kd">public</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">Json</span><span class="o">&gt;</span> <span class="nf">getDocumentation</span><span class="o">(</span>
+      <span class="nd">@RequestParam</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"group"</span><span class="o">,</span> <span class="n">required</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span> <span class="nc">String</span> <span class="n">swaggerGroup</span><span class="o">,</span>
+      <span class="nc">HttpServletRequest</span> <span class="n">servletRequest</span><span class="o">)</span> <span class="o">{</span>
+
+    <span class="nc">String</span> <span class="n">groupName</span> <span class="o">=</span> <span class="nc">Optional</span><span class="o">.</span><span class="na">fromNullable</span><span class="o">(</span><span class="n">swaggerGroup</span><span class="o">).</span><span class="na">or</span><span class="o">(</span><span class="nc">Docket</span><span class="o">.</span><span class="na">DEFAULT_GROUP_NAME</span><span class="o">);</span>
+    <span class="nc">Documentation</span> <span class="n">documentation</span> <span class="o">=</span> <span class="n">documentationCache</span><span class="o">.</span><span class="na">documentationByGroup</span><span class="o">(</span><span class="n">groupName</span><span class="o">);</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">documentation</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+      <span class="no">LOGGER</span><span class="o">.</span><span class="na">warn</span><span class="o">(</span><span class="s">"Unable to find specification for group {}"</span><span class="o">,</span> <span class="n">groupName</span><span class="o">);</span>
+      <span class="k">return</span> <span class="k">new</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">Json</span><span class="o">&gt;(</span><span class="nc">HttpStatus</span><span class="o">.</span><span class="na">NOT_FOUND</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="nc">Swagger</span> <span class="n">swagger</span> <span class="o">=</span> <span class="n">mapper</span><span class="o">.</span><span class="na">mapDocumentation</span><span class="o">(</span><span class="n">documentation</span><span class="o">);</span>
+    <span class="nc">UriComponents</span> <span class="n">uriComponents</span> <span class="o">=</span> <span class="n">componentsFrom</span><span class="o">(</span><span class="n">servletRequest</span><span class="o">,</span> <span class="n">swagger</span><span class="o">.</span><span class="na">getBasePath</span><span class="o">());</span>
+    <span class="n">swagger</span><span class="o">.</span><span class="na">basePath</span><span class="o">(</span><span class="nc">Strings</span><span class="o">.</span><span class="na">isNullOrEmpty</span><span class="o">(</span><span class="n">uriComponents</span><span class="o">.</span><span class="na">getPath</span><span class="o">())</span> <span class="o">?</span> <span class="s">"/"</span> <span class="o">:</span> <span class="n">uriComponents</span><span class="o">.</span><span class="na">getPath</span><span class="o">());</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">isNullOrEmpty</span><span class="o">(</span><span class="n">swagger</span><span class="o">.</span><span class="na">getHost</span><span class="o">()))</span> <span class="o">{</span>
+      <span class="n">swagger</span><span class="o">.</span><span class="na">host</span><span class="o">(</span><span class="n">hostName</span><span class="o">(</span><span class="n">uriComponents</span><span class="o">));</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">Json</span><span class="o">&gt;(</span><span class="n">jsonSerializer</span><span class="o">.</span><span class="na">toJson</span><span class="o">(</span><span class="n">swagger</span><span class="o">),</span> <span class="nc">HttpStatus</span><span class="o">.</span><span class="na">OK</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="nc">String</span> <span class="nf">hostName</span><span class="o">(</span><span class="nc">UriComponents</span> <span class="n">uriComponents</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="s">"DEFAULT"</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">hostNameOverride</span><span class="o">))</span> <span class="o">{</span>
+      <span class="nc">String</span> <span class="n">host</span> <span class="o">=</span> <span class="n">uriComponents</span><span class="o">.</span><span class="na">getHost</span><span class="o">();</span>
+      <span class="kt">int</span> <span class="n">port</span> <span class="o">=</span> <span class="n">uriComponents</span><span class="o">.</span><span class="na">getPort</span><span class="o">();</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">port</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"%s:%d"</span><span class="o">,</span> <span class="n">host</span><span class="o">,</span> <span class="n">port</span><span class="o">);</span>
+      <span class="o">}</span>
+      <span class="k">return</span> <span class="n">host</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">hostNameOverride</span><span class="o">;</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>从接口代码中,我们得知:</p>
+
+<ul>
+  <li>springfox为我们提供了一个默认的接口<code class="language-plaintext highlighter-rouge">/v2/api-docs</code></li>
+  <li>同时我们也应该知道,springfox的初始化工作不在这里,springfox在应用启动时已经初始化好相应的文档对象<code class="language-plaintext highlighter-rouge">Documentation</code>,而接口此处仅仅只是从缓存对象中获取而已</li>
+</ul>
+
+<h3 id="springfoxwebmvcconfiguration">SpringfoxWebMvcConfiguration</h3>
+
+<p>通过名称,我们可能也猜到了一部分内容,这是和Spring的webmvc相关的配置类,来看具体代码：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="nd">@Configuration</span>
+<span class="nd">@Import</span><span class="o">({</span> <span class="nc">ModelsConfiguration</span><span class="o">.</span><span class="na">class</span> <span class="o">})</span>
+<span class="nd">@ComponentScan</span><span class="o">(</span><span class="n">basePackages</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="s">"springfox.documentation.spring.web.scanners"</span><span class="o">,</span>
+    <span class="s">"springfox.documentation.spring.web.readers.operation"</span><span class="o">,</span>
+    <span class="s">"springfox.documentation.spring.web.readers.parameter"</span><span class="o">,</span>
+    <span class="s">"springfox.documentation.spring.web.plugins"</span><span class="o">,</span>
+    <span class="s">"springfox.documentation.spring.web.paths"</span>
+<span class="o">})</span>
+<span class="nd">@EnablePluginRegistries</span><span class="o">({</span> <span class="nc">DocumentationPlugin</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+    <span class="nc">ApiListingBuilderPlugin</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+    <span class="nc">OperationBuilderPlugin</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+    <span class="nc">ParameterBuilderPlugin</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+    <span class="nc">ExpandedParameterBuilderPlugin</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+    <span class="nc">ResourceGroupingStrategy</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+    <span class="nc">OperationModelsProviderPlugin</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+    <span class="nc">DefaultsProviderPlugin</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+    <span class="nc">PathDecorator</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+    <span class="nc">ApiListingScannerPlugin</span><span class="o">.</span><span class="na">class</span>
+<span class="o">})</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SpringfoxWebMvcConfiguration</span> <span class="o">{</span>
+
+  <span class="nd">@Bean</span>
+  <span class="kd">public</span> <span class="nc">Defaults</span> <span class="nf">defaults</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">Defaults</span><span class="o">();</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Bean</span>
+  <span class="kd">public</span> <span class="nc">DocumentationCache</span> <span class="nf">resourceGroupCache</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">DocumentationCache</span><span class="o">();</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Bean</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="nc">ObjectMapperConfigurer</span> <span class="nf">objectMapperConfigurer</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">ObjectMapperConfigurer</span><span class="o">();</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Bean</span>
+  <span class="kd">public</span> <span class="nc">JsonSerializer</span> <span class="nf">jsonSerializer</span><span class="o">(</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">JacksonModuleRegistrar</span><span class="o">&gt;</span> <span class="n">moduleRegistrars</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">JsonSerializer</span><span class="o">(</span><span class="n">moduleRegistrars</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Bean</span>
+  <span class="kd">public</span> <span class="nc">DescriptionResolver</span> <span class="nf">descriptionResolver</span><span class="o">(</span><span class="nc">Environment</span> <span class="n">environment</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">DescriptionResolver</span><span class="o">(</span><span class="n">environment</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Bean</span>
+  <span class="kd">public</span> <span class="nc">HandlerMethodResolver</span> <span class="nf">methodResolver</span><span class="o">(</span><span class="nc">TypeResolver</span> <span class="n">resolver</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">HandlerMethodResolver</span><span class="o">(</span><span class="n">resolver</span><span class="o">);</span>
+  <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>从代码中能知道：</p>
+
+<ul>
+  <li>注入了文档缓存DocumentationCache实体bean</li>
+  <li>注入了JSON序列化实体bean</li>
+  <li>通过<code class="language-plaintext highlighter-rouge">EnablePluginRegistries</code>注解,开启Spring-Plugin组件的相关插件类,关于<code class="language-plaintext highlighter-rouge">Spring-Plugin</code>我们后面会说明</li>
+  <li>扫描相关package路径</li>
+  <li>导入<code class="language-plaintext highlighter-rouge">ModelsConfiguration</code>配置文件</li>
+</ul>
+
+<p>来看<code class="language-plaintext highlighter-rouge">ModelsConfiguration</code>配置类有做了那些操作呢</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@ComponentScan</span><span class="o">(</span><span class="n">basePackages</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="s">"springfox.documentation.schema"</span>
+<span class="o">})</span>
+<span class="nd">@EnablePluginRegistries</span><span class="o">({</span>
+    <span class="nc">ModelBuilderPlugin</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+    <span class="nc">ModelPropertyBuilderPlugin</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+    <span class="nc">TypeNameProviderPlugin</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+    <span class="nc">SyntheticModelProviderPlugin</span><span class="o">.</span><span class="na">class</span>
+<span class="o">})</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ModelsConfiguration</span> <span class="o">{</span>
+  <span class="nd">@Bean</span>
+  <span class="kd">public</span> <span class="nc">TypeResolver</span> <span class="nf">typeResolver</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">TypeResolver</span><span class="o">();</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>和<code class="language-plaintext highlighter-rouge">SpringfoxWebMvcConfiguration</code>配置类行为相似，主要是:</p>
+
+<ul>
+  <li>扫描<code class="language-plaintext highlighter-rouge">springfox.documentation.schema</code>进行实体bean的注入或者初始化工作</li>
+  <li>通过<code class="language-plaintext highlighter-rouge">EnablePluginRegistries</code>插件开启注入相关插件的实体bean</li>
+  <li>注入<code class="language-plaintext highlighter-rouge">TypeResolver</code>实体bean到Spring容器中</li>
+</ul>
+
+<h3 id="swaggercommonconfiguration">SwaggerCommonConfiguration</h3>
+
+<p>Swagger的公共配置类</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@ComponentScan</span><span class="o">(</span><span class="n">basePackages</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="s">"springfox.documentation.swagger.schema"</span><span class="o">,</span>
+    <span class="s">"springfox.documentation.swagger.readers"</span><span class="o">,</span>
+    <span class="s">"springfox.documentation.swagger.web"</span>
+<span class="o">})</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SwaggerCommonConfiguration</span> <span class="o">{</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>主要是进行backpage包的扫描,注入到Spring的容器中初始化相关的操作</p>
+
+<h2 id="思维导图">思维导图</h2>
+
+<p>或许通过一张思维导图,我们能对本小结有一个初步的印象,对<code class="language-plaintext highlighter-rouge">@EnableSwagger2</code>注解的做作用有一个初步的了解</p>
+
+<p><img src="/images/springfox/springfox-enable.png" alt="" /></p>
+
+<p>总结就是两点：</p>
+
+<ul>
+  <li>扫描package</li>
+  <li>注入bean</li>
+</ul>
+
+<h2 id="总结">总结</h2>
+
+<p>整个springfox的初始化工作如果我们从上面来看,那绝对是灾难.心中肯定会有诸多疑问：</p>
+
+<ul>
+  <li>我们通过在外部创建Docket对象,提供诸如扫描接口包路径的方式进行文档分组,springfox何时初始化？</li>
+  <li>分组的接口代码在哪儿?</li>
+  <li>初始化的入口在哪儿?</li>
+</ul>
+
+<p>这主要是因为Springfox使用Spring的<code class="language-plaintext highlighter-rouge">@Component</code>注解和<code class="language-plaintext highlighter-rouge">ComponentScan</code>扫描包导致的,让我们无从下手啊（累觉不爱）~~~~</p>
+
+<p>带着这些疑问,我们继续往下看~~！</p>
+
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2019/05/21/springfox-1/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div class="xiaoym-qrcode">
+  <div class="xiaoym-qrcode-title">
+    <h2>微信公众号(八一菜刀)</h2>
+  </div>
+  <div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+</div>
+
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>
