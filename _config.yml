@@ -2,8 +2,8 @@
 #   Main Configs   #
 # ---------------- #
 baseurl:
-#url: https://www.xiaominfo.com
-url: https://blog.xiaominfo.com
+url: https://www.xiaominfo.com
+#url: https://blog.xiaominfo.com
 date_format: "ordinal"
 title: 八一菜刀
 subtitle: "士不可以不弘毅,任重而道远"
