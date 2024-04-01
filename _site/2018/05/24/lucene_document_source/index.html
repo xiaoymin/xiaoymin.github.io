@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>Lucene(7.3.1)学习笔记-Document类源码解析 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2018/05/24/lucene_document_source/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="Lucene(7.3.1)学习笔记-Document类源码解析">
+      
+    <meta name="keywords" content="Lucene,搜索引擎">
+    <meta name="og:keywords" content="Lucene,搜索引擎">
+      
+    <meta name="description" content="本笔记针对Lucene版本为7.3.1">
+    <meta name="og:description" content="本笔记针对Lucene版本为7.3.1">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2018/05/24/lucene_document_source/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2018-05-24">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="Lucene(7.3.1)学习">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">Lucene(7.3.1)学习笔记-Document类源码解析</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2018/05/24
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#Java" title="Java">Java</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <p>本笔记针对Lucene版本为7.3.1</p>
+
+<h2 id="介绍">介绍</h2>
+
+<p>Document对象是Lucene中搜索和索引的最小单元,一个文档对象，包含多个属性字段集合列表，每个字段对象都包含名称及字段值.</p>
+
+<p>Documet类图结构</p>
+
+<p><img src="/images/blog/lucene_document_source/Document.png" alt="" /></p>
+
+<p>Document类实现了Iterable接口，接收<code class="language-plaintext highlighter-rouge">IndexableField</code>泛型类型</p>
+
+<p>每个Document对象维护一个fields集合列表，Java代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kd">final</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">IndexableField</span><span class="o">&gt;</span> <span class="n">fields</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+</code></pre></div></div>
+
+<h2 id="构造函数">构造函数</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/** Constructs a new document with no fields. */</span>
+<span class="kd">public</span> <span class="nf">Document</span><span class="o">()</span> <span class="o">{}</span>
+</code></pre></div></div>
+
+<h2 id="方法">方法</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>返回类型</th>
+      <th>方法</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">void</code></td>
+      <td><code class="language-plaintext highlighter-rouge">add(IndexableField field)</code></td>
+      <td>添加字段到文档中.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">void</code></td>
+      <td><code class="language-plaintext highlighter-rouge">clear()</code></td>
+      <td>清除文档中所有字段.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">String</code></td>
+      <td><code class="language-plaintext highlighter-rouge">get(String name)</code></td>
+      <td>返回字段string值，如果字段拥有相同的name，则返回最先添加的字段，否则返回null.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">BytesRef</code></td>
+      <td><code class="language-plaintext highlighter-rouge">getBinaryValue(String name)</code></td>
+      <td>返回最先添加的字段name二进制值.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">BytesRef[]</code></td>
+      <td><code class="language-plaintext highlighter-rouge">getBinaryValues(String name)</code></td>
+      <td>返回字段name的二进制值数组.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">IndexableField</code></td>
+      <td><code class="language-plaintext highlighter-rouge">getField(String name)</code></td>
+      <td>返回字段.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">List&lt;IndexableField&gt;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">getFields()</code></td>
+      <td>返回只读字段List集合.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">IndexableField[]</code></td>
+      <td><code class="language-plaintext highlighter-rouge">getFields(String name)</code></td>
+      <td>返回name匹配的字段数组.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">String[]</code></td>
+      <td><code class="language-plaintext highlighter-rouge">getValues(String name)</code></td>
+      <td>返回name匹配的字段值数组.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Iterator&lt;IndexableField&gt;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">iterator()</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">void</code></td>
+      <td><code class="language-plaintext highlighter-rouge">removeField(String name)</code></td>
+      <td>移除第一个匹配name的字段.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">void</code></td>
+      <td><code class="language-plaintext highlighter-rouge">removeFields(String name)</code></td>
+      <td>移除所有name匹配的字段.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">String</code></td>
+      <td><code class="language-plaintext highlighter-rouge">toString()</code></td>
+      <td>打印文档字段列表.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="indexablefield">IndexableField</h2>
+
+<p>索引的单个字段，该类是接口，主要包括方法：名称、索引类型、等</p>
+
+<p>类图如下：</p>
+
+<p><img src="/images/blog/lucene_document_source/TextField.png" alt="" /></p>
+
+<p>子类实现:</p>
+
+<ul>
+  <li>TextField</li>
+  <li>StringField</li>
+  <li>IntPoint</li>
+  <li>LongPoint</li>
+  <li>FloatPoint</li>
+  <li>DoublePoint</li>
+  <li>SortedDocValuesField</li>
+  <li>SortedSetDocValuesField</li>
+  <li>NumericDocValuesField</li>
+  <li>SortedNumericDocValuesField</li>
+  <li>StoredField</li>
+</ul>
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2018/05/24/lucene_document_source/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div class="xiaoym-bot">
+  <div class="xiaoym-qrcode-title">
+    <h3>TorchV Bot开放试用中......</h3>
+  </div>
+  <div style="text-align: center;">
+    <a target="_blank" href="https://www.luxiangdong.com/2024/01/25/lanuch-1/?utm_source=xiaoymin"><img width="300"
+        src="/images/website/bot/torchv_bot2.png" /></a>
+  </div>
+</div>
+<div class="xiaoym-qrcode">
+  <div class="xiaoym-qrcode-title">
+    <h3>最新内容,关注“八一菜刀”公众号</h3>
+  </div>
+  <div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+</div>
+
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

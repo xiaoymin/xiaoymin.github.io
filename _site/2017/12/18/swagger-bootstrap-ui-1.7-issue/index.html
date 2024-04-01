@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>swagger-bootstrap-ui 1.7 发布，前端 UI 实现 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2017/12/18/swagger-bootstrap-ui-1.7-issue/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="swagger-bootstrap-ui 1.7 发布，前端 UI 实现">
+      
+    <meta name="keywords" content="swagger-bootstrap-ui">
+    <meta name="og:keywords" content="swagger-bootstrap-ui">
+      
+    <meta name="description" content="swagger-bootstrap-ui 1.7 发布了。swagger-bootstrap-ui 是 Swagger 的前端 UI 实现，目的是替换 Swagger 默认的 UI 实现 Swagger-UI，使文档更友好一点儿">
+    <meta name="og:description" content="swagger-bootstrap-ui 1.7 发布了。swagger-bootstrap-ui 是 Swagger 的前端 UI 实现，目的是替换 Swagger 默认的 UI 实现 Swagger-UI，使文档更友好一点儿">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2017/12/18/swagger-bootstrap-ui-1.7-issue/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2017-12-18">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="swagger-bootstr">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">swagger-bootstrap-ui 1.7 发布，前端 UI 实现</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2017/12/18
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#开源资讯" title="开源资讯">开源资讯</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <p>swagger-bootstrap-ui 1.7 发布了。swagger-bootstrap-ui 是 Swagger 的前端 UI 实现，目的是替换 Swagger 默认的 UI 实现 Swagger-UI，使文档更友好一点儿</p>
+
+<p>swagger-bootstrap-ui 1.7更新如下：</p>
+
+<p>1、分组功能实现</p>
+
+<p>替换默认请求接口v2/api-docs,改为swagger的分组接口：swagger-resources,左菜单分组下拉框可选
+<img src="/images/blog/swagger-bootstrap-ui-1.7-issue/group.jpg" alt="" /></p>
+
+<p>在Spring Boot的swagger配置如：</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@EnableSwagger2</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SwaggerConfiguration</span> <span class="o">{</span>
+
+    <span class="nd">@Bean</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"defaultApi"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">Docket</span> <span class="nf">defaultApi</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">Docket</span><span class="o">(</span><span class="nc">DocumentationType</span><span class="o">.</span><span class="na">SWAGGER_2</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">apiInfo</span><span class="o">(</span><span class="n">apiInfo</span><span class="o">())</span>
+                <span class="o">.</span><span class="na">groupName</span><span class="o">(</span><span class="s">"默认接口"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">select</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">apis</span><span class="o">(</span><span class="nc">RequestHandlerSelectors</span><span class="o">.</span><span class="na">basePackage</span><span class="o">(</span><span class="s">"com.swagger.bootstrap.ui.demo.controller"</span><span class="o">))</span>
+                <span class="o">.</span><span class="na">paths</span><span class="o">(</span><span class="nc">PathSelectors</span><span class="o">.</span><span class="na">any</span><span class="o">())</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="nd">@Bean</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"groupRestApi"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">Docket</span> <span class="nf">groupRestApi</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">Docket</span><span class="o">(</span><span class="nc">DocumentationType</span><span class="o">.</span><span class="na">SWAGGER_2</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">apiInfo</span><span class="o">(</span><span class="n">groupApiInfo</span><span class="o">())</span>
+                <span class="o">.</span><span class="na">groupName</span><span class="o">(</span><span class="s">"分组接口"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">select</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">apis</span><span class="o">(</span><span class="nc">RequestHandlerSelectors</span><span class="o">.</span><span class="na">basePackage</span><span class="o">(</span><span class="s">"com.swagger.bootstrap.ui.demo.group"</span><span class="o">))</span>
+                <span class="o">.</span><span class="na">paths</span><span class="o">(</span><span class="nc">PathSelectors</span><span class="o">.</span><span class="na">any</span><span class="o">())</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">ApiInfo</span> <span class="nf">groupApiInfo</span><span class="o">(){</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">ApiInfoBuilder</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">title</span><span class="o">(</span><span class="s">"分组Api"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">description</span><span class="o">(</span><span class="s">"swagger-bootstrap-ui-demo RESTful APIs"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">termsOfServiceUrl</span><span class="o">(</span><span class="s">"http://www.group.com/"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">contact</span><span class="o">(</span><span class="s">"group@qq.com"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">version</span><span class="o">(</span><span class="s">"1.0"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">ApiInfo</span> <span class="nf">apiInfo</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">ApiInfoBuilder</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">title</span><span class="o">(</span><span class="s">"swagger-bootstrap-ui-demo RESTful APIs"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">description</span><span class="o">(</span><span class="s">"swagger-bootstrap-ui-demo RESTful APIs"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">termsOfServiceUrl</span><span class="o">(</span><span class="s">"http://www.xx.com/"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">contact</span><span class="o">(</span><span class="s">"xx@qq.com"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">version</span><span class="o">(</span><span class="s">"1.0"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>详细示例参考demo:<a href="https://gitee.com/xiaoym/swagger-bootstrap-ui-demo">swagger-bootstrap-ui-demo</a></p>
+
+<p>2、文件上传,form表单action地址取相对路径,截取掉首字符”/”</p>
+
+<p><strong>Maven坐标</strong></p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dependency&gt;</span>
+   <span class="nt">&lt;groupId&gt;</span>com.github.xiaoymin<span class="nt">&lt;/groupId&gt;</span>
+   <span class="nt">&lt;artifactId&gt;</span>swagger-bootstrap-ui<span class="nt">&lt;/artifactId&gt;</span>
+   <span class="nt">&lt;version&gt;</span>1.7<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
+
+<p><strong>相关链接</strong></p>
+
+<ul>
+  <li>swagger-bootstrap-ui 的详细介绍：<a href="https://www.oschina.net/p/swagger-bootstrap-ui">点击查看</a></li>
+  <li>swagger-bootstrap-ui 的下载地址：<a href="https://git.oschina.net/xiaoym/swagger-bootstrap-ui/releases">点击下载</a></li>
+</ul>
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2017/12/18/swagger-bootstrap-ui-1.7-issue/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div class="xiaoym-bot">
+  <div class="xiaoym-qrcode-title">
+    <h3>TorchV Bot开放试用中......</h3>
+  </div>
+  <div style="text-align: center;">
+    <a target="_blank" href="https://www.luxiangdong.com/2024/01/25/lanuch-1/?utm_source=xiaoymin"><img width="300"
+        src="/images/website/bot/torchv_bot2.png" /></a>
+  </div>
+</div>
+<div class="xiaoym-qrcode">
+  <div class="xiaoym-qrcode-title">
+    <h3>最新内容,关注“八一菜刀”公众号</h3>
+  </div>
+  <div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+</div>
+
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

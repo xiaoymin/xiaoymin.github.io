@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>oss-server 1.1 版本发布 小型对象存储系统 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2018/06/25/oss-server-1.1-issue/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="oss-server 1.1 版本发布 小型对象存储系统">
+      
+    <meta name="keywords" content="oss-server">
+    <meta name="og:keywords" content="oss-server">
+      
+    <meta name="description" content="oss-server 1.1正式发布了,oss-server是针对项目开发时提供的小型对象存储系统,开发者在针对文件上传时业务剥离,同时方便文件迁移，为满足单个项目，多个系统的情况下，提供统一的oss服务">
+    <meta name="og:description" content="oss-server 1.1正式发布了,oss-server是针对项目开发时提供的小型对象存储系统,开发者在针对文件上传时业务剥离,同时方便文件迁移，为满足单个项目，多个系统的情况下，提供统一的oss服务">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2018/06/25/oss-server-1.1-issue/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2018-06-25">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="oss-server 1.1 ">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">oss-server 1.1 版本发布 小型对象存储系统</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2018/06/25
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#开源资讯" title="开源资讯">开源资讯</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <p>oss-server 1.1正式发布了,oss-server是针对项目开发时提供的小型对象存储系统,开发者在针对文件上传时业务剥离,同时方便文件迁移，为满足单个项目，多个系统的情况下，提供统一的oss服务</p>
+
+<p>本次更新主要做以下内容升级：</p>
+
+<ul>
+  <li>
+    <p>添加可能恶意文件格式拦截过滤,包括(sh、php、jsp、exe、dll、asp等文件)，可在application.properties配置文件配置</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">##</span> <span class="n">过滤上传文件格式</span><span class="o">,</span><span class="n">大小写忽略</span>
+<span class="n">material</span><span class="o">.</span><span class="na">excludeFileTypes</span><span class="o">=</span><span class="n">sh</span><span class="o">,</span><span class="n">jsp</span><span class="o">,</span><span class="n">php</span><span class="o">,</span><span class="n">exe</span><span class="o">,</span><span class="n">asp</span><span class="o">,</span><span class="n">dll</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>上传文件mode权限去除X执行权限,只读权限</p>
+  </li>
+  <li>
+    <p>上传文件列表信息查看、excel导出功能</p>
+
+    <p><img src="/images/blog/oss-server-1.1-issue/exportExcel.png" alt="" /></p>
+  </li>
+  <li>
+    <p>主页面新增近一周上传数据分析图表报告展示</p>
+
+    <p><img src="/images/blog/oss-server-1.1-issue/zhuye.png" alt="" /></p>
+  </li>
+  <li>
+    <p>base64上传文件添加module字段，可分模块存储</p>
+  </li>
+  <li>
+    <p>接口返回新增字段：文件原始名、文件类型、文件长度(long类型,例如：102400)、文件长度(字符串类型,例如:100kb)</p>
+
+    <p>接口返回格式如下：</p>
+
+    <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">8200</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Success"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"c9b26d0a31154e3496fa5b5eb3fd0f48"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://192.168.0.7/xq_website/201806/21/c9b26d0a31154e3496fa5b5eb3fd0f48.png"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"store"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/xq_website/201806/21/c9b26d0a31154e3496fa5b5eb3fd0f48.png"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"objType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"png"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"originalName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"QQ截图20180606083705.png"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"byteLength"</span><span class="p">:</span><span class="w"> </span><span class="mi">120010</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"byteToStr"</span><span class="p">:</span><span class="w"> </span><span class="s2">"117.2KB"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>    </div>
+  </li>
+  <li>
+    <p>修复上传文件存储数据库值user_id bug</p>
+  </li>
+  <li>
+    <p>修复文件夹浏览文件，文件访问地址依然是配置文件路径的bug，根据基本信息配置信息读取</p>
+  </li>
+  <li>
+    <p>增加oss-server-sdk-java组件</p>
+  </li>
+  <li>
+    <p>增加oss-server-spring-boot-starter组件</p>
+  </li>
+</ul>
+
+<p>关于更多oss-server的信息,请仔细阅读帮助文档：http://oss-server.mydoc.io/</p>
+
+<p>如果您有任何问题,或者建议,欢迎提issue</p>
+
+<p>欢迎大家拍砖~~~</p>
+
+<p>如果项目对您有帮助,请前往项目地址给个Star ！！！！</p>
+
+<p><strong>相关链接</strong></p>
+
+<ul>
+  <li>oss-server 的详细介绍：<a href="https://gitee.com/xiaoym/oss-server">点击查看</a></li>
+  <li>oss-server 的下载地址：<a href="https://gitee.com/xiaoym/oss-server/releases">点击下载</a></li>
+</ul>
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2018/06/25/oss-server-1.1-issue/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div class="xiaoym-bot">
+  <div class="xiaoym-qrcode-title">
+    <h3>TorchV Bot开放试用中......</h3>
+  </div>
+  <div style="text-align: center;">
+    <a target="_blank" href="https://www.luxiangdong.com/2024/01/25/lanuch-1/?utm_source=xiaoymin"><img width="300"
+        src="/images/website/bot/torchv_bot2.png" /></a>
+  </div>
+</div>
+<div class="xiaoym-qrcode">
+  <div class="xiaoym-qrcode-title">
+    <h3>最新内容,关注“八一菜刀”公众号</h3>
+  </div>
+  <div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+</div>
+
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

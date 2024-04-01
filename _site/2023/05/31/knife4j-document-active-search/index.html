@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>Final.激活Knife4j官网的文档搜索功能 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2023/05/31/knife4j-document-active-search/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="Final.激活Knife4j官网的文档搜索功能">
+      
+    <meta name="keywords" content="["Knife4j", "文档搜索"]">
+    <meta name="og:keywords" content="["Knife4j", "文档搜索"]">
+      
+    <meta name="description" content="1.前言">
+    <meta name="og:description" content="1.前言">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2023/05/31/knife4j-document-active-search/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2023-05-31">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="Final.激活Knife4j">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">Final.激活Knife4j官网的文档搜索功能</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2023/05/31
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#Knife4j" title="Knife4j">Knife4j</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <h2 id="1前言">1.前言</h2>
+
+<p>在很早之前,Knife4j的官网文档就通过<a href="https://docusaurus.io/">docusaurus</a>进行了重构，在网上找了一个自己还算满意的模板，将所有的Knife4j的Markdown文档进行了重新梳理改造。</p>
+
+<p><img src="/images/knife4j/knife4j-document-search/image-20230531084614527.png" alt="image-20230531084614527" /></p>
+
+<p>但是后面有一段时间，也是自己懒的原因，文档中的搜索功能一直不可用。每天都会收到搜索的统计结果报告，提示的都是在搜索的请求中，未匹配结果的概率始终<strong>100%</strong></p>
+
+<p><img src="/images/knife4j/knife4j-document-search/image-20230531084806837.png" alt="image-20230531084806837" /></p>
+
+<p>看的也是相当难受，这两天终于投入了时间，决心解决这个问题。</p>
+
+<h2 id="2algolia">2.Algolia</h2>
+
+<p>Knife4j的官网搜索主要集成了<a href="https://www.algolia.com/">Algolia</a>来提供搜索服务，因为<a href="https://docusaurus.io/">docusaurus</a>纯天然支持Algolia来集成文档搜索服务，如果用过Algolia的服务的朋友可能知道，如果你的网站文档是开源项目，那么是可以提交申请来获取免费服务的，主要条件：</p>
+
+<ul>
+  <li>必须是文档网站的 <strong>所有者</strong>，网站必须是 <strong>公开的</strong>。</li>
+  <li>网站内容必须是 <strong>开源项目的技术文档</strong> 或 <strong>技术博客</strong>。</li>
+  <li>网站申请服务时必须有 <strong>完整稳定的设计和内容</strong>，即确认网站做好生产准备。</li>
+</ul>
+
+<h3 id="21-自动爬虫索引数据">2.1 自动爬虫索引数据</h3>
+
+<p>申请链接地址：<a href="https://docsearch.algolia.com/apply/">https://docsearch.algolia.com/apply/</a></p>
+
+<p><img src="/images/knife4j/knife4j-document-search/image-20230531085415798.png" alt="image-20230531085415798" /></p>
+
+<p>但你提交了申请，并且官方社区审核通过后，你会收到邮件，按邮件的内容进行回复就可以了。</p>
+
+<p><img src="/images/knife4j/knife4j-document-search/image-20230531085636057.png" alt="image-20230531085636057" /></p>
+
+<p>但我们把所有的工作流程准备就绪后，我们就可以前往Algolia管理自己的后台数据了，主要步骤：</p>
+
+<p>步骤一、登录到Algolia里面的控制台</p>
+
+<p><img src="/images/knife4j/knife4j-document-search/image-20230531085907655.png" alt="image-20230531085907655" /></p>
+
+<p>步骤二、可以查看当前自己的Application应用的Plan类别，如下：</p>
+
+<blockquote>
+  <p>Plan类别是DOCSEARCH类型的应用，代表我们可以免费使用Algolia的爬虫服务，会自动爬取我们的网站文档进行索引</p>
+
+  <p>如果是FREE类别，则没有这种服务，你也登录不了Algolia的爬虫后台</p>
+</blockquote>
+
+<p><img src="/images/knife4j/knife4j-document-search/image-20230531090727879.png" alt="image-20230531090727879" /></p>
+
+<p>步骤三、点击Search后，即可查看该文档页面的Index数据集</p>
+
+<p><img src="/images/knife4j/knife4j-document-search/image-20230531090016683.png" alt="image-20230531090016683" /></p>
+
+<p>这里Index有数据是核心和关键，如果你的搜索服务不可用，首先要确认一下该Index中是否有数据，或者你文档中配置的搜索配置信息是否正确。</p>
+
+<p>第三，确认自己的爬虫后台是否有问题，登录到Algolia的爬虫后台，地址：<a href="https://crawler.algolia.com/admin/crawlers">https://crawler.algolia.com/admin/crawlers</a></p>
+
+<blockquote>
+  <p>确认右侧Indices中有数据才正常</p>
+</blockquote>
+
+<p><img src="/images/knife4j/knife4j-document-search/image-20230531090327502.png" alt="image-20230531090327502" /></p>
+
+<p>因为Knife4j的DocSearch申请的已经有一段时间了，只是在搜索的时候一直无法展示结果(这让我也一直很困惑)，所以，我们就可以使用docusaurus提供的官方algolia插件进行集成搜索</p>
+
+<h3 id="22-自己通过algolia的爬虫送数据">2.2 自己通过Algolia的爬虫送数据</h3>
+
+<p>Algolia除了通过DocSearch的方式进行申请，免费使用Algolia的爬虫服务，如果有一些特殊原因，或者最终没有被Algolia的官方社区审核通过，那么也是可以使用Algolia的搜索服务的，可以自己注册Algolia的后台，然后创建Application(应用)</p>
+
+<p>创建应用后，就可以通过Algolia提供的爬虫程序(离线工具)自己设置爬虫规则，将爬取的数据送到Algolia控制台。</p>
+
+<p>本文只介绍通过Docker镜像来运行爬虫的工具，其他方式可以参考官方文档：<a href="https://docsearch.algolia.com/docs/legacy/run-your-own">https://docsearch.algolia.com/docs/legacy/run-your-own</a></p>
+
+<p><code class="language-plaintext highlighter-rouge">docker</code>命令</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-it</span> <span class="nt">--env-file</span><span class="o">=</span>.env algolia/docsearch-scraper
+</code></pre></div></div>
+
+<p>然后配置<code class="language-plaintext highlighter-rouge">.env</code>环境变量，主要有三个：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">APPLICATION_ID</code>：应用APPID，这个可以在Algolia的后台进行创建然后获取得到</li>
+  <li><code class="language-plaintext highlighter-rouge">API_KEY</code>:密钥key，在Algolia的后台，可以创建API_KEY，也可以使用当前应用的AdminKey(<code class="language-plaintext highlighter-rouge">ps:</code>因为爬虫程序在你本机使用，没有人知道，所以用admin的key可以一步到位,避免一些权限问题会提示key无效或者无权限等问题的发生)</li>
+  <li><code class="language-plaintext highlighter-rouge">CONFIG</code>: 目标网站的爬虫规则，详细规则参考文档：<a href="https://docsearch.algolia.com/docs/legacy/config-file">https://docsearch.algolia.com/docs/legacy/config-file</a></li>
+</ul>
+
+<p><img src="/images/knife4j/knife4j-document-search/image-20230531093722644.png" alt="image-20230531093722644" /></p>
+
+<p>Config示例如下:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"index_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"knife4j"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"start_urls"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"https://doc.xiaominfo.com/docs/middleware-sources"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"https://doc.xiaominfo.com/docs/oas"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"https://doc.xiaominfo.com/docs/action"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"https://doc.xiaominfo.com/docs/changelog"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"https://doc.xiaominfo.com/docs/faq"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"https://doc.xiaominfo.com/v2/"</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"selectors"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"lvl0"</span><span class="p">:</span><span class="w"> </span><span class="s2">".docMainContainer_gTbr header h1"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"lvl1"</span><span class="p">:</span><span class="w"> </span><span class="s2">".docMainContainer_gTbr article h1"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"lvl2"</span><span class="p">:</span><span class="w"> </span><span class="s2">".docMainContainer_gTbr article h2"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"lvl3"</span><span class="p">:</span><span class="w"> </span><span class="s2">".docMainContainer_gTbr article h3"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"lvl4"</span><span class="p">:</span><span class="w"> </span><span class="s2">".docMainContainer_gTbr article h4"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"lvl5"</span><span class="p">:</span><span class="w"> </span><span class="s2">".docMainContainer_gTbr article h5"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"text"</span><span class="p">:</span><span class="w"> </span><span class="s2">".docMainContainer_gTbr header p,.docMainContainer_gTbr section p,.docMainContainer_gTbr section ol"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>几个重要的参数：</p>
+
+<ul>
+  <li>index_name:索引名称，这个是在algolia后台创建的</li>
+  <li>start_urls:目标文档网站的目标页</li>
+  <li>selectors：选择器规则，也就是告诉爬虫，你需要爬取的网页，最终通过选择器获取的类容规则，包括id选择器、类选择、标签选择器等等，如果你用过<code class="language-plaintext highlighter-rouge">jQuery</code>,看到这个规则应该会非常熟悉</li>
+</ul>
+
+<p>当然还有更详细的规则，具体的可以参考文档进行配置即可。</p>
+
+<p>最终运行docker命令爬虫效果如下：</p>
+
+<p><img src="/images/knife4j/knife4j-document-search/image-20230531093833450.png" alt="image-20230531093833450" /></p>
+
+<p>等我们的爬虫在本地运行完成后，我们就可以登录后台查看我们的记录是否成功，现在的<code class="language-plaintext highlighter-rouge">records</code>就是最终的文档记录数</p>
+
+<p><img src="/images/knife4j/knife4j-document-search/image-20230531094244587.png" alt="image-20230531094244587" /></p>
+
+<h2 id="3简单验证algolia的数据结果搜索">3.简单验证Algolia的数据结果&amp;搜索</h2>
+
+<p>在上面的章节中我们介绍了怎么在Algolia进行索引数据，主要包括两种方式：</p>
+
+<ul>
+  <li>官方提交DocSearch申请，通过Algolia提供的爬虫自动爬取我们的公开网站，需要审核</li>
+  <li>自己运行Algolia的爬虫程序，离线将自己的网站索引数据送到Algolia中</li>
+</ul>
+
+<p>这两种方式任何一种你都可以成功索引文档数据，如果在Algolia的控制台能看到数据，那么你可以通过下面一个小demo来验证搜索结果了，废话不多说，直接上html测试代码：</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"en"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"UTF-8"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;title&gt;</span>Title<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"https://cdn.jsdelivr.net/npm/@docsearch/css@3"</span><span class="nt">/&gt;&lt;/pre&gt;&lt;/li&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"test"</span><span class="nt">&gt;&lt;/div&gt;</span>
+
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://cdn.jsdelivr.net/npm/@docsearch/js@3"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
+
+  <span class="nx">docsearch</span><span class="p">({</span>
+
+    <span class="na">appId</span><span class="p">:</span><span class="dl">"</span><span class="s2">替换为你自己的appid</span><span class="dl">"</span><span class="p">,</span>
+
+
+    <span class="na">apiKey</span><span class="p">:</span> <span class="dl">"</span><span class="s2">替换为你自己的apikey</span><span class="dl">"</span><span class="p">,</span>
+
+    <span class="na">indexName</span><span class="p">:</span> <span class="dl">"</span><span class="s2">替换为你自己的indexName</span><span class="dl">"</span><span class="p">,</span>
+
+    <span class="na">container</span><span class="p">:</span> <span class="dl">'</span><span class="s1">#test</span><span class="dl">'</span><span class="p">,</span>
+
+    <span class="na">debug</span><span class="p">:</span> <span class="kc">false</span> <span class="c1">// Set debug to true if you want to inspect the modal</span>
+
+  <span class="p">});</span>
+
+<span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>界面效果如下：</p>
+
+<p><img src="/images/knife4j/knife4j-document-search/image-20230531095255948.png" alt="image-20230531095255948" /></p>
+
+<p>代码中的appid、key需要替换为自己的，可以在Algolia后台获取：</p>
+
+<p><img src="/images/knife4j/knife4j-document-search/image-20230531095409479.png" alt="image-20230531095409479" /></p>
+
+<h2 id="4docusaurus集成">4.Docusaurus集成</h2>
+
+<p>前面已经提过，由于docusaurus官方提供了对Algolia的支持，所以万事俱备，只需要配置即可，在<code class="language-plaintext highlighter-rouge">docusaurus.config.js</code>配置文件中，直接配置appid、key就可以了</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">themeConfig:</span><span class="w">
+    </span><span class="err">/**</span><span class="w"> </span><span class="err">@type</span><span class="w"> </span><span class="p">{</span><span class="err">import('@docusaurus/preset-classic').ThemeConfig</span><span class="p">}</span><span class="w"> </span><span class="err">*/</span><span class="w"> </span><span class="err">(</span><span class="p">{</span><span class="w">
+            </span><span class="err">//</span><span class="w"> </span><span class="err">others....</span><span class="w">
+            </span><span class="err">algolia:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="err">appId:</span><span class="w"> </span><span class="err">'</span><span class="mi">3</span><span class="err">CRIMRK</span><span class="mi">623</span><span class="err">'</span><span class="p">,</span><span class="w">
+                </span><span class="err">apiKey:</span><span class="w"> </span><span class="err">'ae</span><span class="mi">4</span><span class="err">f</span><span class="mi">57</span><span class="err">f</span><span class="mi">208e3</span><span class="err">c</span><span class="mi">7749017e09582</span><span class="err">f</span><span class="mi">0</span><span class="err">b</span><span class="mi">8</span><span class="err">a</span><span class="mi">4</span><span class="err">'</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">search</span><span class="w"> </span><span class="err">only</span><span class="w"> </span><span class="err">(public)</span><span class="w"> </span><span class="err">API</span><span class="w"> </span><span class="err">key</span><span class="w">
+                </span><span class="err">indexName:</span><span class="w"> </span><span class="err">'xiaominfo'</span><span class="p">,</span><span class="w">
+                </span><span class="err">contextualSearch:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+                </span><span class="err">debug:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+        </span><span class="p">}</span><span class="err">),</span><span class="w">
+</span></code></pre></div></div>
+
+<p>效果如下:</p>
+
+<p><img src="/images/knife4j/knife4j-document-search/image-20230531095906380.png" alt="image-20230531095906380" /></p>
+
+<p>docusaurus的搜索插件可以查看文档：<a href="https://docusaurus.io/zh-CN/docs/next/search">https://docusaurus.io/zh-CN/docs/next/search</a></p>
+
+<p><img src="/images/knife4j/knife4j-document-search/image-20230531091127138.png" alt="image-20230531091127138" />介绍的都是比较详细的，但是<strong>最值得注意的来了(这也是Knife4j在Algolia后台数据有了，就是死活搜索不出来)</strong></p>
+
+<p>最坑的就是这个<strong>上下文搜索参数：contextualSearch</strong></p>
+
+<p>由于该参数在Docusaurus的插件中默认开启，导致他会和上下文约束面过滤器 (contextual facet filters) 会和 <code class="language-plaintext highlighter-rouge">algolia.searchParameters.facetFilters</code> 合并配合使用，增加了一些不必要的过滤器，最终就会搜索没有结果</p>
+
+<p>如果你没有该需求或者场景，那么需要给他关闭，配置<strong>修改<code class="language-plaintext highlighter-rouge">contextualSearch</code>参数为<code class="language-plaintext highlighter-rouge">false</code></strong></p>
+
+<p>我也是对比了步骤3中通过一个简单的html集成查看Algolia请求参数的差异才发现这个区别，为啥Knife4j明明数据有了，就是搜索不出来。。。。。累了。。。。</p>
+
+<h2 id="5最后">5.最后</h2>
+
+<p>目前Knife4j的官网文档终于开启了搜索功能，希望能够帮助到使用Knife4j的同学更好的检索文档。</p>
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2023/05/31/knife4j-document-active-search/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div class="xiaoym-bot">
+  <div class="xiaoym-qrcode-title">
+    <h3>TorchV Bot开放试用中......</h3>
+  </div>
+  <div style="text-align: center;">
+    <a target="_blank" href="https://www.luxiangdong.com/2024/01/25/lanuch-1/?utm_source=xiaoymin"><img width="300"
+        src="/images/website/bot/torchv_bot2.png" /></a>
+  </div>
+</div>
+<div class="xiaoym-qrcode">
+  <div class="xiaoym-qrcode-title">
+    <h3>最新内容,关注“八一菜刀”公众号</h3>
+  </div>
+  <div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+</div>
+
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

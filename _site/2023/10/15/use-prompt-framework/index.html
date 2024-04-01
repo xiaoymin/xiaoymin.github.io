@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>用好大模型?这5种实用的Prompt框架你一定要看看! &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2023/10/15/use-prompt-framework/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="用好大模型?这5种实用的Prompt框架你一定要看看!">
+      
+    <meta name="keywords" content="["ChatGPT", "大模型", "Prompt", "如何构建Prompt"]">
+    <meta name="og:keywords" content="["ChatGPT", "大模型", "Prompt", "如何构建Prompt"]">
+      
+    <meta name="description" content="前言">
+    <meta name="og:description" content="前言">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2023/10/15/use-prompt-framework/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2023-10-15">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="用好大模型?这5种实用的Pro">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">用好大模型?这5种实用的Prompt框架你一定要看看!</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2023/10/15
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#大模型" title="大模型">大模型</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <h2 id="前言">前言</h2>
+
+<p>大模型正为我们带来前所未有的技术革新，而用好大模型也是有一定技巧的。</p>
+
+<p>本文主要分享<strong>5种</strong>实用的<code class="language-plaintext highlighter-rouge">Prompt</code>对话提示框架，结合自己的实际需求，让你能够灵活使用大模型!</p>
+
+<h2 id="1rtf框架">1.RTF框架</h2>
+
+<p><strong>RTF(Role-Task-Format)框架</strong>是一个非常简单通用的Prompt提示框架，我们和任意大模型对话场景下都可以使用该规范进行改进输出</p>
+
+<ul>
+  <li><strong>R-Role(角色)</strong>：指定大模型担当固定角色(程序员、数据分析师、讲解员、记者等等)</li>
+  <li><strong>T-Task(任务)</strong>: 任务，告诉大模型需要为我们做的事情</li>
+  <li><strong>F-Format(格式)</strong>：大模型最终结果的返回格式(比如：表格、Markdown、英文等等)</li>
+</ul>
+
+<p>主要优点：</p>
+
+<ul>
+  <li>简单、方便</li>
+  <li>指定Role角色，可以让大模型在当前的角色范围内回答知识，这在一些特定的领域中非常有效</li>
+  <li>指定Role角色也能让工程上检索知识能够确定边界范围，配合元数据所发挥的威力会更强</li>
+  <li>如果结合RAG知识内容检索，那么上下文回答的内容会让用户感觉更加是顺畅</li>
+</ul>
+
+<p><strong>示例1</strong>: <strong>给出一份Python语言的学习清单</strong></p>
+
+<blockquote>
+  <p>Role：指定大模型角色为Python布道师</p>
+
+  <p>Task：Python语言的学习从基础到进阶清单列表</p>
+
+  <p>Format： 以表格的形式返回</p>
+</blockquote>
+
+<p><img src="/assets/images/llm/use-prompt-framework/prompt-usecase1.png" alt="图1-实用RTF框架" /></p>
+
+<p>在实际工作的任务中，我通过优化Prompt工程，对于我们的产品改善，对于回答的内容改善也非常明显！</p>
+<blockquote>
+  <p>在我司给宁波天一阁开发的AI讲解产品中，我们提供和大模型对话的RAG产品，将天一阁的相关知识导入到系统，借助大模型进行讲解回答</p>
+
+</blockquote>
+
+<p>对比以下两个Prompt的区别：</p>
+
+<p>原Prompt：</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>基于以下已知信息，简洁和专业的来回答天一阁相关的的问题。
+如果无法从中得到答案，请说 "根据已知信息无法回答该问题" 或 "没有提供足够的相关信息"，不允许在答案中添加编造成分，答案请使用中文。
+问题:
+{}
+已知内容:
+{}
+</code></pre></div></div>
+
+<p>改进后的Prompt：</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>你是宁波天一阁的历史研究员，基于以下已知信息，简洁和专业的来回答天一阁相关的的问题。
+如果无法从中得到答案，请根据根据实际回答，不要臆测内容，否则请说 "根据已知信息无法回答该问题" 或 "没有提供足够的相关信息"，不允许在答案中添加编造成分，答案请使用中文。
+问题:
+{}
+已知内容:
+{}
+</code></pre></div></div>
+
+<p>改进后，大模型回答更加拟人化，如下图：</p>
+
+<p><img src="/assets/images/llm/use-prompt-framework/image.png" alt="图2-优化后的大模型Prompt" /></p>
+
+<h2 id="2思考链模式">2.思考链模式</h2>
+
+<p>通过这种模式来逐步改善大模型的推理能力，非常<strong>适合一些复杂的任务处理</strong>。</p>
+
+<p>例如：</p>
+
+<ul>
+  <li>分析型或者逻辑推理型的任务</li>
+  <li>决策</li>
+  <li>解决问题(比如程序员根据错误日志找Bug)</li>
+</ul>
+
+<p>而要使用这种模式，<strong>只需要在末尾添加”让我们逐步思考”即可</strong>。</p>
+
+<p><img src="/assets/images/llm/use-prompt-framework/prompt-step.png" alt="图3-逐步推理模式应用" /></p>
+
+<h2 id="3-risen框架">3. RISEN框架</h2>
+
+<ul>
+  <li><strong>R-Role</strong>:大模型扮演的角色</li>
+  <li><strong>I-Instructions</strong>: 指示命令，和<code class="language-plaintext highlighter-rouge">Task-任务</code>差不多</li>
+  <li><strong>S-Steps</strong>: 步骤</li>
+  <li><strong>E-End Goal</strong>: 最终目标</li>
+  <li><strong>N-Narrowing(Constraints)</strong>: 缩小范围(约束条件)，和<code class="language-plaintext highlighter-rouge">RTF</code>框架中的<code class="language-plaintext highlighter-rouge">Format</code>有异曲同工之妙，一个是格式的约束，而这里的约束可以是任意方面，比如回答的内容(特定领域)、字数限制等等方面</li>
+</ul>
+
+<p>该框架主要适合：</p>
+
+<ul>
+  <li>撰写具有特定约束的任务(例如博客文章)</li>
+  <li>有明确指导方针的任务（例如商业计划）</li>
+</ul>
+
+<p>示例：</p>
+
+<p><img src="/assets/images/llm/use-prompt-framework/use-prompt-risen.png" alt="图4-RISEN框架示例" /></p>
+
+<h2 id="4rodes框架">4.RODES框架</h2>
+
+<ul>
+  <li>R-Role: 角色</li>
+  <li>O - Objective: 目标</li>
+  <li>D - Details: 详细的细节</li>
+  <li>E - Examples: 示例</li>
+  <li>S - Sense Check: 感官检查</li>
+</ul>
+
+<p>示例：</p>
+
+<p><img src="/assets/images/llm/use-prompt-framework/use-prompt-rodes.png" alt="图5-RODES框架示例" /></p>
+
+<h2 id="5密度链模式">5.密度链模式</h2>
+
+<p>密度链模式<code class="language-plaintext highlighter-rouge">Prompt</code>是Salesforce、麻省理工学院和哥伦比亚大学的研究人员推出的一种新提示，它非常的高效,使用递归来创建越来越好的输出的提示，与普通提示生成的 GPT-4 摘要相比，它生成的摘要更加密集且更适合人们理解。</p>
+
+<blockquote>
+  <p>这种模式在RAG工程中非常实用，想想看你的客户上传的文档知识库(PDF/WORD)都是长篇的步骤性的文档,而在RAG召回送给大模型的Context上下文又受限于大模型的Token限制,为了更好的回答用户提问的问题，对于上传的知识库做密度链模式的摘要总结，然后索引整个文章内容召回是非常有必要的，最终能够非常精准的回答用户的问题。</p>
+</blockquote>
+
+<p>适合：</p>
+
+<ul>
+  <li>总结</li>
+  <li>改进您最喜欢的提示</li>
+  <li>通过递归生成可用的长格式内容</li>
+</ul>
+
+<p>密度链模式的<code class="language-plaintext highlighter-rouge">Prompt</code>如下：</p>
+
+<p><img src="/assets/images/llm/use-prompt-framework/prompt-chain-density.png" alt="图6-Chain of Density(Cod)prompt" /></p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+文章: {ARTICLE}
+
+您将为上述文章生成越来越简洁、实体密集的摘要。
+
+
+重复以下2个步骤5次：
+
+- 步骤1:从文章中识别出先前生成的摘要中缺少的 1-3 个信息实体（以“;”分隔）。
+- 步骤2:写一个新的、长度相同的、更密集的摘要，其中涵盖先前摘要中的每个实体和细节以及缺失的内容实体。
+
+缺少的实体是:
+
+- **相关的:**与主要故事相关，
+- **具体的:**描述具体而简洁（5个字或更少），
+- **新颖的:**不在之前的摘要中
+- **务实的:**存在于文章中
+- **任何地方:** 位于文章中的任何位置
+
+**指南:**
+
+- 第一个摘要应该较长（4-5句，约80个词），但非常不具体，除了标记为缺失的实体外，几乎没有包含其他信息。使用过度冗长的语言和填充词（例如，“本文讨论”）以达到约80个词。
+- 让每个词都有意义：重新撰写前一个摘要以改善流畅性，并为额外的实体腾出空间。
+- 利用融合、压缩和删除诸如“文章讨论”的无信息短语，腾出空间。
+- 摘要应变得非常密集而简洁，但又是自包含的，例如，不需要阅读文章就能容易理解。
+- 缺失的实体可以出现在新摘要的任何位置。
+- 永远不要删除前一个摘要中的实体。如果无法腾出空间，就添加更少的新实体。
+
+请记住，对于每个摘要都使用相同数量的词。
+
+以JSON格式回答。JSON应该是一个字典列表（长度为5），其中键是“Missing_Entities”和“Denser_Summary”。
+
+</code></pre></div></div>
+
+<p>关于密度链模式的Prompt论文可以参考：<a href="https://arxiv.org/pdf/2309.04269.pdf">https://arxiv.org/pdf/2309.04269.pdf</a></p>
+
+<p>或者微信公众号回复”cod”获取文件</p>
+
+<h2 id="总结">总结</h2>
+
+<p><code class="language-plaintext highlighter-rouge">Prompt</code>对话提示框架在大模型领域中是非常重要的一环,不管你是在直接使用大模型，还是在做RAG领域的产品开发,<code class="language-plaintext highlighter-rouge">Prompt</code>的重要程度都是无可替代的。</p>
+
+<p>希望大家能根据本文列出的这5种<code class="language-plaintext highlighter-rouge">Prompt</code>框架进行举一反三，多多实践～</p>
+
+<p>对于<code class="language-plaintext highlighter-rouge">Prompt</code>工程技术细节，可以阅读员外的这两篇文章:</p>
+
+<ul>
+  <li><a href="https://www.luxiangdong.com/2023/08/08/prompt/">一文讲清楚实用Prompt工程</a></li>
+  <li><a href="https://www.luxiangdong.com/2023/08/08/advprompt/">高级prompt工程讲解</a></li>
+</ul>
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2023/10/15/use-prompt-framework/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div class="xiaoym-bot">
+  <div class="xiaoym-qrcode-title">
+    <h3>TorchV Bot开放试用中......</h3>
+  </div>
+  <div style="text-align: center;">
+    <a target="_blank" href="https://www.luxiangdong.com/2024/01/25/lanuch-1/?utm_source=xiaoymin"><img width="300"
+        src="/images/website/bot/torchv_bot2.png" /></a>
+  </div>
+</div>
+<div class="xiaoym-qrcode">
+  <div class="xiaoym-qrcode-title">
+    <h3>最新内容,关注“八一菜刀”公众号</h3>
+  </div>
+  <div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+</div>
+
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>Spring Boot框架中针对数据文件模板的下载总结 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2021/03/03/spring-boot-common-file-download/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="Spring Boot框架中针对数据文件模板的下载总结">
+      
+    <meta name="keywords" content="SpringBoot,文件下载">
+    <meta name="og:keywords" content="SpringBoot,文件下载">
+      
+    <meta name="description" content="1.前言">
+    <meta name="og:description" content="1.前言">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2021/03/03/spring-boot-common-file-download/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2021-03-03">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="Spring Boot框架中针">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">Spring Boot框架中针对数据文件模板的下载总结</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2021/03/03
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#SpringBoot" title="SpringBoot">SpringBoot</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <h2 id="1前言">1.前言</h2>
+
+<p>在我们的日常开发中，经常会碰到注入导入Excel数据到系统中的需求，而在导入Excel数据时，一般的业务系统都会提供数据的Excel模板，只有提交的Excel数据满足业务系统要求的模板时，数据才能够正常的导入系统中。因此针对这种需求，一般我们会在系统中提供一个Excel模板的下载按钮，业务人员在使用时，可以先下载Excel模板，然后按照模板中的格式将数据填充，即可导入成功。本文主要总结目前在开发这类需求时碰到的问题。</p>
+
+<h2 id="2解决方案">2.解决方案</h2>
+
+<p>从需求上来看，目前有大致三种解决方案，针对数据文件的模板下载，分别是：</p>
+
+<ul>
+  <li>模板文件直接存放在前端，作为静态资源，前端直接可以发送请求进行下载</li>
+  <li>模板文件存服务器磁盘，提供接口下载</li>
+  <li>模板文件存储在项目jar包中，提供接口下载</li>
+</ul>
+
+<h3 id="21-作为静态资源直接下载">2.1 作为静态资源直接下载</h3>
+
+<p>第一种方式是最简单的，将数据文件直接作为静态资源放在前端目录，前端通过请求即可进行下载</p>
+
+<h3 id="22-模板文件存储在服务器提供接口下载">2.2 模板文件存储在服务器，提供接口下载</h3>
+
+<p>第二种也是我们经常使用的方法，开发人员将模板文件放在服务器中的某个目录下，通过在代码中配置存储目录的方式，并且提供下载接口，当前端发起接口请求时，服务端根据请求将文件写入到响应流中</p>
+
+<p>示例代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Value</span><span class="o">(</span><span class="s">"${templateFile}"</span><span class="o">)</span>
+<span class="nc">String</span> <span class="n">downloadFilePath</span><span class="o">;</span>
+
+<span class="nd">@GetMapping</span><span class="o">(</span><span class="s">"/download"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">downloadExcel</span><span class="o">(</span><span class="nc">HttpServletResponse</span> <span class="n">response</span><span class="o">){</span>
+    <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"下载Excel模板"</span><span class="o">);</span>
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="nc">File</span> <span class="n">file</span><span class="o">=</span><span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="n">downloadFilePath</span><span class="o">);</span>
+        <span class="nc">ServletUtil</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">response</span><span class="o">,</span><span class="n">file</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">logger</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">(),</span><span class="n">e</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>因为文件存储在磁盘中，并且通过Spring提供的<code class="language-plaintext highlighter-rouge">@Value</code>注解将文件的位置在配置文件中进行配置，因此文件对象我们可以直接通过<code class="language-plaintext highlighter-rouge">new File</code>的方式直接获取到文件，最终调用工具类<code class="language-plaintext highlighter-rouge">ServletUtil</code>将该文件写入到<code class="language-plaintext highlighter-rouge">HttpServletResponse</code>的流中去，实现下载的目录</p>
+
+<h3 id="23-模板文件存在在jar中提供接口下载">2.3 模板文件存在在jar中，提供接口下载</h3>
+
+<p>通过上面的两种下载方式，我们基本已经能实现文件的下载，满足业务的需要，但有时候我也会思考，是否把数据模板文件直接放在Spring Boot的jar中，这种方式的优势：</p>
+
+<ul>
+  <li>防止模板文件存储在磁盘时被误删的操作发送</li>
+  <li>如果程序部署需要迁移服务器，能有效避免下载接口的容错，忘记迁移模板文件等情况会导致程序异常</li>
+  <li>和程序代码存储在一起更加完整</li>
+</ul>
+
+<p>基于上面的优势，因此，针对数据模板文件，我认为应该和项目直接放在一起，这样对于程序部署等都是非常有利的。</p>
+
+<p>一般，在Spring Boot的开发框架中，我们可以在<code class="language-plaintext highlighter-rouge">resources</code>目录下建立文件夹，然后将相应的数据文件放入目录中，再提供接口读取该文件进行下载</p>
+
+<p>目录结构如下：</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">|---project</span>
+<span class="err">|--------src/main/java</span>
+<span class="err">|--------src/main/resources</span>
+<span class="err">|------------data</span>
+<span class="c"># 模板文件
+</span><span class="err">|--------------template.xlsx</span>
+</code></pre></div></div>
+
+<p>因为我们将文件放在了<code class="language-plaintext highlighter-rouge">resources</code>目录下，此时如果要读取该文件，我们需要利用到Spring提供的<a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/core/io/ClassPathResource.html"><code class="language-plaintext highlighter-rouge">ClassPathResource</code></a>类进行读取，调用代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">ClassPathResource</span> <span class="n">classPathResource</span><span class="o">=</span><span class="k">new</span> <span class="nc">ClassPathResource</span><span class="o">(</span><span class="s">"data/tag_data_template.xlsx"</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>此时，我们的下载接口代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@GetMapping</span><span class="o">(</span><span class="s">"/download"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">downloadExcel</span><span class="o">(</span><span class="nc">HttpServletResponse</span> <span class="n">response</span><span class="o">){</span>
+    <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"下载Excel模板"</span><span class="o">);</span>
+    <span class="nc">ClassPathResource</span> <span class="n">classPathResource</span><span class="o">=</span><span class="k">new</span> <span class="nc">ClassPathResource</span><span class="o">(</span><span class="s">"data/template.xlsx"</span><span class="o">);</span>
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="c1">//创建临时文件</span>
+        <span class="nc">File</span> <span class="n">file</span><span class="o">=</span><span class="nc">File</span><span class="o">.</span><span class="na">createTempFile</span><span class="o">(</span><span class="s">"template"</span><span class="o">,</span><span class="s">".xlsx"</span><span class="o">);</span>
+        <span class="c1">//从当前resources目录下的文件流拷贝到File中</span>
+        <span class="nc">FileUtils</span><span class="o">.</span><span class="na">copyInputStreamToFile</span><span class="o">(</span><span class="n">classPathResource</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">(),</span><span class="n">file</span><span class="o">);</span>
+        <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"fileName:{}"</span><span class="o">,</span><span class="n">file</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+        <span class="c1">//将临时文件写出到流中</span>
+        <span class="nc">ServletUtil</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">response</span><span class="o">,</span><span class="n">file</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">logger</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">(),</span><span class="n">e</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>这里会有1个疑问点，就是我们既然已经使用了Spring提供的<a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/core/io/ClassPathResource.html"><code class="language-plaintext highlighter-rouge">ClassPathResource</code></a>进行读取文件，而该类通过继承<a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/core/io/AbstractFileResolvingResource.html">AbstractFileResolvingResource</a>也提供了<code class="language-plaintext highlighter-rouge">getFile</code>方法获取File对象，为何不直接调用?</p>
+
+<p>比如下载的接口代码改成这样：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@GetMapping</span><span class="o">(</span><span class="s">"/download"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">downloadExcel</span><span class="o">(</span><span class="nc">HttpServletResponse</span> <span class="n">response</span><span class="o">){</span>
+    <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"下载Excel模板"</span><span class="o">);</span>
+    <span class="nc">ClassPathResource</span> <span class="n">classPathResource</span><span class="o">=</span><span class="k">new</span> <span class="nc">ClassPathResource</span><span class="o">(</span><span class="s">"data/template.xlsx"</span><span class="o">);</span>
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="c1">//直接获取文件</span>
+        <span class="nc">File</span> <span class="n">file</span><span class="o">=</span><span class="n">classPathResource</span><span class="o">.</span><span class="na">getFile</span><span class="o">();</span>
+        <span class="c1">//将临时文件写出到流中</span>
+        <span class="nc">ServletUtil</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">response</span><span class="o">,</span><span class="n">file</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">logger</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">(),</span><span class="n">e</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>通过源码来分析</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//AbstractFileResolvingResource.getFile</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="nc">File</span> <span class="nf">getFile</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+    <span class="no">URL</span> <span class="n">url</span> <span class="o">=</span> <span class="n">getURL</span><span class="o">();</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">url</span><span class="o">.</span><span class="na">getProtocol</span><span class="o">().</span><span class="na">startsWith</span><span class="o">(</span><span class="nc">ResourceUtils</span><span class="o">.</span><span class="na">URL_PROTOCOL_VFS</span><span class="o">))</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">VfsResourceDelegate</span><span class="o">.</span><span class="na">getResource</span><span class="o">(</span><span class="n">url</span><span class="o">).</span><span class="na">getFile</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="nc">ResourceUtils</span><span class="o">.</span><span class="na">getFile</span><span class="o">(</span><span class="n">url</span><span class="o">,</span> <span class="n">getDescription</span><span class="o">());</span>
+<span class="o">}</span>
+
+<span class="c1">//ResourceUtils</span>
+<span class="cm">/** URL protocol for a file in the file system: "file". */</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">URL_PROTOCOL_FILE</span> <span class="o">=</span> <span class="s">"file"</span><span class="o">;</span>
+<span class="c1">//ResourceUtils.getFile</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="nc">File</span> <span class="nf">getFile</span><span class="o">(</span><span class="no">URL</span> <span class="n">resourceUrl</span><span class="o">,</span> <span class="nc">String</span> <span class="n">description</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">FileNotFoundException</span> <span class="o">{</span>
+    <span class="nc">Assert</span><span class="o">.</span><span class="na">notNull</span><span class="o">(</span><span class="n">resourceUrl</span><span class="o">,</span> <span class="s">"Resource URL must not be null"</span><span class="o">);</span>
+    <span class="k">if</span> <span class="o">(!</span><span class="no">URL_PROTOCOL_FILE</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">resourceUrl</span><span class="o">.</span><span class="na">getProtocol</span><span class="o">()))</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">FileNotFoundException</span><span class="o">(</span>
+            <span class="n">description</span> <span class="o">+</span> <span class="s">" cannot be resolved to absolute file path "</span> <span class="o">+</span>
+            <span class="s">"because it does not reside in the file system: "</span> <span class="o">+</span> <span class="n">resourceUrl</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">File</span><span class="o">(</span><span class="n">toURI</span><span class="o">(</span><span class="n">resourceUrl</span><span class="o">).</span><span class="na">getSchemeSpecificPart</span><span class="o">());</span>
+    <span class="o">}</span>
+    <span class="k">catch</span> <span class="o">(</span><span class="nc">URISyntaxException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// Fallback for URLs that are not valid URIs (should hardly ever happen).</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">File</span><span class="o">(</span><span class="n">resourceUrl</span><span class="o">.</span><span class="na">getFile</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>在最终的<code class="language-plaintext highlighter-rouge">ResourceUtils.getFile</code>方法获取File对象时，Spring会对当前URL对象的协议进行判断,如果文件的协议不是<code class="language-plaintext highlighter-rouge">file</code>，则会抛出异常，提示</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="err">class</span> <span class="err">path</span> <span class="err">resource</span> <span class="err">[data/tag_data_template.xlsx]</span> <span class="err">cannot</span> <span class="err">be</span> <span class="err">resolved</span> <span class="err">to</span> <span class="err">absolute</span> <span class="err">file</span> <span class="err">path</span> <span class="err">because</span> <span class="err">it</span> <span class="err">does</span> <span class="err">not</span> <span class="err">reside</span> <span class="err">in</span> <span class="err">the</span> <span class="err">file</span> <span class="py">system</span><span class="p">:</span> <span class="s">jar:file:/home/app.jar/BOOT-INF/classes!/data/template.xlsx</span>
+</code></pre></div></div>
+
+<p>大致的意思就是该文件不在文件系统中，既然Spring不允许这么干，那么我们只能通过获取该文件的输入流的方式，将流写到临时文件中去，最终将该临时文件写出。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//FileUtils.copyInputStreamToFile方法</span>
+<span class="c1">//commons-io 包中提供的方法</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">copyInputStreamToFile</span><span class="o">(</span><span class="nc">InputStream</span> <span class="n">source</span><span class="o">,</span> <span class="nc">File</span> <span class="n">destination</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="nc">FileOutputStream</span> <span class="n">output</span> <span class="o">=</span> <span class="n">openOutputStream</span><span class="o">(</span><span class="n">destination</span><span class="o">);</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="nc">IOUtils</span><span class="o">.</span><span class="na">copy</span><span class="o">(</span><span class="n">source</span><span class="o">,</span> <span class="n">output</span><span class="o">);</span>
+            <span class="n">output</span><span class="o">.</span><span class="na">close</span><span class="o">();</span> <span class="c1">// don't swallow close Exception if copy completes normally</span>
+        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+            <span class="nc">IOUtils</span><span class="o">.</span><span class="na">closeQuietly</span><span class="o">(</span><span class="n">output</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+        <span class="nc">IOUtils</span><span class="o">.</span><span class="na">closeQuietly</span><span class="o">(</span><span class="n">source</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>以上的操作完成后，我们可能还会碰到部署时，代码还是会抛异常的问题，说文件找不到，这种情况一般会和我们项目的maven打包配置有关，我们需要在项目的maven配置中将模板文件也一起打包进去，例如增加配置如下：</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;resources&gt;</span>
+    <span class="nt">&lt;resource&gt;</span>
+        <span class="nt">&lt;directory&gt;</span>src/main/resources<span class="nt">&lt;/directory&gt;</span>
+        <span class="nt">&lt;includes&gt;</span>
+		   <span class="c">&lt;!--包含data目录下的所有文件一起打包--&gt;</span>
+            <span class="nt">&lt;include&gt;</span>**/data/**<span class="nt">&lt;/include&gt;</span>
+        <span class="nt">&lt;/includes&gt;</span>
+        <span class="nt">&lt;filtering&gt;</span>false<span class="nt">&lt;/filtering&gt;</span>
+    <span class="nt">&lt;/resource&gt;</span>
+<span class="nt">&lt;/resources&gt;</span>
+</code></pre></div></div>
+
+<p>至此，就大功告成了！！！</p>
+
+<h2 id="3附录">3.附录</h2>
+
+<h3 id="31-servletutilwrite方法">3.1 <code class="language-plaintext highlighter-rouge">ServletUtil.write</code>方法</h3>
+
+<p><a href="https://hutool.cn/docs/#/extra/Servlet%E5%B7%A5%E5%85%B7-ServletUtil"><code class="language-plaintext highlighter-rouge">ServletUtil</code></a>工具类是引用的开源项目<a href="https://github.com/looly/hutool">Hutool</a>中的一个关于Servlet的工具类封装.</p>
+
+<p><code class="language-plaintext highlighter-rouge">write</code>方法提供了将文件写入到流中的封装，来看具体的源码：</p>
+
+<blockquote>
+  <p>封装了我们工作中基础的写出流的操作，我们在代码中也可以通过调用此方法简化我们的代码。</p>
+</blockquote>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/** 默认缓存大小 8192*/</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">DEFAULT_BUFFER_SIZE</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">&lt;&lt;</span> <span class="mi">12</span><span class="o">;</span>
+<span class="cm">/**
+ * 返回文件给客户端
+ * 
+ * @param response 响应对象{@link HttpServletResponse}
+ * @param file 写出的文件对象
+ * @since 4.1.15
+*/</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">write</span><span class="o">(</span><span class="nc">HttpServletResponse</span> <span class="n">response</span><span class="o">,</span> <span class="nc">File</span> <span class="n">file</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">final</span> <span class="nc">String</span> <span class="n">fileName</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
+    <span class="c1">//根据文件名称获取文件的响应类型，如果没有则默认application/octet-stream</span>
+    <span class="kd">final</span> <span class="nc">String</span> <span class="n">contentType</span> <span class="o">=</span> <span class="nc">ObjectUtil</span><span class="o">.</span><span class="na">defaultIfNull</span><span class="o">(</span><span class="nc">FileUtil</span><span class="o">.</span><span class="na">getMimeType</span><span class="o">(</span><span class="n">fileName</span><span class="o">),</span><span class="s">"application/octet-stream"</span><span class="o">);</span>
+    <span class="nc">BufferedInputStream</span> <span class="n">in</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="n">in</span> <span class="o">=</span> <span class="nc">FileUtil</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">(</span><span class="n">file</span><span class="o">);</span>
+        <span class="c1">//再次调用，写出Header等信息</span>
+        <span class="n">write</span><span class="o">(</span><span class="n">response</span><span class="o">,</span> <span class="n">in</span><span class="o">,</span> <span class="n">contentType</span><span class="o">,</span> <span class="n">fileName</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+        <span class="nc">IoUtil</span><span class="o">.</span><span class="na">close</span><span class="o">(</span><span class="n">in</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * 返回数据给客户端
+ * 
+ * @param response 响应对象{@link HttpServletResponse}
+ * @param in 需要返回客户端的内容
+ * @param contentType 返回的类型
+ * @param fileName 文件名
+ * @since 4.1.15
+*/</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">write</span><span class="o">(</span><span class="nc">HttpServletResponse</span> <span class="n">response</span><span class="o">,</span> <span class="nc">InputStream</span> <span class="n">in</span><span class="o">,</span> <span class="nc">String</span> <span class="n">contentType</span><span class="o">,</span> <span class="nc">String</span> <span class="n">fileName</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">final</span> <span class="nc">String</span> <span class="n">charset</span> <span class="o">=</span> <span class="nc">ObjectUtil</span><span class="o">.</span><span class="na">defaultIfNull</span><span class="o">(</span><span class="n">response</span><span class="o">.</span><span class="na">getCharacterEncoding</span><span class="o">(),</span> <span class="nc">CharsetUtil</span><span class="o">.</span><span class="na">UTF_8</span><span class="o">);</span>
+    <span class="n">response</span><span class="o">.</span><span class="na">setHeader</span><span class="o">(</span><span class="s">"Content-Disposition"</span><span class="o">,</span> <span class="nc">StrUtil</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"attachment;filename={}"</span><span class="o">,</span> <span class="nc">URLUtil</span><span class="o">.</span><span class="na">encode</span><span class="o">(</span><span class="n">fileName</span><span class="o">,</span> <span class="n">charset</span><span class="o">)));</span>
+    <span class="n">response</span><span class="o">.</span><span class="na">setContentType</span><span class="o">(</span><span class="n">contentType</span><span class="o">);</span>
+    <span class="c1">//写出</span>
+    <span class="n">write</span><span class="o">(</span><span class="n">response</span><span class="o">,</span> <span class="n">in</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * 返回数据给客户端
+ * 
+ * @param response 响应对象{@link HttpServletResponse}
+ * @param in 需要返回客户端的内容
+*/</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">write</span><span class="o">(</span><span class="nc">HttpServletResponse</span> <span class="n">response</span><span class="o">,</span> <span class="nc">InputStream</span> <span class="n">in</span><span class="o">)</span> <span class="o">{</span>
+	<span class="n">write</span><span class="o">(</span><span class="n">response</span><span class="o">,</span> <span class="n">in</span><span class="o">,</span> <span class="nc">IoUtil</span><span class="o">.</span><span class="na">DEFAULT_BUFFER_SIZE</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * 返回数据给客户端
+ * 
+ * @param response 响应对象{@link HttpServletResponse}
+ * @param in 需要返回客户端的内容
+ * @param bufferSize 缓存大小
+*/</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">write</span><span class="o">(</span><span class="nc">HttpServletResponse</span> <span class="n">response</span><span class="o">,</span> <span class="nc">InputStream</span> <span class="n">in</span><span class="o">,</span> <span class="kt">int</span> <span class="n">bufferSize</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">ServletOutputStream</span> <span class="n">out</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">getOutputStream</span><span class="o">();</span>
+        <span class="nc">IoUtil</span><span class="o">.</span><span class="na">copy</span><span class="o">(</span><span class="n">in</span><span class="o">,</span> <span class="n">out</span><span class="o">,</span> <span class="n">bufferSize</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">UtilException</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+        <span class="nc">IoUtil</span><span class="o">.</span><span class="na">close</span><span class="o">(</span><span class="n">out</span><span class="o">);</span>
+        <span class="nc">IoUtil</span><span class="o">.</span><span class="na">close</span><span class="o">(</span><span class="n">in</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2021/03/03/spring-boot-common-file-download/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div class="xiaoym-bot">
+  <div class="xiaoym-qrcode-title">
+    <h3>TorchV Bot开放试用中......</h3>
+  </div>
+  <div style="text-align: center;">
+    <a target="_blank" href="https://www.luxiangdong.com/2024/01/25/lanuch-1/?utm_source=xiaoymin"><img width="300"
+        src="/images/website/bot/torchv_bot2.png" /></a>
+  </div>
+</div>
+<div class="xiaoym-qrcode">
+  <div class="xiaoym-qrcode-title">
+    <h3>最新内容,关注“八一菜刀”公众号</h3>
+  </div>
+  <div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+</div>
+
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>Kettle实战100篇 第25篇 作业核心对象设置变量组件 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2019/08/20/kettle-25/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="Kettle实战100篇 第25篇 作业核心对象设置变量组件">
+      
+    <meta name="keywords" content="Kettle实战,Kettlle实战100篇,Kettle in Action,Kettle,Kettle设置变量">
+    <meta name="og:keywords" content="Kettle实战,Kettlle实战100篇,Kettle in Action,Kettle,Kettle设置变量">
+      
+    <meta name="description" content="我们在很多场景下都需要用到设置变量组件,比如在分页查询数据时,然后分批次写入数据时,都需要事先定义好变量,一般作为作业中起始组件,设置变量的作业举足轻重,这考验你在一个完成的ETL过程中的逻辑能力,你的ETL是否能正常完美的执行,和开始设置的变量有很重要的关系.">
+    <meta name="og:description" content="我们在很多场景下都需要用到设置变量组件,比如在分页查询数据时,然后分批次写入数据时,都需要事先定义好变量,一般作为作业中起始组件,设置变量的作业举足轻重,这考验你在一个完成的ETL过程中的逻辑能力,你的ETL是否能正常完美的执行,和开始设置的变量有很重要的关系.">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2019/08/20/kettle-25/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2019-08-20">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="Kettle实战100篇 第2">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">Kettle实战100篇 第25篇 作业核心对象设置变量组件</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2019/08/20
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#Kettle实战" title="Kettle实战">Kettle实战</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <p>我们在很多场景下都需要用到设置变量组件,比如在分页查询数据时,然后分批次写入数据时,都需要事先定义好变量,一般作为作业中起始组件,设置变量的作业举足轻重,这考验你在一个完成的ETL过程中的逻辑能力,你的ETL是否能正常完美的执行,和开始设置的变量有很重要的关系.</p>
+
+<p>作业中的设置变量组件如下：</p>
+
+<p><img src="/images/kettle/kettle25/kia-sv-1.png" alt="" /></p>
+
+<p>我们可以通过设置变量组件中的变量以<code class="language-plaintext highlighter-rouge">.properties</code>文件的方式引入</p>
+
+<p>可以指定属性文件名为<code class="language-plaintext highlighter-rouge">F:\bak\testkettlevariable.properties</code></p>
+
+<p>然后在指定我们的变量名范围,那么我们接下来的整个ETL过程中都可以使用该变量</p>
+
+<p>使用文件的方式引入变量如下：</p>
+
+<p><img src="/images/kettle/kettle25/kia-sv-2.png" alt="" /></p>
+
+<p>我们在配置文件中设置我们的变量,如下图：</p>
+
+<p><img src="/images/kettle/kettle25/kia-sv-3.png" alt="" /></p>
+
+<p>我们的JavaScript脚本中打印出变量,脚本内容如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">name</span><span class="o">=</span><span class="nx">parent_job</span><span class="p">.</span><span class="nx">getVariable</span><span class="p">(</span><span class="dl">"</span><span class="s2">TEST_NAME</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">version</span><span class="o">=</span><span class="nx">parent_job</span><span class="p">.</span><span class="nx">getVariable</span><span class="p">(</span><span class="dl">"</span><span class="s2">TEST_VERSION</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">subject</span><span class="o">=</span><span class="dl">"</span><span class="s2">自定义日志输出</span><span class="dl">"</span><span class="p">;</span>
+<span class="c1">//实例化工厂类</span>
+<span class="kd">var</span> <span class="nx">logFactory</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">org</span><span class="p">.</span><span class="nx">pentaho</span><span class="p">.</span><span class="nx">di</span><span class="p">.</span><span class="nx">core</span><span class="p">.</span><span class="nx">logging</span><span class="p">.</span><span class="nx">LogChannelFactory</span><span class="p">();</span>
+<span class="c1">//实例化日志channel对象</span>
+<span class="kd">var</span> <span class="nx">log</span><span class="o">=</span> <span class="nx">logFactory</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">subject</span><span class="p">);</span>
+<span class="c1">//日志输出</span>
+<span class="nx">log</span><span class="p">.</span><span class="nx">logMinimal</span><span class="p">(</span><span class="dl">"</span><span class="s2">name:</span><span class="dl">"</span><span class="o">+</span><span class="nx">name</span><span class="o">+</span><span class="dl">"</span><span class="s2">,version:</span><span class="dl">"</span><span class="o">+</span><span class="nx">version</span><span class="p">);</span>
+
+<span class="kc">true</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>脚本内容很简单,获取我们在文件中定义的变量,然后通过日志输出,最后运行,控制台打印如下：</p>
+
+<p><img src="/images/kettle/kettle25/kia-sv-4.png" alt="" /></p>
+
+<p>因为我们是在脚本中使用,使用的是Kettle的内置对象<code class="language-plaintext highlighter-rouge">parent_job</code>的<code class="language-plaintext highlighter-rouge">getVariable</code>方法拿到当前ETL中的变量,如果在后面组件中,可以是拥有<code class="language-plaintext highlighter-rouge">$</code>符号的输入框中通过${variable_name}来引用,或者使用<code class="language-plaintext highlighter-rouge">%variableName%</code></p>
+
+<p>另外,我们在组件中也可以看到组件的作用范围,主要有四种：</p>
+
+<ul>
+  <li><strong>当前作业有效:</strong>代表的是当前作业</li>
+  <li><strong>在JVM中有效:</strong>Kettle由于是Java编写,而Java程序运行是在JVM中运行的,因此如果设置在JVM中有效则相当于是全局有效,因为整个ETL过程都是在JVM平台上作用的</li>
+  <li><strong>在父作业中有效:</strong>父作业中有效</li>
+  <li><strong>在根作业中有效:</strong>根作业有效</li>
+</ul>
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2019/08/20/kettle-25/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div class="xiaoym-bot">
+  <div class="xiaoym-qrcode-title">
+    <h3>TorchV Bot开放试用中......</h3>
+  </div>
+  <div style="text-align: center;">
+    <a target="_blank" href="https://www.luxiangdong.com/2024/01/25/lanuch-1/?utm_source=xiaoymin"><img width="300"
+        src="/images/website/bot/torchv_bot2.png" /></a>
+  </div>
+</div>
+<div class="xiaoym-qrcode">
+  <div class="xiaoym-qrcode-title">
+    <h3>最新内容,关注“八一菜刀”公众号</h3>
+  </div>
+  <div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+</div>
+
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

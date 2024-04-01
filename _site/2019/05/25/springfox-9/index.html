@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>springfox 源码分析(九) 文档初始化-分组 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2019/05/25/springfox-9/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="springfox 源码分析(九) 文档初始化-分组">
+      
+    <meta name="keywords" content="springfox 源码系列,springfox-swagger">
+    <meta name="og:keywords" content="springfox 源码系列,springfox-swagger">
+      
+    <meta name="description" content="在前面我们了解了DocumennationContext的初始化过程,包括一系列的默认属性的赋值,接下来,开始真正的文档解析操作">
+    <meta name="og:description" content="在前面我们了解了DocumennationContext的初始化过程,包括一系列的默认属性的赋值,接下来,开始真正的文档解析操作">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2019/05/25/springfox-9/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2019-05-25">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="springfox 源码分析(">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">springfox 源码分析(九) 文档初始化-分组</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2019/05/25
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#springfox" title="springfox">springfox</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <p>在前面我们了解了<code class="language-plaintext highlighter-rouge">DocumennationContext</code>的初始化过程,包括一系列的默认属性的赋值,接下来,开始真正的文档解析操作</p>
+
+<p>我们的源码分析方式是按照springfox的文档初始化来进行归纳的,所以也是看到哪儿,就写到哪儿,当我们整个过程都研究完后,我会总结一篇文章来统一说明springfox的整个流程说明，或许以图文的方式来配合说明更能加深我们的印象.</p>
+
+<p>我们在前面的初始化过程中,springfox将Spring环境中所有的接口都转换成了WebMvcRequestHandler,但是我们在外部创建Docket对象是对整个系统的接口文档来分组的,所以接下来需要对所有的接口进行分组(根据Docket对象传入的接口Selector来分).</p>
+
+<p>先来看scan方法</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="cm">/***
+   * 最终生成Documentation文档对象
+   * @param context
+   * @return
+   */</span>
+<span class="kd">public</span> <span class="nc">Documentation</span> <span class="nf">scan</span><span class="o">(</span><span class="nc">DocumentationContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">//得到分组接口</span>
+    <span class="nc">ApiListingReferenceScanResult</span> <span class="n">result</span> <span class="o">=</span> <span class="n">apiListingReferenceScanner</span><span class="o">.</span><span class="na">scan</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+	<span class="c1">//more...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>通过<code class="language-plaintext highlighter-rouge">DocumentationContext</code>对象创建<code class="language-plaintext highlighter-rouge">ApiListingReferenceScanResult</code>对象</p>
+
+<p>而<code class="language-plaintext highlighter-rouge">ApiListingReferenceScanResult</code>类只有一个属性,那就是根据controller分组后的接口方法</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ApiListingReferenceScanResult</span> <span class="o">{</span>
+  <span class="c1">//分组</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">ResourceGroup</span><span class="o">,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">RequestMappingContext</span><span class="o">&gt;&gt;</span> <span class="n">resourceGroupRequestMappings</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="nf">ApiListingReferenceScanResult</span><span class="o">(</span><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">ResourceGroup</span><span class="o">,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">RequestMappingContext</span><span class="o">&gt;&gt;</span> <span class="n">resourceGroupRequestMappings</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">resourceGroupRequestMappings</span> <span class="o">=</span> <span class="n">resourceGroupRequestMappings</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="kd">public</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">ResourceGroup</span><span class="o">,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">RequestMappingContext</span><span class="o">&gt;&gt;</span> <span class="nf">getResourceGroupRequestMappings</span><span class="o">()</span> <span class="o">{</span>			        <span class="k">return</span> <span class="n">resourceGroupRequestMappings</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>继续来看<code class="language-plaintext highlighter-rouge">apiListingReferenceScanner</code>对象的scan方法</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">ApiListingReferenceScanResult</span> <span class="nf">scan</span><span class="o">(</span><span class="nc">DocumentationContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+    <span class="no">LOG</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"Scanning for api listing references"</span><span class="o">);</span>
+
+    <span class="nc">ArrayListMultimap</span><span class="o">&lt;</span><span class="nc">ResourceGroup</span><span class="o">,</span> <span class="nc">RequestMappingContext</span><span class="o">&gt;</span> <span class="n">resourceGroupRequestMappings</span>
+        <span class="o">=</span> <span class="nc">ArrayListMultimap</span><span class="o">.</span><span class="na">create</span><span class="o">();</span>
+    <span class="c1">//拿到外部的接口选择器</span>
+    <span class="c1">//通常我们在创建Docket对象时,会赋予接口选择器,一般是以包路径来区分</span>
+    <span class="nc">ApiSelector</span> <span class="n">selector</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">getApiSelector</span><span class="o">();</span>
+    <span class="c1">//过滤筛选</span>
+    <span class="c1">//如果是以package路径来区分的,则会根据接口的Handler的包路径是否已packagePath开始来进行匹配</span>
+    <span class="c1">//如果是以注解的方式,则会判断handler是否包含annotation注解</span>
+    <span class="nc">Iterable</span><span class="o">&lt;</span><span class="nc">RequestHandler</span><span class="o">&gt;</span> <span class="n">matchingHandlers</span> <span class="o">=</span> <span class="n">from</span><span class="o">(</span><span class="n">context</span><span class="o">.</span><span class="na">getRequestHandlers</span><span class="o">())</span>
+        <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">selector</span><span class="o">.</span><span class="na">getRequestHandlerSelector</span><span class="o">());</span>
+    <span class="c1">//</span>
+    <span class="k">for</span> <span class="o">(</span><span class="nc">RequestHandler</span> <span class="n">handler</span> <span class="o">:</span> <span class="n">matchingHandlers</span><span class="o">)</span> <span class="o">{</span>
+      <span class="c1">//接口分组</span>
+      <span class="c1">//我们在一个Controller中会存在1个或多个接口方法</span>
+      <span class="c1">//所以resourceGroup和RequestMapping的关系是1:N</span>
+      <span class="nc">ResourceGroup</span> <span class="n">resourceGroup</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ResourceGroup</span><span class="o">(</span>
+          <span class="n">handler</span><span class="o">.</span><span class="na">groupName</span><span class="o">(),</span>
+          <span class="n">handler</span><span class="o">.</span><span class="na">declaringClass</span><span class="o">(),</span>
+          <span class="mi">0</span><span class="o">);</span>
+      <span class="c1">//构建RequestMappingContext对象</span>
+      <span class="nc">RequestMappingContext</span> <span class="n">requestMappingContext</span>
+          <span class="o">=</span> <span class="k">new</span> <span class="nc">RequestMappingContext</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="n">handler</span><span class="o">);</span>
+
+      <span class="n">resourceGroupRequestMappings</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">resourceGroup</span><span class="o">,</span> <span class="n">requestMappingContext</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">ApiListingReferenceScanResult</span><span class="o">(</span><span class="n">asMap</span><span class="o">(</span><span class="n">resourceGroupRequestMappings</span><span class="o">));</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>从代码流程中,我们得知：</p>
+
+<ul>
+  <li>首先获取外部Docket对象的ApiSelector选择器，该选择器我们一般选择的是包路径</li>
+  <li>根据选择的规则进行接口过滤,此处会排除掉部分不符合规则的RequestHandler接口,通常是以package路径或者注解的方式，如果默认没有提供规则,那么springfox会根据在controller类上和方法上都没有标注<code class="language-plaintext highlighter-rouge">@ApiIgnore</code>注解的默认ApiSelctor来进行筛选</li>
+  <li>最后通过<code class="language-plaintext highlighter-rouge">ArrayListMultimap</code>来进行接口的归类操作</li>
+  <li>关于<code class="language-plaintext highlighter-rouge">ArrayListMultimap</code>的操作可参考<a href="/2019/06/02/springfox-19/">springfox 源码分析(十九) guava库学习</a>来了解</li>
+</ul>
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2019/05/25/springfox-9/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div class="xiaoym-bot">
+  <div class="xiaoym-qrcode-title">
+    <h3>TorchV Bot开放试用中......</h3>
+  </div>
+  <div style="text-align: center;">
+    <a target="_blank" href="https://www.luxiangdong.com/2024/01/25/lanuch-1/?utm_source=xiaoymin"><img width="300"
+        src="/images/website/bot/torchv_bot2.png" /></a>
+  </div>
+</div>
+<div class="xiaoym-qrcode">
+  <div class="xiaoym-qrcode-title">
+    <h3>最新内容,关注“八一菜刀”公众号</h3>
+  </div>
+  <div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+</div>
+
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

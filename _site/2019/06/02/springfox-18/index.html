@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>springfox 源码分析(十八) 自定义扩展实现分组的排序 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2019/06/02/springfox-18/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="springfox 源码分析(十八) 自定义扩展实现分组的排序">
+      
+    <meta name="keywords" content="springfox 源码系列,springfox-swagger">
+    <meta name="og:keywords" content="springfox 源码系列,springfox-swagger">
+      
+    <meta name="description" content="既然我们对springfox提供的接口已经有了一个初步的了解,那么针对我们在分组接口文章中提的需求,如果自定义扩展实现分组的排序如何做呢？">
+    <meta name="og:description" content="既然我们对springfox提供的接口已经有了一个初步的了解,那么针对我们在分组接口文章中提的需求,如果自定义扩展实现分组的排序如何做呢？">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2019/06/02/springfox-18/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2019-06-02">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="springfox 源码分析(">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">springfox 源码分析(十八) 自定义扩展实现分组的排序</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2019/06/02
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#springfox" title="springfox">springfox</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <p>既然我们对springfox提供的接口已经有了一个初步的了解,那么针对我们在分组接口文章中提的需求,如果自定义扩展实现分组的排序如何做呢？</p>
+
+<p>在swagger-bootstrap-ui以前的版本中,已经存在了增强功能,增强功能主要的方式是重写了springfox的接口,然后在我们自定义的ui中渲染即可.</p>
+
+<p>因为<code class="language-plaintext highlighter-rouge">SwaggerResource.java</code>中没有提供排序的字段属性,所以我们可以扩展该类,提供一个排序字段</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/***
+ *
+ * @since:swagger-bootstrap-ui 1.9.4
+ * @author &lt;a href="mailto:xiaoymin@foxmail.com"&gt;xiaoymin@foxmail.com&lt;/a&gt; 
+ * 2019/06/02 16:24
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SwaggerResourceExt</span> <span class="kd">extends</span> <span class="nc">SwaggerResource</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="nc">Integer</span> <span class="n">order</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nc">Integer</span> <span class="nf">getOrder</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">order</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setOrder</span><span class="o">(</span><span class="nc">Integer</span> <span class="n">order</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">order</span> <span class="o">=</span> <span class="n">order</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>很简单,提供一个order属性,该类继承自springfox的<code class="language-plaintext highlighter-rouge">SwaggerResource</code></p>
+
+<p>扩展了基础属性类,那么我们提供的方式也需要进行扩展</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Component</span>
+<span class="nd">@Qualifier</span><span class="o">(</span><span class="s">"swaggerResourcesExtProvider"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SwaggerResourcesExtProvider</span>  <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">swagger1Url</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">swagger2Url</span><span class="o">;</span>
+
+    <span class="nd">@VisibleForTesting</span>
+    <span class="kt">boolean</span> <span class="n">swagger1Available</span><span class="o">;</span>
+    <span class="nd">@VisibleForTesting</span>
+    <span class="kt">boolean</span> <span class="n">swagger2Available</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">DocumentationCache</span> <span class="n">documentationCache</span><span class="o">;</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="kd">public</span> <span class="nf">SwaggerResourcesExtProvider</span><span class="o">(</span><span class="nc">Environment</span> <span class="n">environment</span><span class="o">,</span> <span class="nc">DocumentationCache</span> <span class="n">documentationCache</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">swagger1Url</span> <span class="o">=</span> <span class="n">environment</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">"springfox.documentation.swagger.v1.path"</span><span class="o">,</span> <span class="s">"/api-docs-ext"</span><span class="o">);</span>
+        <span class="n">swagger2Url</span> <span class="o">=</span> <span class="n">environment</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">"springfox.documentation.swagger.v2.path"</span><span class="o">,</span> <span class="s">"/v2/api-docs-ext"</span><span class="o">);</span>
+        <span class="n">swagger1Available</span> <span class="o">=</span> <span class="n">classByName</span><span class="o">(</span><span class="s">"springfox.documentation.swagger1.web.Swagger1Controller"</span><span class="o">).</span><span class="na">isPresent</span><span class="o">();</span>
+        <span class="n">swagger2Available</span> <span class="o">=</span> <span class="n">classByName</span><span class="o">(</span><span class="s">"springfox.documentation.swagger2.web.Swagger2Controller"</span><span class="o">).</span><span class="na">isPresent</span><span class="o">();</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">documentationCache</span> <span class="o">=</span> <span class="n">documentationCache</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">SwaggerResourceExt</span><span class="o">&gt;</span> <span class="nf">get</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">SwaggerResourceExt</span><span class="o">&gt;</span> <span class="n">resources</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">SwaggerResourceExt</span><span class="o">&gt;();</span>
+
+        <span class="k">for</span> <span class="o">(</span><span class="nc">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Documentation</span><span class="o">&gt;</span> <span class="n">entry</span> <span class="o">:</span> <span class="n">documentationCache</span><span class="o">.</span><span class="na">all</span><span class="o">().</span><span class="na">entrySet</span><span class="o">())</span> <span class="o">{</span>
+            <span class="nc">String</span> <span class="n">swaggerGroup</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="na">getKey</span><span class="o">();</span>
+            <span class="nc">Documentation</span> <span class="n">documentation</span><span class="o">=</span><span class="n">entry</span><span class="o">.</span><span class="na">getValue</span><span class="o">();</span>
+            <span class="nc">List</span><span class="o">&lt;</span><span class="nc">VendorExtension</span><span class="o">&gt;</span> <span class="n">vendorExtensions</span><span class="o">=</span><span class="n">documentation</span><span class="o">.</span><span class="na">getVendorExtensions</span><span class="o">();</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">swagger1Available</span><span class="o">)</span> <span class="o">{</span>
+                <span class="nc">SwaggerResourceExt</span> <span class="n">swaggerResource</span> <span class="o">=</span> <span class="n">resource</span><span class="o">(</span><span class="n">swaggerGroup</span><span class="o">,</span> <span class="n">swagger1Url</span><span class="o">,</span><span class="n">vendorExtensions</span><span class="o">);</span>
+                <span class="n">swaggerResource</span><span class="o">.</span><span class="na">setSwaggerVersion</span><span class="o">(</span><span class="s">"1.2"</span><span class="o">);</span>
+            <span class="o">}</span>
+
+            <span class="k">if</span> <span class="o">(</span><span class="n">swagger2Available</span><span class="o">)</span> <span class="o">{</span>
+                <span class="nc">SwaggerResourceExt</span> <span class="n">swaggerResource</span> <span class="o">=</span> <span class="n">resource</span><span class="o">(</span><span class="n">swaggerGroup</span><span class="o">,</span> <span class="n">swagger2Url</span><span class="o">,</span><span class="n">vendorExtensions</span><span class="o">);</span>
+                <span class="n">swaggerResource</span><span class="o">.</span><span class="na">setSwaggerVersion</span><span class="o">(</span><span class="s">"2.0"</span><span class="o">);</span>
+                <span class="n">resources</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">swaggerResource</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="c1">//根据自定义扩展属性order进行排序</span>
+        <span class="nc">Collections</span><span class="o">.</span><span class="na">sort</span><span class="o">(</span><span class="n">resources</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Comparator</span><span class="o">&lt;</span><span class="nc">SwaggerResourceExt</span><span class="o">&gt;()</span> <span class="o">{</span>
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="kt">int</span> <span class="nf">compare</span><span class="o">(</span><span class="nc">SwaggerResourceExt</span> <span class="n">o1</span><span class="o">,</span> <span class="nc">SwaggerResourceExt</span> <span class="n">o2</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="n">o1</span><span class="o">.</span><span class="na">getOrder</span><span class="o">().</span><span class="na">compareTo</span><span class="o">(</span><span class="n">o2</span><span class="o">.</span><span class="na">getOrder</span><span class="o">());</span>
+            <span class="o">}</span>
+        <span class="o">});</span>
+        <span class="k">return</span> <span class="n">resources</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">SwaggerResourceExt</span> <span class="nf">resource</span><span class="o">(</span><span class="nc">String</span> <span class="n">swaggerGroup</span><span class="o">,</span> <span class="nc">String</span> <span class="n">baseUrl</span><span class="o">,</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">VendorExtension</span><span class="o">&gt;</span> <span class="n">vendorExtensions</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">SwaggerResourceExt</span> <span class="n">swaggerResource</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SwaggerResourceExt</span><span class="o">();</span>
+        <span class="n">swaggerResource</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="n">swaggerGroup</span><span class="o">);</span>
+        <span class="n">swaggerResource</span><span class="o">.</span><span class="na">setUrl</span><span class="o">(</span><span class="n">swaggerLocation</span><span class="o">(</span><span class="n">baseUrl</span><span class="o">,</span> <span class="n">swaggerGroup</span><span class="o">));</span>
+        <span class="n">swaggerResource</span><span class="o">.</span><span class="na">setOrder</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+        <span class="c1">//判断是否不为空</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">vendorExtensions</span><span class="o">!=</span><span class="kc">null</span><span class="o">&amp;&amp;!</span><span class="n">vendorExtensions</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">()){</span>
+            <span class="nc">Optional</span><span class="o">&lt;</span><span class="nc">VendorExtension</span><span class="o">&gt;</span> <span class="n">ov</span><span class="o">=</span> <span class="nc">FluentIterable</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">vendorExtensions</span><span class="o">).</span><span class="na">filter</span><span class="o">(</span><span class="k">new</span> <span class="nc">Predicate</span><span class="o">&lt;</span><span class="nc">VendorExtension</span><span class="o">&gt;()</span> <span class="o">{</span>
+                <span class="nd">@Override</span>
+                <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">apply</span><span class="o">(</span><span class="nc">VendorExtension</span> <span class="n">input</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="k">return</span> <span class="n">input</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">isAssignableFrom</span><span class="o">(</span><span class="nc">OrderExtensions</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+                <span class="o">}</span>
+            <span class="o">}).</span><span class="na">first</span><span class="o">();</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">ov</span><span class="o">.</span><span class="na">isPresent</span><span class="o">()){</span>
+                <span class="nc">OrderExtensions</span> <span class="n">orderExtensions</span><span class="o">=(</span><span class="nc">OrderExtensions</span><span class="o">)</span> <span class="n">ov</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+                <span class="n">swaggerResource</span><span class="o">.</span><span class="na">setOrder</span><span class="o">(</span><span class="n">orderExtensions</span><span class="o">.</span><span class="na">getValue</span><span class="o">());</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">swaggerResource</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="nf">swaggerLocation</span><span class="o">(</span><span class="nc">String</span> <span class="n">swaggerUrl</span><span class="o">,</span> <span class="nc">String</span> <span class="n">swaggerGroup</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">base</span> <span class="o">=</span> <span class="nc">Optional</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">swaggerUrl</span><span class="o">).</span><span class="na">get</span><span class="o">();</span>
+        <span class="k">if</span> <span class="o">(</span><span class="nc">Docket</span><span class="o">.</span><span class="na">DEFAULT_GROUP_NAME</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">swaggerGroup</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">base</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">base</span> <span class="o">+</span> <span class="s">"?group="</span> <span class="o">+</span> <span class="n">swaggerGroup</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>针对原springfox的方式进行扩展,主要逻辑</p>
+
+<ul>
+  <li>首先获取Documentation的Map集合对象,进行遍历</li>
+  <li>我们的接口参数是需要从外部由开发者自定义的传入的,那么此时我们可以利用Docket对象提供的扩展属性集合来操作,<code class="language-plaintext highlighter-rouge">swagger-bootstrap-ui</code>提供了<code class="language-plaintext highlighter-rouge">OrderExtensions</code>扩展,开发者创建Docket对象时进行参数传入即可</li>
+  <li>筛选Documentation的扩展属性集合,找到符合规范的扩展,如果未找到则默认排序值为0</li>
+</ul>
+
+<p>重写了获取<code class="language-plaintext highlighter-rouge">SwaggerResource</code>集合的工具类,接下来重写接口层</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@ApiIgnore</span>
+<span class="nd">@Controller</span>
+<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/swagger-resources-ext"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SwaggerBootstrapUiResourceExtController</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">SwaggerResourcesExtProvider</span> <span class="n">swaggerResourcesExtProvider</span><span class="o">;</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="kd">public</span> <span class="nf">SwaggerBootstrapUiResourceExtController</span><span class="o">(</span><span class="nd">@Qualifier</span><span class="o">(</span><span class="s">"swaggerResourcesExtProvider"</span><span class="o">)</span> <span class="nc">SwaggerResourcesExtProvider</span> <span class="n">swaggerResources</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">swaggerResourcesExtProvider</span> <span class="o">=</span> <span class="n">swaggerResources</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@RequestMapping</span>
+    <span class="nd">@ResponseBody</span>
+    <span class="kd">public</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">SwaggerResourceExt</span><span class="o">&gt;&gt;</span> <span class="nf">swaggerResources</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">SwaggerResourceExt</span><span class="o">&gt;&gt;(</span><span class="n">swaggerResourcesExtProvider</span><span class="o">.</span><span class="na">get</span><span class="o">(),</span> <span class="nc">HttpStatus</span><span class="o">.</span><span class="na">OK</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>此时,提供一个类似springfox的分组接口,通过工具类提供,获取拿到分组信息</p>
+
+<p>有了以上的扩展实现,我们SwaggerConfiguration配置文件创建Docket对象时需要稍微做一个改动</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Bean</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"defaultApi"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">Docket</span> <span class="nf">defaultApi</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">ParameterBuilder</span> <span class="n">parameterBuilder</span><span class="o">=</span><span class="k">new</span> <span class="nc">ParameterBuilder</span><span class="o">();</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Parameter</span><span class="o">&gt;</span> <span class="n">parameters</span><span class="o">=</span> <span class="nc">Lists</span><span class="o">.</span><span class="na">newArrayList</span><span class="o">();</span>
+        <span class="n">parameterBuilder</span><span class="o">.</span><span class="na">name</span><span class="o">(</span><span class="s">"token"</span><span class="o">).</span><span class="na">description</span><span class="o">(</span><span class="s">"token令牌"</span><span class="o">).</span><span class="na">modelRef</span><span class="o">(</span><span class="k">new</span> <span class="nc">ModelRef</span><span class="o">(</span><span class="s">"String"</span><span class="o">))</span>
+                <span class="o">.</span><span class="na">parameterType</span><span class="o">(</span><span class="s">"header"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">required</span><span class="o">(</span><span class="kc">true</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
+        <span class="n">parameters</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">parameterBuilder</span><span class="o">.</span><span class="na">build</span><span class="o">());</span>
+
+        <span class="nc">Docket</span> <span class="n">docket</span><span class="o">=</span><span class="k">new</span> <span class="nc">Docket</span><span class="o">(</span><span class="nc">DocumentationType</span><span class="o">.</span><span class="na">SWAGGER_2</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">apiInfo</span><span class="o">(</span><span class="n">apiInfo</span><span class="o">())</span>
+                <span class="o">.</span><span class="na">groupName</span><span class="o">(</span><span class="s">"默认接口"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">select</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">apis</span><span class="o">(</span><span class="nc">RequestHandlerSelectors</span><span class="o">.</span><span class="na">basePackage</span><span class="o">(</span><span class="s">"com.swagger.bootstrap.ui.demo.controller"</span><span class="o">))</span>
+                <span class="c1">//.apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))</span>
+                <span class="o">.</span><span class="na">paths</span><span class="o">(</span><span class="nc">PathSelectors</span><span class="o">.</span><span class="na">any</span><span class="o">())</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">()</span>
+            <span class="c1">//添加扩展</span>
+            <span class="o">.</span><span class="na">extensions</span><span class="o">(</span><span class="nc">Lists</span><span class="o">.</span><span class="na">newArrayList</span><span class="o">(</span><span class="k">new</span> <span class="nc">OrderExtensions</span><span class="o">(</span><span class="mi">1</span><span class="o">)))</span>
+            <span class="o">.</span><span class="na">globalOperationParameters</span><span class="o">(</span><span class="n">parameters</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">securityContexts</span><span class="o">(</span><span class="nc">Lists</span><span class="o">.</span><span class="na">newArrayList</span><span class="o">(</span><span class="n">securityContext</span><span class="o">())).</span><span class="na">securitySchemes</span><span class="o">(</span><span class="nc">Lists</span><span class="o">.&lt;</span><span class="nc">SecurityScheme</span><span class="o">&gt;</span><span class="n">newArrayList</span><span class="o">(</span><span class="n">apiKey</span><span class="o">()));</span>
+        <span class="k">return</span> <span class="n">docket</span><span class="o">;</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p>此时,我们使用extensions方法添加扩展,赋值OrderExtensions的排序order值</p>
+
+<p>此时我们访问接口<code class="language-plaintext highlighter-rouge">/swagger-resoueces-ext</code>返回：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>
+    <span class="o">{</span>
+        <span class="s">"order"</span><span class="o">:</span> <span class="mi">1</span><span class="o">,</span>
+        <span class="s">"name"</span><span class="o">:</span> <span class="s">"默认接口"</span><span class="o">,</span>
+        <span class="s">"url"</span><span class="o">:</span> <span class="s">"/v2/api-docs-ext?group=默认接口"</span><span class="o">,</span>
+        <span class="s">"swaggerVersion"</span><span class="o">:</span> <span class="s">"2.0"</span><span class="o">,</span>
+        <span class="s">"location"</span><span class="o">:</span> <span class="s">"/v2/api-docs-ext?group=默认接口"</span>
+    <span class="o">},</span>
+    <span class="o">{</span>
+        <span class="s">"order"</span><span class="o">:</span> <span class="mi">2</span><span class="o">,</span>
+        <span class="s">"name"</span><span class="o">:</span> <span class="s">"分组接口"</span><span class="o">,</span>
+        <span class="s">"url"</span><span class="o">:</span> <span class="s">"/v2/api-docs-ext?group=分组接口"</span><span class="o">,</span>
+        <span class="s">"swaggerVersion"</span><span class="o">:</span> <span class="s">"2.0"</span><span class="o">,</span>
+        <span class="s">"location"</span><span class="o">:</span> <span class="s">"/v2/api-docs-ext?group=分组接口"</span>
+    <span class="o">}</span>
+<span class="o">]</span>
+</code></pre></div></div>
+
+<p>此时,我们在Ui端就可以自定义接口分组的排序了</p>
+
+<p>以上功能在<code class="language-plaintext highlighter-rouge">swagger-bootstrap-ui</code>1.9.4版本已经实现,开发者如果有排序的需求,可以使用此方法.</p>
+
+<p><strong>注意：</strong>在使用此功能时,需要在Swagger的配置文件类上加上<code class="language-plaintext highlighter-rouge">@EnableSwaggerBootstrapUI</code>注解</p>
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2019/06/02/springfox-18/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div class="xiaoym-bot">
+  <div class="xiaoym-qrcode-title">
+    <h3>TorchV Bot开放试用中......</h3>
+  </div>
+  <div style="text-align: center;">
+    <a target="_blank" href="https://www.luxiangdong.com/2024/01/25/lanuch-1/?utm_source=xiaoymin"><img width="300"
+        src="/images/website/bot/torchv_bot2.png" /></a>
+  </div>
+</div>
+<div class="xiaoym-qrcode">
+  <div class="xiaoym-qrcode-title">
+    <h3>最新内容,关注“八一菜刀”公众号</h3>
+  </div>
+  <div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+</div>
+
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

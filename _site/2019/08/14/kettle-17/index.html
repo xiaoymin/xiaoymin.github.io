@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>Kettle实战100篇 第17篇 JSONPath组件介绍说明 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2019/08/14/kettle-17/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="Kettle实战100篇 第17篇 JSONPath组件介绍说明">
+      
+    <meta name="keywords" content="Kettle实战,Kettlle实战100篇,Kettle in Action,Kettle,JSONPath,Kettle JSON使用">
+    <meta name="og:keywords" content="Kettle实战,Kettlle实战100篇,Kettle in Action,Kettle,JSONPath,Kettle JSON使用">
+      
+    <meta name="description" content="在我们使用JSON input组件的时候,设置字段映射时,由于Kettle使用的是JSONPath组件来进行解析的,因此我们就需要了解他的相关语法">
+    <meta name="og:description" content="在我们使用JSON input组件的时候,设置字段映射时,由于Kettle使用的是JSONPath组件来进行解析的,因此我们就需要了解他的相关语法">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2019/08/14/kettle-17/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2019-08-14">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="Kettle实战100篇 第1">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">Kettle实战100篇 第17篇 JSONPath组件介绍说明</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2019/08/14
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#Kettle实战" title="Kettle实战">Kettle实战</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <p>在我们使用JSON input组件的时候,设置字段映射时,由于Kettle使用的是JSONPath组件来进行解析的,因此我们就需要了解他的相关语法</p>
+
+<p>JSONPath是一个用于读取JSON的Java DSL操作库</p>
+
+<p>GitHub:https://github.com/json-path/JsonPath</p>
+
+<p>在线调试:http://jsonpath.herokuapp.com/</p>
+
+<h2 id="表示法">表示法</h2>
+
+<p>JSONPath表达式用于指定JSON结构元素(或一组元素)的路径.路径的表示法可以使用点表示,如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">$</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">book</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">title</span>
+</code></pre></div></div>
+
+<p>或者括号表示:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span><span class="o">[</span><span class="err">'</span><span class="n">store</span><span class="err">'</span><span class="o">][</span><span class="err">'</span><span class="n">book</span><span class="err">'</span><span class="o">][</span><span class="mi">0</span><span class="o">][</span><span class="err">'</span><span class="n">title</span><span class="err">'</span><span class="o">]</span>
+</code></pre></div></div>
+
+<p><strong><code class="language-plaintext highlighter-rouge">$</code></strong>所代表的是JSON根路径,在使用时可以忽略.例如<code class="language-plaintext highlighter-rouge">$.foobar.name</code>和<code class="language-plaintext highlighter-rouge">foobar.name</code>所表达的意思是一样的,同理<code class="language-plaintext highlighter-rouge">$[0].status</code>和<code class="language-plaintext highlighter-rouge">[0].status</code>也一样</p>
+
+<p>其他语法元素如下表:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>表达式</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">$</code></td>
+      <td>根对象或者数组</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">.property</code></td>
+      <td>选择父对象中指定的属性</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">[property]</code></td>
+      <td>选择父对象中的指定属性。务必在属性名称周围加上单引号。<br />如果属性名称包含空格等特殊字符，或者以A..Za..z_以外的字符开头，请使用此表示法</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">[n]</code></td>
+      <td>从数组中选择第n个元素。索引从0开始。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">[index1,index2,…]</code></td>
+      <td>选择具有指定索引的数组元素。返回一个集合列表。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">..property</code></td>
+      <td>递归查找：递归搜索指定的属性名称，并返回具有此属性名称的所有值的数组。即使只找到一个属性，也始终返回一个列表。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">*</code></td>
+      <td>通配符选择对象或数组中的所有元素，无论其名称或索引如何。例如，<code class="language-plaintext highlighter-rouge">address.*</code>。*表示地址对象的所有属性，<code class="language-plaintext highlighter-rouge">book [*]</code>表示书籍数组的所有项目</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">[start:end] or [start:]</code></td>
+      <td>从起始索引中选择数组元素，最多但不包括结束索引。如果省略end，则从开始到数组结束选择所有元素。返回一个列表。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">[:n]</code></td>
+      <td>选择数组的前n个元素。返回一个列表。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">[-n:]</code></td>
+      <td>选择数组的最后n个元素。返回一个列表。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">[?expression]</code></td>
+      <td>过滤表达式。选择对象或数组中与指定过滤器匹配的所有元素。返回一个列表。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">[(expression)]</code></td>
+      <td>可以使用脚本表达式代替显式属性名称或索引。一个例子是<code class="language-plaintext highlighter-rouge">[(@.length-1)]</code>，它选择数组中的最后一项。这里，length指的是当前数组的长度，而不是名为length的JSON字段。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">@</code></td>
+      <td>在过滤器表达式中用于引用正在处理的当前节点。</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>注意：</strong></p>
+
+<ul>
+  <li>JSONPath表达式(包括属性名称和值)区分大小写。</li>
+  <li>与XPath不同，JSONPath没有用于从给定节点访问父节点或兄弟节点的操作。</li>
+</ul>
+
+<h2 id="过滤器">过滤器</h2>
+
+<p>过滤器是用于过滤数组的逻辑表达式。带有过滤器的JSONPath表达式的示例</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$.store.book</span><span class="p">[</span><span class="err">?(@.price</span><span class="w"> </span><span class="err">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="err">)</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<p>其中<code class="language-plaintext highlighter-rouge">@</code>表示当前正在处理的数组项或对象。过滤器也可以使用<code class="language-plaintext highlighter-rouge">$</code>来引用当前对象之外的属性</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">$</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">book</span><span class="p">[?(@.</span><span class="nx">price</span> <span class="o">&lt;</span> <span class="nx">$</span><span class="p">.</span><span class="nx">expensive</span><span class="p">)]</span>
+</code></pre></div></div>
+
+<p>只指定属性名称的表达式如<code class="language-plaintext highlighter-rouge">[?(@.isbn)]</code>将匹配具有此属性的所有项目,无论值如何</p>
+
+<p>此外,过滤器支持一下运算符</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>操作符</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">==</code></td>
+      <td>等于,1和<code class="language-plaintext highlighter-rouge">'1'</code>被认为是相等的,字符串值必须用单引号括起来(不是双引号)：例如<code class="language-plaintext highlighter-rouge">[?(@.color=='red')]</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">!=</code></td>
+      <td>不等于。字符串值必须用单引号括起来。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">&gt;</code></td>
+      <td>大于</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">&gt;=</code></td>
+      <td>大于等于</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">&lt;</code></td>
+      <td>小于</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">&lt;=</code></td>
+      <td>小于等于</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">=~</code></td>
+      <td>匹配JavaScript正则表达式,例如<code class="language-plaintext highlighter-rouge">[?(@.description=~ /cat.*/i)]</code>匹配描述以cat开头的项（不区分大小写）</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">!</code></td>
+      <td>用于否定,例如<code class="language-plaintext highlighter-rouge">[?(!@.isbn)]</code>匹配没有isbn属性的项目</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">&amp;&amp;</code></td>
+      <td>逻辑AND，用于组合多个过滤器表达式,例如：<code class="language-plaintext highlighter-rouge">[?(@.category=='fiction' &amp;&amp; @.price &lt; 10 )]</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">||</code></td>
+      <td>逻辑OR，用于组合多个过滤器表达式,例如：<code class="language-plaintext highlighter-rouge">[?(@.category=='fiction' || @.price &lt; 10 )]</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="综合示例">综合示例</h2>
+
+<p>目前我们有如下JSON结构:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">{</span>
+<span class="s">"store"</span><span class="o">:</span> <span class="o">{</span>
+ <span class="s">"book"</span><span class="o">:</span> <span class="o">[</span>
+   <span class="o">{</span>
+     <span class="s">"category"</span><span class="o">:</span> <span class="s">"reference"</span><span class="o">,</span>
+     <span class="s">"author"</span><span class="o">:</span> <span class="s">"Nigel Rees"</span><span class="o">,</span>
+     <span class="s">"title"</span><span class="o">:</span> <span class="s">"Sayings of the Century"</span><span class="o">,</span>
+     <span class="s">"price"</span><span class="o">:</span> <span class="mf">8.95</span>
+   <span class="o">},</span>
+   <span class="o">{</span>
+     <span class="s">"category"</span><span class="o">:</span> <span class="s">"fiction"</span><span class="o">,</span>
+     <span class="s">"author"</span><span class="o">:</span> <span class="s">"Herman Melville"</span><span class="o">,</span>
+     <span class="s">"title"</span><span class="o">:</span> <span class="s">"Moby Dick"</span><span class="o">,</span>
+     <span class="s">"isbn"</span><span class="o">:</span> <span class="s">"0-553-21311-3"</span><span class="o">,</span>
+     <span class="s">"price"</span><span class="o">:</span> <span class="mf">8.99</span>
+   <span class="o">},</span>
+   <span class="o">{</span>
+     <span class="s">"category"</span><span class="o">:</span> <span class="s">"fiction"</span><span class="o">,</span>
+     <span class="s">"author"</span><span class="o">:</span> <span class="s">"J.R.R. Tolkien"</span><span class="o">,</span>
+     <span class="s">"title"</span><span class="o">:</span> <span class="s">"The Lord of the Rings"</span><span class="o">,</span>
+     <span class="s">"isbn"</span><span class="o">:</span> <span class="s">"0-395-19395-8"</span><span class="o">,</span>
+     <span class="s">"price"</span><span class="o">:</span> <span class="mf">22.99</span>
+   <span class="o">}</span>
+ <span class="o">],</span>
+ <span class="s">"bicycle"</span><span class="o">:</span> <span class="o">{</span>
+   <span class="s">"color"</span><span class="o">:</span> <span class="s">"red"</span><span class="o">,</span>
+   <span class="s">"price"</span><span class="o">:</span> <span class="mf">19.95</span>
+ <span class="o">}</span>
+<span class="o">},</span>
+<span class="s">"expensive"</span><span class="o">:</span> <span class="mi">10</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>在下面的例子中,<code class="language-plaintext highlighter-rouge">$</code>符号是可选的,可以省略掉：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>表达式</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">$.store.*</code></td>
+      <td>store对象下所有的属性(非递归)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">$.store.bicycle.color</code></td>
+      <td>获取得到<code class="language-plaintext highlighter-rouge">color</code>属性的值,结果为<code class="language-plaintext highlighter-rouge">red</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">$.store..price</code> <br /><code class="language-plaintext highlighter-rouge">$..price</code></td>
+      <td>返回所有的price属性值集合,结果为<code class="language-plaintext highlighter-rouge">[8.95,8.99,22.99,19.95]</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">$.store.book[*]</code><br /><code class="language-plaintext highlighter-rouge">$..book[*]</code></td>
+      <td>所有的book集合</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">$..book[*].title</code></td>
+      <td>返回book对象下的所有标题集合</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">$..book[0]</code></td>
+      <td>返回第一个book集合对象,结果为<code class="language-plaintext highlighter-rouge">[{"category":"reference","author":"Nigel Rees","title":"Sayings of the Century","price":8.95}]</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">$..book[0].title</code></td>
+      <td>返回第一个book集合对象中的title属性,结果是<code class="language-plaintext highlighter-rouge">Sayings of the Century</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">$..book[0,1].title</code><br /><code class="language-plaintext highlighter-rouge">$..book[:2].title</code></td>
+      <td>返回前2个book集合对象的title属性,结果是<code class="language-plaintext highlighter-rouge">[Sayings of the Century, Moby Dick]</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">$..book[-1:].title</code><br /><code class="language-plaintext highlighter-rouge">$..book[(@.length-1)].title</code></td>
+      <td>返回最后一个book对象的title属性集合,结果是<code class="language-plaintext highlighter-rouge">[The Lord of the Rings]</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">$..book[?(@.author=='J.R.R. Tolkien')].title</code></td>
+      <td>返回book集合中所有的作者等于<code class="language-plaintext highlighter-rouge">J.R.R. Tolkien</code>的title集合,结果是<code class="language-plaintext highlighter-rouge">[The Lord of the Rings]</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">$..book[?(@.isbn)]</code></td>
+      <td>返回所有book对象属性中含有isbn的属性，其结果是books集合</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">$..book[?(!@.isbn)]</code></td>
+      <td>返回book对象属性中不包含isbn的属性,结果是集合</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">$..book[?(@.price &lt; 10)]</code></td>
+      <td>返回所有book对象属性中<code class="language-plaintext highlighter-rouge">price</code>属性小于10的对象集合</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">$..book[?(@.price &gt; $.expensive)]</code></td>
+      <td>返回所有book对象属性中<code class="language-plaintext highlighter-rouge">price</code>属性值大于<code class="language-plaintext highlighter-rouge">expensive</code>值的对象集合</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">$..book[?(@.author =~ /.*Tolkien/i)]</code></td>
+      <td>返回所有book对象属性中的author属性是以<code class="language-plaintext highlighter-rouge">Tolkien</code>结尾(不区分大小写)的属性对象集合</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">$..book[?(@.category == 'fiction' || @.category == 'reference')]</code></td>
+      <td>返回book对象属性中<code class="language-plaintext highlighter-rouge">category</code>等于<code class="language-plaintext highlighter-rouge">fiction</code>的或者等于<code class="language-plaintext highlighter-rouge">reference</code>的对象集合</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">$..*</code></td>
+      <td>根目录下的JSON结构的所有成员（子对象，单个属性值，数组项）组合成一个数组。</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="返回多个元素的jsonpath表达式的注意事项">返回多个元素的JSONPath表达式的注意事项</h3>
+
+<p>JSONPath查询不仅可以返回单个元素，还可以返回匹配元素的列表。</p>
+
+<p>例如如下JSON结构：</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+</span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Rose Kolodny"</span><span class="p">,</span><span class="w">
+</span><span class="nl">"phoneNumbers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+ </span><span class="p">{</span><span class="w">
+   </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"home"</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"954-555-1234"</span><span class="w">
+ </span><span class="p">},</span><span class="w">
+ </span><span class="p">{</span><span class="w">
+   </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"work"</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"754-555-5678"</span><span class="w">
+ </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>JSONPath表达式：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">phoneNumbers</span><span class="p">[</span><span class="o">*</span><span class="p">].</span><span class="nx">number</span>
+</code></pre></div></div>
+
+<p>该表达式将会返回一个集合列表,如下：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="mi">954</span><span class="o">-</span><span class="mi">555</span><span class="o">-</span><span class="mi">1234</span><span class="p">,</span> <span class="mi">754</span><span class="o">-</span><span class="mi">555</span><span class="o">-</span><span class="mi">5678</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>请注意，这不是JSON数组，它只是以逗号分隔的项列表，其中[]表示列表的开头和结尾。</p>
+
+<p>对匹配列表使用“equals”断言时，请指定[]中包含的预期值列表，并用逗号和一个空格分隔</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="nx">apples</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="p">[</span><span class="dl">"</span><span class="s2">foo</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">bar</span><span class="dl">"</span><span class="p">],</span> <span class="p">{</span><span class="dl">"</span><span class="s2">status</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">ok</span><span class="dl">"</span><span class="p">}]</span>
+</code></pre></div></div>
+
+<p>除非引号是值的一部分，否则独立字符串（如apples）不应包含引号</p>
+
+<p><strong>示例</strong></p>
+
+<p>给定下面一个JSON:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w"> </span><span class="nl">"words"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"apples"</span><span class="p">,</span><span class="w"> </span><span class="s2">"</span><span class="se">\"</span><span class="s2">oranges</span><span class="se">\"</span><span class="s2">"</span><span class="p">]</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">$ .words [*]</code>返回所有数组项的列表，因此预期值为<code class="language-plaintext highlighter-rouge">[apples，“oranges”]</code>。</p>
+
+<p>注意与<code class="language-plaintext highlighter-rouge">$ .words</code>的区别，它返回JSON中显示的数组本身，因此，在这种情况下，值将是<code class="language-plaintext highlighter-rouge">[“apples”，“\”oranges \“”]</code></p>
+
+<p>作为JSON数组和对象的值保留内部引号，但是在它们的项之间缩小而没有空格：<code class="language-plaintext highlighter-rouge">[“foo”，“bar”]</code>，而不是<code class="language-plaintext highlighter-rouge">[ “foo” ， “bar” ]</code>。</p>
+
+<h2 id="java使用示例">Java使用示例</h2>
+
+<p>因为我是一名Java工程师,看到这里,既然JSONPath是一个用Java语言开发的组件,那自然是要学习一下的(非Java语言的同学可以忽略~~~)</p>
+
+<h3 id="简单使用">简单使用</h3>
+
+<p>首先在Maven项目中加入JSONPath的引用</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;!--</span> <span class="nl">https:</span><span class="c1">//mvnrepository.com/artifact/com.jayway.jsonpath/json-path --&gt;</span>
+<span class="o">&lt;</span><span class="n">dependency</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">groupId</span><span class="o">&gt;</span><span class="n">com</span><span class="o">.</span><span class="na">jayway</span><span class="o">.</span><span class="na">jsonpath</span><span class="o">&lt;/</span><span class="n">groupId</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">artifactId</span><span class="o">&gt;</span><span class="n">json</span><span class="o">-</span><span class="n">path</span><span class="o">&lt;/</span><span class="n">artifactId</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">version</span><span class="o">&gt;</span><span class="mf">2.4</span><span class="o">.</span><span class="mi">0</span><span class="o">&lt;/</span><span class="n">version</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">dependency</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+<p>假设有如下JSON结构</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+</span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Rose Kolodny"</span><span class="p">,</span><span class="w">
+</span><span class="nl">"phoneNumbers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+ </span><span class="p">{</span><span class="w">
+   </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"home"</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"954-555-1234"</span><span class="w">
+ </span><span class="p">},</span><span class="w">
+ </span><span class="p">{</span><span class="w">
+   </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"work"</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"754-555-5678"</span><span class="w">
+ </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>我们想获取得到number的数组集合,应该如何做呢</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">json</span><span class="o">=</span><span class="s">"..."</span><span class="o">;</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"JSON:"</span><span class="o">+</span><span class="n">json</span><span class="o">);</span>
+
+<span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">numbers</span><span class="o">=</span> <span class="nc">JsonPath</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">json</span><span class="o">,</span><span class="s">"$..number"</span><span class="o">);</span>
+<span class="k">for</span> <span class="o">(</span><span class="nc">String</span> <span class="nl">num:</span><span class="n">numbers</span><span class="o">){</span>
+ <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">num</span><span class="o">);</span>
+<span class="o">}</span>
+<span class="nc">String</span> <span class="n">name</span><span class="o">=</span><span class="nc">JsonPath</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">json</span><span class="o">,</span><span class="s">"$.name"</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"name:"</span><span class="o">+</span><span class="n">name</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>最终控制台输出：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">954</span><span class="o">-</span><span class="mi">555</span><span class="o">-</span><span class="mi">1234</span>
+<span class="mi">754</span><span class="o">-</span><span class="mi">555</span><span class="o">-</span><span class="mi">5678</span>
+<span class="nc">Rose</span> <span class="nc">Kolodny</span>
+</code></pre></div></div>
+
+<p>上面这种方式很麻烦,因为你没读取一个JSON的字段属性,都需要将源JSON整体传入到方法中,在对于程序性能来说是一种消耗,因为都需要JSONPath组件重新解析一次JSON的结构</p>
+
+<p>如果你只想JSONPath只初始化一次就可以了,应该使用如下方式：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">once</span><span class="o">(</span><span class="nc">String</span> <span class="n">json</span><span class="o">){</span>
+ <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"初始化一次"</span><span class="o">);</span>
+ <span class="c1">//初始化创建Document对象</span>
+ <span class="nc">Object</span> <span class="n">document</span><span class="o">=</span> <span class="nc">Configuration</span><span class="o">.</span><span class="na">defaultConfiguration</span><span class="o">().</span><span class="na">jsonProvider</span><span class="o">().</span><span class="na">parse</span><span class="o">(</span><span class="n">json</span><span class="o">);</span>
+ <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">numbers</span><span class="o">=</span> <span class="nc">JsonPath</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">document</span><span class="o">,</span><span class="s">"$..number"</span><span class="o">);</span>
+ <span class="k">for</span> <span class="o">(</span><span class="nc">String</span> <span class="nl">num:</span><span class="n">numbers</span><span class="o">){</span>
+   <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">num</span><span class="o">);</span>
+ <span class="o">}</span>
+ <span class="nc">String</span> <span class="n">name</span><span class="o">=</span><span class="nc">JsonPath</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">document</span><span class="o">,</span><span class="s">"$.name"</span><span class="o">);</span>
+ <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"name:"</span><span class="o">+</span><span class="n">name</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>此外,JSONPath还提供了流式API,方便开发者使用</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">json</span> <span class="o">=</span> <span class="s">"..."</span><span class="o">;</span>
+
+<span class="nc">ReadContext</span> <span class="n">ctx</span> <span class="o">=</span> <span class="nc">JsonPath</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">json</span><span class="o">);</span>
+
+<span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">authorsOfBooksWithISBN</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="s">"$.store.book[?(@.isbn)].author"</span><span class="o">);</span>
+
+
+<span class="nc">List</span><span class="o">&lt;</span><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;&gt;</span> <span class="n">expensiveBooks</span> <span class="o">=</span> <span class="nc">JsonPath</span>
+                         <span class="o">.</span><span class="na">using</span><span class="o">(</span><span class="n">configuration</span><span class="o">)</span>
+                         <span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">json</span><span class="o">)</span>
+                         <span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="s">"$.store.book[?(@.price &gt; 10)]"</span><span class="o">,</span> <span class="nc">List</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</code></pre></div></div>
+
+<h3 id="返回预期">返回预期</h3>
+
+<p>在使用JSONPath组件时,了解结果中的预期类型非常重要,比如在上个json中,我们查询name属性时,使用JSONPath的表达式<code class="language-plaintext highlighter-rouge">$.name</code>和<code class="language-plaintext highlighter-rouge">$..name</code>就区别很大,一个是返回String类型的字符串,一个是返回数组,因此,根据JSONPath预判返回结果类型显得尤为关键。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//将会抛出java.lang.ClassCastException异常,因为这是返回一个String字符串的JSONPath表达式</span>
+<span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="nc">JsonPath</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">json</span><span class="o">).</span><span class="na">read</span><span class="o">(</span><span class="s">"$.store.book[0].author"</span><span class="o">)</span>
+
+<span class="c1">//正确执行</span>
+<span class="nc">String</span> <span class="n">author</span> <span class="o">=</span> <span class="nc">JsonPath</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">json</span><span class="o">).</span><span class="na">read</span><span class="o">(</span><span class="s">"$.store.book[0].author"</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>在评估预判JSONPath的路径时,您需要了解路径何时确定的概念。如果路径包含，则路径是不确定的</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">..</code>:一个递归扫描的表示法</li>
+  <li><code class="language-plaintext highlighter-rouge">?(&lt;expression&gt;)</code>：一个JSONPath表达式</li>
+  <li><code class="language-plaintext highlighter-rouge">[&lt;number&gt;,&lt;number&gt;(,&lt;number&gt;)]</code>:多个数组索引</li>
+</ul>
+
+<p>对于不确定的路径JSONPath始终返回一个数组列表</p>
+
+<p>默认情况下，MappingProvider SPI提供了一个简单的对象映射器。这允许您指定所需的返回类型，MappingProvider将尝试执行映射。在下面的示例中，演示了Long和Date之间的映射</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">json</span> <span class="o">=</span> <span class="s">"{\"date_as_long\" : 1411455611975}"</span><span class="o">;</span>
+
+<span class="nc">Date</span> <span class="n">date</span> <span class="o">=</span> <span class="nc">JsonPath</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">json</span><span class="o">).</span><span class="na">read</span><span class="o">(</span><span class="s">"$['date_as_long']"</span><span class="o">,</span> <span class="nc">Date</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>如果将JSONPath配置为使用<code class="language-plaintext highlighter-rouge">JacksonMappingProvider</code>或者<code class="language-plaintext highlighter-rouge">GsonMappingProvider</code>，您甚至可以将JSONPath输出直接映射到POJO上</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Book</span> <span class="n">book</span> <span class="o">=</span> <span class="nc">JsonPath</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">json</span><span class="o">).</span><span class="na">read</span><span class="o">(</span><span class="s">"$.store.book[0]"</span><span class="o">,</span> <span class="nc">Book</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>要获得完整的泛型类型信息，请使用TypeRef</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">TypeRef</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;&gt;</span> <span class="n">typeRef</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">TypeRef</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;&gt;()</span> <span class="o">{};</span>
+
+<span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">titles</span> <span class="o">=</span> <span class="nc">JsonPath</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="no">JSON_DOCUMENT</span><span class="o">).</span><span class="na">read</span><span class="o">(</span><span class="s">"$.store.book[*].title"</span><span class="o">,</span> <span class="n">typeRef</span><span class="o">);</span>
+</code></pre></div></div>
+
+<h3 id="过滤">过滤</h3>
+
+<p>有三种方法来创建JSONPath组件的过滤器规则</p>
+
+<h4 id="内联">内联</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;&gt;</span> <span class="n">books</span> <span class="o">=</span>  <span class="nc">JsonPath</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">json</span><span class="o">)</span>
+                                  <span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="s">"$.store.book[?(@.price &lt; 10)]"</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>您可以使用<code class="language-plaintext highlighter-rouge">&amp;&amp;</code>和<code class="language-plaintext highlighter-rouge">||</code>组合多个条件，<code class="language-plaintext highlighter-rouge">[?(@.price &lt; 10 &amp;&amp; @.category == 'fiction')]</code>、<code class="language-plaintext highlighter-rouge">[?(@.category == 'reference' || @.price &gt; 10)]</code></p>
+
+<p>您也可以使用<code class="language-plaintext highlighter-rouge">!</code>表示非条件<code class="language-plaintext highlighter-rouge">[?(!(@.price &lt; 10 &amp;&amp; @.category == 'fiction'))]</code></p>
+
+<h4 id="过滤-1">过滤</h4>
+
+<p>通过JSONPath提供的API来筛选</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">static</span> <span class="n">com</span><span class="o">.</span><span class="na">jayway</span><span class="o">.</span><span class="na">jsonpath</span><span class="o">.</span><span class="na">JsonPath</span><span class="o">.</span><span class="na">parse</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">static</span> <span class="n">com</span><span class="o">.</span><span class="na">jayway</span><span class="o">.</span><span class="na">jsonpath</span><span class="o">.</span><span class="na">Criteria</span><span class="o">.</span><span class="na">where</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">static</span> <span class="n">com</span><span class="o">.</span><span class="na">jayway</span><span class="o">.</span><span class="na">jsonpath</span><span class="o">.</span><span class="na">Filter</span><span class="o">.</span><span class="na">filter</span><span class="o">;</span>
+<span class="o">...</span>
+<span class="o">...</span>
+
+<span class="nc">Filter</span> <span class="n">cheapFictionFilter</span> <span class="o">=</span> <span class="n">filter</span><span class="o">(</span>
+<span class="n">where</span><span class="o">(</span><span class="s">"category"</span><span class="o">).</span><span class="na">is</span><span class="o">(</span><span class="s">"fiction"</span><span class="o">).</span><span class="na">and</span><span class="o">(</span><span class="s">"price"</span><span class="o">).</span><span class="na">lte</span><span class="o">(</span><span class="mi">10</span><span class="no">D</span><span class="o">)</span>
+<span class="o">);</span>
+
+<span class="nc">List</span><span class="o">&lt;</span><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;&gt;</span> <span class="n">books</span> <span class="o">=</span>  
+<span class="n">parse</span><span class="o">(</span><span class="n">json</span><span class="o">).</span><span class="na">read</span><span class="o">(</span><span class="s">"$.store.book[?]"</span><span class="o">,</span> <span class="n">cheapFictionFilter</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>注意占位符<code class="language-plaintext highlighter-rouge">?</code>对于路径中的过滤器。当提供多个过滤器时，它们将按顺序应用，其中占位符的数量必须与提供的过滤器数量相匹配。</p>
+
+<p>您也可以使用<code class="language-plaintext highlighter-rouge">OR</code>和<code class="language-plaintext highlighter-rouge">AND</code>对接过进行筛选组合</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Filter</span> <span class="n">fooOrBar</span> <span class="o">=</span> <span class="n">filter</span><span class="o">(</span>
+<span class="n">where</span><span class="o">(</span><span class="s">"foo"</span><span class="o">).</span><span class="na">exists</span><span class="o">(</span><span class="kc">true</span><span class="o">)).</span><span class="na">or</span><span class="o">(</span><span class="n">where</span><span class="o">(</span><span class="s">"bar"</span><span class="o">).</span><span class="na">exists</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+<span class="o">);</span>
+
+<span class="nc">Filter</span> <span class="n">fooAndBar</span> <span class="o">=</span> <span class="n">filter</span><span class="o">(</span>
+<span class="n">where</span><span class="o">(</span><span class="s">"foo"</span><span class="o">).</span><span class="na">exists</span><span class="o">(</span><span class="kc">true</span><span class="o">)).</span><span class="na">and</span><span class="o">(</span><span class="n">where</span><span class="o">(</span><span class="s">"bar"</span><span class="o">).</span><span class="na">exists</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+<span class="o">);</span>
+</code></pre></div></div>
+
+<h4 id="roll-your-own">Roll Your Own</h4>
+
+<p>第三种是实现你自己的<code class="language-plaintext highlighter-rouge">Predicate</code>接口</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Predicate</span> <span class="n">booksWithISBN</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Predicate</span><span class="o">()</span> <span class="o">{</span>
+ <span class="nd">@Override</span>
+ <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">apply</span><span class="o">(</span><span class="nc">PredicateContext</span> <span class="n">ctx</span><span class="o">)</span> <span class="o">{</span>
+     <span class="k">return</span> <span class="n">ctx</span><span class="o">.</span><span class="na">item</span><span class="o">(</span><span class="nc">Map</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">containsKey</span><span class="o">(</span><span class="s">"isbn"</span><span class="o">);</span>
+ <span class="o">}</span>
+<span class="o">};</span>
+
+<span class="nc">List</span><span class="o">&lt;</span><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;&gt;</span> <span class="n">books</span> <span class="o">=</span> 
+<span class="n">reader</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="s">"$.store.book[?].isbn"</span><span class="o">,</span> <span class="nc">List</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">booksWithISBN</span><span class="o">);</span>
+</code></pre></div></div>
+
+<h3 id="值和路径">值和路径</h3>
+
+<p>在Goessner实现中，JsonPath可以返回Path或Value。值是默认值，以及上面的所有示例返回的内容。如果您更喜欢我们的查询所遇到的元素的路径，则可以使用选项来实现。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Configuration</span> <span class="n">conf</span> <span class="o">=</span> <span class="nc">Configuration</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+<span class="o">.</span><span class="na">options</span><span class="o">(</span><span class="nc">Option</span><span class="o">.</span><span class="na">AS_PATH_LIST</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
+
+<span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">pathList</span> <span class="o">=</span> <span class="n">using</span><span class="o">(</span><span class="n">conf</span><span class="o">).</span><span class="na">parse</span><span class="o">(</span><span class="n">json</span><span class="o">).</span><span class="na">read</span><span class="o">(</span><span class="s">"$..author"</span><span class="o">);</span>
+
+<span class="n">assertThat</span><span class="o">(</span><span class="n">pathList</span><span class="o">).</span><span class="na">containsExactly</span><span class="o">(</span>
+ <span class="s">"$['store']['book'][0]['author']"</span><span class="o">,</span>
+ <span class="s">"$['store']['book'][1]['author']"</span><span class="o">,</span>
+ <span class="s">"$['store']['book'][2]['author']"</span><span class="o">,</span>
+ <span class="s">"$['store']['book'][3]['author']"</span><span class="o">);</span>
+</code></pre></div></div>
+
+<h3 id="配置信息">配置信息</h3>
+
+<h4 id="选项">选项</h4>
+
+<p>创建配置时，有一些选项标志可以改变默认行为。</p>
+
+<h5 id="default_path_leaf_to_null"><strong>DEFAULT_PATH_LEAF_TO_NULL</strong></h5>
+
+<p>此选项使JsonPath为缺少的叶子返回null。考虑以下json</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="w">
+</span><span class="p">{</span><span class="w">
+   </span><span class="nl">"name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"john"</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"gender"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"male"</span><span class="w">
+</span><span class="p">},</span><span class="w">
+</span><span class="p">{</span><span class="w">
+   </span><span class="nl">"name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"ben"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Java代码</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Configuration</span> <span class="n">conf</span> <span class="o">=</span> <span class="nc">Configuration</span><span class="o">.</span><span class="na">defaultConfiguration</span><span class="o">();</span>
+
+<span class="c1">//正确运行</span>
+<span class="nc">String</span> <span class="n">gender0</span> <span class="o">=</span> <span class="nc">JsonPath</span><span class="o">.</span><span class="na">using</span><span class="o">(</span><span class="n">conf</span><span class="o">).</span><span class="na">parse</span><span class="o">(</span><span class="n">json</span><span class="o">).</span><span class="na">read</span><span class="o">(</span><span class="s">"$[0]['gender']"</span><span class="o">);</span>
+<span class="c1">//PathNotFoundException thrown</span>
+<span class="nc">String</span> <span class="n">gender1</span> <span class="o">=</span> <span class="nc">JsonPath</span><span class="o">.</span><span class="na">using</span><span class="o">(</span><span class="n">conf</span><span class="o">).</span><span class="na">parse</span><span class="o">(</span><span class="n">json</span><span class="o">).</span><span class="na">read</span><span class="o">(</span><span class="s">"$[1]['gender']"</span><span class="o">);</span>
+
+<span class="nc">Configuration</span> <span class="n">conf2</span> <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="na">addOptions</span><span class="o">(</span><span class="nc">Option</span><span class="o">.</span><span class="na">DEFAULT_PATH_LEAF_TO_NULL</span><span class="o">);</span>
+
+<span class="c1">//Works fine</span>
+<span class="nc">String</span> <span class="n">gender0</span> <span class="o">=</span> <span class="nc">JsonPath</span><span class="o">.</span><span class="na">using</span><span class="o">(</span><span class="n">conf2</span><span class="o">).</span><span class="na">parse</span><span class="o">(</span><span class="n">json</span><span class="o">).</span><span class="na">read</span><span class="o">(</span><span class="s">"$[0]['gender']"</span><span class="o">);</span>
+<span class="c1">//返回null</span>
+<span class="nc">String</span> <span class="n">gender1</span> <span class="o">=</span> <span class="nc">JsonPath</span><span class="o">.</span><span class="na">using</span><span class="o">(</span><span class="n">conf2</span><span class="o">).</span><span class="na">parse</span><span class="o">(</span><span class="n">json</span><span class="o">).</span><span class="na">read</span><span class="o">(</span><span class="s">"$[1]['gender']"</span><span class="o">);</span>
+</code></pre></div></div>
+
+<h5 id="always_return_list">ALWAYS_RETURN_LIST</h5>
+
+<p>即使路径是确定的，此选项也会将JsonPath配置为返回列表</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Configuration</span> <span class="n">conf</span> <span class="o">=</span> <span class="nc">Configuration</span><span class="o">.</span><span class="na">defaultConfiguration</span><span class="o">();</span>
+
+<span class="c1">//Works fine</span>
+<span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">genders0</span> <span class="o">=</span> <span class="nc">JsonPath</span><span class="o">.</span><span class="na">using</span><span class="o">(</span><span class="n">conf</span><span class="o">).</span><span class="na">parse</span><span class="o">(</span><span class="n">json</span><span class="o">).</span><span class="na">read</span><span class="o">(</span><span class="s">"$[0]['gender']"</span><span class="o">);</span>
+<span class="c1">//PathNotFoundException thrown</span>
+<span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">genders1</span> <span class="o">=</span> <span class="nc">JsonPath</span><span class="o">.</span><span class="na">using</span><span class="o">(</span><span class="n">conf</span><span class="o">).</span><span class="na">parse</span><span class="o">(</span><span class="n">json</span><span class="o">).</span><span class="na">read</span><span class="o">(</span><span class="s">"$[1]['gender']"</span><span class="o">);</span>
+</code></pre></div></div>
+
+<h5 id="suppress_exceptions"><strong>SUPPRESS_EXCEPTIONS</strong></h5>
+
+<p>此选项可确保不会从路径评估传播任何异常。它遵循以下简单规则</p>
+
+<ul>
+  <li>如果存在选项<code class="language-plaintext highlighter-rouge">ALWAYS_RETURN_LIST</code>，则将返回空列表</li>
+  <li>如果选项<code class="language-plaintext highlighter-rouge">ALWAYS_RETURN_LIST</code>不存在，则返回null</li>
+</ul>
+
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2019/08/14/kettle-17/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div class="xiaoym-bot">
+  <div class="xiaoym-qrcode-title">
+    <h3>TorchV Bot开放试用中......</h3>
+  </div>
+  <div style="text-align: center;">
+    <a target="_blank" href="https://www.luxiangdong.com/2024/01/25/lanuch-1/?utm_source=xiaoymin"><img width="300"
+        src="/images/website/bot/torchv_bot2.png" /></a>
+  </div>
+</div>
+<div class="xiaoym-qrcode">
+  <div class="xiaoym-qrcode-title">
+    <h3>最新内容,关注“八一菜刀”公众号</h3>
+  </div>
+  <div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+</div>
+
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

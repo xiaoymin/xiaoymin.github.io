@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>Kettle实战100篇 第21篇 JavaScript内置函数说明 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2019/08/16/kettle-21/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="Kettle实战100篇 第21篇 JavaScript内置函数说明">
+      
+    <meta name="keywords" content="Kettle实战,Kettle实战100篇,Kettle in Action,Kettle,Kettle 脚本内置函数,Kettle内置函数">
+    <meta name="og:keywords" content="Kettle实战,Kettle实战100篇,Kettle in Action,Kettle,Kettle 脚本内置函数,Kettle内置函数">
+      
+    <meta name="description" content="我们在使用JavaScript组件的时候,在左侧核心树对象栏中可以看到Kettle为我们提供了很多简洁强大的内置函数,帮助我们在写脚本的时候对数据、参数变量等能很轻松的做处理,体验编码的感觉.本篇将详细介绍JavaScript组件中的函数功能">
+    <meta name="og:description" content="我们在使用JavaScript组件的时候,在左侧核心树对象栏中可以看到Kettle为我们提供了很多简洁强大的内置函数,帮助我们在写脚本的时候对数据、参数变量等能很轻松的做处理,体验编码的感觉.本篇将详细介绍JavaScript组件中的函数功能">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2019/08/16/kettle-21/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2019-08-16">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="Kettle实战100篇 第2">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">Kettle实战100篇 第21篇 JavaScript内置函数说明</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2019/08/16
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#Kettle实战" title="Kettle实战">Kettle实战</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <p>我们在使用JavaScript组件的时候,在左侧核心树对象栏中可以看到Kettle为我们提供了很多简洁强大的内置函数,帮助我们在写脚本的时候对数据、参数变量等能很轻松的做处理,体验编码的感觉.本篇将详细介绍JavaScript组件中的函数功能</p>
+
+<p>脚本组件包含的函数主要包括六大类,分别是：</p>
+
+<ul>
+  <li>字符串类型的函数(String Functions)</li>
+  <li>浮点型的函数(Numeric Functions)</li>
+  <li>日期类型函数(Date Functions)</li>
+  <li>逻辑判断型函数(Logic Functions)</li>
+  <li>特殊的函数(Special Functions)</li>
+  <li>文件处理类函数(File Functions)</li>
+</ul>
+
+<h2 id="字符串类型函数string-functions">字符串类型函数(String Functions)</h2>
+
+<p>顾名思义,字符串类型的函数肯定是针对字符串类型的参数、变量进行处理操作的函数</p>
+
+<h3 id="日期转字符串date2str">日期转字符串(<code class="language-plaintext highlighter-rouge">date2str</code>)</h3>
+
+<p>日期转字符串函数<code class="language-plaintext highlighter-rouge">date2str</code>主要有4个方法,分别是：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">date2str(date)</code>:传入日期实例,转换成字符串类型</li>
+  <li><code class="language-plaintext highlighter-rouge">date2str(date,format)</code>:传入日期和格式化参数,进行格式化转换</li>
+  <li><code class="language-plaintext highlighter-rouge">date2str(date,format,iso)</code>:传入日期和参数格式化及ISO代码进行转换,(DE = German, EN = English, FR = France, …)</li>
+  <li><code class="language-plaintext highlighter-rouge">date2str(date,format,iso,zone)</code>:传入时区进行格式化,例如北京时区(GMT+8)</li>
+</ul>
+
+<p>日期格式化参数format参数类型供参考：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">yy</span> <span class="o">/</span> <span class="nx">yyyy</span> <span class="o">-</span> <span class="mi">06</span> <span class="o">/</span> <span class="mi">2006</span>
+<span class="nx">MM</span> <span class="o">/</span> <span class="nx">MMM</span> <span class="o">/</span> <span class="nx">MMMMM</span> <span class="o">-</span> <span class="mi">11</span> <span class="o">/</span> <span class="nx">Nov</span> <span class="o">/</span> <span class="nx">November</span>
+<span class="nx">d</span> <span class="o">/</span> <span class="nx">dd</span>  <span class="o">-</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">01</span>
+<span class="nx">E</span> <span class="o">/</span> <span class="nx">EEEE</span> <span class="o">-</span> <span class="nx">Tue</span> <span class="o">/</span> <span class="nx">Tuesday</span>
+<span class="nx">hh</span> <span class="o">/</span> <span class="nx">HH</span> <span class="o">-</span> <span class="mi">11</span> <span class="o">/</span> <span class="mi">23</span>
+<span class="nx">m</span> <span class="o">/</span> <span class="nx">mm</span> <span class="o">-</span> <span class="mi">5</span> <span class="o">/</span> <span class="mi">05</span>
+<span class="nx">s</span> <span class="o">/</span> <span class="nx">ss</span> <span class="o">-</span> <span class="mi">8</span> <span class="o">/</span> <span class="mi">08</span>
+</code></pre></div></div>
+
+<p>代码示例:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">dValue</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">date2str</span><span class="p">(</span><span class="nx">dValue</span><span class="p">,</span><span class="dl">"</span><span class="s2">dd.MM.yyyy</span><span class="dl">"</span><span class="p">));</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">date2str</span><span class="p">(</span><span class="nx">dValue</span><span class="p">,</span><span class="dl">"</span><span class="s2">dd.MM.yyyy HH:mm:ss</span><span class="dl">"</span><span class="p">));</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">date2str</span><span class="p">(</span><span class="nx">dValue</span><span class="p">,</span><span class="dl">"</span><span class="s2">E.MMM.yyyy</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">DE</span><span class="dl">"</span><span class="p">));</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">date2str</span><span class="p">(</span><span class="nx">dValue</span><span class="p">,</span><span class="dl">"</span><span class="s2">dd.MM.yyyy HH:mm:ss</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">EN</span><span class="dl">"</span><span class="p">));</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">date2str</span><span class="p">(</span><span class="nx">dValue</span><span class="p">,</span><span class="dl">"</span><span class="s2">dd.MM.yyyy HH:mm:ss</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">ZH</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">GMT+8</span><span class="dl">"</span><span class="p">));</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">date2str</span><span class="p">(</span><span class="nx">dValue</span><span class="p">,</span><span class="dl">"</span><span class="s2">yyyy-MM-dd HH:mm:ss</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">ZH</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">GMT+8</span><span class="dl">"</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p>以上代码在控制台将会输出如下：</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">2019/08/19</span> <span class="py">10</span><span class="p">:</span><span class="s">12:56 - JavaScript代码.0 - 19.08.2019</span>
+<span class="err">2019/08/19</span> <span class="py">10</span><span class="p">:</span><span class="s">12:56 - JavaScript代码.0 - 19.08.2019 10:12:56</span>
+<span class="err">2019/08/19</span> <span class="py">10</span><span class="p">:</span><span class="s">12:56 - JavaScript代码.0 - Mo.Aug.2019</span>
+<span class="err">2019/08/19</span> <span class="py">10</span><span class="p">:</span><span class="s">12:56 - JavaScript代码.0 - 19.08.2019 10:12:56</span>
+<span class="err">2019/08/19</span> <span class="py">10</span><span class="p">:</span><span class="s">12:56 - JavaScript代码.0 - 19.08.2019 10:12:56</span>
+<span class="err">2019/08/19</span> <span class="py">10</span><span class="p">:</span><span class="s">12:56 - JavaScript代码.0 - 2019-08-19 10:12:56</span>
+</code></pre></div></div>
+
+<h3 id="转义htmlescapehtmlhtml">转义HTML<code class="language-plaintext highlighter-rouge">escapeHtml(html)</code></h3>
+
+<p>代码如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">html</span><span class="o">=</span><span class="dl">"</span><span class="s2">&lt;h1&gt;我是H2标题&lt;/h2&gt;</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">escapeHtml</span><span class="p">(</span><span class="nx">html</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>最终输出</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">2019/08/19</span> <span class="py">10</span><span class="p">:</span><span class="s">16:13 - JavaScript代码.0 - &amp;lt;h1&amp;gt;&amp;#25105;&amp;#26159;H2&amp;#26631;&amp;#39064;&amp;lt;/h2&amp;gt;</span>
+</code></pre></div></div>
+
+<h3 id="转义sqlescapesqlvar">转义SQL(<code class="language-plaintext highlighter-rouge">escapeSQL(var)</code>)</h3>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">str1</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">SELECT * FROM CUSTOMER WHERE NAME='</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">escapeSQL</span><span class="p">(</span><span class="dl">"</span><span class="s2">McHale's Navy</span><span class="dl">"</span><span class="p">)</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">'</span><span class="dl">"</span><span class="p">;</span>  
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">str1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>该函数会把单引号转成双引号,输出结果如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">10</span><span class="o">:</span><span class="mi">18</span><span class="o">:</span><span class="mi">59</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="no">SELECT</span> <span class="o">*</span> <span class="no">FROM</span> <span class="no">CUSTOMER</span> <span class="no">WHERE</span> <span class="no">NAME</span><span class="o">=</span><span class="err">'</span><span class="nc">McHale</span><span class="err">''</span><span class="n">s</span> <span class="nc">Navy</span><span class="err">'</span>
+</code></pre></div></div>
+
+<h3 id="构造定长字符串fillstringcharlength">构造定长字符串(<code class="language-plaintext highlighter-rouge">fillString(char,length)</code>)</h3>
+
+<p>代码示例如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">writeToLog</span><span class="p">(</span><span class="nx">fillString</span><span class="p">(</span><span class="dl">"</span><span class="s2">x</span><span class="dl">"</span><span class="p">,</span><span class="mi">10</span><span class="p">));</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">fillString</span><span class="p">(</span><span class="dl">"</span><span class="s2">A</span><span class="dl">"</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p>最终会输出10个X和3个<code class="language-plaintext highlighter-rouge">A</code>,输出结果如下：</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">2019/08/19</span> <span class="py">10</span><span class="p">:</span><span class="s">24:08 - JavaScript代码.0 - xxxxxxxxxx</span>
+<span class="err">2019/08/19</span> <span class="py">10</span><span class="p">:</span><span class="s">24:08 - JavaScript代码.0 - AAA</span>
+</code></pre></div></div>
+
+<p>需要注意的是第一个是一个char类型的单字符,不能是字符串</p>
+
+<h3 id="统计字符串出现频次getocurancestringstrsearchstr">统计字符串出现频次(<code class="language-plaintext highlighter-rouge">getOcuranceString(str,searchStr)</code>)</h3>
+
+<p>第一个参数是要搜索的完整字符串,第二个参数是要搜索统计的字符串</p>
+
+<p>代码示例：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">sef</span><span class="o">=</span><span class="dl">'</span><span class="s1">2007-09-11</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">getOcuranceString</span><span class="p">(</span><span class="nx">sef</span><span class="p">,</span><span class="dl">'</span><span class="s1">0</span><span class="dl">'</span><span class="p">))</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">getOcuranceString</span><span class="p">(</span><span class="nx">sef</span><span class="p">,</span><span class="dl">'</span><span class="s1">00</span><span class="dl">'</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>我们分别统计字符串0和00最终出现的次数,此时,日志最终打印的次数是3和1：</p>
+
+<pre><code class="language-pro">2019/08/19 10:28:45 - JavaScript代码.0 - 3
+2019/08/19 10:28:45 - JavaScript代码.0 - 1
+</code></pre>
+
+<h3 id="获取字符串下标索引indexof">获取字符串下标索引(<code class="language-plaintext highlighter-rouge">indexOf</code>)</h3>
+
+<p>获取下标索引主要有2个重构函数,分别是：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">indexOf(string,subString)</code>:获取出现字符串的索引开始位置</li>
+  <li><code class="language-plaintext highlighter-rouge">indexOf(string,subString,fromIndex)</code>；指定开始位置,获取字符串索引开始位置</li>
+</ul>
+
+<p>代码示例：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">str1</span><span class="o">=</span> <span class="dl">"</span><span class="s2">Hello Pentaho!</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">str2</span><span class="o">=</span> <span class="nx">indexOf</span><span class="p">(</span><span class="nx">str1</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Pentaho</span><span class="dl">"</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">str3</span><span class="o">=</span> <span class="nx">indexOf</span><span class="p">(</span><span class="nx">str1</span><span class="p">,</span> <span class="dl">"</span><span class="s2">o</span><span class="dl">"</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="dl">"</span><span class="s2">Input : </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">str1</span><span class="p">);</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="dl">"</span><span class="s2">Index of 'Pentaho' : </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">str2</span><span class="p">);</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="dl">"</span><span class="s2">index of 'o', search from position 7 : </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">str3</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>最终控制台输出：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">10</span><span class="o">:</span><span class="mi">34</span><span class="o">:</span><span class="mi">16</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="nc">Input</span> <span class="o">:</span> <span class="nc">Hello</span> <span class="nc">Pentaho</span><span class="o">!</span>
+<span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">10</span><span class="o">:</span><span class="mi">34</span><span class="o">:</span><span class="mi">16</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="nc">Index</span> <span class="n">of</span> <span class="err">'</span><span class="nc">Pentaho</span><span class="err">'</span> <span class="o">:</span> <span class="mi">6</span>
+<span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">10</span><span class="o">:</span><span class="mi">34</span><span class="o">:</span><span class="mi">16</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="n">index</span> <span class="n">of</span> <span class="sc">'o'</span><span class="o">,</span> <span class="n">search</span> <span class="n">from</span> <span class="n">position</span> <span class="mi">7</span> <span class="o">:</span> <span class="mi">12</span>
+</code></pre></div></div>
+
+<h3 id="首字母大写initcap">首字母大写(<code class="language-plaintext highlighter-rouge">initCap</code>)</h3>
+
+<p>对指定字符串首字母大写处理,来看代码示例：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">str1</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">my home</span><span class="dl">"</span><span class="p">;</span>      
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">initCap</span><span class="p">(</span><span class="nx">str1</span><span class="p">));</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">initCap</span><span class="p">(</span><span class="dl">'</span><span class="s1">test a aaa cw</span><span class="dl">'</span><span class="p">));</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">initCap</span><span class="p">(</span><span class="dl">'</span><span class="s1">myhome</span><span class="dl">'</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p>此时,最终控制台输出如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">10</span><span class="o">:</span><span class="mi">41</span><span class="o">:</span><span class="mi">27</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="nc">My</span> <span class="nc">Home</span>
+<span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">10</span><span class="o">:</span><span class="mi">41</span><span class="o">:</span><span class="mi">27</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="nc">Test</span> <span class="no">A</span> <span class="nc">Aaa</span> <span class="nc">Cw</span>
+<span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">10</span><span class="o">:</span><span class="mi">41</span><span class="o">:</span><span class="mi">27</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="nc">Myhome</span>
+</code></pre></div></div>
+
+<h3 id="字符串转小写lower">字符串转小写(<code class="language-plaintext highlighter-rouge">lower</code>)</h3>
+
+<p>将传入字符串全部转小写</p>
+
+<p>代码如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">str1</span><span class="o">=</span> <span class="dl">"</span><span class="s2">Hello World!</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">str2</span><span class="o">=</span> <span class="nx">lower</span><span class="p">(</span><span class="nx">str1</span><span class="p">);</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="dl">"</span><span class="s2">Input:</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">str1</span><span class="p">);</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="dl">"</span><span class="s2">Converted to LowerCase:</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">str2</span><span class="p">);</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">lower</span><span class="p">(</span><span class="dl">'</span><span class="s1">DDDHelloSWxss</span><span class="dl">'</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>响应内容</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">10</span><span class="p">:</span><span class="mi">43</span><span class="p">:</span><span class="mi">09</span> <span class="o">-</span> <span class="nx">JavaScript代码</span><span class="p">.</span><span class="mi">0</span> <span class="o">-</span> <span class="nx">Input</span><span class="p">:</span><span class="nx">Hello</span> <span class="nx">World</span><span class="o">!</span>
+<span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">10</span><span class="p">:</span><span class="mi">43</span><span class="p">:</span><span class="mi">09</span> <span class="o">-</span> <span class="nx">JavaScript代码</span><span class="p">.</span><span class="mi">0</span> <span class="o">-</span> <span class="nx">Converted</span> <span class="nx">to</span> <span class="nx">LowerCase</span><span class="p">:</span><span class="nx">hello</span> <span class="nx">world</span><span class="o">!</span>
+<span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">10</span><span class="p">:</span><span class="mi">43</span><span class="p">:</span><span class="mi">09</span> <span class="o">-</span> <span class="nx">JavaScript代码</span><span class="p">.</span><span class="mi">0</span> <span class="o">-</span> <span class="nx">dddhelloswxss</span>
+</code></pre></div></div>
+
+<h3 id="字符串填充左侧lpadstringcharlength">字符串填充左侧(<code class="language-plaintext highlighter-rouge">lpad(string,char,length)</code>)</h3>
+
+<p>用指定长度的给定字符将字符串填充到左侧</p>
+
+<p>参数定义：</p>
+
+<ul>
+  <li>1：传入字符串</li>
+  <li>2：填充单字符</li>
+  <li>3：填充单字符长度</li>
+</ul>
+
+<p>如果length长度超过给定字符串的长度,将对填充字符串做减法，例如：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">str1</span><span class="o">=</span> <span class="dl">"</span><span class="s2">Hello World!</span><span class="dl">"</span><span class="p">;</span> 
+<span class="nx">writeToLog</span><span class="p">(</span><span class="dl">"</span><span class="s2">Lpad:</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">lpad</span><span class="p">(</span><span class="nx">str1</span><span class="p">,</span> <span class="dl">"</span><span class="s2">x</span><span class="dl">"</span><span class="p">,</span><span class="mi">20</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p>此时,最终输出结果为：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">10</span><span class="o">:</span><span class="mi">46</span><span class="o">:</span><span class="mi">38</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="nl">Lpad:</span><span class="n">xxxxxxxxHello</span> <span class="nc">World</span><span class="o">!</span>
+</code></pre></div></div>
+
+<p>最终的完成长度是20个字符长度,因此填充的单字符<code class="language-plaintext highlighter-rouge">x</code>并没有填充20次</p>
+
+<p>如果length长度小于给定字符串的长度,则默认返回原字符串,不做填充,代码示例：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">str1</span><span class="o">=</span> <span class="dl">"</span><span class="s2">Hello World!</span><span class="dl">"</span><span class="p">;</span> 
+<span class="nx">writeToLog</span><span class="p">(</span><span class="dl">"</span><span class="s2">Lpad:</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">lpad</span><span class="p">(</span><span class="nx">str1</span><span class="p">,</span> <span class="dl">"</span><span class="s2">x</span><span class="dl">"</span><span class="p">,</span><span class="mi">5</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p>此时最终的输出结果为：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">10</span><span class="o">:</span><span class="mi">46</span><span class="o">:</span><span class="mi">38</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="nl">Lpad:</span><span class="nc">Hello</span> <span class="nc">World</span><span class="o">!</span>
+</code></pre></div></div>
+
+<h3 id="去空字符ltrim">去空字符(<code class="language-plaintext highlighter-rouge">ltrim</code>)</h3>
+
+<p>从左侧开始去除空字符串</p>
+
+<h3 id="数字转字符串num2str">数字转字符串(<code class="language-plaintext highlighter-rouge">num2str</code>)</h3>
+
+<p>给定数字,转换为字符串,主要有3个构造函数：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">num2str(num)</code>:转换num数字为字符串</li>
+  <li><code class="language-plaintext highlighter-rouge">num2str(num,format)</code>:格式化数字为指定字符串</li>
+  <li><code class="language-plaintext highlighter-rouge">num2str(num,format,iso)</code>:按照本地ISO编码进行格式化</li>
+</ul>
+
+<p>代码示例如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">d1</span> <span class="o">=</span> <span class="mf">123.40</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">d2</span> <span class="o">=</span> <span class="o">-</span><span class="mf">123.40</span><span class="p">;</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">num2str</span><span class="p">(</span><span class="nx">d1</span><span class="p">));</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">num2str</span><span class="p">(</span><span class="nx">d1</span><span class="p">,</span> <span class="dl">"</span><span class="s2">0.00</span><span class="dl">"</span><span class="p">));</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">num2str</span><span class="p">(</span><span class="nx">d1</span><span class="p">,</span> <span class="dl">"</span><span class="s2">0.00</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">EN</span><span class="dl">"</span><span class="p">));</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">num2str</span><span class="p">(</span><span class="nx">d2</span><span class="p">,</span> <span class="dl">"</span><span class="s2">0.00;(0.00)</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">EN</span><span class="dl">"</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p>最终控制台输出：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">11</span><span class="o">:</span><span class="mo">00</span><span class="o">:</span><span class="mi">17</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="mf">123.4</span>
+<span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">11</span><span class="o">:</span><span class="mo">00</span><span class="o">:</span><span class="mi">17</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="mf">123.40</span>
+<span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">11</span><span class="o">:</span><span class="mo">00</span><span class="o">:</span><span class="mi">17</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="mf">123.40</span>
+<span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">11</span><span class="o">:</span><span class="mo">00</span><span class="o">:</span><span class="mi">17</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="o">(</span><span class="mf">123.40</span><span class="o">)</span>
+</code></pre></div></div>
+
+<h3 id="xml保护标签函数转换protectxmlcdata">XML保护标签函数转换(<code class="language-plaintext highlighter-rouge">protectXMLCDATA</code>)</h3>
+
+<p>传入给定字符串,添加标准保护,代码示例</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">str1</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">my home</span><span class="dl">"</span><span class="p">;</span>      
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">protectXMLCDATA</span><span class="p">(</span><span class="nx">str1</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p>此时,将会给变量<code class="language-plaintext highlighter-rouge">str1</code>加上保护标签</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">11</span><span class="o">:</span><span class="mo">02</span><span class="o">:</span><span class="mi">09</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="o">&lt;![</span><span class="no">CDATA</span><span class="o">[</span><span class="n">my</span> <span class="n">home</span><span class="o">]]&gt;</span>
+</code></pre></div></div>
+
+<h3 id="移除字符串中crlf字符removecrlfstr">移除字符串中CRLF字符(<code class="language-plaintext highlighter-rouge">removeCRLF(str)</code>)</h3>
+
+<p>给定字符串中删除CR END LF的字符串</p>
+
+<h3 id="替换字符串replace">替换字符串(<code class="language-plaintext highlighter-rouge">replace</code>)</h3>
+
+<p>替换字符串主要包括两个构造函数：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">replace(str,searchStr,replaceStr)</code>:从指定字符串中查询，然后替换</li>
+  <li><code class="language-plaintext highlighter-rouge">replace(str,firstSearch,firstReplace,secondSearch,SecondReplace...)</code>：无限查询替换</li>
+</ul>
+
+<p>代码示例如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">str1</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Hello World, this is a nice function</span><span class="dl">"</span><span class="p">;</span>      
+<span class="kd">var</span> <span class="nx">str2</span> <span class="o">=</span> <span class="nx">replace</span><span class="p">(</span><span class="nx">str1</span><span class="p">,</span><span class="dl">"</span><span class="s2">World</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Folk</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">str2</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">str2</span> <span class="o">=</span> <span class="nx">replace</span><span class="p">(</span><span class="nx">str1</span><span class="p">,</span><span class="dl">"</span><span class="s2">World</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Folk</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">nice</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">beautifull</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">str2</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>最终输出:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">11</span><span class="o">:</span><span class="mi">10</span><span class="o">:</span><span class="mi">21</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="nc">Hello</span> <span class="nc">Folk</span><span class="o">,</span> <span class="k">this</span> <span class="n">is</span> <span class="n">a</span> <span class="n">nice</span> <span class="n">function</span>
+<span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">11</span><span class="o">:</span><span class="mi">10</span><span class="o">:</span><span class="mi">21</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="nc">Hello</span> <span class="nc">Folk</span><span class="o">,</span> <span class="k">this</span> <span class="n">is</span> <span class="n">a</span> <span class="n">beautifull</span> <span class="n">function</span>
+</code></pre></div></div>
+
+<h3 id="字符串右侧填充rpadstringcharlength">字符串右侧填充(<code class="language-plaintext highlighter-rouge">rpad(string,char,length</code>))</h3>
+
+<p>使用方法同<code class="language-plaintext highlighter-rouge">lpad</code>,只是一个是左侧，一个是右侧</p>
+
+<h3 id="去除空字符右侧rtrim">去除空字符(右侧)(<code class="language-plaintext highlighter-rouge">rtrim</code>)</h3>
+
+<h3 id="正则切分str2regexp">正则切分(<code class="language-plaintext highlighter-rouge">str2RegExp</code>)</h3>
+
+<p>出入一个正则表达式,对string字符串进行Split操作.代码如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">var</span> <span class="nx">strToMatch</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">info@proconis.de</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">strReg</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">^(</span><span class="se">\\</span><span class="s2">w+)@([a-zA-Z_]+?)</span><span class="se">\\</span><span class="s2">.([a-zA-Z]{2,3})$</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">xArr</span> <span class="o">=</span>  <span class="nx">str2RegExp</span><span class="p">(</span><span class="nx">strToMatch</span><span class="p">,</span> <span class="nx">strReg</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span> <span class="nx">xArr</span> <span class="o">!=</span> <span class="kc">null</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span><span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nx">i</span><span class="o">&lt;</span><span class="nx">xArr</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span><span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+	    <span class="nx">writeToLog</span><span class="p">(</span><span class="nx">xArr</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+<span class="k">else</span> <span class="p">{</span>
+    <span class="nx">writeToLog</span><span class="p">(</span><span class="dl">"</span><span class="s2">no match</span><span class="dl">"</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>最终控制台输出：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">13</span><span class="o">:</span><span class="mi">21</span><span class="o">:</span><span class="mi">19</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="n">info</span>
+<span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">13</span><span class="o">:</span><span class="mi">21</span><span class="o">:</span><span class="mi">19</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="n">proconis</span>
+<span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">13</span><span class="o">:</span><span class="mi">21</span><span class="o">:</span><span class="mi">19</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="n">de</span>
+</code></pre></div></div>
+
+<h3 id="字符串截取substr">字符串截取(<code class="language-plaintext highlighter-rouge">substr</code>)</h3>
+
+<p>通过制定索引开始对字符串进行截取操作,主要有两个重构参数：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">substr(string,from)</code>:指定from索引开始截取字符串</li>
+  <li><code class="language-plaintext highlighter-rouge">substr(string,from,to)</code>:指定开始和截止索引进行截取</li>
+</ul>
+
+<p>代码示例：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">str1</span><span class="o">=</span> <span class="dl">"</span><span class="s2">Hello Pentaho!</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">str2</span><span class="o">=</span> <span class="nx">substr</span><span class="p">(</span><span class="nx">str1</span><span class="p">,</span> <span class="mi">6</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">str3</span><span class="o">=</span> <span class="nx">substr</span><span class="p">(</span><span class="nx">str1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="dl">"</span><span class="s2">Input : </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">str1</span><span class="p">);</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="dl">"</span><span class="s2">From position 6: </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">str2</span><span class="p">);</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="dl">"</span><span class="s2">From position 6 for 7 long : </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">str3</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>控制台输出如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">13</span><span class="o">:</span><span class="mi">31</span><span class="o">:</span><span class="mi">20</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="nc">Input</span> <span class="o">:</span> <span class="nc">Hello</span> <span class="nc">Pentaho</span><span class="o">!</span>
+<span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">13</span><span class="o">:</span><span class="mi">31</span><span class="o">:</span><span class="mi">20</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="nc">From</span> <span class="n">position</span> <span class="mi">6</span><span class="o">:</span> <span class="nc">Pentaho</span><span class="o">!</span>
+<span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">13</span><span class="o">:</span><span class="mi">31</span><span class="o">:</span><span class="mi">20</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="nc">From</span> <span class="n">position</span> <span class="mi">6</span> <span class="k">for</span> <span class="mi">7</span> <span class="kt">long</span> <span class="o">:</span> <span class="nc">Pentaho</span>
+</code></pre></div></div>
+
+<h3 id="去除左右空格trim">去除左右空格(<code class="language-plaintext highlighter-rouge">trim</code>)</h3>
+
+<h3 id="不转义htmlunescapehtmlhtml">不转义HTML(<code class="language-plaintext highlighter-rouge">unEscapeHtml(html)</code>)</h3>
+
+<p>针对以转义的HTML字符进行解密,代码如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">w</span><span class="o">=</span><span class="dl">'</span><span class="s1">&lt;h2&gt;我是H2标题&lt;/h2&gt;</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">esW</span><span class="o">=</span><span class="nx">escapeHtml</span><span class="p">(</span><span class="nx">w</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">unesw</span><span class="o">=</span><span class="nx">unEscapeHtml</span><span class="p">(</span><span class="nx">esW</span><span class="p">);</span>
+
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">esW</span><span class="p">);</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">unesw</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>最终控制台输出：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">13</span><span class="o">:</span><span class="mi">38</span><span class="o">:</span><span class="mi">16</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">h2</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;&amp;</span><span class="err">#</span><span class="mi">25105</span><span class="o">;&amp;</span><span class="err">#</span><span class="mi">26159</span><span class="o">;</span><span class="no">H2</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">26631</span><span class="o">;&amp;</span><span class="err">#</span><span class="mi">39064</span><span class="o">;&amp;</span><span class="n">lt</span><span class="o">;/</span><span class="n">h2</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span>
+<span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">13</span><span class="o">:</span><span class="mi">38</span><span class="o">:</span><span class="mi">16</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="o">&lt;</span><span class="n">h2</span><span class="o">&gt;</span><span class="n">我是H2标题</span><span class="o">&lt;/</span><span class="n">h2</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+<h3 id="解码转义xmlunescapexml-">解码转义XML(<code class="language-plaintext highlighter-rouge">unEscapeXml </code>)</h3>
+
+<h3 id="字符串转大写upper">字符串转大写(<code class="language-plaintext highlighter-rouge">upper</code>)</h3>
+
+<p>将传入字符串全部转大写.例如:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">var</span> <span class="n">str</span><span class="o">=</span><span class="s">"Hello World"</span><span class="o">;</span>
+<span class="n">writeToLog</span><span class="o">(</span><span class="n">upper</span><span class="o">(</span><span class="n">str</span><span class="o">));</span>
+</code></pre></div></div>
+
+<h2 id="浮点型的函数numeric-functions">浮点型的函数(Numeric Functions)</h2>
+
+<h3 id="计算绝对值absnum">计算绝对值(<code class="language-plaintext highlighter-rouge">abs(num)</code>)</h3>
+
+<p>计算一个数值的绝对值,代码示例：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">d1</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1234.01</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">d2</span> <span class="o">=</span> <span class="mf">1234.01</span><span class="p">;</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">abs</span><span class="p">(</span><span class="nx">d1</span><span class="p">));</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">abs</span><span class="p">(</span><span class="nx">d2</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p>最终控制台输出为：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">13</span><span class="o">:</span><span class="mi">51</span><span class="o">:</span><span class="mo">00</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="mf">1234.01</span>
+<span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">13</span><span class="o">:</span><span class="mi">51</span><span class="o">:</span><span class="mo">00</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="mf">1234.01</span>
+</code></pre></div></div>
+
+<h3 id="最小双精度值ceilnum">最小双精度值(<code class="language-plaintext highlighter-rouge">ceil(num)</code>)</h3>
+
+<p>返回最小的双精度值。该值将被四舍五入。代码示例：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">var</span> <span class="n">d1</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1234.01</span><span class="o">;</span>
+<span class="kt">var</span> <span class="n">d2</span> <span class="o">=</span> <span class="mf">1234.01</span><span class="o">;</span>
+<span class="n">writeToLog</span><span class="o">(</span><span class="n">ceil</span><span class="o">(</span><span class="n">d1</span><span class="o">));</span>
+<span class="n">writeToLog</span><span class="o">(</span><span class="n">ceil</span><span class="o">(</span><span class="n">d2</span><span class="o">));</span>
+</code></pre></div></div>
+
+<p>最终控制台输出：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">13</span><span class="o">:</span><span class="mi">52</span><span class="o">:</span><span class="mi">40</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="o">-</span><span class="mi">1234</span>
+<span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">13</span><span class="o">:</span><span class="mi">52</span><span class="o">:</span><span class="mi">40</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="mi">1235</span>
+</code></pre></div></div>
+
+<h3 id="最大数值floornum">最大数值(<code class="language-plaintext highlighter-rouge">floor(num)</code>)</h3>
+
+<p>返回最大数值,该值将被四舍五入,代码示例：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">d1</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1234.01</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">d2</span> <span class="o">=</span> <span class="mf">1234.01</span><span class="p">;</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">floor</span><span class="p">(</span><span class="nx">d1</span><span class="p">));</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">floor</span><span class="p">(</span><span class="nx">d2</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p>运行结果如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">13</span><span class="o">:</span><span class="mi">55</span><span class="o">:</span><span class="mi">13</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="o">-</span><span class="mi">1235</span>
+<span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">13</span><span class="o">:</span><span class="mi">55</span><span class="o">:</span><span class="mi">13</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="mi">1234</span>
+</code></pre></div></div>
+
+<h3 id="字符串转数值str2numvar">字符串转数值(<code class="language-plaintext highlighter-rouge">str2num(var)</code>)</h3>
+
+<p>字符串转数值主要包含两个构造函数,分别是</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">str2num(str)</code>:传入数值字符串,进行格式化转换</li>
+  <li><code class="language-plaintext highlighter-rouge">str2num(str,format)</code>:通过指定格式进行数值转换</li>
+</ul>
+
+<p>代码示例如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">str1</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">1.234,56</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">str2</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">12</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">writeToLog</span><span class="p">((</span><span class="nx">str2num</span><span class="p">(</span><span class="nx">str1</span><span class="p">,</span><span class="dl">"</span><span class="s2">#,##0.00</span><span class="dl">"</span><span class="p">)));</span>
+<span class="nx">writeToLog</span><span class="p">((</span><span class="nx">str2num</span><span class="p">(</span><span class="nx">str2</span><span class="p">)));</span>
+</code></pre></div></div>
+
+<p>最终控制台输出：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">14</span><span class="o">:</span><span class="mo">02</span><span class="o">:</span><span class="mi">19</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="mf">1.234</span>
+<span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">14</span><span class="o">:</span><span class="mo">02</span><span class="o">:</span><span class="mi">19</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="mi">12</span>
+</code></pre></div></div>
+
+<h3 id="截取数值trunc">截取数值(<code class="language-plaintext highlighter-rouge">trunc</code>)</h3>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">trunc</span><span class="p">(</span><span class="mf">1234.9</span><span class="p">);</span> <span class="c1">// 返回 1234</span>
+</code></pre></div></div>
+
+<h2 id="日期类型函数date-functions">日期类型函数(Date Functions)</h2>
+
+<h3 id="日期相加dateadd">日期相加(<code class="language-plaintext highlighter-rouge">dateAdd</code>)</h3>
+
+<p>针对日期变量进行相应的添加时间,添加频率包括年、月、日、时、分、秒 等等</p>
+
+<p>函数定义:<code class="language-plaintext highlighter-rouge">dateAdd(date,format,plusNum)</code></p>
+
+<ul>
+  <li>date:日期对象</li>
+  <li>format:要加的类型</li>
+  <li>plusNum:加的数值</li>
+</ul>
+
+<p>相加类型主要包括：</p>
+
+<ul>
+  <li>y:年</li>
+  <li>m：月</li>
+  <li>d:日</li>
+  <li>w:周</li>
+  <li>wd:工作日</li>
+  <li>hh:小时</li>
+  <li>mi:分钟</li>
+  <li>ss:秒</li>
+</ul>
+
+<p>代码示例如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">d1</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span>
+
+<span class="kd">var</span> <span class="nx">fmt</span><span class="o">=</span><span class="dl">'</span><span class="s1">yyyy-MM-dd HH:mm:ss</span><span class="dl">'</span><span class="p">;</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="dl">"</span><span class="s2">当前时间:</span><span class="dl">"</span><span class="o">+</span><span class="nx">date2str</span><span class="p">(</span><span class="nx">d1</span><span class="p">,</span><span class="nx">fmt</span><span class="p">));</span>
+<span class="kd">var</span> <span class="nx">py</span><span class="o">=</span><span class="nx">dateAdd</span><span class="p">(</span><span class="nx">d1</span><span class="p">,</span><span class="dl">'</span><span class="s1">y</span><span class="dl">'</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">fy</span><span class="o">=</span><span class="nx">date2str</span><span class="p">(</span><span class="nx">py</span><span class="p">,</span><span class="nx">fmt</span><span class="p">);</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="dl">"</span><span class="s2">加1年：</span><span class="dl">"</span><span class="o">+</span><span class="nx">fy</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>最终控制台输出：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">14</span><span class="o">:</span><span class="mi">17</span><span class="o">:</span><span class="mi">41</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="nl">当前时间:</span><span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">19</span> <span class="mi">14</span><span class="o">:</span><span class="mi">17</span><span class="o">:</span><span class="mi">41</span>
+<span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">14</span><span class="o">:</span><span class="mi">17</span><span class="o">:</span><span class="mi">41</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="n">加1年</span><span class="err">：</span><span class="mi">2020</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">19</span> <span class="mi">14</span><span class="o">:</span><span class="mi">17</span><span class="o">:</span><span class="mi">41</span>
+</code></pre></div></div>
+
+<h3 id="日期比较datediff">日期比较(<code class="language-plaintext highlighter-rouge">dateDiff</code>)</h3>
+
+<p>两个日期相互比较</p>
+
+<p>函数定义:<code class="language-plaintext highlighter-rouge">dateDiff(startDate,endDate,type)</code></p>
+
+<ul>
+  <li>startDate:开始日期</li>
+  <li>endDate:截止日期</li>
+  <li>type：返回相差数值类型</li>
+</ul>
+
+<p>类型主要包括：</p>
+
+<ul>
+  <li>y:年</li>
+  <li>m：月</li>
+  <li>d:日</li>
+  <li>w:周</li>
+  <li>wd:工作日</li>
+  <li>hh:小时</li>
+  <li>mi:分钟</li>
+  <li>ss:秒</li>
+</ul>
+
+<h3 id="获取指定日期数值getdaynumber">获取指定日期数值(<code class="language-plaintext highlighter-rouge">getDayNumber</code>)</h3>
+
+<p>根据类型获取指定日期的数值</p>
+
+<p>函数定义：<code class="language-plaintext highlighter-rouge">getDayNumber(date,type)</code></p>
+
+<ul>
+  <li>date:当前日期实例</li>
+  <li>type:类别</li>
+</ul>
+
+<p>类别主要分四类</p>
+
+<ul>
+  <li>y:获取当年的天数</li>
+  <li>m:获取当月的天数</li>
+  <li>w:获取本周的天数</li>
+  <li>wm:获取当月中本周的天数</li>
+</ul>
+
+<p>代码示例：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">var</span> <span class="n">d1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Date</span><span class="o">();</span>
+<span class="n">writeToLog</span><span class="o">(</span><span class="n">getDayNumber</span><span class="o">(</span><span class="n">d1</span><span class="o">,</span> <span class="s">"y"</span><span class="o">));</span>
+<span class="n">writeToLog</span><span class="o">(</span><span class="n">getDayNumber</span><span class="o">(</span><span class="n">d1</span><span class="o">,</span> <span class="s">"m"</span><span class="o">));</span>
+<span class="n">writeToLog</span><span class="o">(</span><span class="n">getDayNumber</span><span class="o">(</span><span class="n">d1</span><span class="o">,</span> <span class="s">"w"</span><span class="o">));</span>
+<span class="n">writeToLog</span><span class="o">(</span><span class="n">getDayNumber</span><span class="o">(</span><span class="n">d1</span><span class="o">,</span> <span class="s">"wm"</span><span class="o">));</span>
+</code></pre></div></div>
+
+<h3 id="getfiscaldate">getFiscalDate</h3>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Returns the fiscal Date from the date value,</span>
+<span class="c1">// based on a given offset.</span>
+<span class="c1">//</span>
+<span class="c1">// Usage:</span>
+<span class="c1">// getFiscalDate(var);</span>
+<span class="c1">// 1: Date - The Variable with the Date.</span>
+<span class="c1">// 2: String - The Date/Month which represents</span>
+<span class="c1">// the fiscal Start Offset. Format allways "dd.MM.".</span>
+<span class="c1">//</span>
+<span class="c1">// 2006-11-15</span>
+<span class="c1">//</span>
+<span class="kd">var</span> <span class="nx">d1</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span>
+<span class="kd">var</span> <span class="nx">str1</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">01.07.</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">str2</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">10.12.</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">Alert</span><span class="p">(</span><span class="nx">getFiscalDate</span><span class="p">(</span><span class="nx">d1</span><span class="p">,</span> <span class="nx">str1</span><span class="p">));</span>
+<span class="nx">Alert</span><span class="p">(</span><span class="nx">getFiscalDate</span><span class="p">(</span><span class="nx">d1</span><span class="p">,</span> <span class="nx">str2</span><span class="p">));</span>
+</code></pre></div></div>
+
+<h3 id="获取下一个工作日日期getnextworkingday">获取下一个工作日日期(<code class="language-plaintext highlighter-rouge">getNextWorkingDay</code>)</h3>
+
+<p>传入当前日期,获取该日期后面一个工作日日期</p>
+
+<p>函数定义<code class="language-plaintext highlighter-rouge">getNextWorkingDay(date)</code></p>
+
+<p>代码示例如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">d1</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span>
+
+<span class="c1">// 周1</span>
+<span class="kd">var</span> <span class="nx">d2</span><span class="o">=</span><span class="nx">str2date</span><span class="p">(</span><span class="dl">'</span><span class="s1">2019-08-19 16:36:00</span><span class="dl">'</span><span class="p">,</span><span class="nx">fmt</span><span class="p">);</span>
+<span class="c1">//周 6</span>
+<span class="kd">var</span> <span class="nx">d3</span><span class="o">=</span><span class="nx">str2date</span><span class="p">(</span><span class="dl">'</span><span class="s1">2019-08-17 16:36:00</span><span class="dl">'</span><span class="p">,</span><span class="nx">fmt</span><span class="p">);</span>
+
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">date2str</span><span class="p">(</span><span class="nx">getNextWorkingDay</span><span class="p">(</span><span class="nx">d1</span><span class="p">),</span><span class="nx">fmt</span><span class="p">));</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">date2str</span><span class="p">(</span><span class="nx">getNextWorkingDay</span><span class="p">(</span><span class="nx">d2</span><span class="p">),</span><span class="nx">fmt</span><span class="p">));</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">date2str</span><span class="p">(</span><span class="nx">getNextWorkingDay</span><span class="p">(</span><span class="nx">d3</span><span class="p">),</span><span class="nx">fmt</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p>我们这d2和d3变量中定义了不同的日期实例,分别是周1和周6,最终通过<code class="language-plaintext highlighter-rouge">getNextWorkingDay</code>能获取得到下一个工作日日期，控制台输出如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">16</span><span class="o">:</span><span class="mi">37</span><span class="o">:</span><span class="mi">38</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">20</span> <span class="mi">16</span><span class="o">:</span><span class="mi">37</span><span class="o">:</span><span class="mi">38</span>
+<span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">16</span><span class="o">:</span><span class="mi">37</span><span class="o">:</span><span class="mi">38</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">20</span> <span class="mi">16</span><span class="o">:</span><span class="mi">36</span><span class="o">:</span><span class="mo">00</span>
+<span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">16</span><span class="o">:</span><span class="mi">37</span><span class="o">:</span><span class="mi">38</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">19</span> <span class="mi">16</span><span class="o">:</span><span class="mi">36</span><span class="o">:</span><span class="mo">00</span>
+</code></pre></div></div>
+
+<h3 id="获取当前月份数值monthdate">获取当前月份数值(<code class="language-plaintext highlighter-rouge">month(date)</code>)</h3>
+
+<p>获取当前日期的月份数值,需要注意的是,该值的月份是从0开始的,因此我们最终得到的结果应该+1才是我们的真实月份数值，代码示例：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">d1</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span><span class="c1">//2019/08/19</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">month</span><span class="p">(</span><span class="nx">d1</span><span class="p">));</span> <span class="c1">//最终输出为7</span>
+</code></pre></div></div>
+
+<h3 id="获取当前时间的季度值quarterdate">获取当前时间的季度值(<code class="language-plaintext highlighter-rouge">quarter(date)</code>)</h3>
+
+<p>根据指定日期获取当前季度数值</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">d1</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span><span class="c1">//2019/08/19</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">quarter</span><span class="p">(</span><span class="nx">d1</span><span class="p">));</span><span class="c1">//最终输出为3(代表第三季度)</span>
+</code></pre></div></div>
+
+<h3 id="字符串转日期str2date">字符串转日期(<code class="language-plaintext highlighter-rouge">str2date</code>)</h3>
+
+<p>字符串转日期和日期转字符串有点类似,只不过主体对换了一下,但是传入的格式参数都是一样的，主要有4个重载函数:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">str2date(str)</code>:默认转换</li>
+  <li><code class="language-plaintext highlighter-rouge">str2date(str,format)</code>:传入format格式化参数</li>
+  <li><code class="language-plaintext highlighter-rouge">str2date(str,format,iso)</code>:根据iso编码及格式化参数进行转换</li>
+  <li><code class="language-plaintext highlighter-rouge">str2date(str,format,iso,timezone)</code>:根据不同时区的iso编码进行格式化转换</li>
+</ul>
+
+<p>代码示例如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">writeToLog</span><span class="p">(</span><span class="nx">str2date</span><span class="p">(</span><span class="dl">"</span><span class="s2">01.12.2006</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">dd.MM.yyyy</span><span class="dl">"</span><span class="p">));</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">str2date</span><span class="p">(</span><span class="dl">"</span><span class="s2">01.12.2006 23:23:01</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">dd.MM.yyyy HH:mm:ss</span><span class="dl">"</span><span class="p">));</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">str2date</span><span class="p">(</span><span class="dl">"</span><span class="s2">Tue.May.2006</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">E.MMM.yyyy</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">EN</span><span class="dl">"</span><span class="p">));</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">str2date</span><span class="p">(</span><span class="dl">"</span><span class="s2">22.02.2008 23:23:01</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">dd.MM.yyyy HH:mm:ss</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">DE</span><span class="dl">"</span><span class="p">));</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">str2date</span><span class="p">(</span><span class="dl">"</span><span class="s2">22.02.2008 23:23:01</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">dd.MM.yyyy HH:mm:ss</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">DE</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">EST</span><span class="dl">"</span><span class="p">));</span>
+</code></pre></div></div>
+
+<h3 id="截取日期truncdatedatetype">截取日期(<code class="language-plaintext highlighter-rouge">truncDate(date,type)</code>)</h3>
+
+<p>指定截取不同的日期部分,函数定义truncDate(date,type)</p>
+
+<ul>
+  <li>date:当前日期实例</li>
+  <li>type:截取类型</li>
+</ul>
+
+<p>类型主要有6中,分别是整型，从0-5：</p>
+
+<ul>
+  <li>5：截取月份</li>
+  <li>4：截取天数</li>
+  <li>3:截取小时</li>
+  <li>2：截取分钟</li>
+  <li>1：截取秒</li>
+  <li>0:截取毫秒</li>
+</ul>
+
+<p>代码示例 如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">dateTime</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span>
+<span class="kd">var</span> <span class="nx">date0</span> <span class="o">=</span> <span class="nx">truncDate</span><span class="p">(</span><span class="nx">dateTime</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span> <span class="c1">// gives back today at yyyy/MM/dd HH:mm:ss.000</span>
+<span class="kd">var</span> <span class="nx">date1</span> <span class="o">=</span> <span class="nx">truncDate</span><span class="p">(</span><span class="nx">dateTime</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">// gives back today at yyyy/MM/dd HH:mm:00.000</span>
+<span class="kd">var</span> <span class="nx">date2</span> <span class="o">=</span> <span class="nx">truncDate</span><span class="p">(</span><span class="nx">dateTime</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="c1">// gives back today at yyyy/MM/dd HH:00:00.000</span>
+<span class="kd">var</span> <span class="nx">date3</span> <span class="o">=</span> <span class="nx">truncDate</span><span class="p">(</span><span class="nx">dateTime</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span> <span class="c1">// gives back today at yyyy/MM/dd 00:00:00.000</span>
+<span class="kd">var</span> <span class="nx">date4</span> <span class="o">=</span> <span class="nx">truncDate</span><span class="p">(</span><span class="nx">dateTime</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span> <span class="c1">// gives back today at yyyy/MM/01 00:00:00.000</span>
+<span class="kd">var</span> <span class="nx">date5</span> <span class="o">=</span> <span class="nx">truncDate</span><span class="p">(</span><span class="nx">dateTime</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span> <span class="c1">// gives back today at yyyy/01/01 00:00:00.000</span>
+</code></pre></div></div>
+
+<h3 id="获取当年的周数week">获取当年的周数(<code class="language-plaintext highlighter-rouge">week</code>)</h3>
+
+<p>获取指定日期的周数,代码示例：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">d1</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span> <span class="c1">//2019/08/19</span>
+ 
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">week</span><span class="p">(</span><span class="nx">d1</span><span class="p">));</span><span class="c1">// 返回34</span>
+</code></pre></div></div>
+
+<h3 id="获取年份year">获取年份(<code class="language-plaintext highlighter-rouge">year</code>)</h3>
+
+<p>获取传入日期的年份,代码示例：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">d1</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span> <span class="c1">//2019/08/19</span>
+ 
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">year</span><span class="p">(</span><span class="nx">d1</span><span class="p">));</span><span class="c1">// 返回2019</span>
+</code></pre></div></div>
+
+<h2 id="逻辑判断型函数logic-functions">逻辑判断型函数(Logic Functions)</h2>
+
+<h3 id="iscodepage">isCodepage</h3>
+
+<p>判断字符串的codepage项,代码示例：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">xStr</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">RÃ©al</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">isCodepage</span><span class="p">(</span><span class="nx">xStr</span><span class="p">,</span> <span class="dl">"</span><span class="s2">UTF-8</span><span class="dl">"</span><span class="p">));</span><span class="c1">// true</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">isCodepage</span><span class="p">(</span><span class="nx">xStr</span><span class="p">,</span> <span class="dl">"</span><span class="s2">windows-1250</span><span class="dl">"</span><span class="p">));</span><span class="c1">// true</span>
+</code></pre></div></div>
+
+<h3 id="是否日期isdatestr">是否日期(<code class="language-plaintext highlighter-rouge">isDate(str)</code>)</h3>
+
+<p>判断当前字符串是否日期</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">d1</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Hello World</span><span class="dl">"</span><span class="p">;</span>      
+<span class="kd">var</span> <span class="nx">d2</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">isDate</span><span class="p">(</span><span class="nx">d1</span><span class="p">));</span><span class="c1">//false</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">isDate</span><span class="p">(</span><span class="nx">d2</span><span class="p">));</span><span class="c1">//true</span>
+</code></pre></div></div>
+
+<h3 id="是否为空isemptystr">是否为空(<code class="language-plaintext highlighter-rouge">isEmpty(str)</code>)</h3>
+
+<p>判断字符串是否为空</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Hello World</span><span class="dl">"</span><span class="p">;</span>      
+<span class="nx">Alert</span><span class="p">(</span><span class="nx">isEmpty</span><span class="p">(</span><span class="nx">d</span><span class="p">));</span><span class="c1">//false</span>
+</code></pre></div></div>
+
+<h3 id="判断字符串是否为邮箱标准格式ismailvalidstr">判断字符串是否为邮箱标准格式(<code class="language-plaintext highlighter-rouge">isMailValid(str)</code>)</h3>
+
+<p>判断一个字符串是否是邮箱</p>
+
+<h3 id="判断是否是数值isnumstr">判断是否是数值(<code class="language-plaintext highlighter-rouge">isNum(str)</code>)</h3>
+
+<p>判断一个字符串是否是数值</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">str1</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Hello World</span><span class="dl">"</span><span class="p">;</span>      
+<span class="kd">var</span> <span class="nx">str2</span> <span class="o">=</span> <span class="mi">123456</span><span class="p">;</span>
+<span class="nx">Alert</span><span class="p">(</span><span class="nx">isNum</span><span class="p">(</span><span class="nx">str1</span><span class="p">));</span><span class="c1">//false</span>
+<span class="nx">Alert</span><span class="p">(</span><span class="nx">isNum</span><span class="p">(</span><span class="nx">str2</span><span class="p">));</span><span class="c1">//true</span>
+</code></pre></div></div>
+
+<h3 id="是否正则匹配isregexp">是否正则匹配(<code class="language-plaintext highlighter-rouge">isRegExp</code>)</h3>
+
+<p>判断给定的正则表达式是否匹配当前的字符串，主要有2个函数定义：</p>
+
+<ul>
+  <li>isRegExp(str,reg):给定正则判断字符串是否匹配</li>
+  <li>isRegExp(str,reg1,reg2,reg3…)；可以递归判断正则匹配</li>
+</ul>
+
+<p>最终返回的是匹配的次数数值,如果不匹配,返回-1</p>
+
+<p>代码示例如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">email1</span> <span class="o">=</span><span class="dl">"</span><span class="s2">info@proconis.de</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">email2</span><span class="o">=</span> <span class="dl">"</span><span class="s2">support@proconis.co.uk</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">email3</span><span class="o">=</span> <span class="dl">"</span><span class="s2">HelloWorld@x</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">reg1</span><span class="o">=</span><span class="dl">"</span><span class="s2">^</span><span class="se">\\</span><span class="s2">w+@[a-zA-Z_]+?</span><span class="se">\\</span><span class="s2">.[a-zA-Z]{2,3}$</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">reg2</span><span class="o">=</span><span class="dl">"</span><span class="s2">^[</span><span class="se">\\</span><span class="s2">w-</span><span class="se">\</span><span class="s2">.]+@([</span><span class="se">\\</span><span class="s2">w-]+</span><span class="se">\\</span><span class="s2">.)+[</span><span class="se">\\</span><span class="s2">w-]{2,4}$</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">isRegExp</span><span class="p">(</span><span class="nx">email1</span><span class="p">,</span> <span class="nx">reg1</span><span class="p">,</span><span class="nx">reg2</span><span class="p">)</span> <span class="o">+</span> <span class="dl">"</span><span class="s2"> Matches</span><span class="dl">"</span><span class="p">);</span> <span class="c1">//1</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">isRegExp</span><span class="p">(</span><span class="nx">email2</span><span class="p">,</span> <span class="nx">reg1</span><span class="p">,</span><span class="nx">reg2</span><span class="p">)</span> <span class="o">+</span> <span class="dl">"</span><span class="s2"> Matches</span><span class="dl">"</span><span class="p">);</span>  <span class="c1">//2</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">isRegExp</span><span class="p">(</span><span class="nx">email3</span><span class="p">,</span> <span class="nx">reg1</span><span class="p">,</span><span class="nx">reg2</span><span class="p">)</span> <span class="o">+</span> <span class="dl">"</span><span class="s2"> Matches</span><span class="dl">"</span><span class="p">);</span><span class="c1">// 1</span>
+</code></pre></div></div>
+
+<h3 id="是否工作日isworkingdaydate">是否工作日(<code class="language-plaintext highlighter-rouge">isWorkingDay(date)</code>)</h3>
+
+<p>判断某日期是否是工作日,代码示例：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">d1</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span><span class="c1">//周1</span>
+<span class="kd">var</span> <span class="nx">d2</span><span class="o">=</span><span class="nx">str2date</span><span class="p">(</span><span class="dl">'</span><span class="s1">2019-08-17</span><span class="dl">'</span><span class="p">,</span><span class="dl">'</span><span class="s1">yyyy-MM-dd</span><span class="dl">'</span><span class="p">)</span> <span class="c1">//周六</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">isWorkingDay</span><span class="p">(</span><span class="nx">d1</span><span class="p">));</span><span class="c1">//true</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">isWorkingDay</span><span class="p">(</span><span class="nx">d2</span><span class="p">));</span><span class="c1">//false</span>
+</code></pre></div></div>
+
+<h2 id="特殊的函数special-functions">特殊的函数(Special Functions)</h2>
+
+<h3 id="弹框信息alertmsg">弹框信息(<code class="language-plaintext highlighter-rouge">Alert(msg)</code>)</h3>
+
+<p>在屏幕前弹出一个信息框</p>
+
+<h3 id="加载javascript文件loadscriptfile">加载JavaScript文件(<code class="language-plaintext highlighter-rouge">LoadScriptFile</code>)</h3>
+
+<p>将一个javascript文件加载到实际的运行上下文中。应该从定义的StartScript调用此函数，否则，每次处理都会加载javascript文件行。</p>
+
+<p>代码示例如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">xPfad</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">F:/bak/Hello.js</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">LoadScriptFile</span><span class="p">(</span><span class="nx">xPfad</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>此时,我们的外部JS文件仅仅是包含一句简单的输出，如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">writeToLog</span><span class="p">(</span><span class="dl">"</span><span class="s2">Hello LoadScriptFile,outSide JS File </span><span class="dl">"</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>最终运行时,控制台会打印出我们在外部JS中的输出行</p>
+
+<h3 id="从当前tab栏加载js并运行loadscriptfromtab">从当前Tab栏加载JS并运行(<code class="language-plaintext highlighter-rouge">LoadScriptFromTab</code>)</h3>
+
+<p>如果我们在当前的JavaScript组件中通过模块化的方式编写了很多脚本代码,我们可以通过<code class="language-plaintext highlighter-rouge">LoadScriptFromTab</code>函数进行相互调用,这对于开发抽象来说是很好的,代码示例如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">writeToLog</span><span class="p">(</span><span class="dl">"</span><span class="s2">外部Tab加载JS-------------------------</span><span class="dl">"</span><span class="p">)</span>
+<span class="nx">LoadScriptFromTab</span><span class="p">(</span><span class="dl">'</span><span class="s1">Item_1</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h3 id="有效卡号判断luhncheck">有效卡号判断(<code class="language-plaintext highlighter-rouge">LuhnCheck</code>)</h3>
+
+<p>如果给定的是一个有效的卡号,则返回true</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">str1</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">4444333322221111</span><span class="dl">"</span><span class="p">;</span>      
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">str1</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">: </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">LuhnCheck</span><span class="p">(</span><span class="nx">str1</span><span class="p">));</span> <span class="c1">//true</span>
+
+<span class="kd">var</span> <span class="nx">str2</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">4444333322221110</span><span class="dl">"</span><span class="p">;</span>      
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">str2</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">: </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">LuhnCheck</span><span class="p">(</span><span class="nx">str2</span><span class="p">));</span><span class="c1">//false</span>
+      
+</code></pre></div></div>
+
+<h3 id="向文件中追加数据appendtofile">向文件中追加数据(<code class="language-plaintext highlighter-rouge">appendToFile</code>)</h3>
+
+<p>向指定文件中追加数据,如果文件不存在则创建文件</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">var</span> <span class="nx">file</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">F:/bak/log.txt</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nx">i</span><span class="o">&lt;</span><span class="mi">100</span><span class="p">;</span><span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+	<span class="nx">appendToFile</span><span class="p">(</span><span class="nx">file</span><span class="p">,</span><span class="dl">'</span><span class="s1">TEST</span><span class="dl">'</span><span class="o">+</span><span class="nx">i</span><span class="o">+</span><span class="dl">"</span><span class="se">\r\n</span><span class="dl">"</span><span class="p">);</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>此时,该代码会向<code class="language-plaintext highlighter-rouge">log.txt</code>文件输出100条数据行</p>
+
+<h3 id="decode函数">decode函数</h3>
+
+<p>decode函数有点类似于<code class="language-plaintext highlighter-rouge">IF-THEN-ELSE</code>语句，即表示通过给定查询的字符串是否存在，如果存在，即替换,否则返回默认值</p>
+
+<p>代码示例：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">str1</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Hallo</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">decode</span><span class="p">(</span><span class="nx">str1</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Hallo</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Hello</span><span class="dl">"</span><span class="p">));</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">decode</span><span class="p">(</span><span class="nx">str1</span><span class="p">,</span> <span class="dl">"</span><span class="s2">1</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Mr</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">2</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Mrs</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">N/A</span><span class="dl">"</span><span class="p">));</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">decode</span><span class="p">(</span><span class="nx">str1</span><span class="p">,</span> <span class="dl">"</span><span class="s2">1</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Mr</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">2</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Mrs</span><span class="dl">"</span><span class="p">));</span>
+<span class="nx">str1</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Mrs</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">decode</span><span class="p">(</span><span class="nx">str1</span><span class="p">,</span> <span class="dl">"</span><span class="s2">1</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Mr</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">2</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Mrs</span><span class="dl">"</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p>控制台输出：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">17</span><span class="o">:</span><span class="mi">39</span><span class="o">:</span><span class="mo">01</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="nc">Hello</span>
+<span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">17</span><span class="o">:</span><span class="mi">39</span><span class="o">:</span><span class="mo">01</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="no">N</span><span class="o">/</span><span class="no">A</span>
+<span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">17</span><span class="o">:</span><span class="mi">39</span><span class="o">:</span><span class="mo">01</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="nc">Hallo</span>
+<span class="mi">2019</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">19</span> <span class="mi">17</span><span class="o">:</span><span class="mi">39</span><span class="o">:</span><span class="mo">01</span> <span class="o">-</span> <span class="nc">JavaScript代码</span><span class="o">.</span><span class="mi">0</span> <span class="o">-</span> <span class="nc">Mrs</span>
+</code></pre></div></div>
+
+<h3 id="执行命令execprocess">执行命令(<code class="language-plaintext highlighter-rouge">execProcess</code>)</h3>
+
+<p>代码如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">t</span><span class="o">=</span><span class="nx">execProcess</span><span class="p">(</span><span class="dl">'</span><span class="s1">ping www.baidu.com</span><span class="dl">'</span><span class="p">);</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">t</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>调用命令行,ping百度的网址，最终输出返回数据</p>
+
+<h3 id="执行sql语句firetodb">执行SQL语句(<code class="language-plaintext highlighter-rouge">fireToDB</code>)</h3>
+
+<p>通过获取数据库连接名称，传递SQL语句,以返回SQL查询的值,函数定义：</p>
+
+<ul>
+  <li>fireToDB(connectionName,SQL)；第一个参数为数据库连接名称，我们在JNDI中定义的名称，第二个参数为SQL语句</li>
+</ul>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">strConn</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">MY Connection</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">strSQL</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">SELECT COUNT(*) FROM ...</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">xArr</span> <span class="o">=</span> <span class="nx">fireToDB</span><span class="p">(</span><span class="nx">strConn</span><span class="p">,</span> <span class="nx">strSQL</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h3 id="仅仅获取数值getdigitsonly">仅仅获取数值(<code class="language-plaintext highlighter-rouge">getDigitsOnly</code>)</h3>
+
+<p>在给定的字符串中仅仅筛选过滤得到数值，代码如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">str1</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">abc123cde</span><span class="dl">"</span><span class="p">;</span>      
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">getDigitsOnly</span><span class="p">(</span><span class="nx">str1</span><span class="p">));</span><span class="c1">//返回123</span>
+</code></pre></div></div>
+
+<h3 id="获取kettle环境变量的值getenvironmentvar">获取Kettle环境变量的值(<code class="language-plaintext highlighter-rouge">getEnvironmentVar</code>)</h3>
+
+<p>获取在Kettle中的环境变量的值</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">writeToLog</span><span class="p">(</span><span class="nx">getEnvironmentVar</span><span class="p">(</span><span class="dl">"</span><span class="s2">user.dir</span><span class="dl">"</span><span class="p">));</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">getEnvironmentVar</span><span class="p">(</span><span class="dl">"</span><span class="s2">user.name</span><span class="dl">"</span><span class="p">));</span>
+</code></pre></div></div>
+
+<h3 id="获取当前进程的受影响行数getprocesscounttype">获取当前进程的受影响行数(<code class="language-plaintext highlighter-rouge">getProcessCount(type)</code>)</h3>
+
+<p>根据类型获取当前进程的受影响行数，类型如下：</p>
+
+<ul>
+  <li>u:更新行数</li>
+  <li>i:插入行数</li>
+  <li>w:写入行数</li>
+  <li>r:读取行数</li>
+  <li>o:输出行数</li>
+</ul>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">writeToLog</span><span class="p">(</span><span class="nx">getProcessCount</span><span class="p">(</span><span class="dl">"</span><span class="s2">u</span><span class="dl">"</span><span class="p">));</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">getProcessCount</span><span class="p">(</span><span class="dl">"</span><span class="s2">r</span><span class="dl">"</span><span class="p">));</span>
+</code></pre></div></div>
+
+<h3 id="获取当前转换名称gettransformationname">获取当前转换名称(<code class="language-plaintext highlighter-rouge">getTransformationName</code>)</h3>
+
+<p>获取当前的转换名称</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">xTranName</span> <span class="o">=</span> <span class="nx">getTransformationName</span><span class="p">();</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">xTranName</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h3 id="获取kettle环境中的变量值getvariable">获取Kettle环境中的变量值(<code class="language-plaintext highlighter-rouge">getVariable</code>)</h3>
+
+<p>从当前的Kettle环境中获取指定的变量值,目前函数有2个重载：</p>
+
+<ul>
+  <li>getVariable(varName)；根据变量名称获取变量值</li>
+  <li>getVariable(varName,defaultValue):根据变量名获取值,如果不存在则使用默认值</li>
+</ul>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">strVarName</span><span class="o">=</span><span class="dl">"</span><span class="s2">getVariableTest</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">strVarValue</span><span class="o">=</span><span class="dl">"</span><span class="s2">123456</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">Alert</span><span class="p">(</span><span class="nx">getVariable</span><span class="p">(</span><span class="nx">strVarName</span><span class="p">,</span> <span class="dl">""</span><span class="p">));</span>
+<span class="nx">setVariable</span><span class="p">(</span><span class="nx">strVarName</span><span class="p">,</span><span class="nx">strVarValue</span><span class="p">,</span> <span class="dl">"</span><span class="s2">r</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">Alert</span><span class="p">(</span><span class="nx">getVariable</span><span class="p">(</span><span class="nx">strVarName</span><span class="p">,</span> <span class="dl">""</span><span class="p">));</span>
+<span class="nx">strVarValue</span><span class="o">=</span><span class="dl">"</span><span class="s2">654321</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">setVariable</span><span class="p">(</span><span class="nx">strVarName</span><span class="p">,</span><span class="nx">strVarValue</span><span class="p">,</span> <span class="dl">"</span><span class="s2">r</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">Alert</span><span class="p">(</span><span class="nx">getVariable</span><span class="p">(</span><span class="nx">strVarName</span><span class="p">,</span> <span class="dl">""</span><span class="p">));</span>
+</code></pre></div></div>
+
+<h3 id="控制台打印println">控制台打印(<code class="language-plaintext highlighter-rouge">println</code>)</h3>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">str</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Hello World!</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">print</span><span class="p">(</span><span class="nx">str</span><span class="p">);</span>
+      
+</code></pre></div></div>
+
+<h3 id="移除数值removedigits">移除数值(<code class="language-plaintext highlighter-rouge">removeDigits</code>)</h3>
+
+<p>移除给定字符串中的数值，代码示例：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">str1</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">abc123cde</span><span class="dl">"</span><span class="p">;</span> 
+
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">removeDigits</span><span class="p">(</span><span class="nx">str1</span><span class="p">));</span><span class="c1">//返回abccde</span>
+</code></pre></div></div>
+
+<h3 id="发送邮件">发送邮件</h3>
+
+<h3 id="设置环境变量setenvironmentvar">设置环境变量(<code class="language-plaintext highlighter-rouge">setEnvironmentVar</code>)</h3>
+
+<p>通过在Script脚本组件中调用函数重新设置Kettle的环境变量</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">strVarName</span><span class="o">=</span><span class="dl">"</span><span class="s2">setEnvTest</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">strVarValue</span><span class="o">=</span><span class="dl">"</span><span class="s2">123456</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">Alert</span><span class="p">(</span><span class="nx">getEnvironmentVar</span><span class="p">(</span><span class="nx">strVarName</span><span class="p">));</span>
+<span class="nx">setEnvironmentVar</span><span class="p">(</span><span class="nx">strVarName</span><span class="p">,</span><span class="nx">strVarValue</span><span class="p">);</span>
+<span class="nx">Alert</span><span class="p">(</span><span class="nx">getEnvironmentVar</span><span class="p">(</span><span class="nx">strVarName</span><span class="p">));</span>
+<span class="nx">strVarValue</span><span class="o">=</span><span class="dl">"</span><span class="s2">654321</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">setEnvironmentVar</span><span class="p">(</span><span class="nx">strVarName</span><span class="p">,</span><span class="nx">strVarValue</span><span class="p">);</span>
+<span class="nx">Alert</span><span class="p">(</span><span class="nx">getEnvironmentVar</span><span class="p">(</span><span class="nx">strVarName</span><span class="p">));</span>
+</code></pre></div></div>
+
+<h3 id="设置变量setvariable">设置变量(<code class="language-plaintext highlighter-rouge">setVariable</code>)</h3>
+
+<p>通过<code class="language-plaintext highlighter-rouge">setVariable</code>函数设置环境变量,该用途可以用于重新赋值Kettle环境中已经存在的变量值或者重新生成变量值</p>
+
+<p>函数定义<code class="language-plaintext highlighter-rouge">setVariable(key,value,level)</code></p>
+
+<ul>
+  <li>key:变量名称</li>
+  <li>value:变量值</li>
+  <li>level:级别,主要包括s(system)、r(root)、p(parent)、g(grandparent)四种类别</li>
+</ul>
+
+<p>代码示例如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">strVarName</span><span class="o">=</span><span class="dl">"</span><span class="s2">setEnvTest</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">strVarValue</span><span class="o">=</span><span class="dl">"</span><span class="s2">123456</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">Alert</span><span class="p">(</span><span class="nx">getVariable</span><span class="p">(</span><span class="nx">strVarName</span><span class="p">,</span> <span class="dl">""</span><span class="p">));</span>
+<span class="nx">setVariable</span><span class="p">(</span><span class="nx">strVarName</span><span class="p">,</span><span class="nx">strVarValue</span><span class="p">,</span> <span class="dl">"</span><span class="s2">r</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">Alert</span><span class="p">(</span><span class="nx">getVariable</span><span class="p">(</span><span class="nx">strVarName</span><span class="p">,</span> <span class="dl">""</span><span class="p">));</span>
+<span class="nx">strVarValue</span><span class="o">=</span><span class="dl">"</span><span class="s2">654321</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">setVariable</span><span class="p">(</span><span class="nx">strVarName</span><span class="p">,</span><span class="nx">strVarValue</span><span class="p">,</span> <span class="dl">"</span><span class="s2">r</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">Alert</span><span class="p">(</span><span class="nx">getVariable</span><span class="p">(</span><span class="nx">strVarName</span><span class="p">,</span> <span class="dl">""</span><span class="p">));</span>
+</code></pre></div></div>
+
+<h3 id="写入日志writetolog">写入日志(<code class="language-plaintext highlighter-rouge">writeToLog</code>)</h3>
+
+<p>打印并写入日志信息,该函数可能是我们用到的最多的函数,可以帮助我们调试信息,主要有两个重载：</p>
+
+<ul>
+  <li>writeToLog(msg):写入msg日志信息</li>
+  <li>writeToLog(level,msg)：根据level基本写入msg信息</li>
+</ul>
+
+<p>关于日志的级别,这里主要是简写的方式,主要如下：</p>
+
+<ul>
+  <li>d(Debug):调试模式</li>
+  <li>l(Detailed):详细</li>
+  <li>e(Error):错误</li>
+  <li>m(Minimal):最小日志</li>
+  <li>r(RowLevel):行级日志</li>
+</ul>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">writeToLog</span><span class="p">(</span><span class="dl">"</span><span class="s2">Hello World!</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="dl">"</span><span class="s2">r</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Hello World!</span><span class="dl">"</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="文件处理类函数file-functions">文件处理类函数(File Functions)</h2>
+
+<h3 id="复制文件copyfile">复制文件(<code class="language-plaintext highlighter-rouge">copyFile</code>)</h3>
+
+<p>复制一个文件到目标目录,函数定义如下：</p>
+
+<p><code class="language-plaintext highlighter-rouge">copyFile(sourceFile,targetFile,overwrite)</code></p>
+
+<ul>
+  <li>sourceFile:源文件</li>
+  <li>targetFile:目标文件</li>
+  <li>overWrite:是否覆盖,如果目标文件存在的话,布尔类型</li>
+</ul>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">file1</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">F:/bak/log.txt</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">targetFile</span><span class="o">=</span><span class="dl">"</span><span class="s2">F:/bak/logTarget.txt</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="nx">copyFile</span><span class="p">(</span><span class="nx">file1</span><span class="p">,</span><span class="nx">targetFile</span><span class="p">,</span><span class="kc">false</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="创建文件夹createfolder">创建文件夹(<code class="language-plaintext highlighter-rouge">createFolder</code>)</h3>
+
+<p>创建一个文件夹,代码示例如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">strFolder</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">F:/bak/createFolder</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">createFolder</span><span class="p">(</span><span class="nx">strFolder</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h3 id="删除文件deletefile">删除文件(<code class="language-plaintext highlighter-rouge">deleteFile</code>)</h3>
+
+<p>删除一个文件(不能删除文件夹)</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">targetFile</span><span class="o">=</span><span class="dl">"</span><span class="s2">F:/bak/logTarget.txt</span><span class="dl">"</span><span class="p">;</span>
+ 
+<span class="nx">deleteFile</span><span class="p">(</span><span class="nx">targetFile</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h3 id="判断文件是否存在fileexists">判断文件是否存在(<code class="language-plaintext highlighter-rouge">fileExists()</code>)</h3>
+
+<p>判断文件是否存在</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">targetFile</span><span class="o">=</span><span class="dl">"</span><span class="s2">F:/bak/logTarget.txt</span><span class="dl">"</span><span class="p">;</span>
+ 
+<span class="nx">fileExists</span><span class="p">(</span><span class="nx">targetFile</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h3 id="获取文件扩展名getfileextension">获取文件扩展名(<code class="language-plaintext highlighter-rouge">getFileExtension</code>)</h3>
+
+<p>如果文件不存在,则返回null,代码示例</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">file1</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">F:/bak/log.txt</span><span class="dl">"</span><span class="p">;</span>
+ 
+<span class="kd">var</span> <span class="nx">ext</span><span class="o">=</span><span class="nx">getFileExtension</span><span class="p">(</span><span class="nx">file1</span><span class="p">);</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="dl">"</span><span class="s2">扩展名：</span><span class="dl">"</span><span class="o">+</span><span class="nx">ext</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="获取文件大小getfilesize">获取文件大小(<code class="language-plaintext highlighter-rouge">getFileSize</code>)</h3>
+
+<p>获取文件大小,结果是一个long类型的长整型数值</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">file1</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">F:/bak/log.txt</span><span class="dl">"</span><span class="p">;</span>
+ 
+<span class="kd">var</span> <span class="nx">ext</span><span class="o">=</span><span class="nx">getFileSize</span><span class="p">(</span><span class="nx">file1</span><span class="p">);</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="dl">"</span><span class="s2">大小：</span><span class="dl">"</span><span class="o">+</span><span class="nx">ext</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="获取文件最后修改日期getlastmodifiedtime">获取文件最后修改日期(<code class="language-plaintext highlighter-rouge">getLastModifiedTime</code>)</h3>
+
+<p>获取文件最后修改日期,函数定义：</p>
+
+<p><code class="language-plaintext highlighter-rouge">getLastModifiedTime(filePath,format)</code></p>
+
+<ul>
+  <li>filePath:文件路径</li>
+  <li>format：日期格式化</li>
+</ul>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">file1</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">F:/bak/log.txt</span><span class="dl">"</span><span class="p">;</span>
+ 
+<span class="kd">var</span> <span class="nx">ext</span><span class="o">=</span><span class="nx">getLastModifiedTime</span><span class="p">(</span><span class="nx">file1</span><span class="p">,</span><span class="dl">"</span><span class="s2">yyyy-MM-dd HH:mm:ss</span><span class="dl">"</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h3 id="获取文件的父文件夹名称getparentfoldername">获取文件的父文件夹名称(<code class="language-plaintext highlighter-rouge">getParentFoldername</code>)</h3>
+
+<p>获取文件的父文件夹名称</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">file1</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">F:/bak/log.txt</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">parentFolder</span><span class="o">=</span><span class="nx">getParentFoldername</span><span class="p">(</span><span class="nx">file1</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h3 id="获取文件简称getshortname">获取文件简称(<code class="language-plaintext highlighter-rouge">getShortName</code>)</h3>
+
+<p>获取文件简称</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">var</span> <span class="nx">file1</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">F:/bak/log.txt</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">shortName</span><span class="o">=</span><span class="nx">getShortFilename</span><span class="p">(</span><span class="nx">file1</span><span class="p">);</span>
+
+<span class="nx">writeToLog</span><span class="p">(</span><span class="dl">"</span><span class="s2">简单名称:</span><span class="dl">"</span><span class="o">+</span><span class="nx">shortName</span><span class="p">)</span><span class="c1">//返回log.txt</span>
+</code></pre></div></div>
+
+<h3 id="判断是否是一个文件isfile">判断是否是一个文件(<code class="language-plaintext highlighter-rouge">isFile</code>)</h3>
+
+<p>判断是否是一个文件</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">file1</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">F:/bak/log.txt</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">flag</span><span class="o">=</span><span class="nx">isFile</span><span class="p">(</span><span class="nx">file1</span><span class="p">)</span> <span class="c1">//true</span>
+</code></pre></div></div>
+
+<h3 id="判断是否是一个文件夹isfolder">判断是否是一个文件夹(<code class="language-plaintext highlighter-rouge">isFolder</code>)</h3>
+
+<p>判断是否是一个文件夹</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">file1</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">F:/bak/log.txt</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">flag</span><span class="o">=</span><span class="nx">isFolder</span><span class="p">(</span><span class="nx">file1</span><span class="p">)</span> <span class="c1">//false</span>
+</code></pre></div></div>
+
+<h3 id="加载一个文件的内容loadfilecontent">加载一个文件的内容(<code class="language-plaintext highlighter-rouge">loadFileContent</code>)</h3>
+
+<p>从指定文件中加载内容,主要有两个重载函数：</p>
+
+<ul>
+  <li>loadFileContent(filePath):默认加载文件</li>
+  <li>loadFileContent(filePath,encoding):指定编码加载文件内容</li>
+</ul>
+
+<p>代码示例：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">file1</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">F:/bak/log.txt</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">content</span><span class="o">=</span><span class="nx">loadFileContent</span><span class="p">(</span><span class="nx">file1</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">c1</span><span class="o">=</span><span class="nx">loadFileContent</span><span class="p">(</span><span class="nx">file1</span><span class="p">,</span><span class="dl">"</span><span class="s2">UTF-8</span><span class="dl">"</span><span class="p">)</span>
+<span class="nx">writeToLog</span><span class="p">(</span><span class="nx">content</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="移动文件movefile">移动文件(<code class="language-plaintext highlighter-rouge">moveFile</code>)</h3>
+
+<p>移动指定文件，函数定义moveFile(source,target,overWrite)</p>
+
+<ul>
+  <li>source:源文件</li>
+  <li>target:目标文件</li>
+  <li>overWrite；是否覆盖,如果目标文件存在,布尔类型值</li>
+</ul>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">file1</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">F:/bak/log.txt</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">targetFile</span><span class="o">=</span><span class="dl">"</span><span class="s2">F:/bak/logTarget.txt</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="nx">moveFile</span><span class="p">(</span><span class="nx">file1</span><span class="p">,</span><span class="nx">targetFile</span><span class="p">,</span><span class="kc">false</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<h3 id="创建一个空文件touch">创建一个空文件(<code class="language-plaintext highlighter-rouge">touch</code>)</h3>
+
+<p>创建一个空文件</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">strFile</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">F:/bak/log.txt</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">touch</span><span class="p">(</span><span class="nx">strFile</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="总结">总结</h2>
+
+<p>以上就是Kettle 8.3版本中的内置函数方法,方法很多,写这篇博客也是很累,算是全部都学习了一遍,脑子里已经记忆了一遍,但是我们也不需要死记硬背,就和我们学些Linux命令一样,如果你知道<code class="language-plaintext highlighter-rouge">man</code>命令，对某个命令不是很了解的话直接通过man命令学习即可.</p>
+
+<p>Kettle也是如此,对于某个函数不是很了解的话,右键点击该函数,会出现<code class="language-plaintext highlighter-rouge">sample</code>字样菜单,点击该菜单即可弹出该函数的介绍和使用信息,里面包含了该函数的调用示例和函数详细介绍,也是很人性化的.</p>
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2019/08/16/kettle-21/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div class="xiaoym-bot">
+  <div class="xiaoym-qrcode-title">
+    <h3>TorchV Bot开放试用中......</h3>
+  </div>
+  <div style="text-align: center;">
+    <a target="_blank" href="https://www.luxiangdong.com/2024/01/25/lanuch-1/?utm_source=xiaoymin"><img width="300"
+        src="/images/website/bot/torchv_bot2.png" /></a>
+  </div>
+</div>
+<div class="xiaoym-qrcode">
+  <div class="xiaoym-qrcode-title">
+    <h3>最新内容,关注“八一菜刀”公众号</h3>
+  </div>
+  <div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+</div>
+
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

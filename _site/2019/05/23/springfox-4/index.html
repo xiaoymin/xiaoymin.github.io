@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>springfox 源码分析(四) 配置类初始化 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2019/05/23/springfox-4/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="springfox 源码分析(四) 配置类初始化">
+      
+    <meta name="keywords" content="springfox 源码系列,springfox-swagger">
+    <meta name="og:keywords" content="springfox 源码系列,springfox-swagger">
+      
+    <meta name="description" content="时间：2019-5-23 12:46:50">
+    <meta name="og:description" content="时间：2019-5-23 12:46:50">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2019/05/23/springfox-4/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2019-05-23">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="springfox 源码分析(">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">springfox 源码分析(四) 配置类初始化</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2019/05/23
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#springfox" title="springfox">springfox</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <p>时间：2019-5-23 12:46:50</p>
+
+<p>地点：单位、家中</p>
+
+<h2 id="enableswagger2">@EnableSwagger2</h2>
+
+<p>有了二三章的理解,此时我们再来看<code class="language-plaintext highlighter-rouge">EnableSwagger2</code>注解的内容</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Retention</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">annotation</span><span class="o">.</span><span class="na">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
+<span class="nd">@Target</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="o">{</span> <span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">annotation</span><span class="o">.</span><span class="na">ElementType</span><span class="o">.</span><span class="na">TYPE</span> <span class="o">})</span>
+<span class="nd">@Documented</span>
+<span class="nd">@Import</span><span class="o">({</span><span class="nc">Swagger2DocumentationConfiguration</span><span class="o">.</span><span class="na">class</span><span class="o">})</span>
+<span class="kd">public</span> <span class="nd">@interface</span> <span class="nc">EnableSwagger2</span> <span class="o">{</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="swagger2documentationconfiguration">Swagger2DocumentationConfiguration</h2>
+
+<p>该注解没啥好说的,最终是导入<code class="language-plaintext highlighter-rouge">Swagger2DocumentationConfiguration</code>的配置类</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@Import</span><span class="o">({</span> <span class="nc">SpringfoxWebMvcConfiguration</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="nc">SwaggerCommonConfiguration</span><span class="o">.</span><span class="na">class</span> <span class="o">})</span>
+<span class="nd">@ComponentScan</span><span class="o">(</span><span class="n">basePackages</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="s">"springfox.documentation.swagger2.mappers"</span>
+<span class="o">})</span>
+<span class="nd">@ConditionalOnWebApplication</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Swagger2DocumentationConfiguration</span> <span class="o">{</span>
+</code></pre></div></div>
+
+<p>此处的<code class="language-plaintext highlighter-rouge">@ComponentScan</code>注解,扫描了<code class="language-plaintext highlighter-rouge">springfox.documentation.swagger2.mappers</code>包路径</p>
+
+<h3 id="mappers">Mappers</h3>
+
+<p>该包路径下包含了众多运用<code class="language-plaintext highlighter-rouge">MapStruct</code>组件自动生成的Mapper实体类转换关系,通过扫描注解,自动注入到Spring的容器中</p>
+
+<p>关于<code class="language-plaintext highlighter-rouge">MapStruct</code>组件的使用,可参考:<a href="https://www.xiaominfo.com/2019/05/22/springfox-2/">springfox 源码分析(二) 初探mapstruct</a></p>
+
+<p>主要包括如下：</p>
+
+<ul>
+  <li>LicenseMapper</li>
+  <li>ModelMapper</li>
+  <li>ParameterMapper</li>
+  <li>SecurityMapper</li>
+  <li>SerivceModelToSwagger2Mapper</li>
+  <li>VendorExtensionsMapper</li>
+</ul>
+
+<p>每个Mapper接口都有一个实现类MapperImpl，实现类通过<code class="language-plaintext highlighter-rouge">@Component</code>注解注入到Spring的容器中</p>
+
+<p>最重要的是<code class="language-plaintext highlighter-rouge">SerivceModelToSwagger2Mapper</code>这个Mapper</p>
+
+<p>该类的作用会聚合使用Model、Parameter、License等Mapper,将springfox中的对象转化为Swagger标准的对象，包括Swagger</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="nd">@Generated</span><span class="o">(</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="s">"org.mapstruct.ap.MappingProcessor"</span><span class="o">,</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="s">"2018-06-23T17:02:57-0500"</span><span class="o">,</span>
+    <span class="n">comments</span> <span class="o">=</span> <span class="s">"version: 1.2.0.Final, compiler: javac, environment: Java 1.8.0_151 (Oracle Corporation)"</span>
+<span class="o">)</span>
+<span class="nd">@Component</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ServiceModelToSwagger2MapperImpl</span> <span class="kd">extends</span> <span class="nc">ServiceModelToSwagger2Mapper</span> <span class="o">{</span>
+    
+    <span class="nd">@Autowired</span>
+    <span class="kd">private</span> <span class="nc">ModelMapper</span> <span class="n">modelMapper</span><span class="o">;</span>
+    <span class="nd">@Autowired</span>
+    <span class="kd">private</span> <span class="nc">ParameterMapper</span> <span class="n">parameterMapper</span><span class="o">;</span>
+    <span class="nd">@Autowired</span>
+    <span class="kd">private</span> <span class="nc">SecurityMapper</span> <span class="n">securityMapper</span><span class="o">;</span>
+    <span class="nd">@Autowired</span>
+    <span class="kd">private</span> <span class="nc">LicenseMapper</span> <span class="n">licenseMapper</span><span class="o">;</span>
+    <span class="nd">@Autowired</span>
+    <span class="kd">private</span> <span class="nc">VendorExtensionsMapper</span> <span class="n">vendorExtensionsMapper</span><span class="o">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Swagger</span> <span class="nf">mapDocumentation</span><span class="o">(</span><span class="nc">Documentation</span> <span class="n">from</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span> <span class="n">from</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="nc">Swagger</span> <span class="n">swagger</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Swagger</span><span class="o">();</span>
+
+        <span class="n">swagger</span><span class="o">.</span><span class="na">setVendorExtensions</span><span class="o">(</span> <span class="n">vendorExtensionsMapper</span><span class="o">.</span><span class="na">mapExtensions</span><span class="o">(</span> <span class="n">from</span><span class="o">.</span><span class="na">getVendorExtensions</span><span class="o">()</span> <span class="o">)</span> <span class="o">);</span>
+        <span class="n">swagger</span><span class="o">.</span><span class="na">setSchemes</span><span class="o">(</span> <span class="n">mapSchemes</span><span class="o">(</span> <span class="n">from</span><span class="o">.</span><span class="na">getSchemes</span><span class="o">()</span> <span class="o">)</span> <span class="o">);</span>
+        <span class="n">swagger</span><span class="o">.</span><span class="na">setPaths</span><span class="o">(</span> <span class="n">mapApiListings</span><span class="o">(</span> <span class="n">from</span><span class="o">.</span><span class="na">getApiListings</span><span class="o">()</span> <span class="o">)</span> <span class="o">);</span>
+        <span class="n">swagger</span><span class="o">.</span><span class="na">setHost</span><span class="o">(</span> <span class="n">from</span><span class="o">.</span><span class="na">getHost</span><span class="o">()</span> <span class="o">);</span>
+        <span class="n">swagger</span><span class="o">.</span><span class="na">setDefinitions</span><span class="o">(</span> <span class="n">modelMapper</span><span class="o">.</span><span class="na">modelsFromApiListings</span><span class="o">(</span> <span class="n">from</span><span class="o">.</span><span class="na">getApiListings</span><span class="o">()</span> <span class="o">)</span> <span class="o">);</span>
+        <span class="n">swagger</span><span class="o">.</span><span class="na">setSecurityDefinitions</span><span class="o">(</span> <span class="n">securityMapper</span><span class="o">.</span><span class="na">toSecuritySchemeDefinitions</span><span class="o">(</span> <span class="n">from</span><span class="o">.</span><span class="na">getResourceListing</span><span class="o">()</span> <span class="o">)</span> <span class="o">);</span>
+        <span class="nc">ApiInfo</span> <span class="n">info</span> <span class="o">=</span> <span class="n">fromResourceListingInfo</span><span class="o">(</span> <span class="n">from</span> <span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span> <span class="n">info</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="n">swagger</span><span class="o">.</span><span class="na">setInfo</span><span class="o">(</span> <span class="n">mapApiInfo</span><span class="o">(</span> <span class="n">info</span> <span class="o">)</span> <span class="o">);</span>
+        <span class="o">}</span>
+        <span class="n">swagger</span><span class="o">.</span><span class="na">setBasePath</span><span class="o">(</span> <span class="n">from</span><span class="o">.</span><span class="na">getBasePath</span><span class="o">()</span> <span class="o">);</span>
+        <span class="n">swagger</span><span class="o">.</span><span class="na">setTags</span><span class="o">(</span> <span class="n">tagSetToTagList</span><span class="o">(</span> <span class="n">from</span><span class="o">.</span><span class="na">getTags</span><span class="o">()</span> <span class="o">)</span> <span class="o">);</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">list2</span> <span class="o">=</span> <span class="n">from</span><span class="o">.</span><span class="na">getConsumes</span><span class="o">();</span>
+        <span class="k">if</span> <span class="o">(</span> <span class="n">list2</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="n">swagger</span><span class="o">.</span><span class="na">setConsumes</span><span class="o">(</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;(</span> <span class="n">list2</span> <span class="o">)</span> <span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">else</span> <span class="o">{</span>
+            <span class="n">swagger</span><span class="o">.</span><span class="na">setConsumes</span><span class="o">(</span> <span class="kc">null</span> <span class="o">);</span>
+        <span class="o">}</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">list3</span> <span class="o">=</span> <span class="n">from</span><span class="o">.</span><span class="na">getProduces</span><span class="o">();</span>
+        <span class="k">if</span> <span class="o">(</span> <span class="n">list3</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="n">swagger</span><span class="o">.</span><span class="na">setProduces</span><span class="o">(</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;(</span> <span class="n">list3</span> <span class="o">)</span> <span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">else</span> <span class="o">{</span>
+            <span class="n">swagger</span><span class="o">.</span><span class="na">setProduces</span><span class="o">(</span> <span class="kc">null</span> <span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="k">return</span> <span class="n">swagger</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="c1">//more...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>各个Mapper组件的映射关系如下：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Mapper</th>
+      <th>目标类</th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>LicenseMapper</td>
+      <td><code class="language-plaintext highlighter-rouge">io.swagger.models.License</code></td>
+      <td>通过ApiInfo的属性Lincese构建目标类实体对象</td>
+    </tr>
+    <tr>
+      <td>ModelMapper</td>
+      <td><code class="language-plaintext highlighter-rouge">io.swagger.models.Model</code></td>
+      <td>将<code class="language-plaintext highlighter-rouge">springfox.documentation.schema.Model</code>转化成目标类</td>
+    </tr>
+    <tr>
+      <td>ParameterMapper</td>
+      <td><code class="language-plaintext highlighter-rouge">io.swagger.models.parameters.Parameter</code></td>
+      <td>将<code class="language-plaintext highlighter-rouge">springfox.documentation.service.Parameter</code>转化成目标类</td>
+    </tr>
+    <tr>
+      <td>SecurityMapper</td>
+      <td><code class="language-plaintext highlighter-rouge">io.swagger.models.auth.SecuritySchemeDefinition</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>ServiceModelToSwagger2Mapper</td>
+      <td><code class="language-plaintext highlighter-rouge">io.swagger.models.Swagger</code></td>
+      <td>输出Swagger完整对象</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="springfoxwebmvcconfiguration">SpringfoxWebMvcConfiguration</h2>
+
+<p>在<code class="language-plaintext highlighter-rouge">Swagger2DocumentationConfiguration</code>源码中,我们看到该Configuration类还引入了<code class="language-plaintext highlighter-rouge">SpringfoxWebMvcConfiguration</code>,该类是注入Spring Rest接口相关的配置核心类</p>
+
+<p>先来看源码:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="nd">@Configuration</span>
+<span class="nd">@Import</span><span class="o">({</span> <span class="nc">ModelsConfiguration</span><span class="o">.</span><span class="na">class</span> <span class="o">})</span>
+<span class="nd">@ComponentScan</span><span class="o">(</span><span class="n">basePackages</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="s">"springfox.documentation.spring.web.scanners"</span><span class="o">,</span>
+    <span class="s">"springfox.documentation.spring.web.readers.operation"</span><span class="o">,</span>
+    <span class="s">"springfox.documentation.spring.web.readers.parameter"</span><span class="o">,</span>
+    <span class="s">"springfox.documentation.spring.web.plugins"</span><span class="o">,</span>
+    <span class="s">"springfox.documentation.spring.web.paths"</span>
+<span class="o">})</span>
+<span class="nd">@EnablePluginRegistries</span><span class="o">({</span> <span class="nc">DocumentationPlugin</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+    <span class="nc">ApiListingBuilderPlugin</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+    <span class="nc">OperationBuilderPlugin</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+    <span class="nc">ParameterBuilderPlugin</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+    <span class="nc">ExpandedParameterBuilderPlugin</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+    <span class="nc">ResourceGroupingStrategy</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+    <span class="nc">OperationModelsProviderPlugin</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+    <span class="nc">DefaultsProviderPlugin</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+    <span class="nc">PathDecorator</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+    <span class="nc">ApiListingScannerPlugin</span><span class="o">.</span><span class="na">class</span>
+<span class="o">})</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SpringfoxWebMvcConfiguration</span> <span class="o">{</span>
+
+  <span class="nd">@Bean</span>
+  <span class="kd">public</span> <span class="nc">Defaults</span> <span class="nf">defaults</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">Defaults</span><span class="o">();</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Bean</span>
+  <span class="kd">public</span> <span class="nc">DocumentationCache</span> <span class="nf">resourceGroupCache</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">DocumentationCache</span><span class="o">();</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Bean</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="nc">ObjectMapperConfigurer</span> <span class="nf">objectMapperConfigurer</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">ObjectMapperConfigurer</span><span class="o">();</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Bean</span>
+  <span class="kd">public</span> <span class="nc">JsonSerializer</span> <span class="nf">jsonSerializer</span><span class="o">(</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">JacksonModuleRegistrar</span><span class="o">&gt;</span> <span class="n">moduleRegistrars</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">JsonSerializer</span><span class="o">(</span><span class="n">moduleRegistrars</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Bean</span>
+  <span class="kd">public</span> <span class="nc">DescriptionResolver</span> <span class="nf">descriptionResolver</span><span class="o">(</span><span class="nc">Environment</span> <span class="n">environment</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">DescriptionResolver</span><span class="o">(</span><span class="n">environment</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Bean</span>
+  <span class="kd">public</span> <span class="nc">HandlerMethodResolver</span> <span class="nf">methodResolver</span><span class="o">(</span><span class="nc">TypeResolver</span> <span class="n">resolver</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">HandlerMethodResolver</span><span class="o">(</span><span class="n">resolver</span><span class="o">);</span>
+  <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>从源码中我们可以看到：</p>
+
+<ul>
+  <li>使用<code class="language-plaintext highlighter-rouge">import</code>导入<code class="language-plaintext highlighter-rouge">ModelConfiguration</code>配置类,该类</li>
+  <li>使用<code class="language-plaintext highlighter-rouge">@ComponentScan</code>注解扫描配置的package包路径,完成Spring的Bean实例注入</li>
+  <li>使用<code class="language-plaintext highlighter-rouge">@EnablePluginRegistries</code>插件机制来完成插件的动态实例Bean注入到Spring容器中,关于Spring Plugin的使用,不明白的可以参考下上一篇文章对<a href="https://www.xiaominfo.com/2019/05/22/springfox-3/">Spring Plugin的说明</a></li>
+  <li>注入相关Bean的实例对象</li>
+</ul>
+
+<h3 id="modelsconfiguration">ModelsConfiguration</h3>
+
+<p>从webmvc配置类导入的Models配置类,我们来看该类的源码</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@ComponentScan</span><span class="o">(</span><span class="n">basePackages</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="s">"springfox.documentation.schema"</span>
+<span class="o">})</span>
+<span class="nd">@EnablePluginRegistries</span><span class="o">({</span>
+    <span class="nc">ModelBuilderPlugin</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+    <span class="nc">ModelPropertyBuilderPlugin</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+    <span class="nc">TypeNameProviderPlugin</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+    <span class="nc">SyntheticModelProviderPlugin</span><span class="o">.</span><span class="na">class</span>
+<span class="o">})</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ModelsConfiguration</span> <span class="o">{</span>
+  <span class="nd">@Bean</span>
+  <span class="kd">public</span> <span class="nc">TypeResolver</span> <span class="nf">typeResolver</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">TypeResolver</span><span class="o">();</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>该类的配置和<code class="language-plaintext highlighter-rouge">SpringfoxWebMvcConfiguration</code>配置类相似,作用都是扫描包路径,启用PluginRetry进行Spring的实体Bean动态注入</p>
+
+<h2 id="swaggercommonconfiguration">SwaggerCommonConfiguration</h2>
+
+<p><code class="language-plaintext highlighter-rouge">Swagger2DocumenationConfiguration</code>导入的第二个配置类<code class="language-plaintext highlighter-rouge">SwaggerCommonConfiguration</code></p>
+
+<p>来看代码:</p>
+
+<p><code class="language-plaintext highlighter-rouge">SwaggerCommonConfiguration.java</code></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@ComponentScan</span><span class="o">(</span><span class="n">basePackages</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="s">"springfox.documentation.swagger.schema"</span><span class="o">,</span>
+    <span class="s">"springfox.documentation.swagger.readers"</span><span class="o">,</span>
+    <span class="s">"springfox.documentation.swagger.web"</span>
+<span class="o">})</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SwaggerCommonConfiguration</span> <span class="o">{</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>作用和以上类似</p>
+
+<h2 id="总结">总结</h2>
+
+<p>通过<code class="language-plaintext highlighter-rouge">@EnableSwagger2</code>注解,我们看到了三个4个Configuration配置类的导入</p>
+
+<p>主要作用：</p>
+
+<ul>
+  <li>实体Bean的注入</li>
+  <li>Plugin插件的动态Bean注入</li>
+  <li>扫描springfox配置的各种package路径</li>
+</ul>
+
+<p>看到这里相信我们还是一头雾水,我们并没有发现springfox何时初始化接口类的.</p>
+
+<p>接下来,我们会针对上面Configuration涉及到的Plugin和<code class="language-plaintext highlighter-rouge">@CompnentScan</code>扫描package路径进行一一探索.</p>
+
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2019/05/23/springfox-4/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div class="xiaoym-bot">
+  <div class="xiaoym-qrcode-title">
+    <h3>TorchV Bot开放试用中......</h3>
+  </div>
+  <div style="text-align: center;">
+    <a target="_blank" href="https://www.luxiangdong.com/2024/01/25/lanuch-1/?utm_source=xiaoymin"><img width="300"
+        src="/images/website/bot/torchv_bot2.png" /></a>
+  </div>
+</div>
+<div class="xiaoym-qrcode">
+  <div class="xiaoym-qrcode-title">
+    <h3>最新内容,关注“八一菜刀”公众号</h3>
+  </div>
+  <div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+</div>
+
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>
