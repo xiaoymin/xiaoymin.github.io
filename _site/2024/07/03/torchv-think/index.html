@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>我对《RAG/大模型/非结构化数据知识库类产品》技术架构的思考、杂谈 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2024/07/03/torchv-think/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="我对《RAG/大模型/非结构化数据知识库类产品》技术架构的思考、杂谈">
+      
+    <meta name="keywords" content="TorchV实践,RAG,大模型开发思考">
+    <meta name="og:keywords" content="TorchV实践,RAG,大模型开发思考">
+      
+    <meta name="description" content="1、前言">
+    <meta name="og:description" content="1、前言">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2024/07/03/torchv-think/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2024-07-03">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="我对《RAG/大模型/非结构化">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">我对《RAG/大模型/非结构化数据知识库类产品》技术架构的思考、杂谈</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2024/07/03
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#大模型" title="大模型">大模型</a>
+          </span>
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#RAG实践" title="RAG实践">RAG实践</a>
+          </span>
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#TorchV" title="TorchV">TorchV</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <h2 id="1前言">1、前言</h2>
+
+<p>在6.28/29的稀土掘金开发者大会RAG专场上，我们公司CEO员外代表TorchV分享了我们在《RAG在企业应用中落地的难点与创新》</p>
+
+<p>其中最后分享了两个观点：</p>
+
+<ul>
+  <li><strong>AI在应用场景落地时有三个特点：功能小、质量高、价值大</strong></li>
+  <li><img src="/assets/images/rag/torchv/rag-4/image-20240701143924758.png" alt="image-20240701143924758" /></li>
+  <li><strong>如果说做产品是把一横做好的话，那么去做企业落地服务就是一竖，从需求和方案，再到 POC，和最后交付。</strong></li>
+  <li><img src="/assets/images/rag/torchv/rag-4/image-20240701143941791.png" alt="image-20240701143941791" /></li>
+</ul>
+
+<p>对于AI应用的三个特点，我们在落地的时候，其实碰到的问题蛮多的，但是用过大模型或者AI产品的人应该都知道，目前基于大模型应用开发的C端产品其实在整体给人的感觉都是相对较小的工具居多，在帮助人类提效这件事上，借助于AI工具，能很好的完成日常繁杂的工作和学习任务。比如<strong>AI翻译</strong>、<strong>网页总结</strong>插件等等。这类产品更多的是偏C端为主，借助于互联网的生态以及开源技术的发展，只要功能/交互满足用户的要求，很快就能打动C端用户进行尝鲜试用甚至付费。</p>
+
+<p>但是做B端类的产品，整个交付的过程就明显和C端不一样，在B端我们除了产品本身需要功能足够强大之外，我们还需要做AI的落地交付，这里面包含<strong>私有化定制</strong>/<strong>客户培训</strong>/<strong>私有化部署</strong>/<strong>软硬件适配</strong>等等繁杂的工作，整个交付周期漫长的多。这明显是和上面第二个观点相呼应的，<strong>产品+服务</strong>才能综合服务好B端的客户。</p>
+
+<p>本篇是结合我们公司在B端RAG/大模型应用产品的落地交付的场景考虑，以实际场景出发，谈谈我对知识库类产品的技术架构的思考总结。</p>
+
+<h2 id="2业务功能技术组件拆解抽象">2、业务功能/技术组件拆解抽象</h2>
+
+<p><img src="/assets/images/rag/torchv/rag-4/image-20240703085452132.png" alt="image-20240703085452132" /></p>
+
+<p>在文章的标题中，我已经标注了范围: <strong>RAG</strong>、<strong>大模型</strong>、<strong>非结构化数据</strong></p>
+
+<p>我们从这三个方面出发，在软件层面，我们如何来考虑这些新型的技术名词，将他们从技术/产品功能的角度进行拆解，实现对应的功能交付给我们的客户。</p>
+
+<p>从业务的功能诉求来看，主要有几个方面：</p>
+
+<ul>
+  <li><strong>知识库</strong>：客户需要将业务数据统一收集处理，形成知识库，以便提供给LLM进行使用</li>
+  <li><strong>应用中心</strong>：B端客户需要开箱即用的产品，解决实际工作业务中碰到的问题</li>
+  <li><strong>用户权限</strong>：系统提供企业级灵活可控的权限管理，方便企业客户进行统一管理授权。</li>
+  <li><strong>多租户</strong>：多租户体系架构是必不可少的，可以保证数据以Schema级别进行隔离，保障数据安全以及上层应用的灵活输出支撑。</li>
+  <li>…</li>
+</ul>
+
+<p>而从技术侧考虑，技术人员需要关注的是：</p>
+
+<ul>
+  <li><strong>非结构化数据的处理</strong>：平台需要支持多种多样的非结构化数据的提取处理工作，将整个文档内容进行chunking、embedding进入数据库，以便进行搜索
+    <ul>
+      <li><strong>文件类型广度</strong>：提供众多的非结构化数据文档(PDF/PPT/WORD等)的提取支持，是打动B端客户的有利吸引点，</li>
+      <li><strong>文件解析精度</strong>：以PDF/PPT/Word为首的文档解析工作困难重重，如何在解析的工作上更进一步，从根源上减少模型在利用已知数据的幻觉问题</li>
+      <li><strong>任务调度</strong>：数据的处理依靠稳定的任务调度平台，保证数据处理的最终有序执行。</li>
+    </ul>
+  </li>
+  <li><strong>模型服务</strong>：从LLM大语言模型、Reranker模型、embedding、OCR模型、视觉模型等等，<strong>保证模型的幂等输出</strong>，为上层应用提供稳定可靠的服务支撑。
+    <ul>
+      <li><strong>LLM模型</strong>：提供一系列<strong>Agent服务</strong>，保证上层业务能够灵活调用大模型获取满意的结果</li>
+      <li><strong>ReRanker模型</strong>：重排序模型是问答二阶段召回提高准确率的关键手段，不可忽虑</li>
+      <li><strong>Embedding模型</strong>：向量化嵌入，提供对知识文本的表征提取向量工作，不可忽虑</li>
+      <li><strong>OCR/视觉模型</strong>：辅助非结构化数据提取在规则提取不满足的情况下，启动OCR及视觉模型，增强非结构化数据的提供效果</li>
+    </ul>
+  </li>
+  <li><strong>向量数据库(VectorDB)</strong>: 需要结合实际业务诉求，从性能/空间/生态等多方面考量VectorDB等选型</li>
+</ul>
+
+<p>技术的角度拆分，其实技术人员关注的点非常的多，每一项工作其实都可以是独立的中间件产品，要把这些全部整合到一块，并非易事。</p>
+
+<h2 id="3微服务分布式云原生">3、微服务/分布式/云原生？</h2>
+
+<p>写过Java的估计对上面这三个名词都已经滚瓜乱熟了，我记得很早之前，说面试你如果不会微服务，那都找不到工作(PS:现在好像不管你会什么，也同样都找不到)😂。</p>
+
+<p>对于AI应用，可能更多的软件生态是由Python带动起来的，包括一些工具库LangChain、LlamaIndex等都是Python，虽然Java中也不乏有一些，比如LangChain4j、Spring-AI等组件，都是后起之秀，在整个生态稳定性等方面确实是落后了一节。</p>
+
+<p>但可能很多人都在用过LangChain等框架后有一个共识，那就是当作工具用没有问题，但是上生产？问题太多了。我觉得主要的几个点：</p>
+
+<ul>
+  <li>LangChain的过度封装，对于应用层而言，不管是Agent，还是RAG，其实蛮简单的一件事情，和大模型API接口对接就好了，但是你去看LangChain的源码，整个调用链路封装的极其复杂，改都没法改。</li>
+  <li>上层的业务需求变化太大了，有时候是需要结合自己公司的实际业务情况来进行处理的，这种情况下，还不如自己写来的快，其实调用的链路并不复杂</li>
+  <li>就稳定性/事务/数据一致性而言，Python作为企业服务接口主语言是否合适呢？</li>
+</ul>
+
+<p>而我们今天讨论的是整个产品的技术架构的选择，其实在上面业务功能/技术组件抽象那一节，我们已经拆分了功能和技术点，从技术点去看，这已经是一个集众多服务于一体的综合技术解决方案了。在应用层面的功能，我们是否还需要像以前那样，整一套微服务架构出来来开发业务功能？</p>
+
+<p>我的个人看法是：<strong>根据团队配置，微服务可用可不用。但是应用程序必须天然分布式，支持横向扩展集群，弹性伸缩。</strong></p>
+
+<blockquote>
+  <p>目前这个环境，项目搞微服务，最后的困境可能就是所有服务都是你一个人负责，写完a服务写b服务，再来个rpc调用，还要考虑数据熔断、可用性等等，小团队我觉得完全没必要折腾！</p>
+</blockquote>
+
+<p>主要考虑的点：</p>
+
+<p><strong>1、海量非结构化数据处理的提效</strong></p>
+
+<p>在处理RAG产品类中，非结构化数据的处理除了快速解析之外，还需要将文本进行向量化，而我们在技术架构中需要能够快速的处理这些文件，通过Pipeline的方式，将非结构化数据最终存储到向量数据库中，这里面传统的做法不得不用消息中间件MQ，而应用层面的程序则可以通过考虑弹性伸缩的方式，扩充消费节点，以提高整体的处理效率</p>
+
+<p><strong>2、海量向量数据的存储/计算召回效率</strong></p>
+
+<p>当我们对非结构化数据进行提取后，需要经过Embedding模型进行向量化，这里面还涉及到文本的Chunking分块，所以底层向量数据的存储和计算必然是一个需要更全面的考虑向量数据库中间件，这其中包括：向量召回的性能、数据的存储/备份、多租户Schema级别数据权限等等</p>
+
+<p><strong>3、数据最终一致性</strong></p>
+
+<p>数据的Embedding处理、大模型调度扣费、缓存等等，在目前已经众多服务组件拆分的情况下，整个数据的处理任务我觉得需要保证数据的最终一致性，在分布式场景下，多节点处理时需要特别注意。</p>
+
+<p><strong>4、应用功能原子性（云原生）</strong></p>
+
+<p>整个应用层的功能，我觉得需要<strong>保持独立，并且保障稳定性</strong>，这点其实我觉得在私有化部署/交付的环节比较奏效。如果你是一名运维或者主力开发者，在一个完全内网隔离的环境下部署时，你会体会到这种便捷。</p>
+
+<p>总之，我觉得在应用层面服务，服务端应该做的是：<strong>减少配置、轻量化、稳定</strong></p>
+
+<h2 id="4编程语言中间件选择">4、编程语言/中间件选择？</h2>
+
+<p>我们团队目前的开发语言是Java+Python的组合，主要有职责分工：</p>
+
+<ul>
+  <li>Java：上层业务应用的API接口，任务调度、数据处理等等</li>
+  <li>Python：和模型、数据处理、NLP等相关任务以接口的形式开放出来，API接口是无状态的，所有的数据状态流转都在Java端实现</li>
+</ul>
+
+<p>这里面很多开发可能会有一些担忧，对于Java语言的选择，是否在目前的RAG/大模型领域合适？其实最困惑的就是非结构化数据的处理，可能很多开发者看到目前开源的众多组件或者平台，都是Python的主技术栈，认为Java处理不了，其实这是完全有误区的，对于最难处理的PDF文件提取，<strong>Apache PDFBox</strong>绝对是值得你深挖的一个组件，当然Python本来就擅长数据处理/分析，可以根据团队的配置进行执行选择，这里面我觉得主要考虑的几个点：</p>
+
+<p><strong>1、团队人员配置</strong></p>
+
+<p>根据团队当前的主流编程语言去做技术架构上的选型和决策，并没有绝对意义上的以哪个编程语言为主，Java、Python、Go、NodeJS、TypeScript等等都可以。</p>
+
+<p><strong>2、软件生态&amp;技术成熟度</strong></p>
+
+<p>上层应用产品的开发，肯定首先要考虑有哪些成熟的中间件和组件，来开发完成这一众多的需求，总不能从0到1造轮子，造轮子固然能提升开发人员的水平技能，但是在AI日益发展的今天，为公司产品尽早的找到PMF才是首要任务。需要综合考虑。</p>
+
+<p>其他的编程语言我不了解，就非结构化数据的解析这一块，其实Python和Java都相对更加丰富和稳 定。</p>
+
+<p>Java语言中比较好用的包括：Apache PDFBox、POI、Tika</p>
+
+<p>Python中包括：PyMuPDF、pdfplumber、pypdf、camelot、python-docx等等</p>
+
+<p><strong>3、稳定性/集群/高可用</strong></p>
+
+<blockquote>
+  <p>嗯，这里没有高并发，因为大家都没卡😂</p>
+</blockquote>
+
+<p>大模型的产品相比较传统的业务在这点上并没有 太多的区别，稳定性/集群等特点也是需要的，技术人员在选择中间件时，也应当考虑这一点。</p>
+
+<p>例如MQ消息中间件、缓存Redis等等</p>
+
+<p><strong>4、部署实施/交付</strong></p>
+
+<p>没错，最后一步部署实施这个环节也需要考虑，Docker确实能带来极大的便利，但是成本也是需要考量的，目前的Python生态打包整个Docker，压缩包动辄2、3G起步，其实也是蛮头疼的，如果你是使用K8s调度来部署，k8s拉取一个10G的镜像也不是那么快的😂</p>
+
+<h2 id="5总结">5、总结</h2>
+
+<p>AI应用是一个需要快速试错、功能强大的某一个点去突破，技术架构上，也应当考虑整体的开发效率、生态等等。</p>
+
+<p>这让我想起来十几年前的jQuery，一经面世，得到众多开发者的喜爱，经典名言：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Write Less, Do More!!!
+</code></pre></div></div>
+
+<p>在大模型日益健壮发展的同时，我们的技术架构，是否也应该做一次瘦身呢？</p>
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2024/07/03/torchv-think/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div class="xiaoym-bot">
+  <div class="xiaoym-qrcode-title">
+    <h3>TorchV Bot开放试用中......</h3>
+  </div>
+  <div style="text-align: center;">
+    <a target="_blank" href="https://www.luxiangdong.com/2024/01/25/lanuch-1/?utm_source=xiaoymin"><img width="300"
+        src="/images/website/bot/torchv_bot2.png" /></a>
+  </div>
+</div>
+<div class="xiaoym-qrcode">
+  <div class="xiaoym-qrcode-title">
+    <h3>最新内容,关注“八一菜刀”公众号</h3>
+  </div>
+  <div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+</div>
+
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

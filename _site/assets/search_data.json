@@ -1312,6 +1312,20 @@
     } ,
   
     {
+      "title"    : "我对《RAG/大模型/非结构化数据知识库类产品》技术架构的思考、杂谈",
+      "category" : "大模型",
+      
+      "url"      : "http://localhost:4000/2024/07/03/torchv-think/"
+    } ,
+  
+    {
+      "title"    : "RAG工程实践拦路虎之一：PDF格式解析杂谈",
+      "category" : "大模型",
+      
+      "url"      : "http://localhost:4000/2024/07/08/torchv-pdf-01/"
+    } ,
+  
+    {
       "title"    : "Android Studio",
       "category" : "Android",
       

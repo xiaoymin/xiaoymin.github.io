@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>RAG工程实践拦路虎之一：PDF格式解析杂谈 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2024/07/08/torchv-pdf-01/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="RAG工程实践拦路虎之一：PDF格式解析杂谈">
+      
+    <meta name="keywords" content="TorchV实践,RAG,PDF格式解析杂谈">
+    <meta name="og:keywords" content="TorchV实践,RAG,PDF格式解析杂谈">
+      
+    <meta name="description" content="背景">
+    <meta name="og:description" content="背景">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2024/07/08/torchv-pdf-01/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2024-07-08">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="RAG工程实践拦路虎之一：PD">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">RAG工程实践拦路虎之一：PDF格式解析杂谈</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2024/07/08
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#大模型" title="大模型">大模型</a>
+          </span>
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#RAG实践" title="RAG实践">RAG实践</a>
+          </span>
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#TorchV" title="TorchV">TorchV</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <h2 id="背景">背景</h2>
+
+<p>PDF（Portable Document Format）是一种广泛用于文档交换的文件格式，由Adobe Systems开发。它具有跨平台性、固定布局和易于打印等特点，因此在商业、学术和个人领域广泛应用。然而，PDF文件的解析一直是一个具有挑战性的问题，因为其内部结构的复杂性和多样性，使得提取其中的文本、图片和表格等内容并不是一件容易的事情。</p>
+
+<h2 id="技术方案">技术方案</h2>
+
+<p>在目前的PDF文件解析领域中，我们可以将其大致分为以下几类技术方案：</p>
+
+<ul>
+  <li><strong>LLM/视觉大模型解析</strong>：LLM（Large Language Model）大型语言模型在近年来的发展中，展现出了强大的语言理解和生成能力。通过训练大规模的神经网络，可以实现对PDF文件中文字内容的理解和提取，这种方法尤其适用于那些布局复杂、内容丰富的PDF文件。</li>
+  <li><strong>OCR模型</strong>：光学字符识别（OCR）模型专门设计用于将PDF文件中的图像转换为可编辑的文本。这种技术在处理扫描版或图像化的PDF文档时尤其有用。</li>
+  <li><strong>传统规则提取</strong>：传统的PDF解析方式可能包括基于规则的文本提取、图像处理和表格识别等方法。虽然这些方法可能不如深度学习模型那样灵活，但在某些情况下仍然是有效的选择。</li>
+</ul>
+
+<p>各个解决方案目前可能需要配合使用，因为PDF格式本身的复杂程度，一项技术方案可能是<strong>无法100%满足业务需求</strong>的，这里面需要考虑的是：</p>
+
+<ul>
+  <li><strong>文档提取还原度</strong>：通过技术手段，能够完整的提取PDF中的各项元素，包括文本、表格、图片、链接、图形、目录等等信息</li>
+  <li><strong>高效/💰成本</strong>：在RAG知识库问答的产品中，考虑到文本还需要Embedding的过程，因此在提取过程中如何更高效，成本更低也是需要着重考虑到事项。</li>
+  <li><strong>稳定/幂等</strong>：我们知道大模型可能是出现幻觉的，如果用大模型来提取PDF中的内容，是否能足够保证稳定性。</li>
+</ul>
+
+<p>当我们处理解析PDF时，我们需要可以讲每一项的难点都进行拆分，从需求出发，逐一进行攻破，找到解决方案。</p>
+
+<p>其实我觉得技术人员如果能<strong>通过技术手段确定PDF中的Block(块)以及阅读顺序，按Block(块)进行输出转换(Markdown/Html等)，这里面包括的Block块元素：文本、图片、表格等等。那么这个提取的效果就会达到我们的最优</strong>。</p>
+
+<p>而这个目标是我们接下来要重点讨论的。</p>
+
+<h2 id="技术难点">技术难点</h2>
+
+<p>在考虑解析PDF文件时，我们需要根据当前的技术栈发展情况，并结合实际的业务诉求，综合考量这其中的技术难点，因为每一项技术难点所涉及的技术方案都会需要一个算法/或者技术手段去突破。</p>
+
+<p>而开发者从解析的效果去考虑，可以从简单的做起，逐步突破难点，这对于开发人员自身的自信心提升也是一种正向的导向。在整个PDF解析过程中，我觉得以下几项是比较难处理的：</p>
+
+<ul>
+  <li><strong>布局解析困难</strong>：PDF文件的布局可能会因为不同的作者、工具或用途而有所不同，因此解析其布局是一个具有挑战性的任务。</li>
+  <li><strong>格式错综复杂</strong>：PDF文件中可能包含各种格式的内容，包括<strong>文字</strong>、<strong>图像</strong>、<strong>表格</strong>等，因此解析其内容需要考虑到这种多样性和复杂性。</li>
+  <li><strong>复合表格</strong>：纵向/横向合并的复杂表格，在PDF中进行抽象还原是最难处理的问题之一</li>
+  <li><strong>文本、图片、表格顺序提取</strong>：提取PDF文件中的文本、图片和表格，并确保它们的顺序正确性，是一个需要解决的重要问题。</li>
+  <li><strong>文档结构还原</strong>：还原PDF文件的文档结构，包括标题、目录等信息，是实现自动化文档处理和理解的关键步骤之一。</li>
+  <li><strong>元素重叠</strong>：从PDF100%效果还原的角度考虑，图片/文本之间的重叠，图片合并，合并后不失真等，也是需要考虑的事项之一</li>
+  <li><strong>元数据提取</strong>：在PDF中隐藏的元数据信息是RAG产品的关键数据，比如链接、目录、字体等等</li>
+  <li><strong>扫描件</strong>：PDF中如果是扫描件，依靠OCR模型可能是无法有效的提取，这里面包含了清晰度、模型的稳定性等等问题</li>
+  <li><strong>Latex公式提取</strong>：在一些特殊领域，PDF文本中包含了Latex等数学公式。通过完整的提取和转换是对RAG问答的有效补充</li>
+</ul>
+
+<h2 id="技术可行性">技术可行性</h2>
+
+<p>我们从解析PDF的技术可行性角度，考虑哪些方面值得我们重点关注和突破：</p>
+
+<ul>
+  <li><strong>文字提取能力，逐行提取</strong>：确保能够准确地提取PDF文件中的文字内容，并按照正确的顺序进行排列和输出，避免文字乱码(字体)。</li>
+  <li><strong>简单/复杂表格完整提取</strong>：对PDF文件中的表格进行完整提取，包括表格内的内容和格式。</li>
+  <li><strong>图片提取/合并</strong>：提取PDF文件中的图片，并保留其原始质量和格式。</li>
+  <li><strong>文档布局(Block块的标识)识别</strong>：识别PDF文件的布局，包括页面的排列方式、文本和图片的位置等信息。</li>
+  <li><strong>文档结构识别(标题、目录)，内容顺序输出</strong>：识别PDF文件的结构，包括标题、目录等信息，并确保输出内容的顺序正确。</li>
+  <li><strong>转换为Markdown格式</strong>：将解析后的PDF文件内容转换为Markdown格式，以便于后续的处理和分享。</li>
+</ul>
+
+<h2 id="开源技术方案">开源技术方案</h2>
+
+<p>结合上面的技术难点/方案及可行性上去分析，我们可以看看目前开源的技术组件中，有哪些是我们可以考虑进行结合的。</p>
+
+<p>因为目前TorchV系统主要以Java+Python双语作为底层的应用开发语言，接下来我们可以看看在这两个编程语言中，有哪些开源的方案可以使用。</p>
+
+<h3 id="java生态">Java生态</h3>
+
+<p>在Java生态中，对于PDF组件处理的开源方案不多见，Apache PDFBOX是当前最强的，也是最好的</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>名称</th>
+      <th>地址</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Apache PDFBox</td>
+      <td><a href="https://github.com/apache/pdfbox">https://github.com/apache/pdfbox</a></td>
+      <td>提供开箱即用的文本、图片内容提取方式，并且可以基于Stream接口重写各项元素的解析实现，<strong>并能输出元素的坐标信息</strong>。开发者可以根据元素的坐标信息结合算法进行内容的高度还原。唯一的缺点是没有表格组件提取的API供开发人员使用。</td>
+    </tr>
+    <tr>
+      <td>tabula-java</td>
+      <td><a href="https://github.com/tabulapdf/tabula-java">https://github.com/tabulapdf/tabula-java</a></td>
+      <td>基于Apache PDFBOx组件的表格提取实现</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="python生态">Python生态</h3>
+
+<p>Python生态的PDF提取组件还是蛮多的，不过也是有不同的侧重，比如pdfplumber、camelot等都专注在表格的提取上，提供了开箱即用的方案。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">名称</th>
+      <th>地址</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">pypdf</td>
+      <td><a href="https://github.com/py-pdf/pypdf">https://github.com/py-pdf/pypdf</a></td>
+      <td>一个纯Python PDF库，能够分割、合并、裁剪和转换PDF文件的页面</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">PyMuPDF(AGPL)</td>
+      <td><a href="https://github.com/pymupdf/PyMuPDF">https://github.com/pymupdf/PyMuPDF</a></td>
+      <td>高性能 Python 库，用于 PDF（和其他）文档的数据提取、分析、转换和操作。</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong><a href="https://github.com/jsvine/pdfplumber">pdfplumber</a></strong>(MIT)</td>
+      <td><a href="https://github.com/jsvine/pdfplumber">https://github.com/jsvine/pdfplumber</a></td>
+      <td>查看 PDF 以获取有关每个字符、矩形、线条等的详细信息，并轻松提取文本和表格。</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong><a href="https://github.com/camelot-dev/camelot">camelot</a></strong>（MIT）</td>
+      <td><a href="https://github.com/camelot-dev/camelot">https://github.com/camelot-dev/camelot</a></td>
+      <td>专注于PDF中表格的提取，包括复杂的表格</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="ocr生态大模型">OCR生态/大模型</h3>
+
+<p>在上面Python和Java生态库的开源组件，基本都是针对文字的PDF处理为主，当我们的PDF是扫描件时，那上面的组件统统失效，都提取不出来文本信息。</p>
+
+<p>此时就需要用到OCR的模型进行提取。</p>
+
+<p>考虑到如果是OCR提取，那么最终的目的是将PDF文件Page页码内容提取出完成的图片Image，所以本质上是对图片内容的理解</p>
+
+<p>可以考虑的开源组件如下：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>名称</th>
+      <th>地址</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>marker(GPL)</td>
+      <td>https://github.com/VikParuchuri/marker</td>
+      <td>基于模型将PDF文件内容提取为Markdown格式</td>
+    </tr>
+    <tr>
+      <td>surya(GPL)</td>
+      <td>https://github.com/VikParuchuri/surya</td>
+      <td>OCR、布局分析、阅读顺序、线条检测（支持90 多种语言）</td>
+    </tr>
+    <tr>
+      <td>tesseract(Apache 2)</td>
+      <td>https://github.com/tesseract-ocr/tesseract</td>
+      <td>老牌OCR组件，支持100多种语言</td>
+    </tr>
+    <tr>
+      <td>RapidOCR(Apache)</td>
+      <td>https://github.com/RapidAI/RapidOCR</td>
+      <td>基于 ONNXRuntime、OpenVION 和 PaddlePaddle 的出色 OCR 多种编程语言工具包。</td>
+    </tr>
+    <tr>
+      <td>PaddleOCR(Apache)</td>
+      <td>https://github.com/PaddlePaddle/PaddleOCR</td>
+      <td>基于飞桨的出色多语言OCR工具包（实用的超轻量级OCR系统，支持80+语言识别）</td>
+    </tr>
+    <tr>
+      <td>EasyOCR(Apache )</td>
+      <td>https://github.com/JaidedAI/EasyOCR</td>
+      <td>Python\C++开发，支持80多种语言OCR识别</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="技术准备细节">技术准备/细节</h2>
+
+<p>在解析PDF时，我们也会有一些其他方面的知识储备，以便我们快速应对不同的业务需求及应用产品形态。</p>
+
+<p><strong>1、图形类API</strong>：不管是Java还是Python里面，对于处理PDF中间件的部分，都需要对图形类的API/算法熟悉和掌握，这里面包含图形的转换、缩放、矩阵坐标、截取等等，都会在PDF提取的过程中使用到。</p>
+
+<p><strong>2、PDF标准</strong>：在处理PDF中，结合开源的技术中间件，对于PDF的ISO标准，我们也是需要了解的，这样更加有利于开发人员理解中间件的代码写法及含义。</p>
+
+<p><strong>3、边/线/矩阵算法等</strong>：对于文本/边框的聚类算法等，在根据元素坐标高效还原时，利用高效的算法可以提高解析速度以及内容还原度</p>
+
+<p><strong>4、OCR/LLM模型等</strong>：了解学习在用OCR/LLM模型分析布局、边界检测等等技术上的一些算法及数据工程上的实践</p>
+
+<p>5、<strong>PDF页面旋转</strong>：有时候原PDF可能会有旋转(0、90、180、270度)，需先校正后，再次提取内容</p>
+
+<p>6、<strong>字体/乱码</strong>：系统/服务器中缺失PDF中的字体，导致文本提取乱码</p>
+
+<h2 id="最后">最后</h2>
+
+<p>本文从大的方面简单概括了在PDF解析处理过程中的技术方案/难点/开源技术方案等内容，后面我会从一些细节方面来逐一分享我们在构建TorchV产品时，解析PDF文件过程中的一些问题及技术实践,包括对表格的提取，感兴趣的可以关注我们😁。</p>
+
+<p>另外，我们团队提供了一个PDF解析的Demo地址，针对文本类的PDF(暂时不支持扫描件)，可以进行试用体验。</p>
+
+<p>地址：<a href="http://tabletest.torchv.com:8010/">http://tabletest.torchv.com:8010/</a></p>
+
+<p><img src="/assets/images/rag/torchv/pdf-01/image-20240706170720200.png" alt="image-20240706170720200" /></p>
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2024/07/08/torchv-pdf-01/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div class="xiaoym-bot">
+  <div class="xiaoym-qrcode-title">
+    <h3>TorchV Bot开放试用中......</h3>
+  </div>
+  <div style="text-align: center;">
+    <a target="_blank" href="https://www.luxiangdong.com/2024/01/25/lanuch-1/?utm_source=xiaoymin"><img width="300"
+        src="/images/website/bot/torchv_bot2.png" /></a>
+  </div>
+</div>
+<div class="xiaoym-qrcode">
+  <div class="xiaoym-qrcode-title">
+    <h3>最新内容,关注“八一菜刀”公众号</h3>
+  </div>
+  <div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+</div>
+
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>
