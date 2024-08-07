@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>QWen2-72B-Instruct模型安装部署过程 &mdash; 八一菜刀</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2024/08/07/qwen2-72b-instruct-deploy/">
+    <link rel="alternate" type="application/atom+xml" title="八一菜刀" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="QWen2-72B-Instruct模型安装部署过程">
+      
+    <meta name="keywords" content="记录QWen2-72B-Instruct模型安装部署过程">
+    <meta name="og:keywords" content="记录QWen2-72B-Instruct模型安装部署过程">
+      
+    <meta name="description" content="一、基础信息">
+    <meta name="og:description" content="一、基础信息">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2024/08/07/qwen2-72b-instruct-deploy/">
+    <meta property="og:site_name" content="八一菜刀">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2024-08-07">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="八一菜刀"><span class="octicon octicon-mark-github"></span> 八一菜刀</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="QWen2-72B-Instr">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">QWen2-72B-Instruct模型安装部署过程</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2024/08/07
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#大模型" title="大模型">大模型</a>
+          </span>
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#RAG实践" title="RAG实践">RAG实践</a>
+          </span>
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#TorchV" title="TorchV">TorchV</a>
+          </span>
+          
+          <span class="meta-info">
+            <!--<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+            <span id="busuanzi_container_page_pv"> 浏览<span id="busuanzi_value_page_pv"></span>次</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <h2 id="一基础信息">一、基础信息</h2>
+
+<ul>
+  <li>
+    <p><strong>操作系统</strong>：<strong>Ubuntu 22.04.3 LTS</strong></p>
+  </li>
+  <li><strong>GPU:</strong> <strong>A800(80GB) * 8</strong></li>
+  <li><strong>内存</strong>：1TB</li>
+</ul>
+
+<p><img src="/assets/images/rag/torchv/qwen2-72b/image-20240806104952860.png" alt="image-20240806104952860" /></p>
+
+<p><img src="/assets/images/rag/torchv/qwen2-72b/image-20240806110115152.png" alt="image-20240806110115152" /></p>
+
+<h2 id="二软件信息">二、软件信息</h2>
+
+<p>Python: 3.10</p>
+
+<p>Pytorch：2.3.0</p>
+
+<p>Transformers：4.43.0</p>
+
+<p>vLLM：0.5.0</p>
+
+<p>cuda： 12.2</p>
+
+<p>模型: <a href="https://huggingface.co/Qwen/Qwen2-72B-Instruct">QWen2-72B-Instruct</a></p>
+
+<h2 id="三安装步骤">三、安装步骤</h2>
+
+<h3 id="1安装conda">1、安装Conda</h3>
+
+<p>Conda 是一个开源的包管理系统和环境管理系统，旨在简化软件包的安装、配置和使用</p>
+
+<p>对于Python环境的部署，能够非常方便的切换环境。</p>
+
+<p>可以通过conda官网链接下载安装：<a href="https://www.anaconda.com/download#downloads">https://www.anaconda.com/download#downloads</a></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 下载</span>
+wget https://repo.anaconda.com/archive/Anaconda3-2023.09-0-Linux-x86_64.sh
+<span class="c"># 安装</span>
+bash Anaconda3-2023.09-0-Linux-x86_64.sh
+<span class="c"># 配置环境变量</span>
+<span class="nb">echo</span> <span class="s1">'export PATH="/path/to/anaconda3/bin:$PATH"'</span> <span class="o">&gt;&gt;</span> ~/.bashrc
+<span class="nb">source</span> ~/.bashrc
+</code></pre></div></div>
+
+<p>安装完成后，通过命令验证安装是否成功</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>conda <span class="nt">--version</span>
+</code></pre></div></div>
+
+<p>安装完成之后，可以配置镜像源，方便快速下载依赖包</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 配置源</span>
+
+conda config <span class="nt">--add</span> channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+conda config <span class="nt">--add</span> channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
+conda config <span class="nt">--set</span> show_channel_urls <span class="nb">yes
+
+
+</span>conda config <span class="nt">--add</span> channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/
+conda config <span class="nt">--add</span> channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/msys2/
+conda config <span class="nt">--add</span> channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/bioconda/
+conda config <span class="nt">--add</span> channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/menpo/
+conda config <span class="nt">--add</span> channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch/
+</code></pre></div></div>
+
+<p>conda的相关命令</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="c"># 指定虚拟环境名称为llm，python版本是3.9</span>
+ conda create <span class="nt">--name</span> llm <span class="nv">python</span><span class="o">=</span>3.9
+ <span class="c"># 激活conda新环境</span>
+ conda activate llm
+ <span class="c"># 查看当前环境列表</span>
+ conda <span class="nb">env </span>list
+</code></pre></div></div>
+
+<h3 id="2下载qwen2-72b-instruct模型">2、下载QWen2-72B-Instruct模型</h3>
+
+<p>Huggingface：<a href="https://huggingface.co/Qwen/Qwen2-72B-Instruct">https://huggingface.co/Qwen/Qwen2-72B-Instruct</a></p>
+
+<p>ModelScope：<a href="https://modelscope.cn/models/qwen/Qwen2-72B-Instruct">https://modelscope.cn/models/qwen/Qwen2-72B-Instruct</a></p>
+
+<p>两个地址都可以下载，下载完成后，将模型文件存放在服务器上。</p>
+
+<blockquote>
+  <p>⚠️ 注意服务器的磁盘空间。</p>
+</blockquote>
+
+<h3 id="3安装pytorch等环境依赖信息">3、安装Pytorch等环境依赖信息</h3>
+
+<blockquote>
+  <p>⚠️ 在安装Pytorch时，需要保证和cuda驱动版本保持一致，不然会出现各种莫名其妙的问题</p>
+
+  <p>版本选择参考：<a href="https://pytorch.org/get-started/locally/">https://pytorch.org/get-started/locally/</a></p>
+
+  <p>通过conda创建一个新的环境，然后切换后安装依赖包</p>
+</blockquote>
+
+<p><img src="/assets/images/rag/torchv/qwen2-72b/image-20240806135441512.png" alt="image-20240806135441512" /></p>
+
+<h3 id="4-安装vllm">4、 安装vLLM</h3>
+
+<p><code class="language-plaintext highlighter-rouge">vLLM</code> 框架是一个高效的大语言模型<strong>推理和部署服务系统</strong>，具备以下特性：</p>
+
+<ul>
+  <li><strong>高效的内存管理</strong>：通过 <code class="language-plaintext highlighter-rouge">PagedAttention</code> 算法，<code class="language-plaintext highlighter-rouge">vLLM</code> 实现了对 <code class="language-plaintext highlighter-rouge">KV</code> 缓存的高效管理，减少了内存浪费，优化了模型的运行效率。</li>
+  <li><strong>高吞吐量</strong>：<code class="language-plaintext highlighter-rouge">vLLM</code> 支持异步处理和连续批处理请求，显著提高了模型推理的吞吐量，加速了文本生成和处理速度。</li>
+  <li><strong>易用性</strong>：<code class="language-plaintext highlighter-rouge">vLLM</code> 与 <code class="language-plaintext highlighter-rouge">HuggingFace</code> 模型无缝集成，支持多种流行的大型语言模型，简化了模型部署和推理的过程。兼容 <code class="language-plaintext highlighter-rouge">OpenAI</code> 的 <code class="language-plaintext highlighter-rouge">API</code> 服务器。</li>
+  <li><strong>分布式推理</strong>：框架支持在多 <code class="language-plaintext highlighter-rouge">GPU</code> 环境中进行分布式推理，通过模型并行策略和高效的数据通信，提升了处理大型模型的能力。</li>
+  <li><strong>开源共享</strong>：<code class="language-plaintext highlighter-rouge">vLLM</code> 由于其开源的属性，拥有活跃的社区支持，这也便于开发者贡献和改进，共同推动技术发展。</li>
+</ul>
+
+<p>GitHub：<a href="https://github.com/vllm-project/vllm">https://github.com/vllm-project/vllm</a></p>
+
+<p>文档：<a href="https://docs.vllm.ai/en/latest/">https://docs.vllm.ai/en/latest/</a></p>
+
+<p>在通过<code class="language-plaintext highlighter-rouge">conda</code>创建了初始环境后，可以直接通过<code class="language-plaintext highlighter-rouge">pip</code>进行安装</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>vllm
+</code></pre></div></div>
+
+<p>更多的安装方式，可以参考官网文档：<a href="https://docs.vllm.ai/en/stable/getting_started/installation.html">https://docs.vllm.ai/en/stable/getting_started/installation.html</a></p>
+
+<h3 id="5模型验证">5、模型验证</h3>
+
+<p>可以通过一个python脚本来验证当前的模型是否可用</p>
+
+<p>脚本如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># test.py
+</span><span class="kn">from</span> <span class="nn">vllm</span> <span class="kn">import</span> <span class="n">LLM</span><span class="p">,</span> <span class="n">SamplingParams</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoTokenizer</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="k">def</span> <span class="nf">get_completion</span><span class="p">(</span><span class="n">prompts</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">tokenizer</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">max_tokens</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">top_p</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">max_model_len</span><span class="o">=</span><span class="mi">2048</span><span class="p">):</span>
+    <span class="n">stop_token_ids</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># 创建采样参数。temperature 控制生成文本的多样性，top_p 控制核心采样的概率
+</span>    <span class="n">sampling_params</span> <span class="o">=</span> <span class="n">SamplingParams</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="n">temperature</span><span class="p">,</span> <span class="n">top_p</span><span class="o">=</span><span class="n">top_p</span><span class="p">,</span> <span class="n">max_tokens</span><span class="o">=</span><span class="n">max_tokens</span><span class="p">,</span> <span class="n">stop_token_ids</span><span class="o">=</span><span class="n">stop_token_ids</span><span class="p">)</span>
+    <span class="c1"># 初始化 vLLM 推理引擎
+</span>    <span class="n">llm</span> <span class="o">=</span> <span class="n">LLM</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span> <span class="n">max_model_len</span><span class="o">=</span><span class="n">max_model_len</span><span class="p">,</span><span class="n">trust_remote_code</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">llm</span><span class="p">.</span><span class="n">generate</span><span class="p">(</span><span class="n">prompts</span><span class="p">,</span> <span class="n">sampling_params</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">outputs</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>    
+    <span class="c1"># 初始化 vLLM 推理引擎
+</span>    <span class="n">model</span><span class="o">=</span><span class="s">'/mnt/soft/models/qwen/Qwen2-72B-Instruct'</span> <span class="c1"># 指定模型路径
+</span>    <span class="c1"># model="qwen/Qwen2-7B-Instruct" # 指定模型名称，自动下载模型
+</span>    <span class="n">tokenizer</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="c1"># 加载分词器后传入vLLM 模型，但不是必要的。
+</span>    <span class="c1"># tokenizer = AutoTokenizer.from_pretrained(model, use_fast=False) 
+</span>    
+    <span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="s">"你好，帮我介绍一下什么时大语言模型。"</span><span class="p">,</span>
+            <span class="s">"可以给我将一个有趣的童话故事吗？"</span><span class="p">]</span>
+
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">get_completion</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span> <span class="n">max_tokens</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">top_p</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_model_len</span><span class="o">=</span><span class="mi">2048</span><span class="p">)</span>
+
+    <span class="c1"># 输出是一个包含 prompt、生成文本和其他信息的 RequestOutput 对象列表。
+</span>    <span class="c1"># 打印输出。
+</span>    <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">:</span>
+        <span class="n">prompt</span> <span class="o">=</span> <span class="n">output</span><span class="p">.</span><span class="n">prompt</span>
+        <span class="n">generated_text</span> <span class="o">=</span> <span class="n">output</span><span class="p">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">text</span>
+        <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Prompt: </span><span class="si">{</span><span class="n">prompt</span><span class="err">!</span><span class="n">r</span><span class="si">}</span><span class="s">, Generated text: </span><span class="si">{</span><span class="n">generated_text</span><span class="err">!</span><span class="n">r</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>在终端执行python脚本，可以看到控制台是否正常输出</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python test.py
+</code></pre></div></div>
+
+<h3 id="6启动服务--包装openai格式的接口">6、启动服务 &amp; 包装OpenAI格式的接口</h3>
+
+<p>验证模型可用后，那么就可以通过vLLM提供的模块，将整个模型服务包装成OpenAI格式的HTTP服务，提供给上层应用使用。</p>
+
+<p>需要注意的参数配置：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">--model</code> 参数指定模型名称&amp;路径。</li>
+  <li><code class="language-plaintext highlighter-rouge">--served-model-name</code> 指定服务模型的名称。</li>
+  <li><code class="language-plaintext highlighter-rouge">--max-model-len</code> 指定模型的最大长度，如果不指定，那么会从模型配置文件中自动加载，QWen2-72B模型支持最大128K</li>
+  <li><code class="language-plaintext highlighter-rouge">--tensor-parallel-size</code>  指定多个GPU服务运行,QWen2-72B的模型，单卡GPU无法支撑。</li>
+  <li><code class="language-plaintext highlighter-rouge">--gpu-memory-utilization</code>  用于模型执行器的GPU内存分数，范围从0到1。例如，值为0.5意味着GPU内存利用率为50%。如果未指定，将使用<strong>默认值0.9</strong>。<strong>vllm通过此参数预分配了部分显存，避免模型在调用的时候频繁的申请显存</strong>。</li>
+</ul>
+
+<blockquote>
+  <p>关于vllm的更多参数，可以参考官方文档：<a href="https://docs.vllm.ai/en/stable/models/engine_args.html">https://docs.vllm.ai/en/stable/models/engine_args.html</a></p>
+</blockquote>
+
+<p>这里可以使用<code class="language-plaintext highlighter-rouge">tmux</code>命令来进行服务的运行。</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">tmux</code>（Terminal Multiplexer）是一个强大的终端复用器，可以让用户在一个终端窗口中同时使用多个会话。使用 <code class="language-plaintext highlighter-rouge">tmux</code> 可以提高工作效率，便于管理长期运行的任务和多任务操作</p>
+</blockquote>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 <span class="nt">-m</span> vllm.entrypoints.openai.api_server <span class="nt">--model</span> /mnt/torchv/models/Qwen2-72B-Instruct  <span class="nt">--served-model-name</span> QWen2-72B-Instruct <span class="nt">--tensor-parallel-size</span> 8 <span class="nt">--gpu-memory-utilization</span> 0.7
+</code></pre></div></div>
+
+<p><img src="/assets/images/rag/torchv/qwen2-72b/image-20240806111100747.png" alt="image-20240806111100747" /></p>
+
+<p><strong>出现端口等信息则代表当前的模型服务启动成功！！！</strong></p>
+
+<p>首先创建一个新会话</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tmux new <span class="nt">-t</span> llm
+</code></pre></div></div>
+
+<p>进入会话</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tmux attach <span class="nt">-t</span> llm
+</code></pre></div></div>
+
+<p>启动命令：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python <span class="nt">-m</span> xxx
+</code></pre></div></div>
+
+<p>退出当前会话</p>
+
+<blockquote>
+  <p>如果没反应就多试几次</p>
+</blockquote>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>英文输入下 ctrl + b  然后输入d
+</code></pre></div></div>
+
+<p>通过curl命令验证大模型OpenAI接口服务是否可用，脚本如下：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl http://localhost:8000/v1/chat/completions <span class="nt">-H</span> <span class="s2">"Content-Type: application/json"</span> <span class="nt">-d</span> <span class="s1">'{
+  "model": "QWen2-72B-Instruct",
+  "messages": [
+      {
+          "role": "user",
+          "content": "给我讲一个童话故事"
+      }
+  ],
+  "stream": true,
+  "temperature": 0.9,
+  "top_p": 0.7,
+  "top_k": 20,
+  "max_tokens": 512
+}'</span>
+</code></pre></div></div>
+
+<h2 id="四总结">四、总结</h2>
+
+<p>目前的开源生态已经非常成熟了，vLLM这样的工具能够轻松实现对大模型的快速部署，工作效率上大大提升</p>
+
+<h2 id="五references">五、References</h2>
+
+<h3 id="官网资源等信息">官网资源等信息</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>资源</th>
+      <th>地址</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>QWen</td>
+      <td>GitHub：<a href="https://github.com/QwenLM/Qwen">https://github.com/QwenLM/Qwen</a><br />Huggingface：<a href="https://huggingface.co/Qwen">https://huggingface.co/Qwen</a><br /><br />ModelScope：<a href="https://modelscope.cn/organization/qwen?tab=model">https://modelscope.cn/organization/qwen?tab=model</a><br />docs:<a href="https://qwen.readthedocs.io/zh-cn/latest/getting_started/quickstart.html#">https://qwen.readthedocs.io/zh-cn/latest/getting_started/quickstart.html#</a></td>
+    </tr>
+    <tr>
+      <td>Pytorch</td>
+      <td><a href="https://pytorch.org/get-started/locally/">https://pytorch.org/get-started/locally/</a></td>
+    </tr>
+    <tr>
+      <td>Conda</td>
+      <td><a href="https://www.anaconda.com">https://www.anaconda.com</a></td>
+    </tr>
+    <tr>
+      <td>vLLM</td>
+      <td><a href="https://docs.vllm.ai/en/latest/getting_started/installation.html">https://docs.vllm.ai/en/latest/getting_started/installation.html</a></td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="权重文件下载不完全">权重文件下载不完全</h3>
+
+<p>在本次部署过程中，碰到了下载模型权重文件不完整的情况，导致通过<code class="language-plaintext highlighter-rouge">vLLM</code>部署不起来，可以通过Linux的命令<code class="language-plaintext highlighter-rouge">sha256sum</code>工具来对模型权重文件进行检查，对比网站上的模型权重文件的sha256是否一致，如果不一致，需要重新下载安装</p>
+
+<p>命令如下：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sha256sum </span>your_local_file
+</code></pre></div></div>
+
+<p><img src="/assets/images/rag/torchv/qwen2-72b/image-20240806095033934.png" alt="image-20240806095033934" /></p>
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2024/08/07/qwen2-72b-instruct-deploy/',
+            clientID: 'af23e0d8d5f41c7b3719',
+            clientSecret: '822f4fcf8e75da6193bd6f26bab3111ecce89142',
+            repo: 'blog-comments',
+            owner: 'xiaoymin',
+            admin: ['xiaoymin'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>站内搜索</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="搜索">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    <div class="xiaoym-bot">
+  <div class="xiaoym-qrcode-title">
+    <h3>TorchV Bot开放试用中......</h3>
+  </div>
+  <div style="text-align: center;">
+    <a target="_blank" href="https://www.luxiangdong.com/2024/01/25/lanuch-1/?utm_source=xiaoymin"><img width="300"
+        src="/images/website/bot/torchv_bot2.png" /></a>
+  </div>
+</div>
+<div class="xiaoym-qrcode">
+  <div class="xiaoym-qrcode-title">
+    <h3>最新内容,关注“八一菜刀”公众号</h3>
+  </div>
+  <div style="text-align: center;"><img src="/images/website/mp/qrcode_mini.jpg" /> </div>
+</div>
+
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+    <!-- Links that trigger the jumping -->
+    <!-- Added by javascript below -->
+    <dl></dl>
+  </section>
+</div>
+
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2015
+                    <span title="肖玉民">肖玉民</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/xiaoymin/xiaoymin.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+        <div style="padding-bottom: 40px;
+    font-size: 14px;
+    height: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #999999;
+    border-top: 1px solid #eee;">
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_uv"> <strong>访客数</strong> <span id="busuanzi_value_site_uv"></span></span>
+            <span id="busuanzi_container_site_pv"> <strong>访问量</strong> <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+</body>
+</html>

@@ -51,7 +51,7 @@ Conda 是一个开源的包管理系统和环境管理系统，旨在简化软�
 
 对于Python环境的部署，能够非常方便的切换环境。
 
-可以通过conda官网链接下载安装：https://www.anaconda.com/download#downloads
+可以通过conda官网链接下载安装：[https://www.anaconda.com/download#downloads](https://www.anaconda.com/download#downloads)
 
 ```shell
 # 下载
@@ -99,9 +99,9 @@ conda的相关命令
 
 ### 2、下载QWen2-72B-Instruct模型
 
-Huggingface：https://huggingface.co/Qwen/Qwen2-72B-Instruct
+Huggingface：[https://huggingface.co/Qwen/Qwen2-72B-Instruct](https://huggingface.co/Qwen/Qwen2-72B-Instruct)
 
-ModelScope：https://modelscope.cn/models/qwen/Qwen2-72B-Instruct
+ModelScope：[https://modelscope.cn/models/qwen/Qwen2-72B-Instruct](https://modelscope.cn/models/qwen/Qwen2-72B-Instruct)
 
 两个地址都可以下载，下载完成后，将模型文件存放在服务器上。
 
@@ -111,7 +111,7 @@ ModelScope：https://modelscope.cn/models/qwen/Qwen2-72B-Instruct
 
 > ⚠️ 在安装Pytorch时，需要保证和cuda驱动版本保持一致，不然会出现各种莫名其妙的问题
 >
-> 版本选择参考：https://pytorch.org/get-started/locally/
+> 版本选择参考：[https://pytorch.org/get-started/locally/](https://pytorch.org/get-started/locally/)
 >
 > 通过conda创建一个新的环境，然后切换后安装依赖包
 
@@ -127,9 +127,9 @@ ModelScope：https://modelscope.cn/models/qwen/Qwen2-72B-Instruct
 - **分布式推理**：框架支持在多 `GPU` 环境中进行分布式推理，通过模型并行策略和高效的数据通信，提升了处理大型模型的能力。
 - **开源共享**：`vLLM` 由于其开源的属性，拥有活跃的社区支持，这也便于开发者贡献和改进，共同推动技术发展。
 
-GitHub：https://github.com/vllm-project/vllm
+GitHub：[https://github.com/vllm-project/vllm](https://github.com/vllm-project/vllm)
 
-文档：https://docs.vllm.ai/en/latest/
+文档：[https://docs.vllm.ai/en/latest/](https://docs.vllm.ai/en/latest/)
 
 在通过`conda`创建了初始环境后，可以直接通过`pip`进行安装
 
@@ -137,7 +137,7 @@ GitHub：https://github.com/vllm-project/vllm
 pip install vllm
 ```
 
-更多的安装方式，可以参考官网文档：https://docs.vllm.ai/en/stable/getting_started/installation.html
+更多的安装方式，可以参考官网文档：[https://docs.vllm.ai/en/stable/getting_started/installation.html](https://docs.vllm.ai/en/stable/getting_started/installation.html)
 
 ### 5、模型验证
 
@@ -211,7 +211,7 @@ python test.py
 python3 -m vllm.entrypoints.openai.api_server --model /mnt/torchv/models/Qwen2-72B-Instruct  --served-model-name QWen2-72B-Instruct --tensor-parallel-size 8 --gpu-memory-utilization 0.7
 ```
 
-![image-20240806111100747](/Users/xiaoyumin/Desktop/萌嘉科技/售前支撑/浪潮/image-20240806111100747.png)
+![image-20240806111100747](/assets/images/rag/torchv/qwen2-72b/image-20240806111100747.png)
 
 **出现端口等信息则代表当前的模型服务启动成功！！！**
 
@@ -272,10 +272,10 @@ curl http://localhost:8000/v1/chat/completions -H "Content-Type: application/jso
 
 | 资源    | 地址                                                         |
 | ------- | ------------------------------------------------------------ |
-| QWen    | GitHub：https://github.com/QwenLM/Qwen<br />Huggingface：https://huggingface.co/Qwen<br /><br />ModelScope：https://modelscope.cn/organization/qwen?tab=model<br />docs:https://qwen.readthedocs.io/zh-cn/latest/getting_started/quickstart.html# |
-| Pytorch | https://pytorch.org/get-started/locally/                     |
-| Conda   | https://www.anaconda.com                                     |
-| vLLM    | https://docs.vllm.ai/en/latest/getting_started/installation.html |
+| QWen    | GitHub：[https://github.com/QwenLM/Qwen](https://github.com/QwenLM/Qwen)<br />Huggingface：[https://huggingface.co/Qwen](https://huggingface.co/Qwen)<br /><br />ModelScope：[https://modelscope.cn/organization/qwen?tab=model](https://modelscope.cn/organization/qwen?tab=model)<br />docs:[https://qwen.readthedocs.io/zh-cn/latest/getting_started/quickstart.html#](https://qwen.readthedocs.io/zh-cn/latest/getting_started/quickstart.html#) |
+| Pytorch | [https://pytorch.org/get-started/locally/](https://pytorch.org/get-started/locally/)                     |
+| Conda   | [https://www.anaconda.com](https://www.anaconda.com)                                    |
+| vLLM    | [https://docs.vllm.ai/en/latest/getting_started/installation.html](https://docs.vllm.ai/en/latest/getting_started/installation.html) |
 |         |                                                              |
 
 ### 权重文件下载不完全

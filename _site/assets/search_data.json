@@ -1326,6 +1326,13 @@
     } ,
   
     {
+      "title"    : "QWen2-72B-Instruct模型安装部署过程",
+      "category" : "大模型",
+      
+      "url"      : "http://localhost:4000/2024/08/07/qwen2-72b-instruct-deploy/"
+    } ,
+  
+    {
       "title"    : "Android Studio",
       "category" : "Android",
       

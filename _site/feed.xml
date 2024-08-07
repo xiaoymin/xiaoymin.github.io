@@ -1,4 +1,298 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-07-08T09:52:22+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">八一菜刀</title><subtitle>八一菜刀的个人博客</subtitle><author><name>肖玉民</name></author><entry><title type="html">RAG工程实践拦路虎之一：PDF格式解析杂谈</title><link href="http://localhost:4000/2024/07/08/torchv-pdf-01/" rel="alternate" type="text/html" title="RAG工程实践拦路虎之一：PDF格式解析杂谈" /><published>2024-07-08T00:00:00+08:00</published><updated>2024-07-08T00:00:00+08:00</updated><id>http://localhost:4000/2024/07/08/torchv-pdf-01</id><content type="html" xml:base="http://localhost:4000/2024/07/08/torchv-pdf-01/">&lt;h2 id=&quot;背景&quot;&gt;背景&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-08-07T09:19:09+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">八一菜刀</title><subtitle>八一菜刀的个人博客</subtitle><author><name>肖玉民</name></author><entry><title type="html">QWen2-72B-Instruct模型安装部署过程</title><link href="http://localhost:4000/2024/08/07/qwen2-72b-instruct-deploy/" rel="alternate" type="text/html" title="QWen2-72B-Instruct模型安装部署过程" /><published>2024-08-07T00:00:00+08:00</published><updated>2024-08-07T00:00:00+08:00</updated><id>http://localhost:4000/2024/08/07/qwen2-72b-instruct-deploy</id><content type="html" xml:base="http://localhost:4000/2024/08/07/qwen2-72b-instruct-deploy/">&lt;h2 id=&quot;一基础信息&quot;&gt;一、基础信息&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;操作系统&lt;/strong&gt;：&lt;strong&gt;Ubuntu 22.04.3 LTS&lt;/strong&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;GPU:&lt;/strong&gt; &lt;strong&gt;A800(80GB) * 8&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;内存&lt;/strong&gt;：1TB&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/rag/torchv/qwen2-72b/image-20240806104952860.png&quot; alt=&quot;image-20240806104952860&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/rag/torchv/qwen2-72b/image-20240806110115152.png&quot; alt=&quot;image-20240806110115152&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;二软件信息&quot;&gt;二、软件信息&lt;/h2&gt;
+
+&lt;p&gt;Python: 3.10&lt;/p&gt;
+
+&lt;p&gt;Pytorch：2.3.0&lt;/p&gt;
+
+&lt;p&gt;Transformers：4.43.0&lt;/p&gt;
+
+&lt;p&gt;vLLM：0.5.0&lt;/p&gt;
+
+&lt;p&gt;cuda： 12.2&lt;/p&gt;
+
+&lt;p&gt;模型: &lt;a href=&quot;https://huggingface.co/Qwen/Qwen2-72B-Instruct&quot;&gt;QWen2-72B-Instruct&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;三安装步骤&quot;&gt;三、安装步骤&lt;/h2&gt;
+
+&lt;h3 id=&quot;1安装conda&quot;&gt;1、安装Conda&lt;/h3&gt;
+
+&lt;p&gt;Conda 是一个开源的包管理系统和环境管理系统，旨在简化软件包的安装、配置和使用&lt;/p&gt;
+
+&lt;p&gt;对于Python环境的部署，能够非常方便的切换环境。&lt;/p&gt;
+
+&lt;p&gt;可以通过conda官网链接下载安装：&lt;a href=&quot;https://www.anaconda.com/download#downloads&quot;&gt;https://www.anaconda.com/download#downloads&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 下载&lt;/span&gt;
+wget https://repo.anaconda.com/archive/Anaconda3-2023.09-0-Linux-x86_64.sh
+&lt;span class=&quot;c&quot;&gt;# 安装&lt;/span&gt;
+bash Anaconda3-2023.09-0-Linux-x86_64.sh
+&lt;span class=&quot;c&quot;&gt;# 配置环境变量&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'export PATH=&quot;/path/to/anaconda3/bin:$PATH&quot;'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; ~/.bashrc
+&lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt; ~/.bashrc
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;安装完成后，通过命令验证安装是否成功&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;conda &lt;span class=&quot;nt&quot;&gt;--version&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;安装完成之后，可以配置镜像源，方便快速下载依赖包&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 配置源&lt;/span&gt;
+
+conda config &lt;span class=&quot;nt&quot;&gt;--add&lt;/span&gt; channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+conda config &lt;span class=&quot;nt&quot;&gt;--add&lt;/span&gt; channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
+conda config &lt;span class=&quot;nt&quot;&gt;--set&lt;/span&gt; show_channel_urls &lt;span class=&quot;nb&quot;&gt;yes
+
+
+&lt;/span&gt;conda config &lt;span class=&quot;nt&quot;&gt;--add&lt;/span&gt; channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/
+conda config &lt;span class=&quot;nt&quot;&gt;--add&lt;/span&gt; channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/msys2/
+conda config &lt;span class=&quot;nt&quot;&gt;--add&lt;/span&gt; channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/bioconda/
+conda config &lt;span class=&quot;nt&quot;&gt;--add&lt;/span&gt; channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/menpo/
+conda config &lt;span class=&quot;nt&quot;&gt;--add&lt;/span&gt; channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;conda的相关命令&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;c&quot;&gt;# 指定虚拟环境名称为llm，python版本是3.9&lt;/span&gt;
+ conda create &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt; llm &lt;span class=&quot;nv&quot;&gt;python&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;3.9
+ &lt;span class=&quot;c&quot;&gt;# 激活conda新环境&lt;/span&gt;
+ conda activate llm
+ &lt;span class=&quot;c&quot;&gt;# 查看当前环境列表&lt;/span&gt;
+ conda &lt;span class=&quot;nb&quot;&gt;env &lt;/span&gt;list
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;2下载qwen2-72b-instruct模型&quot;&gt;2、下载QWen2-72B-Instruct模型&lt;/h3&gt;
+
+&lt;p&gt;Huggingface：&lt;a href=&quot;https://huggingface.co/Qwen/Qwen2-72B-Instruct&quot;&gt;https://huggingface.co/Qwen/Qwen2-72B-Instruct&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;ModelScope：&lt;a href=&quot;https://modelscope.cn/models/qwen/Qwen2-72B-Instruct&quot;&gt;https://modelscope.cn/models/qwen/Qwen2-72B-Instruct&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;两个地址都可以下载，下载完成后，将模型文件存放在服务器上。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;⚠️ 注意服务器的磁盘空间。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;3安装pytorch等环境依赖信息&quot;&gt;3、安装Pytorch等环境依赖信息&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;⚠️ 在安装Pytorch时，需要保证和cuda驱动版本保持一致，不然会出现各种莫名其妙的问题&lt;/p&gt;
+
+  &lt;p&gt;版本选择参考：&lt;a href=&quot;https://pytorch.org/get-started/locally/&quot;&gt;https://pytorch.org/get-started/locally/&lt;/a&gt;&lt;/p&gt;
+
+  &lt;p&gt;通过conda创建一个新的环境，然后切换后安装依赖包&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/rag/torchv/qwen2-72b/image-20240806135441512.png&quot; alt=&quot;image-20240806135441512&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;4-安装vllm&quot;&gt;4、 安装vLLM&lt;/h3&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;vLLM&lt;/code&gt; 框架是一个高效的大语言模型&lt;strong&gt;推理和部署服务系统&lt;/strong&gt;，具备以下特性：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;高效的内存管理&lt;/strong&gt;：通过 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PagedAttention&lt;/code&gt; 算法，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;vLLM&lt;/code&gt; 实现了对 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;KV&lt;/code&gt; 缓存的高效管理，减少了内存浪费，优化了模型的运行效率。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;高吞吐量&lt;/strong&gt;：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;vLLM&lt;/code&gt; 支持异步处理和连续批处理请求，显著提高了模型推理的吞吐量，加速了文本生成和处理速度。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;易用性&lt;/strong&gt;：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;vLLM&lt;/code&gt; 与 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HuggingFace&lt;/code&gt; 模型无缝集成，支持多种流行的大型语言模型，简化了模型部署和推理的过程。兼容 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;OpenAI&lt;/code&gt; 的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;API&lt;/code&gt; 服务器。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;分布式推理&lt;/strong&gt;：框架支持在多 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GPU&lt;/code&gt; 环境中进行分布式推理，通过模型并行策略和高效的数据通信，提升了处理大型模型的能力。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;开源共享&lt;/strong&gt;：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;vLLM&lt;/code&gt; 由于其开源的属性，拥有活跃的社区支持，这也便于开发者贡献和改进，共同推动技术发展。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;GitHub：&lt;a href=&quot;https://github.com/vllm-project/vllm&quot;&gt;https://github.com/vllm-project/vllm&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;文档：&lt;a href=&quot;https://docs.vllm.ai/en/latest/&quot;&gt;https://docs.vllm.ai/en/latest/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;在通过&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;conda&lt;/code&gt;创建了初始环境后，可以直接通过&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pip&lt;/code&gt;进行安装&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pip &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;vllm
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;更多的安装方式，可以参考官网文档：&lt;a href=&quot;https://docs.vllm.ai/en/stable/getting_started/installation.html&quot;&gt;https://docs.vllm.ai/en/stable/getting_started/installation.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;5模型验证&quot;&gt;5、模型验证&lt;/h3&gt;
+
+&lt;p&gt;可以通过一个python脚本来验证当前的模型是否可用&lt;/p&gt;
+
+&lt;p&gt;脚本如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# test.py
+&lt;/span&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;vllm&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LLM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SamplingParams&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;transformers&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AutoTokenizer&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;os&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;json&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get_completion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;prompts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tokenizer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;max_tokens&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;512&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;temperature&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;top_p&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.95&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;max_model_len&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2048&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;stop_token_ids&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# 创建采样参数。temperature 控制生成文本的多样性，top_p 控制核心采样的概率
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;sampling_params&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SamplingParams&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;temperature&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;temperature&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;top_p&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;top_p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;max_tokens&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;max_tokens&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stop_token_ids&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stop_token_ids&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# 初始化 vLLM 推理引擎
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;llm&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LLM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tokenizer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tokenizer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;max_model_len&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;max_model_len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;trust_remote_code&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;outputs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;llm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;generate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;prompts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sampling_params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;outputs&lt;/span&gt;
+
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__name__&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;__main__&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;    
+    &lt;span class=&quot;c1&quot;&gt;# 初始化 vLLM 推理引擎
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'/mnt/soft/models/qwen/Qwen2-72B-Instruct'&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# 指定模型路径
+&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;# model=&quot;qwen/Qwen2-7B-Instruct&quot; # 指定模型名称，自动下载模型
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;tokenizer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# 加载分词器后传入vLLM 模型，但不是必要的。
+&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;# tokenizer = AutoTokenizer.from_pretrained(model, use_fast=False) 
+&lt;/span&gt;    
+    &lt;span class=&quot;n&quot;&gt;text&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;你好，帮我介绍一下什么时大语言模型。&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;s&quot;&gt;&quot;可以给我将一个有趣的童话故事吗？&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;outputs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_completion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tokenizer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tokenizer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;max_tokens&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;512&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;temperature&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;top_p&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;max_model_len&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2048&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;# 输出是一个包含 prompt、生成文本和其他信息的 RequestOutput 对象列表。
+&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;# 打印输出。
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;outputs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;prompt&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;prompt&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;generated_text&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;outputs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sa&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Prompt: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;prompt&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;, Generated text: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;generated_text&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;在终端执行python脚本，可以看到控制台是否正常输出&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;python test.py
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;6启动服务--包装openai格式的接口&quot;&gt;6、启动服务 &amp;amp; 包装OpenAI格式的接口&lt;/h3&gt;
+
+&lt;p&gt;验证模型可用后，那么就可以通过vLLM提供的模块，将整个模型服务包装成OpenAI格式的HTTP服务，提供给上层应用使用。&lt;/p&gt;
+
+&lt;p&gt;需要注意的参数配置：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--model&lt;/code&gt; 参数指定模型名称&amp;amp;路径。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--served-model-name&lt;/code&gt; 指定服务模型的名称。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--max-model-len&lt;/code&gt; 指定模型的最大长度，如果不指定，那么会从模型配置文件中自动加载，QWen2-72B模型支持最大128K&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--tensor-parallel-size&lt;/code&gt;  指定多个GPU服务运行,QWen2-72B的模型，单卡GPU无法支撑。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--gpu-memory-utilization&lt;/code&gt;  用于模型执行器的GPU内存分数，范围从0到1。例如，值为0.5意味着GPU内存利用率为50%。如果未指定，将使用&lt;strong&gt;默认值0.9&lt;/strong&gt;。&lt;strong&gt;vllm通过此参数预分配了部分显存，避免模型在调用的时候频繁的申请显存&lt;/strong&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;关于vllm的更多参数，可以参考官方文档：&lt;a href=&quot;https://docs.vllm.ai/en/stable/models/engine_args.html&quot;&gt;https://docs.vllm.ai/en/stable/models/engine_args.html&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;这里可以使用&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tmux&lt;/code&gt;命令来进行服务的运行。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tmux&lt;/code&gt;（Terminal Multiplexer）是一个强大的终端复用器，可以让用户在一个终端窗口中同时使用多个会话。使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tmux&lt;/code&gt; 可以提高工作效率，便于管理长期运行的任务和多任务操作&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; vllm.entrypoints.openai.api_server &lt;span class=&quot;nt&quot;&gt;--model&lt;/span&gt; /mnt/torchv/models/Qwen2-72B-Instruct  &lt;span class=&quot;nt&quot;&gt;--served-model-name&lt;/span&gt; QWen2-72B-Instruct &lt;span class=&quot;nt&quot;&gt;--tensor-parallel-size&lt;/span&gt; 8 &lt;span class=&quot;nt&quot;&gt;--gpu-memory-utilization&lt;/span&gt; 0.7
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/rag/torchv/qwen2-72b/image-20240806111100747.png&quot; alt=&quot;image-20240806111100747&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;出现端口等信息则代表当前的模型服务启动成功！！！&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;首先创建一个新会话&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;tmux new &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; llm
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;进入会话&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;tmux attach &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; llm
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;启动命令：&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;python &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; xxx
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;退出当前会话&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;如果没反应就多试几次&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;英文输入下 ctrl + b  然后输入d
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;通过curl命令验证大模型OpenAI接口服务是否可用，脚本如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl http://localhost:8000/v1/chat/completions &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Content-Type: application/json&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'{
+  &quot;model&quot;: &quot;QWen2-72B-Instruct&quot;,
+  &quot;messages&quot;: [
+      {
+          &quot;role&quot;: &quot;user&quot;,
+          &quot;content&quot;: &quot;给我讲一个童话故事&quot;
+      }
+  ],
+  &quot;stream&quot;: true,
+  &quot;temperature&quot;: 0.9,
+  &quot;top_p&quot;: 0.7,
+  &quot;top_k&quot;: 20,
+  &quot;max_tokens&quot;: 512
+}'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;四总结&quot;&gt;四、总结&lt;/h2&gt;
+
+&lt;p&gt;目前的开源生态已经非常成熟了，vLLM这样的工具能够轻松实现对大模型的快速部署，工作效率上大大提升&lt;/p&gt;
+
+&lt;h2 id=&quot;五references&quot;&gt;五、References&lt;/h2&gt;
+
+&lt;h3 id=&quot;官网资源等信息&quot;&gt;官网资源等信息&lt;/h3&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;资源&lt;/th&gt;
+      &lt;th&gt;地址&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;QWen&lt;/td&gt;
+      &lt;td&gt;GitHub：&lt;a href=&quot;https://github.com/QwenLM/Qwen&quot;&gt;https://github.com/QwenLM/Qwen&lt;/a&gt;&lt;br /&gt;Huggingface：&lt;a href=&quot;https://huggingface.co/Qwen&quot;&gt;https://huggingface.co/Qwen&lt;/a&gt;&lt;br /&gt;&lt;br /&gt;ModelScope：&lt;a href=&quot;https://modelscope.cn/organization/qwen?tab=model&quot;&gt;https://modelscope.cn/organization/qwen?tab=model&lt;/a&gt;&lt;br /&gt;docs:&lt;a href=&quot;https://qwen.readthedocs.io/zh-cn/latest/getting_started/quickstart.html#&quot;&gt;https://qwen.readthedocs.io/zh-cn/latest/getting_started/quickstart.html#&lt;/a&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Pytorch&lt;/td&gt;
+      &lt;td&gt;&lt;a href=&quot;https://pytorch.org/get-started/locally/&quot;&gt;https://pytorch.org/get-started/locally/&lt;/a&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Conda&lt;/td&gt;
+      &lt;td&gt;&lt;a href=&quot;https://www.anaconda.com&quot;&gt;https://www.anaconda.com&lt;/a&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;vLLM&lt;/td&gt;
+      &lt;td&gt;&lt;a href=&quot;https://docs.vllm.ai/en/latest/getting_started/installation.html&quot;&gt;https://docs.vllm.ai/en/latest/getting_started/installation.html&lt;/a&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&quot;权重文件下载不完全&quot;&gt;权重文件下载不完全&lt;/h3&gt;
+
+&lt;p&gt;在本次部署过程中，碰到了下载模型权重文件不完整的情况，导致通过&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;vLLM&lt;/code&gt;部署不起来，可以通过Linux的命令&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sha256sum&lt;/code&gt;工具来对模型权重文件进行检查，对比网站上的模型权重文件的sha256是否一致，如果不一致，需要重新下载安装&lt;/p&gt;
+
+&lt;p&gt;命令如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sha256sum &lt;/span&gt;your_local_file
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/rag/torchv/qwen2-72b/image-20240806095033934.png&quot; alt=&quot;image-20240806095033934&quot; /&gt;&lt;/p&gt;</content><author><name>八一菜刀</name></author><category term="大模型" /><category term="RAG实践" /><category term="TorchV" /><category term="RAG概述" /><category term="RAG" /><category term="大模型" /><category term="LLM" /><summary type="html">一、基础信息</summary></entry><entry><title type="html">RAG工程实践拦路虎之一：PDF格式解析杂谈</title><link href="http://localhost:4000/2024/07/08/torchv-pdf-01/" rel="alternate" type="text/html" title="RAG工程实践拦路虎之一：PDF格式解析杂谈" /><published>2024-07-08T00:00:00+08:00</published><updated>2024-07-08T00:00:00+08:00</updated><id>http://localhost:4000/2024/07/08/torchv-pdf-01</id><content type="html" xml:base="http://localhost:4000/2024/07/08/torchv-pdf-01/">&lt;h2 id=&quot;背景&quot;&gt;背景&lt;/h2&gt;
 
 &lt;p&gt;PDF（Portable Document Format）是一种广泛用于文档交换的文件格式，由Adobe Systems开发。它具有跨平台性、固定布局和易于打印等特点，因此在商业、学术和个人领域广泛应用。然而，PDF文件的解析一直是一个具有挑战性的问题，因为其内部结构的复杂性和多样性，使得提取其中的文本、图片和表格等内容并不是一件容易的事情。&lt;/p&gt;
 
@@ -1851,193 +2145,4 @@ OpenSSL 1.1.1q  5 Jul 2022
 
 &lt;p&gt;博客首页：&lt;a href=&quot;https://www.xiaominfo.com/&quot;&gt;https://www.xiaominfo.com/&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;主题地址: &lt;a href=&quot;https://github.com/cotes2020/jekyll-theme-chirpy&quot;&gt;https://github.com/cotes2020/jekyll-theme-chirpy&lt;/a&gt;&lt;/p&gt;</content><author><name>八一菜刀</name></author><category term="Blog" /><summary type="html">最近在学习RAG、大模型等领域方面的技术，想在学习的过程中做总结性的输出，因此就想把自己之前弄的博客重新整理一番,主要有几个原因:</summary></entry><entry><title type="html">用好大模型?这5种实用的Prompt框架你一定要看看!</title><link href="http://localhost:4000/2023/10/15/use-prompt-framework/" rel="alternate" type="text/html" title="用好大模型?这5种实用的Prompt框架你一定要看看!" /><published>2023-10-15T00:00:00+08:00</published><updated>2023-10-15T00:00:00+08:00</updated><id>http://localhost:4000/2023/10/15/use-prompt-framework</id><content type="html" xml:base="http://localhost:4000/2023/10/15/use-prompt-framework/">&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
-
-&lt;p&gt;大模型正为我们带来前所未有的技术革新，而用好大模型也是有一定技巧的。&lt;/p&gt;
-
-&lt;p&gt;本文主要分享&lt;strong&gt;5种&lt;/strong&gt;实用的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Prompt&lt;/code&gt;对话提示框架，结合自己的实际需求，让你能够灵活使用大模型!&lt;/p&gt;
-
-&lt;h2 id=&quot;1rtf框架&quot;&gt;1.RTF框架&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;RTF(Role-Task-Format)框架&lt;/strong&gt;是一个非常简单通用的Prompt提示框架，我们和任意大模型对话场景下都可以使用该规范进行改进输出&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;R-Role(角色)&lt;/strong&gt;：指定大模型担当固定角色(程序员、数据分析师、讲解员、记者等等)&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;T-Task(任务)&lt;/strong&gt;: 任务，告诉大模型需要为我们做的事情&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;F-Format(格式)&lt;/strong&gt;：大模型最终结果的返回格式(比如：表格、Markdown、英文等等)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;主要优点：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;简单、方便&lt;/li&gt;
-  &lt;li&gt;指定Role角色，可以让大模型在当前的角色范围内回答知识，这在一些特定的领域中非常有效&lt;/li&gt;
-  &lt;li&gt;指定Role角色也能让工程上检索知识能够确定边界范围，配合元数据所发挥的威力会更强&lt;/li&gt;
-  &lt;li&gt;如果结合RAG知识内容检索，那么上下文回答的内容会让用户感觉更加是顺畅&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;示例1&lt;/strong&gt;: &lt;strong&gt;给出一份Python语言的学习清单&lt;/strong&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Role：指定大模型角色为Python布道师&lt;/p&gt;
-
-  &lt;p&gt;Task：Python语言的学习从基础到进阶清单列表&lt;/p&gt;
-
-  &lt;p&gt;Format： 以表格的形式返回&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/llm/use-prompt-framework/prompt-usecase1.png&quot; alt=&quot;图1-实用RTF框架&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;在实际工作的任务中，我通过优化Prompt工程，对于我们的产品改善，对于回答的内容改善也非常明显！&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;在我司给宁波天一阁开发的AI讲解产品中，我们提供和大模型对话的RAG产品，将天一阁的相关知识导入到系统，借助大模型进行讲解回答&lt;/p&gt;
-
-&lt;/blockquote&gt;
-
-&lt;p&gt;对比以下两个Prompt的区别：&lt;/p&gt;
-
-&lt;p&gt;原Prompt：&lt;/p&gt;
-
-&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;基于以下已知信息，简洁和专业的来回答天一阁相关的的问题。
-如果无法从中得到答案，请说 &quot;根据已知信息无法回答该问题&quot; 或 &quot;没有提供足够的相关信息&quot;，不允许在答案中添加编造成分，答案请使用中文。
-问题:
-{}
-已知内容:
-{}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;改进后的Prompt：&lt;/p&gt;
-
-&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;你是宁波天一阁的历史研究员，基于以下已知信息，简洁和专业的来回答天一阁相关的的问题。
-如果无法从中得到答案，请根据根据实际回答，不要臆测内容，否则请说 &quot;根据已知信息无法回答该问题&quot; 或 &quot;没有提供足够的相关信息&quot;，不允许在答案中添加编造成分，答案请使用中文。
-问题:
-{}
-已知内容:
-{}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;改进后，大模型回答更加拟人化，如下图：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/llm/use-prompt-framework/image.png&quot; alt=&quot;图2-优化后的大模型Prompt&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;2思考链模式&quot;&gt;2.思考链模式&lt;/h2&gt;
-
-&lt;p&gt;通过这种模式来逐步改善大模型的推理能力，非常&lt;strong&gt;适合一些复杂的任务处理&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;p&gt;例如：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;分析型或者逻辑推理型的任务&lt;/li&gt;
-  &lt;li&gt;决策&lt;/li&gt;
-  &lt;li&gt;解决问题(比如程序员根据错误日志找Bug)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;而要使用这种模式，&lt;strong&gt;只需要在末尾添加”让我们逐步思考”即可&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/llm/use-prompt-framework/prompt-step.png&quot; alt=&quot;图3-逐步推理模式应用&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;3-risen框架&quot;&gt;3. RISEN框架&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;R-Role&lt;/strong&gt;:大模型扮演的角色&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;I-Instructions&lt;/strong&gt;: 指示命令，和&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Task-任务&lt;/code&gt;差不多&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;S-Steps&lt;/strong&gt;: 步骤&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;E-End Goal&lt;/strong&gt;: 最终目标&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;N-Narrowing(Constraints)&lt;/strong&gt;: 缩小范围(约束条件)，和&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RTF&lt;/code&gt;框架中的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Format&lt;/code&gt;有异曲同工之妙，一个是格式的约束，而这里的约束可以是任意方面，比如回答的内容(特定领域)、字数限制等等方面&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;该框架主要适合：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;撰写具有特定约束的任务(例如博客文章)&lt;/li&gt;
-  &lt;li&gt;有明确指导方针的任务（例如商业计划）&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;示例：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/llm/use-prompt-framework/use-prompt-risen.png&quot; alt=&quot;图4-RISEN框架示例&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;4rodes框架&quot;&gt;4.RODES框架&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;R-Role: 角色&lt;/li&gt;
-  &lt;li&gt;O - Objective: 目标&lt;/li&gt;
-  &lt;li&gt;D - Details: 详细的细节&lt;/li&gt;
-  &lt;li&gt;E - Examples: 示例&lt;/li&gt;
-  &lt;li&gt;S - Sense Check: 感官检查&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;示例：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/llm/use-prompt-framework/use-prompt-rodes.png&quot; alt=&quot;图5-RODES框架示例&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;5密度链模式&quot;&gt;5.密度链模式&lt;/h2&gt;
-
-&lt;p&gt;密度链模式&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Prompt&lt;/code&gt;是Salesforce、麻省理工学院和哥伦比亚大学的研究人员推出的一种新提示，它非常的高效,使用递归来创建越来越好的输出的提示，与普通提示生成的 GPT-4 摘要相比，它生成的摘要更加密集且更适合人们理解。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;这种模式在RAG工程中非常实用，想想看你的客户上传的文档知识库(PDF/WORD)都是长篇的步骤性的文档,而在RAG召回送给大模型的Context上下文又受限于大模型的Token限制,为了更好的回答用户提问的问题，对于上传的知识库做密度链模式的摘要总结，然后索引整个文章内容召回是非常有必要的，最终能够非常精准的回答用户的问题。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;适合：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;总结&lt;/li&gt;
-  &lt;li&gt;改进您最喜欢的提示&lt;/li&gt;
-  &lt;li&gt;通过递归生成可用的长格式内容&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;密度链模式的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Prompt&lt;/code&gt;如下：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/llm/use-prompt-framework/prompt-chain-density.png&quot; alt=&quot;图6-Chain of Density(Cod)prompt&quot; /&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-文章: {ARTICLE}
-
-您将为上述文章生成越来越简洁、实体密集的摘要。
-
-
-重复以下2个步骤5次：
-
-- 步骤1:从文章中识别出先前生成的摘要中缺少的 1-3 个信息实体（以“;”分隔）。
-- 步骤2:写一个新的、长度相同的、更密集的摘要，其中涵盖先前摘要中的每个实体和细节以及缺失的内容实体。
-
-缺少的实体是:
-
-- **相关的:**与主要故事相关，
-- **具体的:**描述具体而简洁（5个字或更少），
-- **新颖的:**不在之前的摘要中
-- **务实的:**存在于文章中
-- **任何地方:** 位于文章中的任何位置
-
-**指南:**
-
-- 第一个摘要应该较长（4-5句，约80个词），但非常不具体，除了标记为缺失的实体外，几乎没有包含其他信息。使用过度冗长的语言和填充词（例如，“本文讨论”）以达到约80个词。
-- 让每个词都有意义：重新撰写前一个摘要以改善流畅性，并为额外的实体腾出空间。
-- 利用融合、压缩和删除诸如“文章讨论”的无信息短语，腾出空间。
-- 摘要应变得非常密集而简洁，但又是自包含的，例如，不需要阅读文章就能容易理解。
-- 缺失的实体可以出现在新摘要的任何位置。
-- 永远不要删除前一个摘要中的实体。如果无法腾出空间，就添加更少的新实体。
-
-请记住，对于每个摘要都使用相同数量的词。
-
-以JSON格式回答。JSON应该是一个字典列表（长度为5），其中键是“Missing_Entities”和“Denser_Summary”。
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;关于密度链模式的Prompt论文可以参考：&lt;a href=&quot;https://arxiv.org/pdf/2309.04269.pdf&quot;&gt;https://arxiv.org/pdf/2309.04269.pdf&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;或者微信公众号回复”cod”获取文件&lt;/p&gt;
-
-&lt;h2 id=&quot;总结&quot;&gt;总结&lt;/h2&gt;
-
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Prompt&lt;/code&gt;对话提示框架在大模型领域中是非常重要的一环,不管你是在直接使用大模型，还是在做RAG领域的产品开发,&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Prompt&lt;/code&gt;的重要程度都是无可替代的。&lt;/p&gt;
-
-&lt;p&gt;希望大家能根据本文列出的这5种&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Prompt&lt;/code&gt;框架进行举一反三，多多实践～&lt;/p&gt;
-
-&lt;p&gt;对于&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Prompt&lt;/code&gt;工程技术细节，可以阅读员外的这两篇文章:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.luxiangdong.com/2023/08/08/prompt/&quot;&gt;一文讲清楚实用Prompt工程&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.luxiangdong.com/2023/08/08/advprompt/&quot;&gt;高级prompt工程讲解&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>八一菜刀</name></author><category term="大模型" /><summary type="html">前言</summary></entry></feed>
+&lt;p&gt;主题地址: &lt;a href=&quot;https://github.com/cotes2020/jekyll-theme-chirpy&quot;&gt;https://github.com/cotes2020/jekyll-theme-chirpy&lt;/a&gt;&lt;/p&gt;</content><author><name>八一菜刀</name></author><category term="Blog" /><summary type="html">最近在学习RAG、大模型等领域方面的技术，想在学习的过程中做总结性的输出，因此就想把自己之前弄的博客重新整理一番,主要有几个原因:</summary></entry></feed>
