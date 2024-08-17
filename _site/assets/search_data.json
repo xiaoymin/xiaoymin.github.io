@@ -1333,6 +1333,13 @@
     } ,
   
     {
+      "title"    : "非结构化数据解析 &amp;GenAI的应用探索和实践（文字稿）",
+      "category" : "大模型",
+      
+      "url"      : "http://localhost:4000/2024/08/16/gotc-2024-share/"
+    } ,
+  
+    {
       "title"    : "Android Studio",
       "category" : "Android",
       

@@ -1,4 +1,155 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-08-07T09:19:09+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">八一菜刀</title><subtitle>八一菜刀的个人博客</subtitle><author><name>肖玉民</name></author><entry><title type="html">QWen2-72B-Instruct模型安装部署过程</title><link href="http://localhost:4000/2024/08/07/qwen2-72b-instruct-deploy/" rel="alternate" type="text/html" title="QWen2-72B-Instruct模型安装部署过程" /><published>2024-08-07T00:00:00+08:00</published><updated>2024-08-07T00:00:00+08:00</updated><id>http://localhost:4000/2024/08/07/qwen2-72b-instruct-deploy</id><content type="html" xml:base="http://localhost:4000/2024/08/07/qwen2-72b-instruct-deploy/">&lt;h2 id=&quot;一基础信息&quot;&gt;一、基础信息&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-08-17T09:48:07+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">八一菜刀</title><subtitle>八一菜刀的个人博客</subtitle><author><name>肖玉民</name></author><entry><title type="html">非结构化数据解析 &amp;amp;GenAI的应用探索和实践（文字稿）</title><link href="http://localhost:4000/2024/08/16/gotc-2024-share/" rel="alternate" type="text/html" title="非结构化数据解析 &amp;amp;GenAI的应用探索和实践（文字稿）" /><published>2024-08-16T00:00:00+08:00</published><updated>2024-08-16T00:00:00+08:00</updated><id>http://localhost:4000/2024/08/16/gotc-2024-share</id><content type="html" xml:base="http://localhost:4000/2024/08/16/gotc-2024-share/">&lt;blockquote&gt;
+  &lt;p&gt;以下内容是8.15日我在上海张江科学会堂举办的“GOTC（全球开源技术峰会）” 与 “GOGC（全球开源极客嘉年华）” 分享内容文字稿，分享给大家。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;一前言&quot;&gt;一、前言&lt;/h2&gt;
+
+&lt;p&gt;大家下午好，&lt;/p&gt;
+
+&lt;p&gt;我叫肖玉民，来自杭州萌嘉网络科技有限公司，很荣幸受主办方的邀请，来参加此次GOTC2024的分享。&lt;/p&gt;
+
+&lt;p&gt;我们是一家刚成立不久的初创公司，目前主要聚焦在大模型、向量检索、RAG这一块的产品应用研发，我们的产品品牌是&lt;strong&gt;TorchV&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;今天也是借着这个机会，结合我们自己做RAG产品迭代开发过程中的一些实践，分享我们在非结构化数据解析以及企业应用场景的一些探索和思考。&lt;/p&gt;
+
+&lt;p&gt;OK，今天我分享的主题主要围绕三个方面&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;第一是非结构化的数据处理，做RAG的产品迭代基本是从非结构化数据解析开始。那么这一节会围绕整个技术中间件的选型，包括PDF的表格解析等内容进行展开&lt;/li&gt;
+  &lt;li&gt;第二部分是，企业AI场景落地，我们的产品应用探索和思考&lt;/li&gt;
+  &lt;li&gt;第三部分是总结和我个人的一些感想。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;二非结构化数据的解析难点细节&quot;&gt;二、非结构化数据的解析难点&amp;amp;细节&lt;/h2&gt;
+
+&lt;p&gt;OK，那么说到非结构化数据，自从RAG+大模型的技术栈爆火之后，我们看到了大模型在处理文本上的能力，为止惊讶。&lt;/p&gt;
+
+&lt;p&gt;在我们的实际应用场景中，可能80%的工作场景，都是在和非结构化打交道，这其中包含场景的Office办公软件套，还有图片、音频等等各种各样的结构数据。正式因为有了大模型的能力，让非结构化数据的内容，在整个内容检索、理解、利用等方面得以充分的发挥。提供人们的工作效率。&lt;/p&gt;
+
+&lt;p&gt;我们以RAG为基础的技术栈进行技术开发时，开发人员碰到的第一个难题也是以非结构化的数据解析为起点，我们需要将各种各样的格式的数据解析成文本，然后在通过检索、写Prompt的方式，让大模型进行推理生成，完成上游的应用部分的交互，解决人们在工作中碰到的各种企业问题。这里面我们碰到的问题：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;文件种类繁多，非常广泛。&lt;/li&gt;
+  &lt;li&gt;老旧文件的支持问题，比如DOC、XLS、PPT等格式的支持&lt;/li&gt;
+  &lt;li&gt;表格解析是难点&lt;/li&gt;
+  &lt;li&gt;OCR的启动时机，从成本、效率、性能等多方面去考虑&lt;/li&gt;
+  &lt;li&gt;布局识别在PDF中的能力有待突破&lt;/li&gt;
+  &lt;li&gt;文件的字符编码问题等等。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;在实际的开发场景中，可能还有很多的细节，需要开发人员去处理。&lt;/p&gt;
+
+&lt;p&gt;在碰到上面这些问题时，一开始我其实也有点不知所措，就拿PDF的格式来说，其1.7的规范就将近800页，如果要全部看完并提取解析成功。那可能是天方夜谭了。&lt;/p&gt;
+
+&lt;p&gt;我们可能和其他的开源的产品或者同类的产品不太一样的是，在TorchV的整个技术架构体系中，Java占的比重有将近80%，当然这里面包含文件的解析内容提取。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/rag/torchv/gotc2024/image-20240814143406340.png&quot; alt=&quot;image-20240814143406340&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在Java生态中，针对上面的一些文件解析的问题，在目前整个Java生态里面，有三个中间件是很很好的在做RAG场景中，发挥重要作用的。Apache三件套。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Apache POI&lt;/strong&gt;：第一个是POI项目，早在02年就进入了Apache基金会，早期是主要处理Excel的电子表格为主，后来支撑了包括word、ppt、visio等多种格式的支持。poi项目在以Java项目为主导的AI应用开发中有一个主要的优势技术对老文件的支持，像DOC、XLS、PPT等格式的文件，POI可以完全不依赖外部插件或者中间件的情况下直接解析，提取文本内容。这相较于Python生态提取Office套件的文件格式还是蛮有优势的一个点，Python的生态，以docx解析为例，大部分的解决办法都是先将doc转换为docx，然后再进行提取处理。这需要依赖外部插件。这点Java依靠多年的技术沉淀，还是蛮有优势的。而且我们在很多大客户对接过程中，发现老文件占比还是蛮重的。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Apache Tika&lt;/strong&gt;：Tika是一个比较综合的文件解析项目，起初是作为Apache Nutch项目的一部分，在07年独立发展成为顶级项目，Tika在文件解析领域做了很多的封装，其涵盖了POI、PDFBOX这些项目的应用依赖，能够通过识别文件的魔法值，自动甄别文件类型，提供标准的输入流及转换扩张方法，这里面也集成了OCR的识别，在解析文件过程中，对于图片资源也启用OCR进行提取。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Apache PDFBOX&lt;/strong&gt;： PDFBOX是目前开源领域中，非常完善&amp;amp;成熟的一个PDF文件处理中间件了，发展历史悠久，08年进入Apache基金会，PDFBOX较完善的提供了对PDF规范的支持，并且提供了顶级的抽象接口，供开发人员进行自定义扩展，非常的方便。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;在整个的非结构化数据提取过程中，上面这三个Apache项目，基本能解决我们80%的业务场景的问题，我知道目前大家对于大模型来提取识别文件觉得是非常酷的一件事件，但是在企业场景落地的时候，文件解析我们也是需要从成本、性能、效率等多方面去考虑。&lt;/p&gt;
+
+&lt;p&gt;有时候基于规则的提取，在可解释性上还是有较大的优势的。&lt;/p&gt;
+
+&lt;p&gt;我们基于上面三个中间件，其提供的文件格式大家也可以看到从Html、Office、PDf、图片、音频、压缩包等等，在企业应用场景中，绝对够用。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/rag/torchv/gotc2024/image-20240814102248806.png&quot; alt=&quot;image-20240814102248806&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在整个文件解析中，PDF应该是最令开发者头疼的一个文件格式，尤以表格提取最麻烦。&lt;/p&gt;
+
+&lt;p&gt;在PDF的表格提取中，借助于Apache PDFBOX，目前有两种有效方法，是可以非常高效的提取表格内容，还原表格信息。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/rag/torchv/gotc2024/image-20240816130519548.png&quot; alt=&quot;image-20240816130519548&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;第一种是Tabula组件，开源的算法，主要基于PDFBox提供的文本坐标提取方式，通过将所有的文本坐标提取后，通过计算边界、文字边界连接等方式，可以通过坐标算法，基于水平和垂直两个方向的坐标系来明确单元格的边界，将整个表格还原提取出来。&lt;/p&gt;
+
+&lt;p&gt;这种方式在针对一些老的电子文件PDF是非常奏效的，因为在之前的PDF标准规范中，对于表格中的线、矩阵等信息并没有纳入规范中。而在目前的PDF规范中，PDF对于电子文件的内容流中，大部分场景都存储了表格中的线、矩阵坐标信息。&lt;/p&gt;
+
+&lt;p&gt;基于这个方式，我们可以使用PDFBOX中的第二个方式来还原提取PDF的表格信息，这主要是通过提取PDF内容流的线坐标、矩阵信息。&lt;/p&gt;
+
+&lt;p&gt;可以通过将所有的矩形、线的坐标信息，通过算法进行处理，这里面包括空间去重、冗余排除、矩阵坐标连接等方式，那么就可以做到图中的这样，将一个表格信息完整的画出来，我们通过矩阵坐标确定表格后，基于表格的单元格坐标，即可以进一步的确定当前表格他的单元格合并情况，明确每一个单元格是否需要纵向、横向的合并。最后确定这些信息后，通过PDFBOX按区域提取的方式，就可以精准的提取每一个单元的内容信息，将表格幂等的还原回来。&lt;/p&gt;
+
+&lt;p&gt;另外基于坐标的信息，其实要扩展做的内容也蛮多，在后面的案例我会讲到。&lt;/p&gt;
+
+&lt;p&gt;基于上面表格的提取方式，在PDFBox中，他的整个UML架构图就如图中所示：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/rag/torchv/gotc2024/image-20240814111947023.png&quot; alt=&quot;image-20240814111947023&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;最顶部是PDF基础的引擎类，在PDF的规范中，包含了非常多的Operator操作，下面的基于坐标、图片等信息的提取，都是基于PDF规范中的Operator来扩展提取。包括第二个图引擎的类，实现提取内容流中的线、矩阵、图片等信息的提取&lt;/p&gt;
+
+&lt;p&gt;最后按文本坐标区域提取的核心类，是一个非常实用的方法，在PDFBox中，特别是对于当前论文类型的PDF，双排的这种方式，通过大量的实验，其实提取计算文本的排版空间，都是比较轻松的一种方式。&lt;/p&gt;
+
+&lt;h2 id=&quot;三应用探索--实践&quot;&gt;三、应用探索 &amp;amp; 实践&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/rag/torchv/gotc2024/image-20240814145859388.png&quot; alt=&quot;image-20240814145859388&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;第一个场景是知识库，这也是基本在大模型兴起后，最常见/可落地的一个领域，今天因为大模型超强的文本理解能力，我们通过各种手段将非结构化数据进行文本提取解析后，结合向量KNN等新一代的搜索技术，可以更加准确的搜索积累在数据库中的文本内容。&lt;/p&gt;
+
+&lt;p&gt;配合大模型作为润滑剂，将整个用户的问题进行理解，最后输出符合用户问题的答案。&lt;/p&gt;
+
+&lt;p&gt;我们在和我们的客户深入沟通交流的过程中，知识库就像AI时代的数据中台一样，做好知识库能给很多企业充分将AI的能力利用起来。&lt;/p&gt;
+
+&lt;p&gt;这里面包括：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;企业内部的非结构化的数据、知识统一管理。&lt;/li&gt;
+  &lt;li&gt;通过PC、Web等不同的方式，对于企业内部的知识在整个组织上如何更好的协同、分享。&lt;/li&gt;
+  &lt;li&gt;让知识更高效的利用，把冷冰冰的数据从数据库里面捞起来，发挥数据的再利用的价值。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;这个是我们认为当前AI在企业场景里面非常重要的一个落地场景。&lt;/p&gt;
+
+&lt;p&gt;第二个场景应用我们叫研报助手Assistant.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/rag/torchv/gotc2024/image-20240814150640087.png&quot; alt=&quot;image-20240814150640087&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;他其实是一个富文本编辑器，大模型在今天其实已经非常擅长文本的生成了，对于知识的输出，效率相较以前数倍的能力提升。&lt;/p&gt;
+
+&lt;p&gt;但我们在企业的场景落地的过程中，大模型在一些严谨的场合下，输出的内容可能并不符合我们的要求，会产生幻觉，这也是RAG在当前最理想的一种技术手段，控制大模型的幻觉输出问题，让大模型基于给定的文本内容，进行总结输出。&lt;/p&gt;
+
+&lt;p&gt;Assistant主要是结合了非结构化的文本解析+向量检索+大模型归纳+富文本编辑器多种技术与一体的这么一个产品。通过用户上传的文档内进行检索生成，对于在一些需要引用严谨的报告输出，包括对大量文档的阅读，利用这个工具，可以高效的提升整个编写流程的体验。&lt;/p&gt;
+
+&lt;p&gt;在已经生成的文本内容，Assistant还加入了一些转换图表的能力，选中一些文本信息，可以&lt;strong&gt;快速的转换成饼图、柱状图、表格等不同的图表形式&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;第三个是规则匹配的场景Cmparision&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/rag/torchv/gotc2024/image-20240814154058077.png&quot; alt=&quot;image-20240814154058077&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在这个场景中，我们主要还是依靠之前在处理PDF表格时提供的一些方法，可以无差别的根据区域信息，提取关键的字段信息。当然如果我们整个的处理场景中，会有一个处理的 顺序，如果PDF内容是扫描版本的话，那会通过OCR的方式，进行区域信息的提取，结合之前坐标空间的相关算法，将框定的内容给提取出来。&lt;/p&gt;
+
+&lt;p&gt;另外一个就是在非结构化的数据提取后，可以配合大模型的的Agent能力，针对特定的领域，基于规则提取文本中的关键信息。&lt;/p&gt;
+
+&lt;p&gt;提取关键信息后，那么我们在应用上层要处理时，不管是数据的校对、或者总结，在企业场景中，AI能高效的发挥作用，提供整体的工作效率。&lt;/p&gt;
+
+&lt;h2 id=&quot;四个人感想&quot;&gt;四、个人感想&lt;/h2&gt;
+
+&lt;p&gt;最后想和大家分享一下我的一些个人感想。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;第一个就是：AI技术栈很杂，是挑战，也是机遇&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;在我们讲RAG、大模型、向量检索整体的技术栈进行落地时，这里面涉及到的技术栈其实是非常广，而且很杂，开发人员不仅仅要关注到数据的处理，这里面还包含检索、向量数据库、大模型Agent、Prompt、微调等等技术领域，对于打造一个标品其实并不容易。这对于企业和开发者来说，都有不小的挑战。但是正是有了AI大模型，我们在今天的工作场景中，很多有趣的应用和产品层出不穷，这里面其实也蕴藏了大量的机遇，同时在AI的加持下，对于开发者而言可以更加大胆的畅想了，这对于探索、创新，创造更多有趣的产品是大有裨益的。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;第二个则是：数据质量是基石，重剑无锋&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;数据质量我觉得是在做文本类AI应用的基石，不管是做RAG，还是微调模型，我们在构建开发TorchV的过程中，可能大概80%的时间都是花在怎么把数据处理好，幂等的将非结构化的数据最大程度的进行提取和还原，这是很关键的一步，RAG更是有Garbage in,Garbage out的经典名言，所以，数据的质量，应该是我们需要着重关注的。&lt;/p&gt;
+
+&lt;h2 id=&quot;五reference&quot;&gt;五、Reference&lt;/h2&gt;
+
+&lt;p&gt;文中主要的中间件&amp;amp;信息：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://torchv.com&quot;&gt;https://torchv.com&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://tika.apache.org/&quot;&gt;https://tika.apache.org/&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://pdfbox.apache.org/&quot;&gt;https://pdfbox.apache.org/&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://poi.apache.org/&quot;&gt;https://poi.apache.org/&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/tabulapdf/tabula-java&quot;&gt;https://github.com/tabulapdf/tabula-java&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>八一菜刀</name></author><category term="大模型" /><category term="RAG实践" /><category term="TorchV" /><category term="RAG概述" /><category term="RAG" /><category term="大模型" /><category term="LLM" /><category term="GOTC 2024" /><summary type="html">以下内容是8.15日我在上海张江科学会堂举办的“GOTC（全球开源技术峰会）” 与 “GOGC（全球开源极客嘉年华）” 分享内容文字稿，分享给大家。</summary></entry><entry><title type="html">QWen2-72B-Instruct模型安装部署过程</title><link href="http://localhost:4000/2024/08/07/qwen2-72b-instruct-deploy/" rel="alternate" type="text/html" title="QWen2-72B-Instruct模型安装部署过程" /><published>2024-08-07T00:00:00+08:00</published><updated>2024-08-07T00:00:00+08:00</updated><id>http://localhost:4000/2024/08/07/qwen2-72b-instruct-deploy</id><content type="html" xml:base="http://localhost:4000/2024/08/07/qwen2-72b-instruct-deploy/">&lt;h2 id=&quot;一基础信息&quot;&gt;一、基础信息&lt;/h2&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -2033,116 +2184,4 @@ OpenSSL 1.1.1q  5 Jul 2022
 
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/questions/73407527/installing-ssl-package-with-pip-requires-ssl-package-to-be-already-installed&quot;&gt;Installing SSL package with PIP requires SSL package to be already installed&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>八一菜刀</name></author><category term="Blog" /><category term="Python" /><summary type="html">如果你是在CentOS7 上面源码安装Python3.11版本，你可能会碰到和我一样的问题，那就是OpenSSL模块太低了。</summary></entry><entry><title type="html">超赞的博客主题分享，值得一看</title><link href="http://localhost:4000/2023/10/16/jekyll-theme-chirpy-share/" rel="alternate" type="text/html" title="超赞的博客主题分享，值得一看" /><published>2023-10-16T00:00:00+08:00</published><updated>2023-10-16T00:00:00+08:00</updated><id>http://localhost:4000/2023/10/16/jekyll-theme-chirpy-share</id><content type="html" xml:base="http://localhost:4000/2023/10/16/jekyll-theme-chirpy-share/">&lt;p&gt;最近在学习RAG、&lt;a href=&quot;/categories/大模型/&quot;&gt;大模型&lt;/a&gt;等领域方面的技术，想在学习的过程中做总结性的输出，因此就想把自己之前弄的博客重新整理一番,主要有几个原因:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;博客网页无法适配移动端(非常重要的一个特性)&lt;/li&gt;
-  &lt;li&gt;主题有些腻了,想换个新主题&lt;/li&gt;
-  &lt;li&gt;GitHub Pages &amp;lt;-&amp;gt; 博客 &amp;lt;-&amp;gt; 微信公众号 整体链路的文章编写发布顺畅的诉求&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;后来，就基于自己的想法，整理的了要重新整理博客的需求，列了一个思维导图，如下图:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/blog2/jekyll-theme-share/blog_build.png&quot; alt=&quot;图1-博客需求整理&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;主要从以下几个方面考虑：&lt;/p&gt;
-
-&lt;h2 id=&quot;1基础框架&quot;&gt;1.基础框架&lt;/h2&gt;
-
-&lt;p&gt;肯定是基于目前已经开放流行的博客框架进行改造,这样能够快速的搭建完成,而且无需考虑页面布局的情况&lt;/p&gt;
-
-&lt;p&gt;这里列的大部分我都是用过&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://vuepress.vuejs.org/zh/guide/&quot;&gt;VuePress&lt;/a&gt;: Vue 驱动的静态网站生成器,在很早给&lt;a href=&quot;https://doc.xiaominfo.com/v2/&quot;&gt;Knife4j&lt;/a&gt;写开源的技术文档时就使用的这个&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://vitepress.dev/&quot;&gt;VitePress&lt;/a&gt;: 在Vite框架出来后,基于Vite生态下的静态网页生成器，是一个非常棒的组件，速度飞快，当这次我并没有选择这个。原因后面会说明&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://hexo.io/zh-cn/&quot;&gt;Hexo&lt;/a&gt; :快速、简洁且高效的博客框架,也是很早的一个框架，主题样式非常的多，&lt;a href=&quot;https://www.luxiangdong.com/&quot;&gt;员外的网站&lt;/a&gt;就使用了这个框架&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://docusaurus.io/&quot;&gt;Docusaurus&lt;/a&gt;: 基于React技术栈的一个静态网站生成器，同样非常的优秀，目前&lt;a href=&quot;https://doc.xiaominfo.com/&quot;&gt;Knife4j&lt;/a&gt;的开源技术文档用这个编写&lt;/li&gt;
-  &lt;li&gt;👉 &lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt; : 基于Ruby语言编写的老牌博客框架，本期的主角&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;这里选择&lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt; 主要原因有几个：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;之前的博客就是用&lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt; 来写的，而迁移博客是一项比较繁杂的任务，不想浪费太多的时间&lt;/li&gt;
-  &lt;li&gt;博客网站我觉得&lt;strong&gt;最重要的是在于作者的坚持输出&lt;/strong&gt;，主题只要功能满足要求即可，不必追求太花哨的功能&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;2首页内容&quot;&gt;2.首页内容&lt;/h2&gt;
-
-&lt;p&gt;第二个方面考虑的因素是首页的内容，像&lt;a href=&quot;https://vuepress.vuejs.org/zh/guide/&quot;&gt;VuePress&lt;/a&gt;和&lt;a href=&quot;https://vitepress.dev/&quot;&gt;VitePress&lt;/a&gt;默认的首页内容其实是非常简洁的，我觉得更适合产品的展示，不适合博客，当然你也可以花时间改造，或者选择一个很棒的主题进行替换，这里主要是时间不够，就没有选择这个，并非所他们不好。而我所考虑的是：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;首页的内容要主题鲜明，详细阐述整个站点内容&lt;/li&gt;
-  &lt;li&gt;多篇文章则分页，博客必须全部在首页展示，不跳转到二级页面&lt;/li&gt;
-  &lt;li&gt;尽可能多的展示内容，&lt;strong&gt;首页的资源是非常宝贵的&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;以下就是该博客的首页，非常符合我的诉求&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/blog2/jekyll-theme-share/blog_index.png&quot; alt=&quot;图2-博客首页&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;3基本功能&quot;&gt;3.基本功能&lt;/h2&gt;
-
-&lt;p&gt;接下来就是考虑博客框架一个基础的功能，这里从个人的诉求，列了以下的要求：&lt;/p&gt;
-
-&lt;h3 id=&quot;31-适配移动端&quot;&gt;3.1 &lt;strong&gt;适配移动端&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;移动端时代，这是一个非常重要的特性&lt;/strong&gt;，有时候在发公众号文章时可以在底部配置原文链接，对于读者来说可以无差别阅读&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/blog2/jekyll-theme-share/blog_mobile.png&quot; alt=&quot;图3-移动端适配&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;32-站内搜索&quot;&gt;3.2 &lt;strong&gt;站内搜索&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;p&gt;可以提供站内搜索的功能，不管是构建本地博客索引还是使用外部的实现，例如《&lt;a href=&quot;/posts/knife4j-document-active-search/&quot;&gt;Final.激活Knife4j官网的文档搜索功能&lt;/a&gt;》提到的&lt;a href=&quot;https://www.algolia.com/&quot;&gt;algolia&lt;/a&gt;都是可以的&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/blog2/jekyll-theme-share/blog_search.png&quot; alt=&quot;图4-站内搜索&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;33-归档功能&quot;&gt;3.3 &lt;strong&gt;归档功能&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;p&gt;不管是分类还是日期归档，都是必须的功能&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;分类归档：能够给读者一个快速索引，查看感兴趣的内容&lt;/li&gt;
-  &lt;li&gt;日期归档: 根据最新日期查看更新的篇幅,同时也是对作者的一个鞭策，非常实用&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/blog2/jekyll-theme-share/blog_arch.png&quot; alt=&quot;图5-归档&quot; /&gt;
-&lt;img src=&quot;/images/blog2/jekyll-theme-share/blog_arch1.png&quot; alt=&quot;图6-归档1&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;34-评论功能&quot;&gt;3.4 &lt;strong&gt;评论功能&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;p&gt;评论算是一个个人诉求吧,并非强制，当然如果有默认提供那更好，本站点基于&lt;a href=&quot;https://giscus.app/zh-CN&quot;&gt;giscus&lt;/a&gt;实现
-&lt;img src=&quot;/images/blog2/jekyll-theme-share/blog_comment.png&quot; alt=&quot;图7-评论&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;35-文章分享&quot;&gt;3.5 &lt;strong&gt;文章分享&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;p&gt;快速分享到各大社交平台，非常实用的功能&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/blog2/jekyll-theme-share/blog_share.jpg&quot; alt=&quot;图7-分享&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;36-站点统计&quot;&gt;3.6 &lt;strong&gt;站点统计&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;p&gt;该功能我想目前各个框架都支持，使用百度统计或者Google Analytics应该都非常方便&lt;/p&gt;
-
-&lt;h3 id=&quot;37-rss&quot;&gt;3.7 &lt;strong&gt;RSS&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;p&gt;根据个人喜好提供&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/blog2/jekyll-theme-share/blog_feed.jpg&quot; alt=&quot;图8-评论&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;4-博客大纲&quot;&gt;4. 博客大纲&lt;/h2&gt;
-
-&lt;p&gt;个人的博客，我觉得整体的大纲内容不必太多，只需要关注写作内容即可，能够将写作内容能够快速的索引到并且给读者一个清晰的结构，就可以了&lt;/p&gt;
-
-&lt;p&gt;所以我的博客大纲主要是四个： &lt;strong&gt;主页&lt;/strong&gt;、&lt;strong&gt;标签&lt;/strong&gt;、&lt;strong&gt;归档&lt;/strong&gt;、&lt;strong&gt;关于&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;5总结&quot;&gt;5.总结&lt;/h2&gt;
-
-&lt;p&gt;本站的博客基于&lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt;的&lt;a href=&quot;https://github.com/cotes2020/jekyll-theme-chirpy&quot;&gt;chirpy&lt;/a&gt;主题实现，该主题满足了博主的所有诉求，非常棒，希望你也能够喜欢!!!&lt;/p&gt;
-
-&lt;p&gt;本站源码：&lt;a href=&quot;https://github.com/xiaoymin/xiaoymin.github.io&quot;&gt;https://github.com/xiaoymin/xiaoymin.github.io&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;博客首页：&lt;a href=&quot;https://www.xiaominfo.com/&quot;&gt;https://www.xiaominfo.com/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;主题地址: &lt;a href=&quot;https://github.com/cotes2020/jekyll-theme-chirpy&quot;&gt;https://github.com/cotes2020/jekyll-theme-chirpy&lt;/a&gt;&lt;/p&gt;</content><author><name>八一菜刀</name></author><category term="Blog" /><summary type="html">最近在学习RAG、大模型等领域方面的技术，想在学习的过程中做总结性的输出，因此就想把自己之前弄的博客重新整理一番,主要有几个原因:</summary></entry></feed>
+&lt;/ul&gt;</content><author><name>八一菜刀</name></author><category term="Blog" /><category term="Python" /><summary type="html">如果你是在CentOS7 上面源码安装Python3.11版本，你可能会碰到和我一样的问题，那就是OpenSSL模块太低了。</summary></entry></feed>
