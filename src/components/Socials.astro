@@ -1,0 +1,61 @@
+---
+import config from "@/config";
+import LinkButton from "./LinkButton.astro";
+
+const { site, socials } = config;
+
+const icons = import.meta.glob<{
+  default: (_props: Record<string, unknown>) => unknown;
+}>("/src/assets/icons/socials/*.svg");
+
+const items = await Promise.all(
+  socials.map(async ({ name, url, qrImage, linkTitle }) => {
+    const mod = await icons[`/src/assets/icons/socials/${name}.svg`]?.();
+    const Icon = mod?.default;
+    const title =
+      linkTitle ??
+      (url.startsWith("mailto:") || name === "mail"
+        ? `Send an email to ${site.title}`
+        : `${site.title} on ${name.charAt(0).toUpperCase() + name.slice(1)}`);
+    return { name, url, qrImage, title, Icon };
+  })
+);
+---
+
+<div class="flex flex-wrap items-center gap-1">
+  {
+    items.map(({ name, url, qrImage, title, Icon }) =>
+      Icon ? (
+        <div class="group/social relative">
+          <LinkButton
+            href={url}
+            class="p-2 hover:rotate-6 sm:p-1"
+            title={title}
+            aria-describedby={qrImage ? `${name}-qr` : undefined}
+          >
+          <Icon class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110" />
+          <span class="sr-only">{title}</span>
+          </LinkButton>
+          {
+            qrImage && (
+              <div
+                id={`${name}-qr`}
+                class="border-border bg-background pointer-events-none absolute bottom-full left-1/2 z-20 mb-3 w-44 -translate-x-1/2 rounded-md border p-3 text-center opacity-0 shadow-lg transition-opacity group-hover/social:opacity-100 group-focus-within/social:opacity-100"
+              >
+                <img
+                  src={qrImage}
+                  alt="微信二维码"
+                  class="mx-auto aspect-square w-32 rounded object-cover"
+                  loading="lazy"
+                />
+                <div class="text-muted-foreground mt-2 text-sm">
+                  xiao934447
+                </div>
+              </div>
+            )
+          }
+        </div>
+      ) : null
+    )
+  }
+</div>

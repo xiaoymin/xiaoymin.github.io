@@ -5,3 +5,7 @@
 .DS_Store
 Gemfile.lock
 .idea
+node_modules/
+.astro/
+dist/
+public/pagefind/

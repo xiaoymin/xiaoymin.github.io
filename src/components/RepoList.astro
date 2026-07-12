@@ -1,0 +1,32 @@
+---
+export type RepoItem = {
+  reponame: string;
+  stars?: string;
+  forks?: string;
+  url: string;
+  lastupt?: string;
+  description?: string;
+};
+
+type Props = {
+  repos: RepoItem[];
+};
+
+const { repos } = Astro.props;
+---
+
+<ul class="grid gap-4 sm:grid-cols-2">
+  {
+    repos.map(repo => (
+      <li class="border-border border-b pb-4">
+        <a class="text-accent text-lg font-semibold decoration-dashed underline-offset-4 hover:underline" href={repo.url} target="_blank" rel="noreferrer">
+          {repo.reponame}
+        </a>
+        <p class="mt-2">{repo.description}</p>
+        <p class="text-muted-foreground mt-2 text-sm">
+          Stars {repo.stars ?? "-"} / Forks {repo.forks ?? "-"} / Updated {repo.lastupt ?? "-"}
+        </p>
+      </li>
+    ))
+  }
+</ul>

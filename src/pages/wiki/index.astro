@@ -1,0 +1,40 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Main from "@/components/Main.astro";
+import Footer from "@/components/Footer.astro";
+import config from "@/config";
+
+const pages = await getCollection("pages");
+const wikiPages = pages
+  .filter(page => page.id.startsWith("wiki-") && page.id !== "wiki-template")
+  .sort((a, b) => a.data.title.localeCompare(b.data.title, "zh-CN"));
+---
+
+<Layout
+  title={`Wiki | ${config.site.title}`}
+  description="人越学越觉得自己无知"
+  canonicalURL={new URL("/wiki/", Astro.site).href}
+>
+  <Header />
+  <Breadcrumb />
+  <Main pageTitle="Wiki" pageDesc="人越学越觉得自己无知">
+    <ul class="grid gap-3 sm:grid-cols-2">
+      {
+        wikiPages.map(page => {
+          const slug = page.id.replace(/^wiki-/, "");
+          return (
+            <li>
+              <a class="text-accent decoration-dashed underline-offset-4 hover:underline" href={`/wiki/${slug}/`}>
+                {page.data.title}
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </Main>
+  <Footer />
+</Layout>

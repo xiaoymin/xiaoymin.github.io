@@ -1,0 +1,74 @@
+---
+import { getCollection } from "astro:content";
+import { getRelativeLocaleUrl } from "astro:i18n";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Main from "@/components/Main.astro";
+import Footer from "@/components/Footer.astro";
+import Card from "@/components/Card.astro";
+import { getUniqueTags } from "@/utils/getUniqueTags";
+import { getSortedPosts } from "@/utils/getSortedPosts";
+import { slugifyAll } from "@/utils/slugify";
+import config from "@/config";
+
+const locale = Astro.currentLocale ?? config.site.lang;
+const posts = await getCollection("posts", ({ data }) => !data.draft);
+const sortedPosts = getSortedPosts(posts);
+const tags = getUniqueTags(posts)
+  .map(({ tag, tagName }) => {
+    const tagPosts = sortedPosts.filter(post =>
+      slugifyAll(post.data.tags).includes(tag)
+    );
+    const latestPost = tagPosts[0];
+
+    return {
+      tag,
+      tagName,
+      count: tagPosts.length,
+      latestTime: latestPost
+        ? new Date(
+            latestPost.data.modDatetime ?? latestPost.data.pubDatetime
+          ).getTime()
+        : 0,
+    };
+  })
+  .sort((a, b) => b.latestTime - a.latestTime || a.tag.localeCompare(b.tag));
+---
+
+<Layout
+  title={`分类 | ${config.site.title}`}
+  description="按标签浏览全部文章分类"
+  canonicalURL={new URL("/categories/", Astro.site).href}
+>
+  <Header />
+  <Breadcrumb />
+  <Main pageTitle="分类" pageDesc="按标签快速浏览全部文章">
+    <section class="mb-12">
+      <h2 class="sr-only">全部标签</h2>
+      <ul class="grid gap-3 sm:grid-cols-2">
+        {
+          tags.map(({ tag, tagName, count }) => (
+            <li>
+              <a
+                href={getRelativeLocaleUrl(locale, `tags/${tag}/`)}
+                class="border-border hover:border-accent focus-outline flex items-center justify-between border-b py-3"
+              >
+                <span class="text-lg font-medium">{tagName}</span>
+                <span class="text-muted-foreground text-sm">{count} 篇</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="mb-4 text-xl font-semibold">最近更新</h2>
+      <ul>
+        {sortedPosts.slice(0, 10).map(post => <Card {...post} />)}
+      </ul>
+    </section>
+  </Main>
+  <Footer />
+</Layout>

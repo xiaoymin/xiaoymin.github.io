@@ -1,0 +1,16 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getCollection } from "astro:content";
+import PageMarkdown from "@/components/PageMarkdown.astro";
+
+export const getStaticPaths = (async () => {
+  const pages = await getCollection("pages");
+  return pages
+    .filter(page => page.id.startsWith("wiki-"))
+    .map(page => ({ params: { slug: page.id.replace(/^wiki-/, "") } }));
+}) satisfies GetStaticPaths;
+
+const { slug } = Astro.params;
+---
+
+<PageMarkdown entry={`wiki-${slug}`} />

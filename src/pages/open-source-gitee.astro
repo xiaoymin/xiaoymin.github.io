@@ -1,0 +1,19 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Main from "@/components/Main.astro";
+import Footer from "@/components/Footer.astro";
+import RepoList from "@/components/RepoList.astro";
+import { giteeRepos as repos } from "@/data/repos";
+import config from "@/config";
+---
+
+<Layout title={`Gitee 开源项目 | ${config.site.title}`} description="开源改变世界。" canonicalURL={new URL("/open-source-gitee/", Astro.site).href}>
+  <Header />
+  <Breadcrumb />
+  <Main pageTitle="Gitee 开源项目" pageDesc={`已在 Gitee 平台开源 ${repos.length} 个项目`}>
+    <RepoList {repos} />
+  </Main>
+  <Footer />
+</Layout>
