@@ -26,6 +26,12 @@ canonicalURL: "https://www.xiaominfo.com/2026/07/12/ais-parse-engine-and-strateg
 
 ![](/assets/images/ais/parse-engine-strategy/gpt-file-parse-1.png)
 
+📹 视频地址：[https://www.bilibili.com/video/BV1ceN367EpB/](https://www.bilibili.com/video/BV1ceN367EpB/)
+
+<div style="position: relative; width: 100%; aspect-ratio: 16 / 9; margin: 1.5rem 0;">
+  <iframe src="//player.bilibili.com/player.html?isOutside=true&bvid=BV1ceN367EpB&page=1&high_quality=1&danmaku=0" allowfullscreen="allowfullscreen" width="100%" height="100%" scrolling="no" frameborder="0" sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts" style="position: absolute; inset: 0; width: 100%; height: 100%;"></iframe>
+</div>
+
 ## 一、企业需求：文档解析不是“能不能识别文字”
 
 企业AI知识库的第一道门槛，是让企业已有资料真正进入知识系统。但企业资料并不是统一、干净、结构化的数据。
