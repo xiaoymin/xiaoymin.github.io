@@ -20,7 +20,20 @@ function getIdSlug(id: string): string {
   return postId.length > 0 ? String(postId[postId.length - 1]) : id;
 }
 
+function getFileSlug(filePath: string | undefined): string | null {
+  const filename = filePath?.split("/").at(-1);
+  return filename ? filename.replace(/\.[^.]+$/, "") : null;
+}
+
 function getPostSlugPath(id: string, filePath: string | undefined): string {
+  const pathSegments = getPostPathSegments(filePath);
+  const slug = getFileSlug(filePath) ?? getIdSlug(id);
+  return pathSegments.length > 0
+    ? [...pathSegments, slug].join("/")
+    : String(slug);
+}
+
+function getLegacyPostSlugPath(id: string, filePath: string | undefined): string {
   const pathSegments = getPostPathSegments(filePath);
   const slug = getIdSlug(id);
   return pathSegments.length > 0
@@ -35,6 +48,15 @@ function getPostSlugPath(id: string, filePath: string | undefined): string {
  */
 export function getPostSlug(id: string, filePath: string | undefined): string {
   return `/${getPostSlugPath(id, filePath)}`;
+}
+
+export function getLegacyPostSlug(
+  id: string,
+  filePath: string | undefined
+): string | null {
+  const current = getPostSlugPath(id, filePath);
+  const legacy = getLegacyPostSlugPath(id, filePath);
+  return current === legacy ? null : `/${legacy}`;
 }
 
 /**
