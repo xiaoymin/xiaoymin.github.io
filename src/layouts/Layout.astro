@@ -27,7 +27,7 @@ const {
 const socialImageURL = new URL(ogImage, Astro.site ?? Astro.url);
 const rssHref = getRelativeLocaleUrl(
   Astro.currentLocale ?? config.site.lang,
-  "rss.xml"
+  "rss.xml",
 );
 ---
 
@@ -49,7 +49,11 @@ const rssHref = getRelativeLocaleUrl(
     <title>{title}</title>
     <meta name="title" content={title} />
     <meta name="description" content={description} />
-    {keywords.length > 0 && <meta name="keywords" content={keywords.join(",")} />}
+    {
+      keywords.length > 0 && (
+        <meta name="keywords" content={keywords.join(",")} />
+      )
+    }
     <meta name="author" content={site.author} />
     <link rel="sitemap" href={getAssetPath("sitemap-index.xml")} />
 
@@ -99,7 +103,7 @@ const rssHref = getRelativeLocaleUrl(
       (function () {
         const stored = localStorage.getItem("theme");
         const prefersDark = window.matchMedia(
-          "(prefers-color-scheme: dark)"
+          "(prefers-color-scheme: dark)",
         ).matches;
         const theme = stored ?? (prefersDark ? "dark" : "light");
         const root = document.firstElementChild;
@@ -118,6 +122,9 @@ const rssHref = getRelativeLocaleUrl(
     <slot />
     <script>
       import "@/scripts/theme";
+    </script>
+    <script>
+      import "@/scripts/mermaid";
     </script>
   </body>
 </html>

@@ -93,6 +93,28 @@
     pre {
       @apply focus-visible:outline-accent focus-visible:border-transparent focus-visible:outline-2 focus-visible:outline-dashed;
     }
+
+    .mermaid-diagram {
+      @apply border-border bg-background my-8 w-full overflow-x-auto border p-4;
+
+      svg {
+        display: block;
+        width: 100%;
+        min-width: 52rem;
+        max-width: none !important;
+        height: auto;
+        margin-inline: auto;
+        border: 0;
+      }
+    }
+
+    .mermaid-diagram-error {
+      @apply border-red-500/60;
+
+      pre {
+        @apply m-0;
+      }
+    }
   }
 
   /* ===== Code Blocks & Syntax Highlighting ===== */
