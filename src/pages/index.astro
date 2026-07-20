@@ -53,11 +53,10 @@ const homePath = getRelativeLocaleUrl(locale, "");
       </a>
 
       <p>
-        目前正在创业，专注企业级 AI 知识引擎系统TorchV AIS的研发、交付、商业化落地。
+        目前正在创业，专注企业级 AI 知识引擎系统TorchV
+        AIS的研发、交付、商业化落地。
       </p>
-      <p>
-        感兴趣的领域： 搜索引擎/RAG/Agent/大模型。
-      </p>
+      <p>感兴趣的领域： 搜索引擎/信息检索/RAG/Agent/大模型。</p>
       <p class="mt-2">
         产品品牌：
         <LinkButton
@@ -92,7 +91,7 @@ const homePath = getRelativeLocaleUrl(locale, "");
             {t.home.featured}
           </h2>
           <ul>
-            {featuredPosts.map(data => (
+            {featuredPosts.map((data) => (
               <Card variant="h3" {...data} />
             ))}
           </ul>
@@ -107,7 +106,7 @@ const homePath = getRelativeLocaleUrl(locale, "");
             {t.home.recentPosts}
           </h2>
           <ul>
-            {recentPosts.slice(0, postsConfig.perIndex).map(data => (
+            {recentPosts.slice(0, postsConfig.perIndex).map((data) => (
               <Card variant="h3" {...data} />
             ))}
           </ul>
