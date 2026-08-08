@@ -8,7 +8,7 @@ keywords:
   - "knife4j"
   - "屏蔽swagger"
   - "屏蔽knife4j"
-canonicalURL: "https://www.xiaominfo.com/2023/07/19/knife4j-production-forbidden-ui/"
+canonicalURL: "https://www.xiaoyuming.cn/2023/07/19/knife4j-production-forbidden-ui/"
 ---
 
 本文主要介绍在 Spring Boot 应用中,如何在生产环境屏蔽Knife4j及相关Swagger资源
@@ -60,7 +60,7 @@ canonicalURL: "https://www.xiaominfo.com/2023/07/19/knife4j-production-forbidden
 
 在Spring Boot开发框架中，提供了一种条件注入的机制注解`@Conditional`,顾名思义就是可以指定我们的代码在特定环境才生效。
 
-开发者在写第三方的starter的包时，是一种经常使用的手段。有关`@Conditional`注解等条件注入的说明，可以参考我之前分享的一篇Blog[《Spring Boot框架中如何优雅的注入实体Bean》](https://www.xiaominfo.com/blog/springboot/2020-09-23-spring-boot-conditional)
+开发者在写第三方的starter的包时，是一种经常使用的手段。有关`@Conditional`注解等条件注入的说明，可以参考我之前分享的一篇Blog[《Spring Boot框架中如何优雅的注入实体Bean》](https://www.xiaoyuming.cn/blog/springboot/2020-09-23-spring-boot-conditional)
 
 我们的需求场景是：在生产环境中能够屏蔽部分接口以及Ui资源，那么我们是否可以结合`@Conditional`注解以及`@Profile`注解来实现不同环境的`@Bean`加载机制呢？
 

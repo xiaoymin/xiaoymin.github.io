@@ -7,7 +7,7 @@ tags:
 keywords:
   - "SpringBoot"
   - "Jackson"
-canonicalURL: "https://www.xiaominfo.com/2021/03/26/spring-boot-code-action-jackson/"
+canonicalURL: "https://www.xiaoyuming.cn/2021/03/26/spring-boot-code-action-jackson/"
 ---
 
 ## 1.前言

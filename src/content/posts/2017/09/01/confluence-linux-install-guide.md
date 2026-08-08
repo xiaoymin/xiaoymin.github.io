@@ -7,7 +7,7 @@ tags:
 keywords:
   - "confluence"
   - "Linux"
-canonicalURL: "https://www.xiaominfo.com/2017/09/01/confluence-linux-install-guide/"
+canonicalURL: "https://www.xiaoyuming.cn/2017/09/01/confluence-linux-install-guide/"
 ---
 
 # 环境说明

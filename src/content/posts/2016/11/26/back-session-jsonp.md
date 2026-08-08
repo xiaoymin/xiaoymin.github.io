@@ -8,7 +8,7 @@ keywords:
   - "前后端分离"
   - "Jsonp"
   - "跨域，Session"
-canonicalURL: "https://www.xiaominfo.com/2016/11/26/back-session-jsonp/"
+canonicalURL: "https://www.xiaoyuming.cn/2016/11/26/back-session-jsonp/"
 ---
 
 目前使用前后端分离的模式开发，后端提供跨域接口、前端jsonp调用，绑定数据，但是在该站点下有个人中心模块存在的情况下，服务端的session会话会被跨域请求覆盖改掉

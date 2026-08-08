@@ -9,7 +9,7 @@ keywords:
   - "knife4j枚举展示"
   - "knife4j枚举调试"
   - "knife4j枚举"
-canonicalURL: "https://www.xiaominfo.com/2023/08/07/knife4j-handler-enum/"
+canonicalURL: "https://www.xiaoyuming.cn/2023/08/07/knife4j-handler-enum/"
 ---
 
 本文主要介绍在Knife4j中如何处理枚举，主要包含两个方面：

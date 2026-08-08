@@ -8,7 +8,7 @@ keywords:
   - "Kettle实战"
   - "Kettle in Action"
   - "Kettle"
-canonicalURL: "https://www.xiaominfo.com/2019/08/08/kettle-toc/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/08/08/kettle-toc/"
 ---
 
 在数据仓库技术中,ETL是必不可少,Kettle作为ETL的经典工具,已经得到广大ETL工程师的喜爱,甚至连开发工程师在使用ETL过程中,优先考虑的也是Kettle

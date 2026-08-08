@@ -11,7 +11,7 @@ keywords:
   - "大模型实战"
   - "LLM"
   - "Java开发AI应用"
-canonicalURL: "https://www.xiaominfo.com/2023/10/12/rag-inaction-java/"
+canonicalURL: "https://www.xiaoyuming.cn/2023/10/12/rag-inaction-java/"
 ---
 
 ## 前言

@@ -6,7 +6,7 @@ tags:
   - "Blog"
 keywords:
   - "nginx反向代理"
-canonicalURL: "https://www.xiaominfo.com/2016/11/15/nginx-front-intruduce/"
+canonicalURL: "https://www.xiaoyuming.cn/2016/11/15/nginx-front-intruduce/"
 ---
 
 ## 背景

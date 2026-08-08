@@ -6,7 +6,7 @@ tags:
   - "Blog"
 keywords:
   - "swagger-bootstrap-ui"
-canonicalURL: "https://www.xiaominfo.com/2017/04/25/swagger-bootstrap-ui-issue-maven-central/"
+canonicalURL: "https://www.xiaoyuming.cn/2017/04/25/swagger-bootstrap-ui-issue-maven-central/"
 ---
 
 # 准备工作

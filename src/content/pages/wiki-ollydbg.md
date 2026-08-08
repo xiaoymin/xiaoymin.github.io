@@ -4,7 +4,7 @@ description: "OllyDbg 快捷键及常用法。"
 keywords:
   - "debug"
   - "ollydbg"
-canonicalURL: "https://www.xiaominfo.com/wiki/ollydbg/"
+canonicalURL: "https://www.xiaoyuming.cn/wiki/ollydbg/"
 ---
 
 ### 快捷键

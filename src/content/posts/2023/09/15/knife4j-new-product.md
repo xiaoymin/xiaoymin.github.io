@@ -10,7 +10,7 @@ keywords:
   - "Knife4j聚合"
   - "文档聚合"
   - "微服务聚合文档"
-canonicalURL: "https://www.xiaominfo.com/2023/09/15/knife4j-new-product/"
+canonicalURL: "https://www.xiaoyuming.cn/2023/09/15/knife4j-new-product/"
 ---
 
 ## 写在开头

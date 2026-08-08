@@ -8,18 +8,18 @@ keywords:
   - "swagger-bootstrap-ui"
   - "swagger-bootstrap-ui 1.9.2"
   - "swagger 前后端分离解决方案"
-canonicalURL: "https://www.xiaominfo.com/2019/04/08/swagger-bootstrap-ui-1.9.2-issue/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/04/08/swagger-bootstrap-ui-1.9.2-issue/"
 ---
 
 swagger-bootstrap-ui 1.9.2 发布了。swagger-bootstrap-ui是 Swagger 的增强UI 实现，使文档更友好一点儿
 
-[**GitHub**](https://github.com/xiaoymin/Swagger-Bootstrap-UI)  [**Gitee**](https://gitee.com/xiaoym/swagger-bootstrap-ui)  [**文档**](http://www.xiaominfo.com/swagger-bootstrap-ui/)  [**示例代码**](https://gitee.com/xiaoym/swagger-bootstrap-ui-demo)  [**在线体验**](http://swagger-bootstrap-ui.xiaominfo.com/doc.html)
+[**GitHub**](https://github.com/xiaoymin/Swagger-Bootstrap-UI)  [**Gitee**](https://gitee.com/xiaoym/swagger-bootstrap-ui)  [**文档**](http://www.xiaoyuming.cn/swagger-bootstrap-ui/)  [**示例代码**](https://gitee.com/xiaoym/swagger-bootstrap-ui-demo)  [**在线体验**](http://swagger-bootstrap-ui.xiaominfo.com/doc.html)
 
 **主要更新如下：**
 
 ## 特性&优化
 
-1、增加地址栏参数访问,快速个性化设置功能，可[参考文档](http://www.xiaominfo.com/swagger-bootstrap-ui/settingsFastAccess.html)
+1、增加地址栏参数访问,快速个性化设置功能，可[参考文档](http://www.xiaoyuming.cn/swagger-bootstrap-ui/settingsFastAccess.html)
 
 2、修改`SecurityConfiguration`中关于`Environment`的注入方式,改为属性注解注入,提供默认无参构造,避免某些情况下使用SpringAop导致异常[issue #ITI1C @Gitee](https://gitee.com/xiaoym/swagger-bootstrap-ui/issues/ITI1C)
 
@@ -35,7 +35,7 @@ swagger-bootstrap-ui 1.9.2 发布了。swagger-bootstrap-ui是 Swagger 的增强
 
 8、针对`@RequestBody`类型的参数类型枚举的支持[issue #73 @GitHub](https://github.com/xiaoymin/Swagger-Bootstrap-UI/issues/73)
 
-9、**提供前后端分离的文档预览解决方案**,具体[参考文档](http://www.xiaominfo.com/swagger-bootstrap-ui/ui-front.html)
+9、**提供前后端分离的文档预览解决方案**,具体[参考文档](http://www.xiaoyuming.cn/swagger-bootstrap-ui/ui-front.html)
 
 ## Bug修复
 
@@ -74,7 +74,7 @@ swagger-bootstrap-ui 1.9.2 发布了。swagger-bootstrap-ui是 Swagger 的增强
 
 在线体验：<http://swagger-bootstrap-ui.xiaominfo.com/doc.html>
 
-项目文档：http://www.xiaominfo.com/swagger-bootstrap-ui/
+项目文档：http://www.xiaoyuming.cn/swagger-bootstrap-ui/
 
 ## 代码集成示例
 

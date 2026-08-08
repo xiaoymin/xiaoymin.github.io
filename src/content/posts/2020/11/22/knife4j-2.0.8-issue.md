@@ -8,7 +8,7 @@ keywords:
   - "Knife4j"
   - "Knife4j 2.0.8发布"
   - "微服务聚合"
-canonicalURL: "https://www.xiaominfo.com/2020/11/22/knife4j-2.0.8-issue/"
+canonicalURL: "https://www.xiaoyuming.cn/2020/11/22/knife4j-2.0.8-issue/"
 ---
 
 `Knife4j`前身是`swagger-bootstrap-ui`,是一个为Swagger接口文档赋能的工具

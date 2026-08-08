@@ -9,7 +9,7 @@ keywords:
   - "Kettle in Action"
   - "Kettle"
   - "Kettle JSON使用"
-canonicalURL: "https://www.xiaominfo.com/2019/08/12/kettle-9/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/08/12/kettle-9/"
 ---
 
 我们在第8篇的时候已经介绍了将Excel的数据导入到Mysql数据库中,那么,本章我们将介绍将数据从数据库导出到Excel中.

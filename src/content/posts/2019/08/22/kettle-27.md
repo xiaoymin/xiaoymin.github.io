@@ -10,7 +10,7 @@ keywords:
   - "Kettle in Action"
   - "Kettle"
   - "Kettle 系统级别任务调度调用转换&作业"
-canonicalURL: "https://www.xiaominfo.com/2019/08/22/kettle-27/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/08/22/kettle-27/"
 ---
 
 待续...

@@ -9,7 +9,7 @@ keywords:
   - "Kettle in Action"
   - "Kettle"
   - "Kettle JSON使用"
-canonicalURL: "https://www.xiaominfo.com/2019/08/13/kettle-13/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/08/13/kettle-13/"
 ---
 
 该问题我在使用分页查询导出的时候碰到了乱码的情况,我的情况比较特殊,我通过浏览已经建立好的数据库连接的中的数据时并非乱码,而当我使用表输入组件中的预览数据时缺产生了乱码,因此我不得不设置我们的数据库连接参数

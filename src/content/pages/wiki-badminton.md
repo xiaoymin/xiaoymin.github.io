@@ -3,7 +3,7 @@ title: "Badminton"
 description: "羽毛球学习资源整理。"
 keywords:
   - "羽毛球"
-canonicalURL: "https://www.xiaominfo.com/wiki/badminton/"
+canonicalURL: "https://www.xiaoyuming.cn/wiki/badminton/"
 ---
 
 ## 视频

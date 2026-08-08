@@ -7,7 +7,7 @@ tags:
 keywords:
   - "springfox 源码系列"
   - "springfox-swagger"
-canonicalURL: "https://www.xiaominfo.com/2019/05/26/springfox-10/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/05/26/springfox-10/"
 ---
 
 在上一篇中,我们了解到了springfox通过groupName的过滤,拿到了所有的接口,并且通过guava库的`ArrayListMultimap`对接口的Controller进一步进行了分组,接下来就是解析每个接口的操作了

@@ -9,7 +9,7 @@ keywords:
   - "Activiti"
   - "floable"
   - "openwebflow"
-canonicalURL: "https://www.xiaominfo.com/2018/01/11/workflow-choose/"
+canonicalURL: "https://www.xiaoyuming.cn/2018/01/11/workflow-choose/"
 ---
 
 ## Snaker

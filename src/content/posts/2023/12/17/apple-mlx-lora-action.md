@@ -12,7 +12,7 @@ keywords:
   - "Mistral 7B模型"
   - "训练参数调整"
   - "数据集微调"
-canonicalURL: "https://www.xiaominfo.com/2023/12/17/apple-mlx-lora-action/"
+canonicalURL: "https://www.xiaoyuming.cn/2023/12/17/apple-mlx-lora-action/"
 ---
 
 ## 前言

@@ -12,7 +12,7 @@ keywords:
   - "RAG概述"
   - "RAG"
   - "LlamaIndex源码分析"
-canonicalURL: "https://www.xiaominfo.com/2024/01/14/torchv-rag-3/"
+canonicalURL: "https://www.xiaoyuming.cn/2024/01/14/torchv-rag-3/"
 ---
 
 # 1.前言

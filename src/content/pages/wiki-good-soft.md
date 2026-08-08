@@ -4,7 +4,7 @@ description: "用正确的工具做对的事情"
 keywords:
   - "软件"
   - "推荐"
-canonicalURL: "https://www.xiaominfo.com/wiki/good-soft/"
+canonicalURL: "https://www.xiaoyuming.cn/wiki/good-soft/"
 ---
 
 好的软件总是给人一种相见恨晚的感觉。

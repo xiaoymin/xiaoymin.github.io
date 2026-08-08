@@ -6,7 +6,7 @@ tags:
   - "Blog"
 keywords:
   - "九一八国耻日：莫忘那些血不曾凉的英雄"
-canonicalURL: "https://www.xiaominfo.com/2017/09/18/918-hero/"
+canonicalURL: "https://www.xiaoyuming.cn/2017/09/18/918-hero/"
 ---
 
 ![](/images/918.jpg)

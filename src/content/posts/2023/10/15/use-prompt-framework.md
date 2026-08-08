@@ -9,7 +9,7 @@ keywords:
   - "大模型"
   - "Prompt"
   - "如何构建Prompt"
-canonicalURL: "https://www.xiaominfo.com/2023/10/15/use-prompt-framework/"
+canonicalURL: "https://www.xiaoyuming.cn/2023/10/15/use-prompt-framework/"
 ---
 
 ## 前言

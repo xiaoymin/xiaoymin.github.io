@@ -4,7 +4,7 @@ description: "Qt Creator 的常用快捷键和操作记录"
 keywords:
   - "Qt"
   - "Qt Creator"
-canonicalURL: "https://www.xiaominfo.com/wiki/qt-creator/"
+canonicalURL: "https://www.xiaoyuming.cn/wiki/qt-creator/"
 ---
 
 ### 快捷键（for mac）

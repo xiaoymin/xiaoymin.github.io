@@ -7,7 +7,7 @@ tags:
 keywords:
   - "springfox 源码系列"
   - "springfox-swagger"
-canonicalURL: "https://www.xiaominfo.com/2019/05/23/springfox-5/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/05/23/springfox-5/"
 ---
 
 时间：2019-5-23 14:46:50
@@ -17,7 +17,7 @@ canonicalURL: "https://www.xiaominfo.com/2019/05/23/springfox-5/"
 
 ## 前言
 
-我们在上一篇文章,通过`@EnableSwagger2`注解,知道springfox使用开启Plugin注解的配置,注入了很多Plugin的配置类，结合我们第二篇针对[Spring Plugin的使用文章](https://www.xiaominfo.com/2019/05/22/springfox-3/)介绍,该篇主要探索springfox中的各种不同Plugin的具体作用,以及声明了那些方法
+我们在上一篇文章,通过`@EnableSwagger2`注解,知道springfox使用开启Plugin注解的配置,注入了很多Plugin的配置类，结合我们第二篇针对[Spring Plugin的使用文章](https://www.xiaoyuming.cn/2019/05/22/springfox-3/)介绍,该篇主要探索springfox中的各种不同Plugin的具体作用,以及声明了那些方法
 
 ## 插件
 

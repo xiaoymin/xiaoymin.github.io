@@ -7,7 +7,7 @@ tags:
 keywords:
   - "springfox 源码系列"
   - "springfox-swagger"
-canonicalURL: "https://www.xiaominfo.com/2019/05/27/springfox-11/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/05/27/springfox-11/"
 ---
 
 在[springfox 源码分析(十) 遍历接口获取Model对象](/2019/05/26/springfox-10/)这一篇中,我们其实已经大致了解了Springfox针对接口中涉及到的Model类进行解析初始化的过程

@@ -9,7 +9,7 @@ keywords:
   - "mybatis"
   - "事务"
   - "事务隔离级别"
-canonicalURL: "https://www.xiaominfo.com/2019/05/18/mybatis-7/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/05/18/mybatis-7/"
 ---
 
 正确设置数据库的事务访问级别,有助于我们的应用程序达到预期的效果

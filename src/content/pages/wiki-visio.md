@@ -3,7 +3,7 @@ title: "Visio"
 description: "Windows 下最好用的流程图软件。"
 keywords:
   - "Visio"
-canonicalURL: "https://www.xiaominfo.com/wiki/visio/"
+canonicalURL: "https://www.xiaoyuming.cn/wiki/visio/"
 ---
 
 ## 小问题记录

@@ -4,7 +4,7 @@ description: "Emacs 快捷键汇总及日常使用记录。"
 keywords:
   - "Emacs"
   - "快捷键"
-canonicalURL: "https://www.xiaominfo.com/wiki/emacs/"
+canonicalURL: "https://www.xiaoyuming.cn/wiki/emacs/"
 ---
 
 约定：`C-` 前缀表示 Ctrl，`M-` 前缀表示 Alt，`S-` 前缀表示 Shift，上档字符比如 `@` 的实际按键应为 `Shift+2`。

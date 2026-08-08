@@ -11,7 +11,7 @@ keywords:
   - "Knife4j聚合"
   - "文档聚合"
   - "微服务聚合文档"
-canonicalURL: "https://www.xiaominfo.com/2023/08/13/knife4j-gateway-introduce/"
+canonicalURL: "https://www.xiaoyuming.cn/2023/08/13/knife4j-gateway-introduce/"
 ---
 
 大家好，这篇文章主要是介绍分享Knife4j-gateway网关聚合文档组件,自4.0版本发布该组件后，得到了大家的积极响应，我们也是积极响应用户的需求，持续迭代优化

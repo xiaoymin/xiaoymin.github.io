@@ -3,7 +3,7 @@ title: "Mac OS X"
 description: "使用 Mac OS X 的一些快捷键和遇到的问题。"
 keywords:
   - "Mac"
-canonicalURL: "https://www.xiaominfo.com/wiki/mac/"
+canonicalURL: "https://www.xiaoyuming.cn/wiki/mac/"
 ---
 
 快捷键约定：

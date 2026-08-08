@@ -3,7 +3,7 @@ title: "Python"
 description: "Python 常用模块及资源记录。"
 keywords:
   - "Python"
-canonicalURL: "https://www.xiaominfo.com/wiki/python/"
+canonicalURL: "https://www.xiaoyuming.cn/wiki/python/"
 ---
 
 ### requests

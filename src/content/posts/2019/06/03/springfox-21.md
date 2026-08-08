@@ -7,7 +7,7 @@ tags:
 keywords:
   - "springfox 源码系列"
   - "springfox-swagger"
-canonicalURL: "https://www.xiaominfo.com/2019/06/03/springfox-21/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/06/03/springfox-21/"
 ---
 
 > 我们在前面的源码过程中,了解了springfox的基本工作原理,接下来,我们可以通过使用springfox给我们提供的外部接口,来处理一些我们工作中碰到的问题,或者进行自定义扩展

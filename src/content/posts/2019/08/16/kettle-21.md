@@ -11,7 +11,7 @@ keywords:
   - "Kettle"
   - "Kettle 脚本内置函数"
   - "Kettle内置函数"
-canonicalURL: "https://www.xiaominfo.com/2019/08/16/kettle-21/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/08/16/kettle-21/"
 ---
 
 我们在使用JavaScript组件的时候,在左侧核心树对象栏中可以看到Kettle为我们提供了很多简洁强大的内置函数,帮助我们在写脚本的时候对数据、参数变量等能很轻松的做处理,体验编码的感觉.本篇将详细介绍JavaScript组件中的函数功能

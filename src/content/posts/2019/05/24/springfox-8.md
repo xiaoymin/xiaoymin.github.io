@@ -7,7 +7,7 @@ tags:
 keywords:
   - "springfox 源码系列"
   - "springfox-swagger"
-canonicalURL: "https://www.xiaominfo.com/2019/05/24/springfox-8/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/05/24/springfox-8/"
 ---
 
 我们通过读`DocumentationPluginsBootstrapper`代码中的`start`方法,了解到springfox根据我们外部提供的Docket对象进行初始化时,会通过Docket对象构建DocumentationContext对象来进行初始化操作

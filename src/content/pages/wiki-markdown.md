@@ -3,7 +3,7 @@ title: "Markdown"
 description: "Markdown 常用语法示例。"
 keywords:
   - "Markdown"
-canonicalURL: "https://www.xiaominfo.com/wiki/markdown/"
+canonicalURL: "https://www.xiaoyuming.cn/wiki/markdown/"
 ---
 
 **目录**

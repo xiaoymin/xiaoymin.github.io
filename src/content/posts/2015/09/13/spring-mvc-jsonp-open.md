@@ -6,7 +6,7 @@ tags:
   - "开源"
 keywords:
   - "jsonp"
-canonicalURL: "https://www.xiaominfo.com/2015/09/13/spring-mvc-jsonp-open/"
+canonicalURL: "https://www.xiaoyuming.cn/2015/09/13/spring-mvc-jsonp-open/"
 ---
 
 1、新建JsonpAdvice控制器增强继承org.springframework.web.servlet.mvc.method.annotation.AbstractJsonpResponseBodyAdvice类

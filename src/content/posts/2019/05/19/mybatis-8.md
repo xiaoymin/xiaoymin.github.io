@@ -8,7 +8,7 @@ keywords:
   - "mybatis 源码系列"
   - "mybatis"
   - "并发"
-canonicalURL: "https://www.xiaominfo.com/2019/05/19/mybatis-8/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/05/19/mybatis-8/"
 ---
 
 在研究mybatis的连接池数据源源码时,我们看到了wait()、notifyAll()方法的使用,工作中因为很少使用到这类方法的调用,所以，其中概念也有些模糊了,写一遍博客记录一下.

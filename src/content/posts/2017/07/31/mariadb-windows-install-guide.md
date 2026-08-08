@@ -6,7 +6,7 @@ tags:
   - "数据库"
 keywords:
   - "mariadb安装"
-canonicalURL: "https://www.xiaominfo.com/2017/07/31/mariadb-windows-install-guide/"
+canonicalURL: "https://www.xiaoyuming.cn/2017/07/31/mariadb-windows-install-guide/"
 ---
 
 ## 下载

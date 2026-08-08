@@ -3,7 +3,7 @@ title: "Links"
 description: "没有链接的博客是孤独的"
 keywords:
   - "友情链接"
-canonicalURL: "https://www.xiaominfo.com/links/"
+canonicalURL: "https://www.xiaoyuming.cn/links/"
 ---
 
 > God made relatives. Thank God we can choose our friends.

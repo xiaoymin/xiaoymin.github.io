@@ -4,7 +4,7 @@ description: "swagger-bootstrap-ui 开发指南"
 keywords:
   - "swagger"
   - "swagger-bootstrap-ui"
-canonicalURL: "https://www.xiaominfo.com/wiki/swagger-bootstrap-ui/"
+canonicalURL: "https://www.xiaoyuming.cn/wiki/swagger-bootstrap-ui/"
 ---
 
 # Swagger-Bootstrap-UI用户指南
@@ -17,7 +17,7 @@ canonicalURL: "https://www.xiaominfo.com/wiki/swagger-bootstrap-ui/"
 
 **QQ 交流群：**[![XM开源技术交流群](https://pub.idqqimg.com/wpa/images/group.png)](https://shang.qq.com/wpa/qunwpa?idkey=16b81902c23fbca82780fa107da1b6612e2ee44a05c4103c9176ad9d61c2f6bf) 608374991
 
-**文档地址：**<http://www.xiaominfo.com/swagger-bootstrap-ui/>
+**文档地址：**<http://www.xiaoyuming.cn/swagger-bootstrap-ui/>
 
 ## 项目地址
 

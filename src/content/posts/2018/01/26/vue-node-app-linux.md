@@ -8,7 +8,7 @@ keywords:
   - "Linux"
   - "nodejs"
   - "vue"
-canonicalURL: "https://www.xiaominfo.com/2018/01/26/vue-node-app-linux/"
+canonicalURL: "https://www.xiaoyuming.cn/2018/01/26/vue-node-app-linux/"
 ---
 
 ## Linux 服务器

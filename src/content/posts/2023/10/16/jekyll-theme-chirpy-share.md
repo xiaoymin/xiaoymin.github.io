@@ -7,7 +7,7 @@ tags:
 keywords:
   - "jekyll博客"
   - "jekyll主题"
-canonicalURL: "https://www.xiaominfo.com/2023/10/16/jekyll-theme-chirpy-share/"
+canonicalURL: "https://www.xiaoyuming.cn/2023/10/16/jekyll-theme-chirpy-share/"
 ---
 
 最近在学习RAG、[大模型](/categories/大模型/)等领域方面的技术，想在学习的过程中做总结性的输出，因此就想把自己之前弄的博客重新整理一番,主要有几个原因:
@@ -110,6 +110,6 @@ canonicalURL: "https://www.xiaominfo.com/2023/10/16/jekyll-theme-chirpy-share/"
 
 本站源码：[https://github.com/xiaoymin/xiaoymin.github.io](https://github.com/xiaoymin/xiaoymin.github.io)
 
-博客首页：[https://www.xiaominfo.com/](https://www.xiaominfo.com/)
+博客首页：[https://www.xiaoyuming.cn/](https://www.xiaoyuming.cn/)
 
 主题地址: [https://github.com/cotes2020/jekyll-theme-chirpy](https://github.com/cotes2020/jekyll-theme-chirpy)

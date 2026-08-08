@@ -3,7 +3,7 @@ title: "Eclipse"
 description: "Eclipse 常用快捷键和操作总结"
 keywords:
   - "Eclipse"
-canonicalURL: "https://www.xiaominfo.com/wiki/eclipse/"
+canonicalURL: "https://www.xiaoyuming.cn/wiki/eclipse/"
 ---
 
 ### 快捷键

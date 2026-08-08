@@ -7,7 +7,7 @@ tags:
 keywords:
   - "springfox 源码系列"
   - "springfox-swagger"
-canonicalURL: "https://www.xiaominfo.com/2019/06/02/springfox-19/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/06/02/springfox-19/"
 ---
 
 我们在研究springfox的过程中，发现springfox大量使用了guava这个库的一些方法和类,针对我们在研究源码的学习过程中,将涉及到的guava库中的类进行归纳总结,后期在工作中我们也可以熟练运用guava库为我们提供的简介api

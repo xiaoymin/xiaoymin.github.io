@@ -6,7 +6,7 @@ tags:
   - "数据库"
 keywords:
   - "postgresql"
-canonicalURL: "https://www.xiaominfo.com/2017/09/07/postgresql-install-guide/"
+canonicalURL: "https://www.xiaoyuming.cn/2017/09/07/postgresql-install-guide/"
 ---
 
 ## 下载

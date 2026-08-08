@@ -6,7 +6,7 @@ tags:
   - "开源资讯"
 keywords:
   - "swagger-bootstrap-ui"
-canonicalURL: "https://www.xiaominfo.com/2017/09/01/swagger-bootstrap-ui-1.5-issue/"
+canonicalURL: "https://www.xiaoyuming.cn/2017/09/01/swagger-bootstrap-ui-1.5-issue/"
 ---
 
 swagger-bootstrap-ui 1.5 发布了。swagger-bootstrap-ui 是 Swagger 的前端 UI 实现，目的是替换 Swagger 默认的 UI 实现 Swagger-UI，使文档更友好一点儿

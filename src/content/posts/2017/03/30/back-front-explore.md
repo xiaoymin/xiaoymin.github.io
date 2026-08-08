@@ -8,7 +8,7 @@ keywords:
   - "前后端分离"
   - "Jsonp"
   - "nginx"
-canonicalURL: "https://www.xiaominfo.com/2017/03/30/back-front-explore/"
+canonicalURL: "https://www.xiaoyuming.cn/2017/03/30/back-front-explore/"
 ---
 
 ## 背景

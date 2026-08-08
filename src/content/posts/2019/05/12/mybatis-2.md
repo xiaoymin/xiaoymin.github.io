@@ -7,7 +7,7 @@ tags:
 keywords:
   - "mybatis 源码系列"
   - "mybatis"
-canonicalURL: "https://www.xiaominfo.com/2019/05/12/mybatis-2/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/05/12/mybatis-2/"
 ---
 
 我们在第一章初始化中知道了mybatis的核心配置类为`org.apache.ibatis.session.Configuration.java`

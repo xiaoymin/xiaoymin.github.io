@@ -7,7 +7,7 @@ tags:
 keywords:
   - "mysql用户"
   - "数据库只读用户"
-canonicalURL: "https://www.xiaominfo.com/2018/01/30/mysql-user-onlyread/"
+canonicalURL: "https://www.xiaoyuming.cn/2018/01/30/mysql-user-onlyread/"
 ---
 
 登录mysql

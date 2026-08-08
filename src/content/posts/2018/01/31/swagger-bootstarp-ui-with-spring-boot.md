@@ -6,7 +6,7 @@ tags:
   - "Spring"
 keywords:
   - "swagger-bootstrap-ui"
-canonicalURL: "https://www.xiaominfo.com/2018/01/31/swagger-bootstarp-ui-with-spring-boot/"
+canonicalURL: "https://www.xiaoyuming.cn/2018/01/31/swagger-bootstarp-ui-with-spring-boot/"
 ---
 
 swagger-bootstrap-ui是基于swagger接口api实现的一套UI,因swagger原生ui是上下结构的，在浏览接口时不是很清晰,所以，swagger-bootstrap-ui是基于左右菜单风格的方式,适用与我们在开发后台系统左右结构这种风格类似,方便与接口浏览

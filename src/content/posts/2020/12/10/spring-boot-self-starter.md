@@ -8,7 +8,7 @@ keywords:
   - "SpringBoot"
   - "starter"
   - "自定义starter"
-canonicalURL: "https://www.xiaominfo.com/2020/12/10/spring-boot-self-starter/"
+canonicalURL: "https://www.xiaoyuming.cn/2020/12/10/spring-boot-self-starter/"
 ---
 
 ## 前言

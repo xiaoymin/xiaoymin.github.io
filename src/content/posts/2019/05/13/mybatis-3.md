@@ -7,7 +7,7 @@ tags:
 keywords:
   - "mybatis 源码系列"
   - "mybatis"
-canonicalURL: "https://www.xiaominfo.com/2019/05/13/mybatis-3/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/05/13/mybatis-3/"
 ---
 
 通过初始化的章节,我们知道了mybatis的核心配置类Configuration，那么,接下来我们逐一查看该配置的属性

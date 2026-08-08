@@ -7,7 +7,7 @@ tags:
 keywords:
   - "springfox 源码系列"
   - "springfox-swagger"
-canonicalURL: "https://www.xiaominfo.com/2019/06/01/springfox-17/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/06/01/springfox-17/"
 ---
 
 前面已经获取得到了swagger的分组接口信息了,接下来就是根据分组名称获取每个分组的Swagger资源详细信息,在springfox中提供了/v2/api-docs接口来进行获取

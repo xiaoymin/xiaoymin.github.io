@@ -7,7 +7,7 @@ tags:
 keywords:
   - "Lucene"
   - "搜索引擎"
-canonicalURL: "https://www.xiaominfo.com/2018/05/24/lucene_document_source/"
+canonicalURL: "https://www.xiaoyuming.cn/2018/05/24/lucene_document_source/"
 ---
 
 本笔记针对Lucene版本为7.3.1

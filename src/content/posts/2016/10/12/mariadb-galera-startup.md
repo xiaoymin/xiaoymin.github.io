@@ -7,7 +7,7 @@ tags:
 keywords:
   - "mariadb集群"
   - "MariaDb Galera"
-canonicalURL: "https://www.xiaominfo.com/2016/10/12/mariadb-galera-startup/"
+canonicalURL: "https://www.xiaoyuming.cn/2016/10/12/mariadb-galera-startup/"
 ---
 
 系统：CentOS7_x86_64 

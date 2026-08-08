@@ -7,7 +7,7 @@ tags:
 keywords:
   - "springfox 源码系列"
   - "springfox-swagger"
-canonicalURL: "https://www.xiaominfo.com/2019/05/23/springfox-4/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/05/23/springfox-4/"
 ---
 
 时间：2019-5-23 12:46:50
@@ -48,7 +48,7 @@ public class Swagger2DocumentationConfiguration {
 
 该包路径下包含了众多运用`MapStruct`组件自动生成的Mapper实体类转换关系,通过扫描注解,自动注入到Spring的容器中
 
-关于`MapStruct`组件的使用,可参考:[springfox 源码分析(二) 初探mapstruct](https://www.xiaominfo.com/2019/05/22/springfox-2/)
+关于`MapStruct`组件的使用,可参考:[springfox 源码分析(二) 初探mapstruct](https://www.xiaoyuming.cn/2019/05/22/springfox-2/)
 
 主要包括如下：
 
@@ -205,7 +205,7 @@ public class SpringfoxWebMvcConfiguration {
 
 - 使用`import`导入`ModelConfiguration`配置类,该类
 - 使用`@ComponentScan`注解扫描配置的package包路径,完成Spring的Bean实例注入
-- 使用`@EnablePluginRegistries`插件机制来完成插件的动态实例Bean注入到Spring容器中,关于Spring Plugin的使用,不明白的可以参考下上一篇文章对[Spring Plugin的说明](https://www.xiaominfo.com/2019/05/22/springfox-3/)
+- 使用`@EnablePluginRegistries`插件机制来完成插件的动态实例Bean注入到Spring容器中,关于Spring Plugin的使用,不明白的可以参考下上一篇文章对[Spring Plugin的说明](https://www.xiaoyuming.cn/2019/05/22/springfox-3/)
 - 注入相关Bean的实例对象
 
 ### ModelsConfiguration

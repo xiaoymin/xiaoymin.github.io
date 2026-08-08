@@ -6,7 +6,7 @@ tags:
   - "Knife4j"
 keywords:
   - "Knife4j"
-canonicalURL: "https://www.xiaominfo.com/2023/07/10/knife4j-action-index/"
+canonicalURL: "https://www.xiaoyuming.cn/2023/07/10/knife4j-action-index/"
 ---
 
 > 温馨提醒

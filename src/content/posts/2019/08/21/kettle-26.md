@@ -10,7 +10,7 @@ keywords:
   - "Kettle in Action"
   - "Kettle"
   - "Kettle 生产环境部署Pentaho"
-canonicalURL: "https://www.xiaominfo.com/2019/08/21/kettle-26/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/08/21/kettle-26/"
 ---
 
 待续...

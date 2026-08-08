@@ -18,7 +18,7 @@ keywords:
   - "人工审核"
   - "企业AI知识库"
   - "RAG"
-canonicalURL: "https://www.xiaominfo.com/2026/07/19/enterprise-search-let-knowledge-grow/"
+canonicalURL: "https://www.xiaoyuming.cn/2026/07/19/enterprise-search-let-knowledge-grow/"
 ---
 
 ![](/assets/images/ais/enterprise-search-let-knowledge-grow/header.png)

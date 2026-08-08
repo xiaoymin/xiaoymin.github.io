@@ -6,7 +6,7 @@ tags:
   - "Redis"
 keywords:
   - "Redis实战"
-canonicalURL: "https://www.xiaominfo.com/2020/11/29/redis-1/"
+canonicalURL: "https://www.xiaoyuming.cn/2020/11/29/redis-1/"
 ---
 
 目前Redis支持的主要数据结构包含5种,分别是：

@@ -7,7 +7,7 @@ tags:
 keywords:
   - "springfox 源码系列"
   - "springfox-swagger"
-canonicalURL: "https://www.xiaominfo.com/2019/05/28/springfox-12/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/05/28/springfox-12/"
 ---
 
 ApiDescription是springfox提供的接口描述信息类,在[springfox 源码分析(十) 遍历接口获取Model对象]()中我们拿到了接口的类型Model集合信息，但除了Model信息,接口还有更多的信息

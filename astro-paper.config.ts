@@ -2,9 +2,9 @@ import { defineAstroPaperConfig } from "./src/types/config";
 
 export default defineAstroPaperConfig({
   site: {
-    url: "https://www.xiaominfo.com/",
-    title: "学习笔记记录",
-    description: "学习笔记记录，分享技术实践与个人思考。",
+    url: "https://www.xiaoyuming.cn/",
+    title: "八一菜刀",
+    description: "八一菜刀，分享技术实践与个人思考。",
     author: "肖玉民",
     profile: "https://github.com/xiaoymin",
     ogImage: "default-og.jpg",
@@ -29,7 +29,7 @@ export default defineAstroPaperConfig({
   },
   socials: [
     { name: "github",   url: "https://github.com/xiaoymin" },
-    { name: "gitee",    url: "https://gitee.com/xiaoym", linkTitle: "学习笔记记录 on Gitee" },
+    { name: "gitee",    url: "https://gitee.com/xiaoym", linkTitle: "八一菜刀 on Gitee" },
     { name: "x",        url: "https://x.com/xiaoymin" },
     {
       name: "wechat",

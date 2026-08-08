@@ -11,7 +11,7 @@ keywords:
   - "TorchV实践"
   - "RAG"
   - "大模型开发思考"
-canonicalURL: "https://www.xiaominfo.com/2024/04/01/torchv-summary-01/"
+canonicalURL: "https://www.xiaoyuming.cn/2024/04/01/torchv-summary-01/"
 ---
 
 # 1. 前言

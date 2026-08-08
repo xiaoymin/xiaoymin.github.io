@@ -6,7 +6,7 @@ tags:
   - "数据库"
 keywords:
   - "postgresql"
-canonicalURL: "https://www.xiaominfo.com/2018/05/31/postgres-operation/"
+canonicalURL: "https://www.xiaoyuming.cn/2018/05/31/postgres-operation/"
 ---
 
 ## 安装

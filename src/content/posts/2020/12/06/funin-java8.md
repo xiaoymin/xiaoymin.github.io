@@ -7,7 +7,7 @@ tags:
 keywords:
   - "java8"
   - "gc"
-canonicalURL: "https://www.xiaominfo.com/2020/12/06/funin-java8/"
+canonicalURL: "https://www.xiaoyuming.cn/2020/12/06/funin-java8/"
 ---
 
 首先，创建一个实体类Order对象，代码如下：

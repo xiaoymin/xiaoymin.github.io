@@ -7,7 +7,7 @@ tags:
 keywords:
   - "springfox 源码系列"
   - "springfox-swagger"
-canonicalURL: "https://www.xiaominfo.com/2019/06/01/springfox-16/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/06/01/springfox-16/"
 ---
 
 通过前面的分析,我们最终得到了springfox的Documentation文档对象,将我们的RESTful接口最终转换为了文档对象,文档对象是包含了接口列表、分组信息等属性的

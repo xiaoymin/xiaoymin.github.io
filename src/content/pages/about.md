@@ -1,13 +1,13 @@
 ---
 title: "关于作者"
-description: "学习笔记记录"
+description: "八一菜刀"
 keywords:
-  - "学习笔记记录"
+  - "八一菜刀"
   - "萧明"
-canonicalURL: "https://www.xiaominfo.com/about/"
+canonicalURL: "https://www.xiaoyuming.cn/about/"
 ---
 
-欢迎来到学习笔记记录，这里主要分享技术实践与个人思考。
+欢迎来到八一菜刀，这里主要分享技术实践与个人思考。
 
 ## 联系
 

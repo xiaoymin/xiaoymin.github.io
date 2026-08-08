@@ -3,7 +3,7 @@ title: "Vim"
 description: "个人最常用的 Vim 常用操作。"
 keywords:
   - "Vim"
-canonicalURL: "https://www.xiaominfo.com/wiki/vim/"
+canonicalURL: "https://www.xiaoyuming.cn/wiki/vim/"
 ---
 
 ### 移动

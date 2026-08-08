@@ -6,7 +6,7 @@ tags:
   - "Blog"
 keywords:
   - "数据中心、cloud-sdk"
-canonicalURL: "https://www.xiaominfo.com/2017/12/17/cloud-sdk-get-started/"
+canonicalURL: "https://www.xiaoyuming.cn/2017/12/17/cloud-sdk-get-started/"
 ---
 
 公司目前开发基础技术架构是：`Spring`、`Spring Boot`、`lishicloud-sdk`

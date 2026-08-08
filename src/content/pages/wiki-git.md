@@ -4,7 +4,7 @@ description: "Git 常用操作记录。"
 keywords:
   - "Git"
   - "版本控制"
-canonicalURL: "https://www.xiaominfo.com/wiki/git/"
+canonicalURL: "https://www.xiaoyuming.cn/wiki/git/"
 ---
 
 ## 常用命令

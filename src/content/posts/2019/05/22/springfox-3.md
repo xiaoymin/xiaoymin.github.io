@@ -8,7 +8,7 @@ keywords:
   - "springfox 源码系列"
   - "springfox-swagger"
   - "Spring Plugin"
-canonicalURL: "https://www.xiaominfo.com/2019/05/22/springfox-3/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/05/22/springfox-3/"
 ---
 
 时间：2019-5-22 12:46:50

@@ -4,7 +4,7 @@ description: "最好用的 Java IDE"
 keywords:
   - "IDEA"
   - "Java"
-canonicalURL: "https://www.xiaominfo.com/wiki/intellij-idea/"
+canonicalURL: "https://www.xiaoyuming.cn/wiki/intellij-idea/"
 ---
 
 快捷键基本与 [Android Studio](./android-studio/) 一致，这里重点记录解决遇到过的问题。

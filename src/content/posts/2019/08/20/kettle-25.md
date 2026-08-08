@@ -10,7 +10,7 @@ keywords:
   - "Kettle in Action"
   - "Kettle"
   - "Kettle设置变量"
-canonicalURL: "https://www.xiaominfo.com/2019/08/20/kettle-25/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/08/20/kettle-25/"
 ---
 
 我们在很多场景下都需要用到设置变量组件,比如在分页查询数据时,然后分批次写入数据时,都需要事先定义好变量,一般作为作业中起始组件,设置变量的作业举足轻重,这考验你在一个完成的ETL过程中的逻辑能力,你的ETL是否能正常完美的执行,和开始设置的变量有很重要的关系.

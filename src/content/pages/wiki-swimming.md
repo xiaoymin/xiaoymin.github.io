@@ -4,7 +4,7 @@ description: "游泳学习资料与要领整理。"
 keywords:
   - "游泳"
   - "蛙泳"
-canonicalURL: "https://www.xiaominfo.com/wiki/swimming/"
+canonicalURL: "https://www.xiaoyuming.cn/wiki/swimming/"
 ---
 
 ## 蛙泳

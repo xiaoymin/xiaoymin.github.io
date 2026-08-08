@@ -7,7 +7,7 @@ tags:
 keywords:
   - "坐标系"
   - "WGS"
-canonicalURL: "https://www.xiaominfo.com/2018/06/06/coordinate_system_stu/"
+canonicalURL: "https://www.xiaoyuming.cn/2018/06/06/coordinate_system_stu/"
 ---
 
 ## 大地坐标系(WGS-84)

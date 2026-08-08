@@ -9,7 +9,7 @@ keywords:
   - "Kettle in Action"
   - "Kettle"
   - "Kettle JSON使用"
-canonicalURL: "https://www.xiaominfo.com/2019/08/13/kettle-11/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/08/13/kettle-11/"
 ---
 
 待续...

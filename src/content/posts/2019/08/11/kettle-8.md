@@ -9,7 +9,7 @@ keywords:
   - "Kettle in Action"
   - "Kettle"
   - "Kettle JSON使用"
-canonicalURL: "https://www.xiaominfo.com/2019/08/11/kettle-8/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/08/11/kettle-8/"
 ---
 
 操作步骤是：选择表格类型(引擎) -> 浏览Excel文件 -> 增加

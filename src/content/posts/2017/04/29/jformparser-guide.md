@@ -6,7 +6,7 @@ tags:
   - "开源"
 keywords:
   - "Jformparser"
-canonicalURL: "https://www.xiaominfo.com/2017/04/29/jformparser-guide/"
+canonicalURL: "https://www.xiaoyuming.cn/2017/04/29/jformparser-guide/"
 ---
 
 ## 简介

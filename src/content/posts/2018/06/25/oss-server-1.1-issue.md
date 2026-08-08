@@ -6,7 +6,7 @@ tags:
   - "开源资讯"
 keywords:
   - "oss-server"
-canonicalURL: "https://www.xiaominfo.com/2018/06/25/oss-server-1.1-issue/"
+canonicalURL: "https://www.xiaoyuming.cn/2018/06/25/oss-server-1.1-issue/"
 ---
 
 oss-server 1.1正式发布了,oss-server是针对项目开发时提供的小型对象存储系统,开发者在针对文件上传时业务剥离,同时方便文件迁移，为满足单个项目，多个系统的情况下，提供统一的oss服务 

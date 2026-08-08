@@ -10,7 +10,7 @@ keywords:
   - "Kettle in Action"
   - "Kettle"
   - "Kettle命令行"
-canonicalURL: "https://www.xiaominfo.com/2019/08/18/kettle-23/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/08/18/kettle-23/"
 ---
 
 我们在前面介绍的实战篇章中,基本都是在Spoon的图形化界面中点击运行按钮时来运行我们的作业或者转换的,但是Kettle也为我们提供了基于命令行的调用方式,基于命令行的方式可以方便我们通过Shell脚本或者Windows的Bat脚本来对作业&转换进行调用,这方便我们配置作业&转换的任务调度

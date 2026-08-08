@@ -7,7 +7,7 @@ tags:
 keywords:
   - "swagger-bootstrap-ui"
   - "swagger"
-canonicalURL: "https://www.xiaominfo.com/2018/08/29/swagger-bootstrap-ui-description/"
+canonicalURL: "https://www.xiaoyuming.cn/2018/08/29/swagger-bootstrap-ui-description/"
 ---
 
 ## 项目背景

@@ -7,7 +7,7 @@ tags:
 keywords:
   - "mybatis 源码系列"
   - "mybatis"
-canonicalURL: "https://www.xiaominfo.com/2019/05/10/mybatis-toc/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/05/10/mybatis-toc/"
 ---
 
 最近闲来无事,之前在开发过程中一直在使用mybatis这个技术框架,但是一直没有认真的好好读一下mybatis的源码,所以,决定把mybatis的源码通读一遍,在对mybatis的基础使用上,巩固自己的技术积累,也想通过这个优秀的开源ORM框架中学到一些程序设计理念.并且通过博客记录的方式,加深自己的印象.

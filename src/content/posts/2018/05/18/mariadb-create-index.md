@@ -7,7 +7,7 @@ tags:
 keywords:
   - "mariadb索引"
   - "数据库索引"
-canonicalURL: "https://www.xiaominfo.com/2018/05/18/mariadb-create-index/"
+canonicalURL: "https://www.xiaoyuming.cn/2018/05/18/mariadb-create-index/"
 ---
 
 英文原文地址：[创建索引](https://mariadb.com/kb/en/library/create-index/)

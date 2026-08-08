@@ -3,7 +3,7 @@ title: "Axure"
 description: "Axure RP 快捷键和使用技巧"
 keywords:
   - "Axure RP"
-canonicalURL: "https://www.xiaominfo.com/wiki/axure/"
+canonicalURL: "https://www.xiaoyuming.cn/wiki/axure/"
 ---
 
 ## 快捷键

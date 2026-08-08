@@ -6,7 +6,7 @@ tags:
   - "开源资讯"
 keywords:
   - "swagger-bootstrap-ui的使用说明"
-canonicalURL: "https://www.xiaominfo.com/2017/04/27/swagger-bootstrap-ui-introduce/"
+canonicalURL: "https://www.xiaoyuming.cn/2017/04/27/swagger-bootstrap-ui-introduce/"
 ---
 
 很多朋友在使用这个jar包的时候会出现接口出不来的情况，或者只出现ui默认的几个接口，项目的api接口没有出来，

@@ -8,7 +8,7 @@ keywords:
   - "js"
   - "Javascript"
   - "闭包"
-canonicalURL: "https://www.xiaominfo.com/2015/01/07/js-closure/"
+canonicalURL: "https://www.xiaoyuming.cn/2015/01/07/js-closure/"
 ---
 
 很久没写博客了,今天发现了一个很有意思的问题,写下来分享一下

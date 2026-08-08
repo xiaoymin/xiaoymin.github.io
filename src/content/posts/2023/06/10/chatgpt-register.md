@@ -10,7 +10,7 @@ keywords:
   - "虚拟短信SMS"
   - "短信"
   - "2023年6月最新注册ChatGPT账号流程"
-canonicalURL: "https://www.xiaominfo.com/2023/06/10/chatgpt-register/"
+canonicalURL: "https://www.xiaoyuming.cn/2023/06/10/chatgpt-register/"
 ---
 
 ## ChatGPT是什么？

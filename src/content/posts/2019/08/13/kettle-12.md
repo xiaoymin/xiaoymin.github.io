@@ -9,7 +9,7 @@ keywords:
   - "Kettle in Action"
   - "Kettle"
   - "Kettle JSON使用"
-canonicalURL: "https://www.xiaominfo.com/2019/08/13/kettle-12/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/08/13/kettle-12/"
 ---
 
 我们在[Kettle实战100篇 第1篇 介绍与安装](/2019/08/08/kettle-1/)中已经介绍过Kettle的相关目录结构,因为Kettle是使用纯Java语言开发,并且我们在JavaScript脚本中可以调用我们的Java类中的方法进行相关脚本的编写

@@ -7,7 +7,7 @@ tags:
 keywords:
   - "springfox 源码系列"
   - "springfox-swagger"
-canonicalURL: "https://www.xiaominfo.com/2019/05/29/springfox-13/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/05/29/springfox-13/"
 ---
 
 很多时候,Swagger定义的标准并不能满足我们实际的需求,比如拿分组后的接口来说,有适合我们希望我们的接口能够排序,假如我们当前有一个注册的需求实现,那么他的接口可能是这样的：

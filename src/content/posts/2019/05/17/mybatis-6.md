@@ -8,7 +8,7 @@ keywords:
   - "mybatis 源码系列"
   - "mybatis"
   - "设计模式"
-canonicalURL: "https://www.xiaominfo.com/2019/05/17/mybatis-6/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/05/17/mybatis-6/"
 ---
 
 以前我们在学习Java的时候,都会将Java中的设计模式,记忆中用的比较多的好像有23种吧,但是这些设计模式其实自己在工作中除了那么几种几乎很少用到.

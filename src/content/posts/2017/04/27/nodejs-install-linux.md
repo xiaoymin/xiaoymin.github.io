@@ -6,7 +6,7 @@ tags:
   - "NodeJs"
 keywords:
   - "nodejs安装"
-canonicalURL: "https://www.xiaominfo.com/2017/04/27/nodejs-install-linux/"
+canonicalURL: "https://www.xiaoyuming.cn/2017/04/27/nodejs-install-linux/"
 ---
 
 ## 目的

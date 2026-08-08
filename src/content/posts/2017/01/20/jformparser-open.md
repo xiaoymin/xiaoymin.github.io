@@ -6,7 +6,7 @@ tags:
   - "开源"
 keywords:
   - "Jformparser"
-canonicalURL: "https://www.xiaominfo.com/2017/01/20/jformparser-open/"
+canonicalURL: "https://www.xiaoyuming.cn/2017/01/20/jformparser-open/"
 ---
 
 JFormParser插件:根据json结构,生成页面,达到解放后端开发人员的目的,降低后端对前端开发要求,后端专心开发后台接口等服务程序,前期以表单元素为主,后期会增加更多页面元素的支持

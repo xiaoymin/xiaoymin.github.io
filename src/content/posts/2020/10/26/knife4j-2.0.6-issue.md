@@ -8,7 +8,7 @@ keywords:
   - "Knife4j"
   - "Knife4j 2.0.6发布"
   - "支持OpenAPI3及Auth2认证"
-canonicalURL: "https://www.xiaominfo.com/2020/10/26/knife4j-2.0.6-issue/"
+canonicalURL: "https://www.xiaoyuming.cn/2020/10/26/knife4j-2.0.6-issue/"
 ---
 
 # [v2.0.6-2020/10/26 Knife4j 2.0.6发布,支持OpenAPI3及Auth2认证]

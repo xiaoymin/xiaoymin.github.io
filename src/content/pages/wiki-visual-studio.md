@@ -3,7 +3,7 @@ title: "Visual Studio"
 description: "Visual Studio 快捷键和小技巧。"
 keywords:
   - "Visual Studio"
-canonicalURL: "https://www.xiaominfo.com/wiki/visual-studio/"
+canonicalURL: "https://www.xiaoyuming.cn/wiki/visual-studio/"
 ---
 
 地球上最好用的 C++ 开发环境，没有之一。现在也有免费的社区版了，可惜以前密集写 C++ 代码的时候没赶上。

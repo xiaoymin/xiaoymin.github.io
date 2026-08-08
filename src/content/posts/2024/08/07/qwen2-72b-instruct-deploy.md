@@ -9,7 +9,7 @@ tags:
   - "LLM"
 keywords:
   - "记录QWen2-72B-Instruct模型安装部署过程"
-canonicalURL: "https://www.xiaominfo.com/2024/08/07/qwen2-72b-instruct-deploy/"
+canonicalURL: "https://www.xiaoyuming.cn/2024/08/07/qwen2-72b-instruct-deploy/"
 ---
 
 ## 一、基础信息

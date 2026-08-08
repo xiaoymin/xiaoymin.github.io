@@ -4,7 +4,7 @@ description: "我最常用的跨平台笔记软件。"
 keywords:
   - "OneNote"
   - "GTD"
-canonicalURL: "https://www.xiaominfo.com/wiki/onenote/"
+canonicalURL: "https://www.xiaoyuming.cn/wiki/onenote/"
 ---
 
 ## 快捷键

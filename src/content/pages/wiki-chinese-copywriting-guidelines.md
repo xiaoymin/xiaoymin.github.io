@@ -3,7 +3,7 @@ title: "中文文案排版指北（简体中文版）"
 description: "中文文案排版指北（简体中文版）。"
 keywords:
   - "中文文案排版指北"
-canonicalURL: "https://www.xiaominfo.com/wiki/chinese-copywriting-guidelines/"
+canonicalURL: "https://www.xiaoyuming.cn/wiki/chinese-copywriting-guidelines/"
 ---
 
 GitHub repository: [mzlogin/chinese-copywriting-guidelines](https://github.com/mzlogin/chinese-copywriting-guidelines)

@@ -7,7 +7,7 @@ tags:
 keywords:
   - "springfox 源码系列"
   - "springfox-swagger"
-canonicalURL: "https://www.xiaominfo.com/2019/05/20/springfox-0/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/05/20/springfox-0/"
 ---
 
 最近闲来无事,之前在开发过程中一直在用到springfox来生成swagger的文档,但一直对springfox的源码尚未研究,所以决定对源码进行探究一番.

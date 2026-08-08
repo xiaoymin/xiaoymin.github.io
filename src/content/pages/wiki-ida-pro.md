@@ -4,7 +4,7 @@ description: "静态分析神器"
 keywords:
   - "debug"
   - "IDA Pro"
-canonicalURL: "https://www.xiaominfo.com/wiki/ida-pro/"
+canonicalURL: "https://www.xiaoyuming.cn/wiki/ida-pro/"
 ---
 
 ### 快捷键

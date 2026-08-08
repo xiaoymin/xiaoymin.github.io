@@ -10,7 +10,7 @@ keywords:
   - "Knife4j聚合"
   - "文档聚合"
   - "微服务聚合文档"
-canonicalURL: "https://www.xiaominfo.com/2023/09/18/knife4j-insight-mvp/"
+canonicalURL: "https://www.xiaoyuming.cn/2023/09/18/knife4j-insight-mvp/"
 ---
 
 在之前发布的《Knife4j新产品的想法》一文中，我提到想给Knife4j的生态做一些扩展，区别于目前市面上不一样的功能或者工具产品。

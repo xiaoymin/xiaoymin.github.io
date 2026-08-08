@@ -6,7 +6,7 @@ tags:
   - "开源"
 keywords:
   - "hugo-blog"
-canonicalURL: "https://www.xiaominfo.com/2018/04/29/hugo-blog/"
+canonicalURL: "https://www.xiaoyuming.cn/2018/04/29/hugo-blog/"
 ---
 
 `hugo-blog`是作者整理最近两年的技术积累,以博客的方式整理、归类发布出来，希望能帮助到一些开发者

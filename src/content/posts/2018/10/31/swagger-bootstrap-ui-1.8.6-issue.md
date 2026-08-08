@@ -7,7 +7,7 @@ tags:
 keywords:
   - "swagger-bootstrap-ui"
   - "swagger-bootstrap-ui 1.8.6"
-canonicalURL: "https://www.xiaominfo.com/2018/10/31/swagger-bootstrap-ui-1.8.6-issue/"
+canonicalURL: "https://www.xiaoyuming.cn/2018/10/31/swagger-bootstrap-ui-1.8.6-issue/"
 ---
 
 swagger-bootstrap-ui 1.8.6 发布了。swagger-bootstrap-ui 是 Swagger 的增强UI 实现，目的是替换 Swagger 默认的 UI 实现 Swagger-UI，使文档更友好一点儿

@@ -8,7 +8,7 @@ keywords:
   - "SpringBoot"
   - "Servlet转发"
   - "HTTP请求代理"
-canonicalURL: "https://www.xiaominfo.com/2021/02/03/spring-boot-servlet-gateway-compoents/"
+canonicalURL: "https://www.xiaoyuming.cn/2021/02/03/spring-boot-servlet-gateway-compoents/"
 ---
 
 ## 背景概述

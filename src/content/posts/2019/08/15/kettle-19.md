@@ -10,7 +10,7 @@ keywords:
   - "Kettle in Action"
   - "Kettle"
   - "Kettle导出Excel"
-canonicalURL: "https://www.xiaominfo.com/2019/08/15/kettle-19/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/08/15/kettle-19/"
 ---
 
 我们在上面的实战系列中,多次用到了Excel作为输入或输出组件,该篇主要是针对官方英文文档做一个翻译说明,主要包括输入、输出、写入组件

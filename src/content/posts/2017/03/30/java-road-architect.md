@@ -7,7 +7,7 @@ tags:
 keywords:
   - "Java"
   - "架构师"
-canonicalURL: "https://www.xiaominfo.com/2017/03/30/java-road-architect/"
+canonicalURL: "https://www.xiaoyuming.cn/2017/03/30/java-road-architect/"
 ---
 
 # Java架构师之路

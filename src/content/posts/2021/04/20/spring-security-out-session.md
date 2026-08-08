@@ -9,7 +9,7 @@ keywords:
   - "Security"
   - "踢人下线"
   - "Spring Security"
-canonicalURL: "https://www.xiaominfo.com/2021/04/20/spring-security-out-session/"
+canonicalURL: "https://www.xiaoyuming.cn/2021/04/20/spring-security-out-session/"
 ---
 
 ## 1.背景

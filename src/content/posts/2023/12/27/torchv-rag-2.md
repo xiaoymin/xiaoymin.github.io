@@ -15,7 +15,7 @@ keywords:
   - "ElasticSearch混合检索"
   - "TorchV"
   - "torchv"
-canonicalURL: "https://www.xiaominfo.com/2023/12/27/torchv-rag-2/"
+canonicalURL: "https://www.xiaoyuming.cn/2023/12/27/torchv-rag-2/"
 ---
 
 ## 概述

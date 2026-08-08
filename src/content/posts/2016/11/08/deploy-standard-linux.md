@@ -6,7 +6,7 @@ tags:
   - "Linux"
 keywords:
   - "linux部署"
-canonicalURL: "https://www.xiaominfo.com/2016/11/08/deploy-standard-linux/"
+canonicalURL: "https://www.xiaoyuming.cn/2016/11/08/deploy-standard-linux/"
 ---
 
 # 前言

@@ -7,7 +7,7 @@ tags:
 keywords:
   - "Knife4j"
   - "细节处理"
-canonicalURL: "https://www.xiaominfo.com/2020/03/08/knife4j-2.0.2-issue/"
+canonicalURL: "https://www.xiaoyuming.cn/2020/03/08/knife4j-2.0.2-issue/"
 ---
 
 `Knife4j`前身是`swagger-bootstrap-ui`,是一个为Swagger接口文档赋能的工具

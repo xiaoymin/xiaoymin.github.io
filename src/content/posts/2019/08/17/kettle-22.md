@@ -10,7 +10,7 @@ keywords:
   - "Kettle in Action"
   - "Kettle"
   - "Kettle资源库"
-canonicalURL: "https://www.xiaominfo.com/2019/08/17/kettle-22/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/08/17/kettle-22/"
 ---
 
 我们在前面的实战博客中,都是将我们的作业和转换文件保存在磁盘中,这在小规模的使用中是没有问题的,可是当我们的ETL工程越来越庞大时,一个团队需要更多的ETL工程师来开发ETL的过程时,单人作战就很不合适了,这就和我们开发人员写代码一样,多人协作时需要一个代码的协作平台(GIT、SVN等)来帮助我们管理代码版本，合并代码等操作

@@ -7,7 +7,7 @@ tags:
 keywords:
   - "SpringBoot"
   - "文件下载"
-canonicalURL: "https://www.xiaominfo.com/2021/03/03/spring-boot-common-file-download/"
+canonicalURL: "https://www.xiaoyuming.cn/2021/03/03/spring-boot-common-file-download/"
 ---
 
 ## 1.前言

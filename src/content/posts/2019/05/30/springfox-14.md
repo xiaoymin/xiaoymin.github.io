@@ -7,7 +7,7 @@ tags:
 keywords:
   - "springfox 源码系列"
   - "springfox-swagger"
-canonicalURL: "https://www.xiaominfo.com/2019/05/30/springfox-14/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/05/30/springfox-14/"
 ---
 
 在前面我们拿到了接口的Model类型集合,然后还获取到了该接口的ApiDescription描述信息

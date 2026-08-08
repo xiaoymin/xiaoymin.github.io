@@ -8,7 +8,7 @@ keywords:
   - "mybatis 源码系列"
   - "mybatis"
   - "数据源DataSource"
-canonicalURL: "https://www.xiaominfo.com/2019/05/16/mybatis-5/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/05/16/mybatis-5/"
 ---
 
 在第四章节中,我们分析里数据库驱动Driver的加载方式,其中有提到mybatis的数据源，我们都知道,Java中的SQL规范`java.sql.DataSource`是一个接口,而我们在生产环境中一般都是基于数据库的连接池技术来获取数据库连接以操作数据库的.

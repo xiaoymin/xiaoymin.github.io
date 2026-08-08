@@ -11,7 +11,7 @@ keywords:
   - "Kettle"
   - "JSONPath"
   - "Kettle JSON使用"
-canonicalURL: "https://www.xiaominfo.com/2019/08/14/kettle-17/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/08/14/kettle-17/"
 ---
 
 在我们使用JSON input组件的时候,设置字段映射时,由于Kettle使用的是JSONPath组件来进行解析的,因此我们就需要了解他的相关语法

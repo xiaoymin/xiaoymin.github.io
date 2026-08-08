@@ -3,7 +3,7 @@ title: "Visual Studio Code"
 description: "Visual Studio Code 的快捷键与使用技巧"
 keywords:
   - "Visual Studio Code"
-canonicalURL: "https://www.xiaominfo.com/wiki/visual-studio-code/"
+canonicalURL: "https://www.xiaoyuming.cn/wiki/visual-studio-code/"
 ---
 
 ## 快捷键

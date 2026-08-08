@@ -9,7 +9,7 @@ keywords:
   - "Kettle in Action"
   - "Kettle"
   - "Kettle JSON使用"
-canonicalURL: "https://www.xiaominfo.com/2019/08/08/kettle-2/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/08/08/kettle-2/"
 ---
 
 不管是通过Java或者是Python编码的方式调用RESTful接口将结果入库,都是有一定复杂度的,首先你要加载第三方REST组件,然后连接数据库,写SQL语句,最后插入的目标数据库中

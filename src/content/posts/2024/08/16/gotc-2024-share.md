@@ -10,7 +10,7 @@ tags:
   - "GOTC 2024"
 keywords:
   - "非结构化数据解析 &GenAI的应用探索和实践（文字稿）"
-canonicalURL: "https://www.xiaominfo.com/2024/08/16/gotc-2024-share/"
+canonicalURL: "https://www.xiaoyuming.cn/2024/08/16/gotc-2024-share/"
 ---
 
 > 以下内容是8.15日我在上海张江科学会堂举办的“GOTC（全球开源技术峰会）” 与 “GOGC（全球开源极客嘉年华）” 分享内容文字稿，分享给大家。

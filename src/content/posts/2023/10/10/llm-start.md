@@ -9,7 +9,7 @@ keywords:
   - "RAG"
   - "大模型实战"
   - "LLM"
-canonicalURL: "https://www.xiaominfo.com/2023/10/10/llm-start/"
+canonicalURL: "https://www.xiaoyuming.cn/2023/10/10/llm-start/"
 ---
 
 ## 写在前面

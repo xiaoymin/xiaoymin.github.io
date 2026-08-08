@@ -6,7 +6,7 @@ tags:
   - "Knife4j"
 keywords:
   - "claude修改代码"
-canonicalURL: "https://www.xiaominfo.com/2023/07/15/knife4j-use-claude-fixed-issue/"
+canonicalURL: "https://www.xiaoyuming.cn/2023/07/15/knife4j-use-claude-fixed-issue/"
 ---
 
 本文和Knife4j使用无关，主要分享作者在解决Knife4j的issues过程中如何通过Claude.Ai快速解决问题

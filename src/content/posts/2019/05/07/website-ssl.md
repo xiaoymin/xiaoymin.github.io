@@ -8,7 +8,7 @@ keywords:
   - "swagger-bootstrap-ui"
   - "swagger"
   - "ssl"
-canonicalURL: "https://www.xiaominfo.com/2019/05/07/website-ssl/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/05/07/website-ssl/"
 ---
 
 这几天一直在看小程序的开发指南,其中读到小程序调用的RESTful Api接口的网站都必须是`HTTPS`的,为了后面学习小程序开发先给我的swagger-bootstrap-ui的文档地址配置一个SSL证书.就权当练习吧.

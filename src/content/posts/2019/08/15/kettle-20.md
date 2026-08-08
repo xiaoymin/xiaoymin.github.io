@@ -10,7 +10,7 @@ keywords:
   - "Kettle in Action"
   - "Kettle"
   - "Kettle导出ES"
-canonicalURL: "https://www.xiaominfo.com/2019/08/15/kettle-20/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/08/15/kettle-20/"
 ---
 
 > **业务需求**：在系统上线后,原系统的日志信息是存储到MySQL数据库中,但是随着日志数据越来越大,导致数据查询缓慢,加上日志数据并非业务系统关键数据,因此,系统考虑改版升级,使用ElasticSearch来存储日志数据,因此需要将源存在MySQL数据库上的数据迁移到ES中

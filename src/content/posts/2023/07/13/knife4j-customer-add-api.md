@@ -8,7 +8,7 @@ keywords:
   - "springfox自定义接口"
   - "springdoc自定义接口"
   - "knife4j自定义接口"
-canonicalURL: "https://www.xiaominfo.com/2023/07/13/knife4j-customer-add-api/"
+canonicalURL: "https://www.xiaoyuming.cn/2023/07/13/knife4j-customer-add-api/"
 ---
 
 本文主要介绍在 Spring Boot 应用中,如何使用 springfox 和 springdoc 框架自定义添加外部 API 接口,并在 Knife4j 的 UI 界面中展示。

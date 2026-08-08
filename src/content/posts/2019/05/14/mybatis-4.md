@@ -7,7 +7,7 @@ tags:
 keywords:
   - "mybatis 源码系列"
   - "mybatis"
-canonicalURL: "https://www.xiaominfo.com/2019/05/14/mybatis-4/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/05/14/mybatis-4/"
 ---
 
 不管是mysql或者oracle等等数据库的连接,在我们Java程序中,都需要将相应的数据库驱动jar包加入到Java应用程序中

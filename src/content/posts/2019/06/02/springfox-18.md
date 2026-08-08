@@ -7,7 +7,7 @@ tags:
 keywords:
   - "springfox 源码系列"
   - "springfox-swagger"
-canonicalURL: "https://www.xiaominfo.com/2019/06/02/springfox-18/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/06/02/springfox-18/"
 ---
 
 既然我们对springfox提供的接口已经有了一个初步的了解,那么针对我们在分组接口文章中提的需求,如果自定义扩展实现分组的排序如何做呢？

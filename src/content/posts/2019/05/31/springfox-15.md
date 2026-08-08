@@ -7,7 +7,7 @@ tags:
 keywords:
   - "springfox 源码系列"
   - "springfox-swagger"
-canonicalURL: "https://www.xiaominfo.com/2019/05/31/springfox-15/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/05/31/springfox-15/"
 ---
 
 通过上篇的分析,我们已经得到了ApiListing的map集合，接下来最终做文档归档,得到Documentation对象

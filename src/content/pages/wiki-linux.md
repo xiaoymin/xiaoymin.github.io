@@ -3,7 +3,7 @@ title: "Linux/Unix"
 description: "类 Unix 系统下的一些常用命令和用法。"
 keywords:
   - "Linux"
-canonicalURL: "https://www.xiaominfo.com/wiki/linux/"
+canonicalURL: "https://www.xiaoyuming.cn/wiki/linux/"
 ---
 
 类 Unix 系统下的一些常用命令和用法。

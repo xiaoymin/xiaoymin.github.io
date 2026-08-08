@@ -8,7 +8,7 @@ keywords:
   - "Knife4j"
   - "Knife4jAggregation"
   - "OpenAPI"
-canonicalURL: "https://www.xiaominfo.com/2020/11/26/easy-aggregation-openapi/"
+canonicalURL: "https://www.xiaoyuming.cn/2020/11/26/easy-aggregation-openapi/"
 ---
 
 Knife4j一直致力于将目前的Ui提供给更多的平台或者别的语言使用而努力，经过这么长时间的发展，Knife4j提供的轻量级聚合中间件终于诞生了，自`2.0.8`版本开始，Knife4j提供了`knife4j-aggregation-spring-boot-starter`组件，该组件是一个基于Spring Boot系统的starter，他提供了以下几种能力：

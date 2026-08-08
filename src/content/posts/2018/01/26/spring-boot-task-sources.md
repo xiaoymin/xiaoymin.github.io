@@ -6,7 +6,7 @@ tags:
   - "Spring"
 keywords:
   - "SpringBoot"
-canonicalURL: "https://www.xiaominfo.com/2018/01/26/spring-boot-task-sources/"
+canonicalURL: "https://www.xiaoyuming.cn/2018/01/26/spring-boot-task-sources/"
 ---
 
 ## EnableScheduling注解

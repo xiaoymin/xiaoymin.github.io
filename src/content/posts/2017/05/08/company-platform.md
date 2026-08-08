@@ -6,7 +6,7 @@ tags:
   - "Java"
 keywords:
   - "SpringBoot"
-canonicalURL: "https://www.xiaominfo.com/2017/05/08/company-platform/"
+canonicalURL: "https://www.xiaoyuming.cn/2017/05/08/company-platform/"
 ---
 
 ## 简介

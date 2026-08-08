@@ -4,7 +4,7 @@ description: "使用 PowerShell 打造 Windows 下的顺手终端。"
 keywords:
   - "Windows"
   - "PowerShell"
-canonicalURL: "https://www.xiaominfo.com/wiki/powershell/"
+canonicalURL: "https://www.xiaoyuming.cn/wiki/powershell/"
 ---
 
 使用 PowerShell 打造 Windows 下的顺手终端。

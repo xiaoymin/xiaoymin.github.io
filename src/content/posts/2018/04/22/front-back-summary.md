@@ -7,7 +7,7 @@ tags:
 keywords:
   - "前后端分离"
   - "架构"
-canonicalURL: "https://www.xiaominfo.com/2018/04/22/front-back-summary/"
+canonicalURL: "https://www.xiaoyuming.cn/2018/04/22/front-back-summary/"
 ---
 
 ## 说在前面的话

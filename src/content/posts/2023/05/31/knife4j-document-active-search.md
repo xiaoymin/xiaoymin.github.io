@@ -7,7 +7,7 @@ tags:
 keywords:
   - "Knife4j"
   - "文档搜索"
-canonicalURL: "https://www.xiaominfo.com/2023/05/31/knife4j-document-active-search/"
+canonicalURL: "https://www.xiaoyuming.cn/2023/05/31/knife4j-document-active-search/"
 ---
 
 ## 1.前言

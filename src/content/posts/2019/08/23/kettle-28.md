@@ -10,7 +10,7 @@ keywords:
   - "Kettle in Action"
   - "Kettle"
   - "Kettle Carte作业服务详解"
-canonicalURL: "https://www.xiaominfo.com/2019/08/23/kettle-28/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/08/23/kettle-28/"
 ---
 
 待续...

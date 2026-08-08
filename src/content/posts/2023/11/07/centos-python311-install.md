@@ -9,7 +9,7 @@ keywords:
   - "Python3"
   - "Centos7"
   - "OpenSSL"
-canonicalURL: "https://www.xiaominfo.com/2023/11/07/centos-python311-install/"
+canonicalURL: "https://www.xiaoyuming.cn/2023/11/07/centos-python311-install/"
 ---
 
 如果你是在CentOS7 上面源码安装Python3.11版本，你可能会碰到和我一样的问题，那就是OpenSSL模块太低了。

@@ -8,7 +8,7 @@ keywords:
   - "amr"
   - "mp3"
   - "微信"
-canonicalURL: "https://www.xiaominfo.com/2018/06/26/wechat-amr-mp3-convert/"
+canonicalURL: "https://www.xiaoyuming.cn/2018/06/26/wechat-amr-mp3-convert/"
 ---
 
 我们在做微信语音上传功能开发时,因为微信的原因，音频文件在微信服务端只能存储3天,所以,我们需要根据微信的serverId，使用微信公众平台的接口将音频文件下载下来,存储到我们本地的服务器

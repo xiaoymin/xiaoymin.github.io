@@ -3,7 +3,7 @@ title: "MPV"
 description: "Mac 下最好用的播放器。"
 keywords:
   - "mpv"
-canonicalURL: "https://www.xiaominfo.com/wiki/mpv/"
+canonicalURL: "https://www.xiaoyuming.cn/wiki/mpv/"
 ---
 
 Mac OS X 下最好用的播放器，没有之一。

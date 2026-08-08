@@ -6,7 +6,7 @@ tags:
   - "开源"
 keywords:
   - "swagger-bootstrap-ui"
-canonicalURL: "https://www.xiaominfo.com/2017/04/22/swagger-bootstrap-ui-open/"
+canonicalURL: "https://www.xiaoyuming.cn/2017/04/22/swagger-bootstrap-ui-open/"
 ---
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.xiaoymin/swagger-bootstrap-ui/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.xiaoymin/swagger-bootstrap-ui)

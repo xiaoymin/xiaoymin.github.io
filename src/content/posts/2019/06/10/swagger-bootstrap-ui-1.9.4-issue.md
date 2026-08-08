@@ -8,7 +8,7 @@ keywords:
   - "swagger-bootstrap-ui"
   - "swagger-bootstrap-ui 1.9.4"
   - "swagger 动态字段注释"
-canonicalURL: "https://www.xiaominfo.com/2019/06/10/swagger-bootstrap-ui-1.9.4-issue/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/06/10/swagger-bootstrap-ui-1.9.4-issue/"
 ---
 
 swagger-bootstrap-ui 1.9.4 发布了。swagger-bootstrap-ui是 Swagger 的增强UI 实现，使文档更友好一点儿
@@ -79,7 +79,7 @@ swagger-bootstrap-ui 1.9.4 发布了。swagger-bootstrap-ui是 Swagger 的增强
 
 距离上一个版本也有挺长时间了,这段时间主要是对springfox的源码进行了一些研究和学习，并且记录了一些博客,该版本(`1.9.4`)的一些功能也在看源码的过程中对我有一些启发,对于Swagger的规范也多了一些了解
 
-对springfox源码有兴趣的朋友可以去我的博客查看,[点击前往](https://www.xiaominfo.com/2019/05/20/springfox-0/)
+对springfox源码有兴趣的朋友可以去我的博客查看,[点击前往](https://www.xiaoyuming.cn/2019/05/20/springfox-0/)
 
 
 **相关链接**

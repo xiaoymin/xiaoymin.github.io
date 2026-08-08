@@ -17,7 +17,7 @@ keywords:
   - "解析引擎"
   - "解析策略"
   - "RAG"
-canonicalURL: "https://www.xiaominfo.com/2026/07/12/ais-parse-engine-and-strategy-article/"
+canonicalURL: "https://www.xiaoyuming.cn/2026/07/12/ais-parse-engine-and-strategy-article/"
 ---
 
 **企业AI知识库建设里，最容易被低估的一步，往往不是大模型问答，也不是向量检索，而是“解析”。**

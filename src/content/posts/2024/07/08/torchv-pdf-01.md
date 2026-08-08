@@ -11,7 +11,7 @@ keywords:
   - "TorchV实践"
   - "RAG"
   - "PDF格式解析杂谈"
-canonicalURL: "https://www.xiaominfo.com/2024/07/08/torchv-pdf-01/"
+canonicalURL: "https://www.xiaoyuming.cn/2024/07/08/torchv-pdf-01/"
 ---
 
 ## 背景

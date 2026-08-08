@@ -4,7 +4,7 @@ description: "Android Studio 快捷键及使用技巧汇总"
 keywords:
   - "Android"
   - "Android Studio"
-canonicalURL: "https://www.xiaominfo.com/wiki/android-studio/"
+canonicalURL: "https://www.xiaoyuming.cn/wiki/android-studio/"
 ---
 
 本文主要记录 Android Studio 的使用技巧等，使用过程中遇到的问题详见我的另一篇博客 [Android Studio 遇到问题集锦](https://mazhuang.org/2015/05/06/android-studio/)。
@@ -107,11 +107,11 @@ Cmd --> Command
 
 在 Activity/Fragment 里点击类名前的小图标跳转到关联的 Layout XML 文件：
 
-![jump from class to layout](https://www.xiaominfo.com/images/wiki/jump-from-class-to-layout.jpg)
+![jump from class to layout](https://www.xiaoyuming.cn/images/wiki/jump-from-class-to-layout.jpg)
 
 在 Layout XML 文件里点击根节点前的小图标跳转到关联的 Activity/Fragment：
 
-![jump from layout to class](https://www.xiaominfo.com/images/wiki/jump-from-layout-to-class.jpg)
+![jump from layout to class](https://www.xiaoyuming.cn/images/wiki/jump-from-layout-to-class.jpg)
 
 ## 插件
 

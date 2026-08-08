@@ -10,7 +10,7 @@ keywords:
   - "Kettle in Action"
   - "Kettle"
   - "Kettle Javascript脚本组件"
-canonicalURL: "https://www.xiaominfo.com/2019/08/15/kettle-18/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/08/15/kettle-18/"
 ---
 
 ## JavaScript内置对象

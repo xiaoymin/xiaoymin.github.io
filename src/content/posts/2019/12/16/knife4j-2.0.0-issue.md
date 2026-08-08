@@ -7,7 +7,7 @@ tags:
 keywords:
   - "Knife4j"
   - "重生"
-canonicalURL: "https://www.xiaominfo.com/2019/12/16/knife4j-2.0.0-issue/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/12/16/knife4j-2.0.0-issue/"
 ---
 
 `Knife4j`前身是`swagger-bootstrap-ui`,取名knife4j是希望她能像一把匕首一样小巧,轻量,并且功能强悍,更名也是希望把她做成一个为Swagger接口文档服务的通用性解决方案,不仅仅只是专注于前端Ui前端.虽然目前还只是在前端，但以后功能肯定不止于此.

@@ -7,7 +7,7 @@ tags:
 keywords:
   - "springfox 源码系列"
   - "springfox-swagger"
-canonicalURL: "https://www.xiaominfo.com/2019/05/21/springfox-1/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/05/21/springfox-1/"
 ---
 
 日期：2019-5-21 21:05:15

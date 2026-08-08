@@ -7,7 +7,7 @@ tags:
 keywords:
   - "SpringBoot"
   - "Conditional"
-canonicalURL: "https://www.xiaominfo.com/2020/09/23/spring-boot-conditional/"
+canonicalURL: "https://www.xiaoyuming.cn/2020/09/23/spring-boot-conditional/"
 ---
 
 在`Spring Boot`框架中,注入实体`Bean`是几乎每一个Java程序员都能遇到的事情,因为`Spring Boot`采用约定优于配置的策略,去除了原来在`Spring MVC`中通过Xml进行注入的方式,全部通过Java Configuration的编码方式进行实体`Bean`的注入,

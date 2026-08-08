@@ -19,7 +19,7 @@ keywords:
   - "DB Job"
   - "模块化单体"
   - "信创适配"
-canonicalURL: "https://www.xiaominfo.com/2026/07/26/ais-delivery-architecture-evolution/"
+canonicalURL: "https://www.xiaoyuming.cn/2026/07/26/ais-delivery-architecture-evolution/"
 ---
 
 > 本文基于 AIS 当前的私有化部署实践碰到的问题进行整理。

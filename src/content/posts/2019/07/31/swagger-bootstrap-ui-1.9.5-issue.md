@@ -8,7 +8,7 @@ keywords:
   - "swagger-bootstrap-ui"
   - "swagger-bootstrap-ui 1.9.5"
   - "swagger 过滤请求参数"
-canonicalURL: "https://www.xiaominfo.com/2019/07/31/swagger-bootstrap-ui-1.9.5-issue/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/07/31/swagger-bootstrap-ui-1.9.5-issue/"
 ---
 
 swagger-bootstrap-ui 1.9.5 发布了。swagger-bootstrap-ui是 Swagger 的增强UI 实现，使文档更友好一点儿

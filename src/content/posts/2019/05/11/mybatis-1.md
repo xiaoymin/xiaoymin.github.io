@@ -7,7 +7,7 @@ tags:
 keywords:
   - "mybatis 源码系列"
   - "mybatis"
-canonicalURL: "https://www.xiaominfo.com/2019/05/11/mybatis-1/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/05/11/mybatis-1/"
 ---
 
 通过阅读mybatis的[官方文档](http://www.mybatis.org/mybatis-3/zh/getting-started.html),我们知道了初始化mybatis的方法有以下两种方法:

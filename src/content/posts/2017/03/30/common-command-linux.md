@@ -6,7 +6,7 @@ tags:
   - "Linux"
 keywords:
   - "Linux"
-canonicalURL: "https://www.xiaominfo.com/2017/03/30/common-command-linux/"
+canonicalURL: "https://www.xiaoyuming.cn/2017/03/30/common-command-linux/"
 ---
 
 # 目的

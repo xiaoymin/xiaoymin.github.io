@@ -9,7 +9,7 @@ keywords:
   - "Kettle in Action"
   - "Kettle"
   - "Kettle JSON使用"
-canonicalURL: "https://www.xiaominfo.com/2019/08/12/kettle-10/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/08/12/kettle-10/"
 ---
 
 我们在编写作业或者转换的时候,运行时,尽管将Kettle的日志级别调整到最大,但是依然无法帮助我们定位到问题所在,此时我们就需要通过日志来输出我们的相关变量,以编程的思维来帮助我们快速定位到问题,以解决问题

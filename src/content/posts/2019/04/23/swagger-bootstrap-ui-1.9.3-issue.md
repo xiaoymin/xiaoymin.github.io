@@ -8,7 +8,7 @@ keywords:
   - "swagger-bootstrap-ui"
   - "swagger-bootstrap-ui 1.9.3"
   - "swagger i18n及自定义文档支持"
-canonicalURL: "https://www.xiaominfo.com/2019/04/23/swagger-bootstrap-ui-1.9.3-issue/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/04/23/swagger-bootstrap-ui-1.9.3-issue/"
 ---
 
 swagger-bootstrap-ui 1.9.3 发布了。swagger-bootstrap-ui是 Swagger 的增强UI 实现，使文档更友好一点儿

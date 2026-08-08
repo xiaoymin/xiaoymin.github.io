@@ -21,7 +21,7 @@ keywords:
   - "知识去重"
   - "知识准入"
   - "知识审核"
-canonicalURL: "https://www.xiaominfo.com/2026/08/02/ais-knowledge-infra-and-facade/"
+canonicalURL: "https://www.xiaoyuming.cn/2026/08/02/ais-knowledge-infra-and-facade/"
 ---
 
 ![](/assets/images/ais/ais-knowledge-infra-and-facade/facade-header.png)

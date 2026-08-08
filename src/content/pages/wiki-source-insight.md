@@ -3,7 +3,7 @@ title: "Source Insight"
 description: "Source Insight 工具的快捷键及使用日常。"
 keywords:
   - "Source Insight"
-canonicalURL: "https://www.xiaominfo.com/wiki/source-insight/"
+canonicalURL: "https://www.xiaoyuming.cn/wiki/source-insight/"
 ---
 
 ### 快捷键

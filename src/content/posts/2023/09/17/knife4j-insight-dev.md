@@ -10,7 +10,7 @@ keywords:
   - "Knife4j聚合"
   - "文档聚合"
   - "微服务聚合文档"
-canonicalURL: "https://www.xiaominfo.com/2023/09/17/knife4j-insight-dev/"
+canonicalURL: "https://www.xiaoyuming.cn/2023/09/17/knife4j-insight-dev/"
 ---
 
 ## 前言

@@ -10,7 +10,7 @@ keywords:
   - "Kettle in Action"
   - "Kettle"
   - "Kettle JSON使用"
-canonicalURL: "https://www.xiaominfo.com/2019/08/14/kettle-14/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/08/14/kettle-14/"
 ---
 
 设置变量组件是我们在作业中非常常用的一个组件,通过设置变量,我们的子转换中可以非常方便的解决动态数据处理的问题,比如分页查询数据、导出Excel变量等等

@@ -8,12 +8,12 @@ keywords:
   - "swagger-bootstrap-ui"
   - "swagger-bootstrap-ui 1.9.1"
   - "优化大数据响应接口"
-canonicalURL: "https://www.xiaominfo.com/2019/03/11/swagger-bootstrap-ui-1.9.1-issue/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/03/11/swagger-bootstrap-ui-1.9.1-issue/"
 ---
 
 swagger-bootstrap-ui 1.9.1 发布了。swagger-bootstrap-ui是 Swagger 的增强UI 实现，使文档更友好一点儿
 
-[**GitHub**](https://github.com/xiaoymin/Swagger-Bootstrap-UI)  [**Gitee**](https://gitee.com/xiaoym/swagger-bootstrap-ui)  [**文档**](http://www.xiaominfo.com/swagger-bootstrap-ui/)  [**示例代码**](https://gitee.com/xiaoym/swagger-bootstrap-ui-demo)  [**在线体验**](http://swagger-bootstrap-ui.xiaominfo.com/doc.html)
+[**GitHub**](https://github.com/xiaoymin/Swagger-Bootstrap-UI)  [**Gitee**](https://gitee.com/xiaoym/swagger-bootstrap-ui)  [**文档**](http://www.xiaoyuming.cn/swagger-bootstrap-ui/)  [**示例代码**](https://gitee.com/xiaoym/swagger-bootstrap-ui-demo)  [**在线体验**](http://swagger-bootstrap-ui.xiaominfo.com/doc.html)
 
 **主要更新如下：**
 
@@ -62,7 +62,7 @@ swagger-bootstrap-ui 1.9.1 发布了。swagger-bootstrap-ui是 Swagger 的增强
 
 在线体验：<http://swagger-bootstrap-ui.xiaominfo.com/doc.html>
 
-项目文档：http://www.xiaominfo.com/swagger-bootstrap-ui/
+项目文档：http://www.xiaoyuming.cn/swagger-bootstrap-ui/
 
 ## 代码集成示例
 

@@ -8,12 +8,12 @@ keywords:
   - "swagger-bootstrap-ui"
   - "swagger-bootstrap-ui 1.9.0"
   - "Swagger资源保护"
-canonicalURL: "https://www.xiaominfo.com/2019/02/25/swagger-bootstrap-ui-1.9.0-issue/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/02/25/swagger-bootstrap-ui-1.9.0-issue/"
 ---
 
 SwaggerBootstrapUi 1.9.0 发布了。SwaggerBootstrapUi是 Swagger 的增强UI 实现，使文档更友好一点儿
 
-[**GitHub**](https://github.com/xiaoymin/Swagger-Bootstrap-UI)  [**Gitee**](https://gitee.com/xiaoym/swagger-bootstrap-ui)  [**文档**](http://www.xiaominfo.com/swagger-bootstrap-ui/)  [**示例代码**](https://gitee.com/xiaoym/swagger-bootstrap-ui-demo)  [**在线体验**](http://swagger-bootstrap-ui.xiaominfo.com/doc.html)
+[**GitHub**](https://github.com/xiaoymin/Swagger-Bootstrap-UI)  [**Gitee**](https://gitee.com/xiaoym/swagger-bootstrap-ui)  [**文档**](http://www.xiaoyuming.cn/swagger-bootstrap-ui/)  [**示例代码**](https://gitee.com/xiaoym/swagger-bootstrap-ui-demo)  [**在线体验**](http://swagger-bootstrap-ui.xiaominfo.com/doc.html)
 
 **主要更新如下：**
 ## 特性&优化
@@ -26,13 +26,13 @@ SwaggerBootstrapUi 1.9.0 发布了。SwaggerBootstrapUi是 Swagger 的增强UI �
 
 4、优化application/octet-stream下载出现的参数(header|query)问题
 
-5、优化图片验证码显示问题,可参考文档[文件下载及图片预览](http://www.xiaominfo.com/swagger-bootstrap-ui/accessControl.html)
+5、优化图片验证码显示问题,可参考文档[文件下载及图片预览](http://www.xiaoyuming.cn/swagger-bootstrap-ui/accessControl.html)
 
-6、新增权限特性属性`swagger.production`，开启此属性后会屏蔽swagger所有访问资源,可用于生产环境中部署屏蔽文档输出.保护文档安全,可参考文档[访问权限控制](http://www.xiaominfo.com/swagger-bootstrap-ui/accessControl.html)
+6、新增权限特性属性`swagger.production`，开启此属性后会屏蔽swagger所有访问资源,可用于生产环境中部署屏蔽文档输出.保护文档安全,可参考文档[访问权限控制](http://www.xiaoyuming.cn/swagger-bootstrap-ui/accessControl.html)
 
-7、针对Swagger资源请求,提供Basic认证功能,可用于保护Swagger文档页面.可参考[Basic详情](http://www.xiaominfo.com/swagger-bootstrap-ui/accessControl.html)
+7、针对Swagger资源请求,提供Basic认证功能,可用于保护Swagger文档页面.可参考[Basic详情](http://www.xiaoyuming.cn/swagger-bootstrap-ui/accessControl.html)
 
-8、优化文件上传参数类型File的支持.可参考文档[文件上传](http://www.xiaominfo.com/swagger-bootstrap-ui/uploadFile.html)
+8、优化文件上传参数类型File的支持.可参考文档[文件上传](http://www.xiaoyuming.cn/swagger-bootstrap-ui/uploadFile.html)
 
 9、优化响应数据右侧存在字段说明Span元素重叠,并增加Toggle开关显示关闭右侧字段说明
 
@@ -78,7 +78,7 @@ SwaggerBootstrapUi 1.9.0 发布了。SwaggerBootstrapUi是 Swagger 的增强UI �
 
 在线体验：<http://swagger-bootstrap-ui.xiaominfo.com/doc.html>
 
-项目文档：http://www.xiaominfo.com/swagger-bootstrap-ui/
+项目文档：http://www.xiaoyuming.cn/swagger-bootstrap-ui/
 
 ## 代码集成示例
 

@@ -6,7 +6,7 @@ tags:
   - "开源"
 keywords:
   - "oss-server"
-canonicalURL: "https://www.xiaominfo.com/2018/06/13/oss-server-open/"
+canonicalURL: "https://www.xiaoyuming.cn/2018/06/13/oss-server-open/"
 ---
 
 # oss-server

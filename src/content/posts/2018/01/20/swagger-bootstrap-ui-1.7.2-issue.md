@@ -6,7 +6,7 @@ tags:
   - "开源资讯"
 keywords:
   - "swagger-bootstrap-ui"
-canonicalURL: "https://www.xiaominfo.com/2018/01/20/swagger-bootstrap-ui-1.7.2-issue/"
+canonicalURL: "https://www.xiaoyuming.cn/2018/01/20/swagger-bootstrap-ui-1.7.2-issue/"
 ---
 
 主要包含文档说明、在线调试两大核心功能

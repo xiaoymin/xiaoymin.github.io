@@ -7,7 +7,7 @@ tags:
 keywords:
   - "springfox 源码系列"
   - "springfox-swagger"
-canonicalURL: "https://www.xiaominfo.com/2019/05/25/springfox-9/"
+canonicalURL: "https://www.xiaoyuming.cn/2019/05/25/springfox-9/"
 ---
 
 在前面我们了解了`DocumennationContext`的初始化过程,包括一系列的默认属性的赋值,接下来,开始真正的文档解析操作
