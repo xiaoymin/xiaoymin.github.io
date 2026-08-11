@@ -8,6 +8,7 @@ for (const dir of ["assets", "images"]) {
 
 await cp("CNAME", "dist/CNAME", { force: true });
 await cp("dist/rss.xml", "dist/feed.xml", { force: true });
+await cp("dist/sitemap-index.xml", "dist/sitemap.xml", { force: true });
 
 for (const entry of await readdir("dist/posts", { withFileTypes: true })) {
   if (!entry.isDirectory() || !/^\d+$/.test(entry.name) || entry.name === "1") {

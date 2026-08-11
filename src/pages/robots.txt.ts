@@ -1,13 +1,15 @@
 import type { APIRoute } from "astro";
 
-const getRobotsTxt = (sitemapURL: URL) => `
+const getRobotsTxt = (legacySitemapURL: URL, sitemapIndexURL: URL) => `
 User-agent: *
 Allow: /
 
-Sitemap: ${sitemapURL.href}
+Sitemap: ${legacySitemapURL.href}
+Sitemap: ${sitemapIndexURL.href}
 `;
 
 export const GET: APIRoute = ({ site }) => {
-  const sitemapURL = new URL("sitemap-index.xml", site);
-  return new Response(getRobotsTxt(sitemapURL));
+  const legacySitemapURL = new URL("sitemap.xml", site);
+  const sitemapIndexURL = new URL("sitemap-index.xml", site);
+  return new Response(getRobotsTxt(legacySitemapURL, sitemapIndexURL));
 };
